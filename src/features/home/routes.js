@@ -1,0 +1,11 @@
+// src/features/home/routes.js
+const homeRoutes = [
+  {
+    path: '', // Empty path for the root of the parent layout
+    name: 'Home',
+    component: () => import('@/features/home/views/HomePage.vue'),
+    meta: { title: '首页 - 爱芯享信息共享平台' } // Example meta for document title
+  }
+];
+
+export default homeRoutes;
