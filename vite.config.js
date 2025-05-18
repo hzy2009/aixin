@@ -17,7 +17,7 @@ export default defineConfig({
           // Example: Override Ant Design Vue default variables
           // 'primary-color': '#c92027', // Your primary red from design
           // 'link-color': '#c92027',
-          // 'border-radius-base': '2px',
+          'border-radius-base': '2px',
           // Or you can load a whole theme file:
           // hack: `true; @import (reference) "${path.resolve(__dirname, 'src/assets/styles/antd-theme.less')}";`,
         },

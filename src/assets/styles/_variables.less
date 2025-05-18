@@ -1,33 +1,66 @@
-// src/assets/styles/_variables.less
+// Colors
+@primary-color: #c92027; // Main red from header/buttons/footer
+@primary-color-dark: darken(@primary-color, 8%);
+@primary-color-light: lighten(@primary-color, 10%);
+@primary-color-an: #BC1A2C;
 
-// Colors (based on your design)
-@primary-color: #c92027; // Main red from header/buttons
-@primary-color-dark: darken(@primary-color, 10%);
-@text-color-base: #333333;
-@text-color-secondary: #666666;
-@text-color-light: #ffffff;
+@header-bg: #1f1f1f;
+@footer-bg: @primary-color; // Footer is primary red
+
+@text-color-base: #333333;       // Dark gray for primary text on light bg
+@text-color-secondary: #666666; // Medium gray for secondary text
+@text-color-tertiary: #999999;  // Light gray for less important text
+@text-color-light: #ffffff;     // White for text on dark bg
+@text-color-nav-link: #cccccc;  // For header nav links (non-active)
+@text-color-nav-link-active: #ffffff;
+
 @background-color-base: #ffffff;
-@background-color-light-gray: #f8f9fa; // For sections if needed
+@background-color-light-gray: #f8f9fa; // For slightly off-white sections
+@background-color-section-alt: #f0f2f5; // Another light gray for alternating sections
+
 @border-color-base: #e8e8e8;
-@header-bg: #1f1f1f; // Dark header background
+@border-color-light: #f0f0f0; // Lighter border
 
 // Fonts
 @font-family-sans-serif: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", Helvetica, Arial, sans-serif;
 @font-size-base: 14px;
-@line-height-base: 1.5;
+@line-height-base: 1.6; // Adjusted for better readability
 
 // Layout
-@layout-header-height: 64px; // Example
-@layout-footer-height: 80px; // Example
-@content-max-width: 1200px; // Max width for centered content
+@layout-header-height: 64px;
+@layout-footer-height: auto; // Footer height will be content-driven
+@content-max-width: 1200px;
+@content-padding-horizontal: 15px; // Standard padding for containers
 
-// Spacing
+// Spacing (keep as is or adjust slightly if needed)
 @spacing-xs: 4px;
 @spacing-sm: 8px;
 @spacing-md: 16px;
 @spacing-lg: 24px;
 @spacing-xl: 32px;
+@spacing-xxl: 48px;
 
 // Z-index
 @zindex-header: 1000;
 @zindex-modal: 1050;
+@zindex-carousel-arrows: 10;
+
+// Border Radius
+@border-radius-base: 4px;
+@border-radius-sm: 2px;
+
+@highlight-color: #e5a74e;
+
+@background-color-base: #ffffff; // For white header background
+@text-color-secondary: #666666; // For inactive links
+@text-color-light: #ffffff;     // For text on red backgrounds
+@border-color-light: #e0e0e0;   // A light border for the bottom of the header
+
+@content-max-width: 1200px;
+@content-padding-horizontal: 15px;
+@layout-header-height: 60px; // Or your preferred height
+
+// Spacing variables
+@spacing-xs: 4px;
+@spacing-sm: 8px;
+@spacing-md: 16px;

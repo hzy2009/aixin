@@ -1,29 +1,27 @@
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
 import DefaultLayout from '@/components/layout/DefaultLayout.vue';
-// Import feature routes later
-// import authRoutes from '@/features/auth/routes';
-import homeRoutes from '@/features/home/routes'; // Import home feature routes
+import homeRoutes from '@/features/home/routes';
+import authRoutes from '@/features/auth/routes'; // <-- Import
+import demandSquareRoutes from '@/features/demand_square/routes'; // Import new routes
+
+import { useAuthStore } from '@/store/authStore'; // Import for navigation guard
 
 const routes = [
   {
     path: '/',
     component: DefaultLayout,
     children: [
-      ...homeRoutes, // Spread home feature routes
+      ...homeRoutes,
+      ...demandSquareRoutes, // Add demand square routes to default layout
       // ... other feature routes that use DefaultLayout
     ],
   },
-  // Example for a route without the default layout (e.g., Login page)
-  // {
-  //   path: '/login',
-  //   name: 'Login',
-  //   component: () => import('@/features/auth/views/LoginPage.vue')
-  // },
+  ...authRoutes, // <-- Add auth routes (they don't use DefaultLayout)
   {
-    path: '/:pathMatch(.*)*', // Catch-all 404
+    path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: () => import('@/views/NotFoundPage.vue'), // Create this simple component
+    component: () => import('@/views/NotFoundPage.vue'),
   },
 ];
 
@@ -31,24 +29,29 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
   scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) {
-      return savedPosition;
-    } else {
-      return { top: 0 };
-    }
+    if (savedPosition) return savedPosition;
+    return { top: 0 };
   },
 });
 
-// Navigation Guards (for role-based access - implement later)
-// router.beforeEach((to, from, next) => {
-//   const authStore = useAuthStore(); // Be careful, store might not be initialized yet
-//   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-//     next({ name: 'Login' });
-//   } else if (to.meta.requiresAdmin && !authStore.isAdmin) {
-//     next({ name: 'Forbidden' }); // Or redirect to home
-//   } else {
-//     next();
-//   }
-// });
+// Example Navigation Guard
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore(); // Get store instance here
+
+  // Set document title
+  if (to.meta.title) {
+    document.title = to.meta.title;
+  } else {
+    document.title = '爱芯享信息共享平台'; // Default title
+  }
+
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    next({ name: 'Login', query: { redirect: to.fullPath } });
+  } else if (to.meta.guestOnly && authStore.isAuthenticated) {
+    next({ name: 'Home' }); // Or dashboard if they are admin/member
+  } else {
+    next();
+  }
+});
 
 export default router;

@@ -7,6 +7,14 @@
 // @import 'antd-theme.less';
 
 // Example of a global utility class (BEM-like)
+// .container {
+//   .centered-content();
+// }
 .container {
-  .centered-content();
+  max-width: @content-max-width;
+  margin-left: auto;
+  margin-right: auto;
+  // padding-left: @content-padding-horizontal;
+  // padding-right: @content-padding-horizontal;
+  width: 100%; // Important for responsiveness
 }
