@@ -8,6 +8,7 @@
       </div>
     </section>
 
+    
     <!-- 2. Reusable Tab Navigation (remains the same) -->
     <DemandPageTabs
       :tabs="pageTabs"
@@ -15,6 +16,7 @@
       @tab-change="handleTabChange"
     />
 
+    <!-- Content based on active tab -->
     <div class="container page-content-container">
       <div :key="activeTabKey" class="tab-content-wrapper">
         <template v-if="currentDemandDataHookInstance">
@@ -32,12 +34,8 @@
             <div class="summary-text">
               为您找到 <span class="count">{{ currentDemandDataHookInstance.totalItems.value }}</span> 个{{ getTabName(activeTabKey) }}
             </div>
-            <!-- "创建行业报告" button might be different or not present -->
-            <a-button v-if="activeTabKey !== 'industryReport'" type="primary" @click="createRequest" class="create-request-btn">
-              <PlusOutlined /> 创建{{ getTabName(activeTabKey) }}
-            </a-button>
-            <a-button v-else type="primary" @click="uploadReport" class="create-request-btn">
-              <UploadOutlined /> 上传行业报告
+            <a-button type="primary" @click="createRequestOrEvent" class="create-request-btn">
+              <component :is="currentActionIcon" /> {{ currentActionText }}
             </a-button>
           </div>
 
@@ -54,7 +52,14 @@
                 :report="item"
               />
             </div>
-            <div v-else class="results-grid content-section">
+            <div v-else-if="activeTabKey === 'offlineEvents'" class="results-grid content-section">
+              <OfflineEventCard
+                v-for="item in currentDemandDataHookInstance.items.value"
+                :key="item.id"
+                :event="item"
+              />
+            </div>
+            <div v-else class="results-grid content-section"> {/* Default grid for sourcing types */}
               <SourcingResultCard
                 v-for="item in currentDemandDataHookInstance.items.value"
                 :key="item.id"
@@ -92,81 +97,86 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, nextTick } from 'vue';
+import { ref, computed, watch, nextTick, shallowRef } from 'vue';
 import { useRouter } from 'vue-router';
 import { Button as AButton, Spin as ASpin, Empty as AEmpty, Pagination as APagination } from 'ant-design-vue';
-import { PlusOutlined } from '@ant-design/icons-vue';
+import { PlusOutlined, UploadOutlined, CalendarOutlined as EventIcon } from '@ant-design/icons-vue';
 
 import DemandPageTabs from '../components/DemandPageTabs.vue';
 import FilterPanel from '../components/FilterPanel.vue';
 import SourcingResultCard from '../components/SourcingResultCard.vue'; // Assuming this card is generic enough
 import IndustryReportItem from '../components/IndustryReportItem.vue'; // Import new component
+import OfflineEventCard from '../components/OfflineEventCard.vue'; // Import new card
 import { useDemandData } from '../composables/useDemandData.js';
 
 const router = useRouter();
-const activeTabKey = ref('alternativeSourcing'); // Default still can be alternative
+const activeTabKey = ref('alternativeSourcing');
 const filterPanelRef = ref(null);
 
 // --- Tab Configuration ---
 // Ensure 'originalSourcing' has usesDemandHook: true
 const pageTabs = ref([
-  { key: 'alternativeSourcing', label: '国产替代寻源', usesDemandHook: true },
-  { key: 'originalSourcing', label: '原厂件寻源', usesDemandHook: true }, // This is the one we're focusing on
-  { key: 'rndCollaboration', label: '研发攻关', usesDemandHook: true },
-  { key: 'testingValidation', label: '检测验证', usesDemandHook: true },
-  { key: 'industryReport', label: '行业报告', usesDemandHook: true },
-  { key: 'offlineEvents', label: '线下活动', usesDemandHook: false },
-  { key: 'industryTalent', label: '行业人才', usesDemandHook: false },
+  { key: 'alternativeSourcing', label: '国产替代寻源', usesDemandHook: true, createActionText: '创建国产替代寻源', createActionIcon: PlusOutlined },
+  { key: 'originalSourcing', label: '原厂件寻源', usesDemandHook: true, createActionText: '创建原厂件寻源', createActionIcon: PlusOutlined },
+  { key: 'rndCollaboration', label: '研发攻关', usesDemandHook: true, createActionText: '创建研发攻关', createActionIcon: PlusOutlined },
+  { key: 'testingValidation', label: '检测验证', usesDemandHook: true, createActionText: '创建检测验证', createActionIcon: PlusOutlined },
+  { key: 'industryReport', label: '行业报告', usesDemandHook: true, createActionText: '上传行业报告', createActionIcon: UploadOutlined },
+  { key: 'offlineEvents', label: '线下活动', usesDemandHook: true, createActionText: '创建线下活动', createActionIcon: EventIcon }, // Now uses hook
+  { key: 'industryTalent', label: '行业人才', usesDemandHook: false, createActionText: '发布人才需求', createActionIcon: PlusOutlined }, // Example if it doesn't use the full hook
 ]);
 
-const getTabName = (key) => {
-  const tab = pageTabs.value.find(t => t.key === key);
-  return tab ? tab.label : '内容';
-};
+const getTabInfo = (key) => pageTabs.value.find(t => t.key === key) || {};
+const getTabName = (key) => getTabInfo(key).label || '内容';
+
+const currentActionText = computed(() => getTabInfo(activeTabKey.value).createActionText || '执行操作');
+const currentActionIcon = computed(() => getTabInfo(activeTabKey.value).createActionIcon || PlusOutlined);
 
 // --- Filter Configurations for each relevant tab ---
 // TODO: DEFINE THE ACTUAL FILTER OPTIONS FOR 'originalSourcing'
 const filterConfigs = {
-  alternativeSourcing: [ /* ... as before ... */ { id: 'category', label: '分类', allowMore: true, maxVisible: 6, options: [ { value: 'pump', label: 'Pump' }, { value: 'mfc', label: 'MFC' },{ value: 'sensor', label: 'Sensor' }, { value: 'valve', label: 'Valve' },{ value: 'motor', label: 'Motor' }, { value: 'actuator', label: 'Actuator' },{ value: 'o-ring', label: 'O-ring' }, { value: 'filter', label: 'Filter' },{ value: 'seal', label: 'Seal' }, { value: 'bearing', label: 'Bearing' }]}, { id: 'region', label: '区域', allowMore: true, maxVisible: 4, options: [ { value: 'huadong', label: '华东' }, { value: 'huanan', label: '华南' },{ value: 'huazhong', label: '华中' }, { value: 'huabei', label: '华北' },{ value: 'xinan', label: '西南' }, { value: 'xibei', label: '西北' },{ value: 'dongbei', label: '东北' }]}, { id: 'status', label: '寻源状态', allowMore: false, options: [ { value: 'published', label: '寻源发布' }, { value: 'sourcing', label: '寻源中' },{ value: 'found', label: '已寻到' }, { value: 'not_found', label: '未寻到' },{ value: 'user_recommended', label: '用户推荐' }, { value: 'third_party_match', label: '三方对接' },{ value: 'verified', label: '验证' }]} ],
-  originalSourcing: [ /* ... as before ... */ { id: 'manufacturer', label: '品牌', allowMore: true, maxVisible: 6, options: [ { value: 'ti', label: 'TI (德州仪器)' }, { value: 'adi', label: 'ADI (亚德诺)' }, { value: 'stmicro', label: 'ST (意法半导体)' }, { value: 'infineon', label: 'Infineon (英飞凌)' }, { value: 'nxp', label: 'NXP (恩智浦)' }, { value: 'renesas', label: 'Renesas (瑞萨)' }, { value: 'microchip', label: 'Microchip (微芯)' }, { value: 'onsemi', label: 'onsemi (安森美)' } ] }, { id: 'partCategory', label: '器件分类', allowMore: true, maxVisible: 5, options: [ { value: 'mcu', label: 'MCU' }, { value: 'fpga', label: 'FPGA' }, { value: 'memory', label: '存储器' }, { value: 'powerIc', label: '电源IC' }, { value: 'analog', label: '模拟器件' }, { value: 'sensor', label: '传感器' }, { value: 'discrete', label: '分立器件' } ] }, { id: 'availability', label: '供货状态', allowMore: false, options: [ { value: 'inStock', label: '现货' }, { value: 'futureDelivery', label: '期货' }, { value: 'eol', label: '停产 (EOL)' }, { value: 'sample', label: '样品' } ] } ],
-  rndCollaboration: [ /* ... as before ... */ { id: 'techDomain', label: '技术领域', allowMore: true, maxVisible: 5, options: [{value: 'digitalIc', label: '数字IC'}, {value: 'analogIc', label: '模拟IC'}, {value: 'rfIc', label: '射频IC'}, {value: 'powerMgmt', label: '电源管理'}, {value: 'mems', label: 'MEMS'}] },{ id: 'collaborationType', label: '合作模式', allowMore: false, options: [{value: 'jointDev', label: '联合开发'}, {value: 'techTransfer', label: '技术转让'}, {value: 'consulting', label: '技术咨询'}] }],
-  testingValidation: [ /* ... as before ... */ { id: 'testType', label: '测试类型', allowMore: true, maxVisible: 5, options: [{value: 'reliability', label: '可靠性测试'}, {value: 'performance', label: '性能测试'}, {value: 'failureAnalysis', label: '失效分析'}] },{ id: 'equipment', label: '设备平台', options: [{value: 'ate', label: 'ATE'}, {value: 'probeStation', label: '探针台'}] }],
-  industryReport: [ // **** NEW FILTER CONFIG FOR INDUSTRY REPORTS ****
+  alternativeSourcing: [ /* ... */ { id: 'category', label: '分类', allowMore: true, maxVisible: 6, options: [ { value: 'pump', label: 'Pump' }, { value: 'mfc', label: 'MFC' },{ value: 'sensor', label: 'Sensor' }, { value: 'valve', label: 'Valve' },{ value: 'motor', label: 'Motor' }, { value: 'actuator', label: 'Actuator' },{ value: 'o-ring', label: 'O-ring' }, { value: 'filter', label: 'Filter' },{ value: 'seal', label: 'Seal' }, { value: 'bearing', label: 'Bearing' }]}, { id: 'region', label: '区域', allowMore: true, maxVisible: 4, options: [ { value: 'huadong', label: '华东' }, { value: 'huanan', label: '华南' },{ value: 'huazhong', label: '华中' }, { value: 'huabei', label: '华北' },{ value: 'xinan', label: '西南' }, { value: 'xibei', label: '西北' },{ value: 'dongbei', label: '东北' }]}, { id: 'status', label: '寻源状态', allowMore: false, options: [ { value: 'published', label: '寻源发布' }, { value: 'sourcing', label: '寻源中' },{ value: 'found', label: '已寻到' }, { value: 'not_found', label: '未寻到' },{ value: 'user_recommended', label: '用户推荐' }, { value: 'third_party_match', label: '三方对接' },{ value: 'verified', label: '验证' }]} ],
+  originalSourcing: [ /* ... */ { id: 'manufacturer', label: '品牌', allowMore: true, maxVisible: 6, options: [ { value: 'ti', label: 'TI (德州仪器)' }, { value: 'adi', label: 'ADI (亚德诺)' }, { value: 'stmicro', label: 'ST (意法半导体)' }, { value: 'infineon', label: 'Infineon (英飞凌)' }, { value: 'nxp', label: 'NXP (恩智浦)' }, { value: 'renesas', label: 'Renesas (瑞萨)' }, { value: 'microchip', label: 'Microchip (微芯)' }, { value: 'onsemi', label: 'onsemi (安森美)' } ] }, { id: 'partCategory', label: '器件分类', allowMore: true, maxVisible: 5, options: [ { value: 'mcu', label: 'MCU' }, { value: 'fpga', label: 'FPGA' }, { value: 'memory', label: '存储器' }, { value: 'powerIc', label: '电源IC' }, { value: 'analog', label: '模拟器件' }, { value: 'sensor', label: '传感器' }, { value: 'discrete', label: '分立器件' } ] }, { id: 'availability', label: '供货状态', allowMore: false, options: [ { value: 'inStock', label: '现货' }, { value: 'futureDelivery', label: '期货' }, { value: 'eol', label: '停产 (EOL)' }, { value: 'sample', label: '样品' } ] } ],
+  rndCollaboration: [ /* ... */ { id: 'techDomain', label: '技术领域', allowMore: true, maxVisible: 5, options: [{value: 'digitalIc', label: '数字IC'}, {value: 'analogIc', label: '模拟IC'}, {value: 'rfIc', label: '射频IC'}, {value: 'powerMgmt', label: '电源管理'}, {value: 'mems', label: 'MEMS'}] },{ id: 'collaborationType', label: '合作模式', allowMore: false, options: [{value: 'jointDev', label: '联合开发'}, {value: 'techTransfer', label: '技术转让'}, {value: 'consulting', label: '技术咨询'}] }],
+  testingValidation: [ /* ... */ { id: 'testType', label: '测试类型', allowMore: true, maxVisible: 5, options: [{value: 'reliability', label: '可靠性测试'}, {value: 'performance', label: '性能测试'}, {value: 'failureAnalysis', label: '失效分析'}] },{ id: 'equipment', label: '设备平台', options: [{value: 'ate', label: 'ATE'}, {value: 'probeStation', label: '探针台'}] }],
+  industryReport: [ /* ... */ { id: 'reportType', label: '行业报告类型', allowMore: true, maxVisible: 5, options: [ { value: 'semiconductorManufacturing', label: '半导体制造' }, { value: 'icDesign', label: '集成电路设计' }, { value: 'packagingTesting', label: '封装测试' }, { value: 'semiconductorEquipment', label: '半导体设备' }, { value: 'semiconductorMaterials', label: '半导体材料' }, { value: 'marketAnalysis', label: '市场分析' }, { value: 'policyResearch', label: '政策研究' } ] }, { id: 'publishYear', label: '发布年份', allowMore: false, options: [ { value: '2025', label: '2025年' }, { value: '2024', label: '2024年' }, { value: '2023', label: '2023年' }, { value: '2022', label: '2022年' } ] } ],
+  offlineEvents: [ // **** NEW FILTER CONFIG FOR OFFLINE EVENTS ****
     {
-      id: 'reportType', label: '行业报告类型', allowMore: true, maxVisible: 5,
+      id: 'eventType', label: '活动类型', allowMore: true, maxVisible: 4,
       options: [
-        { value: 'semiconductorManufacturing', label: '半导体制造' },
-        { value: 'icDesign', label: '集成电路设计' },
-        { value: 'packagingTesting', label: '封装测试' },
-        { value: 'semiconductorEquipment', label: '半导体设备' },
-        { value: 'semiconductorMaterials', label: '半导体材料' },
-        { value: 'marketAnalysis', label: '市场分析' },
-        { value: 'policyResearch', label: '政策研究' }
+        { value: 'conference', label: '行业会议' }, { value: 'seminar', label: '研讨会' },
+        { value: 'training', label: '培训课程' }, { value: 'exhibition', label: '展览展示' },
+        { value: 'salon', label: '技术沙龙' }
       ]
     },
-    { // Optional: Year filter for reports
-      id: 'publishYear', label: '发布年份', allowMore: false,
-      options: [
-        { value: '2025', label: '2025年' },
-        { value: '2024', label: '2024年' },
-        { value: '2023', label: '2023年' },
-        { value: '2022', label: '2022年' }
-      ]
+    {
+      id: 'eventRegion', label: '区域', allowMore: true, maxVisible: 4, // Different key from 'region' to avoid conflicts if needed
+      options: [ { value: 'huadong', label: '华东' }, { value: 'huanan', label: '华南' },{ value: 'huazhong', label: '华中' }, { value: 'huabei', label: '华北' },{ value: 'xinan', label: '西南' }, { value: 'xibei', label: '西北' },{ value: 'dongbei', label: '东北' } ]
+    },
+    { // This filter is special, as it might involve date pickers
+      id: 'eventDateRange', label: '发布时间', type: 'dateRange', // Special type for FilterPanel to handle
+      options: [ // These could be quick selectors
+        { value: 'last7days', label: '近7天' }, { value: 'last1month', label: '近1月' },
+        { value: 'last3months', label: '近3月' },
+        // A "custom" option would trigger date pickers within FilterPanel
+      ],
+      // FilterPanel would need to be enhanced to support `type: 'dateRange'`
+      // For now, we'll treat these as simple tags. A more complex FilterPanel would handle this.
+      allowMore: false, // '更多' is for tags, not typically for date ranges
     }
   ],
 };
-
 const currentFilterConfig = computed(() => filterConfigs[activeTabKey.value] || []);
-
 const currentDemandDataHookInstance = ref(null);
 
 function initializeDemandDataForTab(tabKey) {
-  const tabInfo = pageTabs.value.find(t => t.key === tabKey);
+  const tabInfo = getTabInfo(tabKey);
   if (tabInfo && tabInfo.usesDemandHook) {
-    // TODO: Adjust pageSize for industryReport if needed (e.g., fewer items per page for list view)
-    const pageSizeForHook = tabKey === 'industryReport' ? 6 : 9; // Example: 6 for reports, 9 for others
+    let pageSizeForHook = 9; // Default
+    if (tabKey === 'industryReport') pageSizeForHook = 6;
+    else if (tabKey === 'offlineEvents') pageSizeForHook = 6; // Events might also look better with fewer items per page
+
     currentDemandDataHookInstance.value = useDemandData(tabKey);
-    currentDemandDataHookInstance.value.pagination.pageSize = pageSizeForHook; // Set page size on the hook instance
+    currentDemandDataHookInstance.value.pagination.pageSize = pageSizeForHook;
     currentDemandDataHookInstance.value.loadItems();
   } else {
     currentDemandDataHookInstance.value = null;
@@ -183,25 +193,24 @@ watch(activeTabKey, async (newTabKey) => {
 }, { immediate: true });
 
 const handleFiltersUpdated = (filters, searchTerm) => {
-  if (currentDemandDataHookInstance.value) {
-    currentDemandDataHookInstance.value.updateFiltersAndSearch(filters, searchTerm);
-  }
+  if (currentDemandDataHookInstance.value) currentDemandDataHookInstance.value.updateFiltersAndSearch(filters, searchTerm);
 };
 const handleSearchTermApplied = (searchTerm, currentActiveFilters) => {
-  if (currentDemandDataHookInstance.value) {
-    currentDemandDataHookInstance.value.updateFiltersAndSearch(currentActiveFilters, searchTerm);
-  }
+  if (currentDemandDataHookInstance.value) currentDemandDataHookInstance.value.updateFiltersAndSearch(currentActiveFilters, searchTerm);
 };
 const handleTabChange = (newKey) => activeTabKey.value = newKey;
 const handlePageChange = (page) => {
   if (currentDemandDataHookInstance.value) currentDemandDataHookInstance.value.changePage(page);
 };
 
-const createRequest = () => {
-  // ... (same as before) ...
-  const currentTabName = getTabName(activeTabKey.value);
-  console.log(`Create new request for tab: ${currentTabName} (${activeTabKey.value})`);
-  alert(`即将创建 "${currentTabName}" 请求...`);
+const createRequestOrEvent = () => {
+  const tabInfo = getTabInfo(activeTabKey.value);
+  console.log(`${tabInfo.createActionText} for tab: ${tabInfo.label} (${activeTabKey.value})`);
+  alert(`即将 ${tabInfo.createActionText}...`);
+  // Example navigation:
+  // if (activeTabKey.value === 'industryReport') router.push('/admin/reports/upload');
+  // else if (activeTabKey.value === 'offlineEvents') router.push('/events/create');
+  // else router.push({ name: 'CreateDemandRequest', query: { type: activeTabKey.value } });
 };
 
 </script>
