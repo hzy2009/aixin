@@ -4,7 +4,7 @@ import DefaultLayout from '@/components/layout/DefaultLayout.vue';
 import homeRoutes from '@/features/home/routes';
 import authRoutes from '@/features/auth/routes'; // <-- Import
 import demandSquareRoutes from '@/features/demand_square/routes'; // Import new routes
-
+import industryDynamicsRoutes from '@/features/industryDynamics/routes'; // <-- Import
 import { useAuthStore } from '@/store/authStore'; // Import for navigation guard
 
 const routes = [
@@ -13,7 +13,8 @@ const routes = [
     component: DefaultLayout,
     children: [
       ...homeRoutes,
-      ...demandSquareRoutes, // Add demand square routes to default layout
+      ...demandSquareRoutes,
+      ...industryDynamicsRoutes,
       // ... other feature routes that use DefaultLayout
     ],
   },
