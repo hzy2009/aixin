@@ -21,12 +21,14 @@
             class="more-options-collapse"
             @change="(keys) => handleCollapseChange(group.id, keys)"
           >
-            <template #expandIcon="{ isActive }">
-              <span class="more-trigger">
-                更多 <DownOutlined :class="{'rotate-icon': isActive }" />
-              </span>
-            </template>
-            <!-- Panel content will be handled via CSS to appear below the row -->
+            <a-collapse-panel :key="group.id + '-more-panel'" :show-arrow="false" style="padding:0;">
+              <template #header>
+                <span class="more-trigger">
+                  更多 <DownOutlined :class="{'rotate-icon': group.activeCollapseKey && group.activeCollapseKey.includes(group.id + '-more-panel') }" />
+                </span>
+              </template>
+              <!-- The actual expanded options will be rendered below using a separate div -->
+            </a-collapse-panel>
           </a-collapse>
         </div>
       </div>
@@ -37,8 +39,9 @@
           v-if="group.hasMoreOptions && group.activeCollapseKey && group.activeCollapseKey.includes(group.id + '-more-panel')"
           class="expanded-options-panel"
         >
-          <div class="filter-row__label" style="visibility: hidden;">{{ group.label }}:</div> <!-- For alignment -->
-          <div class="filter-row__options expanded-options-content">
+          <!-- This empty label div helps align the expanded options with the main options row -->
+          <div class="filter-row__label" style="visibility: hidden;">{{ group.label }}:</div>
+          <div class="expanded-options-content">
             <a-tag
               v-for="option in group.hiddenOptions"
               :key="option.value"
@@ -54,15 +57,17 @@
       <!-- Search Row -->
       <div class="filter-row search-row">
         <div class="filter-row__label"><SearchOutlined /></div>
-        <div class="filter-row__options">
+        <div class="filter-row__options search-input-container">
           <a-input
             v-model:value="internalSearchTerm"
             placeholder="请输入关键字"
             class="keyword-search-input"
+            allow-clear
             @pressEnter="onSearchEnter"
+            @change="onSearchInputChange"
           />
-          <!-- Optional: Add a search button if 'enter-button' is not desired from a-input-search -->
-          <!-- <a-button type="primary" @click="onSearchClick" class="search-action-button">搜索</a-button> -->
+          <!-- Optional: Dedicated search button if not relying on Enter -->
+          <!-- <a-button type="primary" @click="onSearchButtonClick" class="search-action-button">搜索</a-button> -->
         </div>
       </div>
     </div>
@@ -70,38 +75,55 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue';
-import { Tag as ATag, Input as AInput, Collapse as ACollapse, Button as AButton } from 'ant-design-vue';
-import { DownOutlined, SearchOutlined } from '@ant-design/icons-vue'; // Added SearchOutlined
+import { ref, watch, onMounted, nextTick } from 'vue';
+import { Tag as ATag, Input as AInput, Collapse as ACollapse, CollapsePanel as ACollapsePanel, Button as AButton } from 'ant-design-vue';
+import { DownOutlined, SearchOutlined } from '@ant-design/icons-vue';
 
 const props = defineProps({
   filterConfig: { type: Array, required: true, default: () => [] },
   initialFilters: { type: Object, default: () => ({}) },
   initialSearchTerm: { type: String, default: '' }
 });
-const emit = defineEmits(['filterChange', 'search']);
+
+const emit = defineEmits([
+  'filtersUpdated', // Emitted when filter tags change (provides all filters and current search term)
+  'searchTermApplied' // Emitted when search is explicitly triggered (e.g., Enter, provides search term and all filters)
+]);
 
 const selectedFilters = ref({});
 const internalSearchTerm = ref('');
 const internalConfig = ref([]);
 
+function deepClone(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}
+
 onMounted(() => {
-  selectedFilters.value = JSON.parse(JSON.stringify(props.initialFilters));
+  selectedFilters.value = deepClone(props.initialFilters);
   internalSearchTerm.value = props.initialSearchTerm;
   initializeInternalConfig();
+});
+
+// Watch for prop changes to re-initialize if parent updates them
+watch(() => props.initialFilters, (newVal) => {
+  selectedFilters.value = deepClone(newVal);
+}, { deep: true });
+
+watch(() => props.initialSearchTerm, (newVal) => {
+  internalSearchTerm.value = newVal;
 });
 
 watch(() => props.filterConfig, initializeInternalConfig, { deep: true });
 
 function initializeInternalConfig() {
   internalConfig.value = props.filterConfig.map(group => {
-    const hasMore = group.allowMore && group.options.length > group.maxVisible;
+    const hasMore = group.allowMore && group.options.length > (group.maxVisible || Infinity);
     return {
       ...group,
       visibleOptions: group.options.slice(0, group.allowMore ? group.maxVisible : group.options.length),
       hiddenOptions: hasMore ? group.options.slice(group.maxVisible) : [],
       hasMoreOptions: hasMore,
-      activeCollapseKey: [] // Initialize as empty array
+      activeCollapseKey: [] // Initialize as empty array; AntD Collapse uses array for activeKey
     };
   });
 }
@@ -109,43 +131,56 @@ function initializeInternalConfig() {
 function handleCollapseChange(groupId, keys) {
   const group = internalConfig.value.find(g => g.id === groupId);
   if (group) {
-    // AntD Collapse passes an array. If it's empty, collapse is closed.
-    // If it contains the panel key, it's open.
+    // `keys` is an array of active panel keys. If empty, it's closed.
     group.activeCollapseKey = Array.isArray(keys) ? keys : (keys ? [keys] : []);
   }
 }
 
 function toggleOption(groupId, optionValue) {
   if (selectedFilters.value[groupId] === optionValue) {
-    delete selectedFilters.value[groupId];
+    delete selectedFilters.value[groupId]; // Deselect if already selected
   } else {
-    selectedFilters.value[groupId] = optionValue;
+    selectedFilters.value[groupId] = optionValue; // Select new option
   }
-  emitFilterChange();
+  // When a filter tag is clicked, we consider both filters and current search term as "updated"
+  emit('filtersUpdated', deepClone(selectedFilters.value), internalSearchTerm.value);
 }
 
 function isSelected(groupId, optionValue) {
   return selectedFilters.value[groupId] === optionValue;
 }
 
-function onSearchEnter() { // Trigger search on enter
-  emit('search', internalSearchTerm.value);
+function onSearchEnter() {
+  // When search is explicitly triggered (Enter key)
+  emit('searchTermApplied', internalSearchTerm.value, deepClone(selectedFilters.value));
 }
-// function onSearchClick() { // If using a dedicated search button
-//   emit('search', internalSearchTerm.value);
+
+function onSearchInputChange() {
+  // If you want live updates as user types (can be noisy for API calls):
+  // emit('filtersUpdated', deepClone(selectedFilters.value), internalSearchTerm.value);
+  // For this setup, we'll only emit on explicit search (Enter)
+}
+
+// Optional: If you have a search button
+// function onSearchButtonClick() {
+//   emit('searchTermApplied', internalSearchTerm.value, deepClone(selectedFilters.value));
 // }
 
-function emitFilterChange() {
-  emit('filterChange', { ...selectedFilters.value }, internalSearchTerm.value);
-}
-
-const resetFilters = () => {
+const resetFiltersAndSearch = () => {
   selectedFilters.value = {};
   internalSearchTerm.value = '';
-  internalConfig.value.forEach(group => group.activeCollapseKey = []);
-  emitFilterChange();
+  internalConfig.value.forEach(group => {
+      if (group.activeCollapseKey) { // Check if property exists
+          group.activeCollapseKey = [];
+      }
+  });
+  // After resetting, emit the cleared state
+  nextTick(() => { // Ensure state updates are processed before emitting
+    emit('filtersUpdated', {}, '');
+  });
 };
-defineExpose({ resetFilters });
+
+defineExpose({ resetFiltersAndSearch });
 </script>
 
 <style scoped lang="less">
@@ -153,9 +188,8 @@ defineExpose({ resetFilters });
 
 .filter-panel-wrapper {
   background-color: @background-color-base;
-  padding: @spacing-sm @spacing-lg @spacing-md @spacing-lg; // Reduced top/bottom padding
+  padding: @spacing-sm @spacing-lg @spacing-sm @spacing-lg; // Adjusted padding
   border-radius: @border-radius-base;
-  // box-shadow: 0 1px 4px rgba(0,0,0,0.04); // Very subtle shadow
   margin-bottom: @spacing-lg;
 }
 
@@ -166,23 +200,27 @@ defineExpose({ resetFilters });
 
 .filter-row {
   display: flex;
-  align-items: center; // Align label, options, and "more" vertically
+  align-items: center;
   padding: @spacing-md 0;
-  border-bottom: 1px dotted @border-color-light; // Dotted line as per design
+  border-bottom: 1px dotted @border-color-light;
+
+  &:last-child { // Applies to search-row if it's the last one
+    border-bottom: none;
+  }
 
   &.search-row {
-    border-bottom: none; // No border for the last search row
-    padding-bottom: @spacing-sm; // Less padding below search
-    padding-top: @spacing-lg; // More padding above search
+    // border-bottom: none; // Handled by :last-child now
+    padding-bottom: @spacing-sm;
+    padding-top: @spacing-lg;
   }
 
   &__label {
-    width: 70px; // Fixed width for labels "分类:", "区域:"
+    width: 70px;
     font-size: 14px;
     color: @text-color-secondary;
     flex-shrink: 0;
-    margin-right: @spacing-sm; // Space after label
-    display: flex; // For icon alignment in search row
+    margin-right: @spacing-md; // Consistent margin after label
+    display: flex;
     align-items: center;
     .anticon-search {
       font-size: 16px;
@@ -194,49 +232,54 @@ defineExpose({ resetFilters });
     flex-grow: 1;
     display: flex;
     flex-wrap: wrap;
-    gap: @spacing-md; // Gap between option tags
+    gap: @spacing-sm @spacing-md; // row-gap column-gap
     align-items: center;
+
+    &.search-input-container { // Specific for the search input's option area
+      gap: @spacing-sm; // Reduce gap if there's a search button next to input
+    }
   }
 
   .filter-option {
     cursor: pointer;
-    padding: 3px 12px; // Adjust padding for a less "taggy" look if desired
-    border-radius: @border-radius-sm;
-    background-color: transparent; // No background for options
+    padding: 4px 12px; // Slightly more padding
+    border-radius: @border-radius-base; // Consistent rounding
+    background-color: transparent;
     color: @text-color-base;
     font-size: 14px;
-    border: none; // No border by default
+    border: 1px solid transparent; // Prepare for potential border on active/hover
+    transition: color 0.2s, background-color 0.2s, border-color 0.2s;
 
     &:hover {
       color: @primary-color;
+      // background-color: fade(@primary-color, 5%); // Optional subtle hover background
     }
     &--active {
       color: @primary-color;
       font-weight: 500;
+      background-color: fade(@primary-color, 10%); // Light background for active
+      border-color: fade(@primary-color, 30%); // Subtle border for active
     }
   }
 
   &__more {
-    margin-left: auto; // Pushes "更多" to the far right
-    padding-left: @spacing-md; // Space before "更多"
+    margin-left: auto;
+    padding-left: @spacing-md;
     flex-shrink: 0;
 
-    .more-options-collapse { // The AntD collapse component itself
-        background: transparent;
-        border: none;
-        :deep(.ant-collapse-item) {
-            border-bottom: none !important;
-        }
-        :deep(.ant-collapse-header) { // The clickable header area
-            padding: 0 !important;
-            line-height: normal;
-            // display: flex; // This is important for custom expandIcon
-            // align-items: center;
-        }
-        // Hide the actual panel content for the trigger row
-        :deep(.ant-collapse-content) {
-            display: none;
-        }
+    .more-options-collapse {
+      background: transparent;
+      border: none;
+      :deep(.ant-collapse-item) {
+        border-bottom: none !important;
+      }
+      :deep(.ant-collapse-header) {
+        padding: 0 !important;
+        line-height: normal;
+      }
+      :deep(.ant-collapse-content) { // Hide default panel content, we render it separately
+        display: none;
+      }
     }
 
     .more-trigger {
@@ -261,49 +304,60 @@ defineExpose({ resetFilters });
 }
 
 .expanded-options-panel {
-  display: flex; // Aligns with filter-row structure
-  align-items: flex-start;
-  padding: @spacing-sm 0 @spacing-md 0; // Padding for the expanded area
-  background-color: #fdfdfd; // Slightly different background for expanded area
+  display: flex;
+  padding: @spacing-sm 0 @spacing-md 0;
+  // background-color: #fdfdfd; // Optional different bg
   border-bottom: 1px dotted @border-color-light;
-  margin-left: 70px + @spacing-sm; // Indent to align with options area (label width + margin)
-  padding-left: @spacing-md; // Internal padding for the content
-  border-left: 1px dotted @border-color-light; // Optional left border for indent visual
-  border-right: 1px dotted @border-color-light; // Optional right border
-
+  // Indentation should match the label width + its margin from the .filter-row__options
+  // This creates the visual effect of options appearing under the main row.
+  // The empty label div within helps achieve this.
   .expanded-options-content {
     flex-grow: 1;
     display: flex;
     flex-wrap: wrap;
-    gap: @spacing-md;
+    gap: @spacing-sm @spacing-md;
     align-items: center;
+    padding-left: @spacing-md; // Indent the actual options slightly more if desired
     // .filter-option styles are inherited
   }
 }
 
-
 .keyword-search-input {
   width: 100%;
-  border-radius: @border-radius-sm;
-  background-color: #f5f5f5; // Light gray background for search input area
-  border: none; // Remove default border
-  padding: @spacing-sm @spacing-md; // Internal padding
+  border-radius: @border-radius-base;
+  background-color: #f5f5f5;
+  border: 1px solid transparent; // Start transparent
   font-size: 14px;
   box-shadow: none;
+  transition: border-color 0.3s, background-color 0.3s;
+
+  &:hover {
+    border-color: darken(@border-color-light, 10%);
+  }
+  &:focus, :deep(&.ant-input-affix-wrapper-focused) { // Target wrapper for focus styles
+    background-color: @background-color-base;
+    border-color: @primary-color;
+    box-shadow: 0 0 0 2px fade(@primary-color, 20%);
+  }
 
   :deep(input.ant-input) {
-    background-color: transparent; // Make AntD input transparent
-    border: none;
+    background-color: transparent !important; // Ensure AntD input itself is transparent
+    border: none !important;
     box-shadow: none !important;
-    padding-left: 0; // Remove AntD's internal padding if icon is handled by label
-    &:focus {
-        border: none;
-        box-shadow: none;
-    }
+    padding-left: @spacing-sm; // Space for text if no prefix icon
+    height: 34px; // Consistent height
+    line-height: 34px;
+  }
+  :deep(.ant-input-prefix) { // Style if using prefix icon within a-input
+    margin-right: @spacing-xs;
+  }
+  :deep(.ant-input-clear-icon) {
+    font-size: 14px; // Make clear icon a bit bigger
   }
 }
 
-// .search-action-button {
-//   margin-left: @spacing-sm;
+// .search-action-button { // If you add a search button
+//   height: 36px; // Match input height
+//   line-height: 34px;
 // }
 </style>
