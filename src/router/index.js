@@ -5,6 +5,8 @@ import homeRoutes from '@/features/home/routes';
 import authRoutes from '@/features/auth/routes'; // <-- Import
 import demandSquareRoutes from '@/features/demand_square/routes'; // Import new routes
 import industryDynamicsRoutes from '@/features/industryDynamics/routes'; // <-- Import
+import userCenterRoutes from '@/features/user_center/routes';
+
 import { useAuthStore } from '@/store/authStore'; // Import for navigation guard
 
 const routes = [
@@ -18,6 +20,7 @@ const routes = [
       // ... other feature routes that use DefaultLayout
     ],
   },
+  ...userCenterRoutes, 
   ...authRoutes, // <-- Add auth routes (they don't use DefaultLayout)
   {
     path: '/:pathMatch(.*)*',
@@ -45,14 +48,15 @@ router.beforeEach((to, from, next) => {
   } else {
     document.title = '爱芯享信息共享平台'; // Default title
   }
-
-  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    next({ name: 'Login', query: { redirect: to.fullPath } });
-  } else if (to.meta.guestOnly && authStore.isAuthenticated) {
-    next({ name: 'Home' }); // Or dashboard if they are admin/member
-  } else {
     next();
-  }
+
+  // if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+  //   next({ name: 'Login', query: { redirect: to.fullPath } });
+  // } else if (to.meta.guestOnly && authStore.isAuthenticated) {
+  //   next({ name: 'Home' }); // Or dashboard if they are admin/member
+  // } else {
+  //   next();
+  // }
 });
 
 export default router;

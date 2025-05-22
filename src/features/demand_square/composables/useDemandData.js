@@ -94,6 +94,19 @@ export function useDemandData(demandTypeKey) {
           maxCapacity: 100 + Math.floor(Math.random() * (limit > 10 ? 50 : 100)),
         });
       }
+      else if (typeKey === 'myAlternativeSourcing') { // Key for user's own demands
+          allMockDataForType.push({
+              ...baseItem,
+              id: `my-alt-${uniqueId}`,
+              demandTitle: `${searchTerm || 'LETH 675-092 T091 Parts寻源'} - 用户发布 ${uniqueId}`,
+              sourcingCategory: (filters.category || ['Pump', 'MFC', 'Sensor', 'Valve'])[(uniqueId % 4)],
+              sourcingStatus: (filters.sourcingStatus || ['pending', 'sourcing', 'found', 'closed'])[(uniqueId % 4)],
+              deadlineDate: `2024-1${Math.floor(uniqueId % 3)}-${String(Math.floor(uniqueId % 28) + 1).padStart(2, '0')}`,
+              publishDate: `2024-0${Math.floor(uniqueId % 9) + 1}-${String(Math.floor(uniqueId % 28) + 1).padStart(2, '0')}`,
+              processNumber: `A0009234${uniqueId % 100}`,
+              // Add other fields if your table or detail page needs them
+          });
+      }
     }
 
     // Simulate Server-Side Filtering (basic examples)
