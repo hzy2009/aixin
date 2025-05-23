@@ -1,5 +1,6 @@
 import UserCenterLayout from '../layouts/UserCenterLayout.vue';
 const MyAlternativeSourcingPage = () => import('../views/demands/MyAlternativeSourcingPage.vue');
+const DemandDetailPage = () => import('../views/demands/DemandDetailPage.vue');
 // ... other demand related imports
 
 export const demandsRoutes = {
@@ -11,6 +12,12 @@ export const demandsRoutes = {
       path: 'alternative-sourcing',
       name: 'UserMyAlternativeSourcing',
       component: MyAlternativeSourcingPage,
+      meta: { title: '国产替代寻源 - 用户中心', breadcrumb: ['国产替代寻源'] } // Appends to base
+    },
+    {
+      path: 'DemandPage/:id',
+      name: 'DemandDetailPage',
+      component: DemandDetailPage,
       meta: { title: '国产替代寻源 - 用户中心', breadcrumb: ['国产替代寻源'] } // Appends to base
     },
     // {
