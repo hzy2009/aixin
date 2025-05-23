@@ -44,17 +44,12 @@ const menuItems = computed(() => [
     ],
   },
   {
-    key: 'demandsParent',
+    key: 'userDemands', // Parent key
     label: '需求广场',
-    icon: () => h(AppstoreOutlined),
+    icon: () => h(AppstoreOutlined), // Or relevant icon
     children: [
       { key: 'UserMyAlternativeSourcing', label: '国产替代寻源', path: '/user/demands/alternative-sourcing' },
-      { key: 'UserMyOriginalSourcing', label: '原厂件寻源', path: '/user/demands/original-sourcing' },
-      // { key: 'UserMyRnd', label: '研发攻关', path: '/user/demands/rnd' },
-      // { key: 'UserMyTesting', label: '检测验证', path: '/user/demands/testing' },
-      // { key: 'UserMyReportsPublished', label: '行业报告', path: '/user/demands/reports' }, // Or under 'My Publications'
-      // { key: 'UserMyEventsPublished', label: '线下活动', path: '/user/demands/events' }, // Or under 'My Publications'
-      // { key: 'UserMyTalentRequests', label: '行业人才', path: '/user/demands/talent' },
+      // ... other demand types like 'UserMyOriginalSourcing'
     ],
   },
   {

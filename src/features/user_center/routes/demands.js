@@ -1,25 +1,24 @@
 import UserCenterLayout from '../layouts/UserCenterLayout.vue';
 const MyAlternativeSourcingPage = () => import('../views/demands/MyAlternativeSourcingPage.vue');
-// const MyOriginalSourcingPage = () => import('../views/demands/MyOriginalSourcingPage.vue');
-// ... import other demand type pages
+// ... other demand related imports
 
 export const demandsRoutes = {
-  path: 'demands', // Base: /user/demands
+  path: 'demands', // Parent path for this group
   component: UserCenterLayout,
-  redirect: '/user/demands/alternative-sourcing',
+  meta: { breadcrumbBase: ['会员中心', '需求广场'] }, // Base for breadcrumbs in this group
   children: [
     {
-      path: 'alternative-sourcing', // /user/demands/alternative-sourcing
+      path: 'alternative-sourcing',
       name: 'UserMyAlternativeSourcing',
       component: MyAlternativeSourcingPage,
-      meta: { title: '国产替代寻源', breadcrumb: ['会员中心', '需求广场', '国产替代寻源'] }
+      meta: { title: '国产替代寻源 - 用户中心', breadcrumb: ['国产替代寻源'] } // Appends to base
     },
     // {
-    //   path: 'original-sourcing', // /user/demands/original-sourcing
+    //   path: 'original-sourcing',
     //   name: 'UserMyOriginalSourcing',
-    //   component: MyOriginalSourcingPage,
-    //   meta: { title: '原厂件寻源', breadcrumb: ['会员中心', '需求广场', '原厂件寻源'] }
+    //   component: () => import('../views/demands/MyOriginalSourcingPage.vue'),
+    //   meta: { title: '原厂件寻源 - 用户中心', breadcrumb: ['原厂件寻源'] }
     // },
-    // Add R&D, Testing etc. here
+    // ... other demand types
   ]
 };

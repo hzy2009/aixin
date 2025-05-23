@@ -6,12 +6,12 @@
         <UserCenterSidebar />
       </aside>
       <main class="user-center-page-content">
-        <a-breadcrumb v-if="breadcrumbs.length" class="page-breadcrumb">
-          <a-breadcrumb-item v-for="(crumb, index) in breadcrumbs" :key="index">
-            <router-link v-if="crumb.path" :to="crumb.path">{{ crumb.name }}</router-link>
-            <span v-else>{{ crumb.name }}</span>
-          </a-breadcrumb-item>
-        </a-breadcrumb>
+       <a-breadcrumb v-if="breadcrumbs.length" class="page-breadcrumb">
+        <a-breadcrumb-item v-for="(crumb, index) in breadcrumbs" :key="index">
+          <router-link v-if="crumb.path" :to="crumb.path">{{ crumb.name }}</router-link>
+          <span v-else>{{ crumb.name }}</span>
+        </a-breadcrumb-item>
+      </a-breadcrumb>
         <div class="content-area">
           <router-view v-slot="{ Component }">
             <transition name="fade" mode="out-in">
@@ -35,13 +35,15 @@ import { Breadcrumb as ABreadcrumb, BreadcrumbItem as ABreadcrumbItem } from 'an
 
 const route = useRoute();
 
-// Generate breadcrumbs from route meta
 const breadcrumbs = computed(() => {
-  const matchedBreadcrumbs = route.meta.breadcrumb;
-  if (Array.isArray(matchedBreadcrumbs)) {
-    return matchedBreadcrumbs.map((name, index) => {
-      // For simplicity, only the last breadcrumb is non-linkable here
-      // You might want to make intermediate ones linkable based on route structure
+  const matchedBreadcrumbs = route.meta.breadcrumb; // This is an array of strings
+  const base = route.meta.breadcrumbBase || []; // New: base breadcrumb from parent route
+  const combined = [...base, ...matchedBreadcrumbs];
+
+  if (Array.isArray(combined) && combined.length > 0) {
+    return combined.map((name, index) => {
+      // A more robust breadcrumb might involve actual paths for intermediate items
+      // For now, just names
       return { name };
     });
   }
