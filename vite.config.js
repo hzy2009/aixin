@@ -26,4 +26,14 @@ export default defineConfig({
       },
     },
   },
+  server: {
+    proxy: {
+      '/jeecgboot': {
+        target: 'http://47.115.47.114:8080/jeecg-boot/',
+        ws: false,
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/jeecgboot/, '') // 关键：移除前端请求中的 /jeecgboot 前缀
+      },
+    },
+  },
 });

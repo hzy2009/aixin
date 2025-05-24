@@ -1,9 +1,10 @@
 // src/store/authStore.js
 import { defineStore } from 'pinia';
+import { loginApi, getUserInfo } from '@/api/user.js';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    user: null,
+    userInfo: null,
     token: null,
   }),
   getters: {
@@ -13,14 +14,25 @@ export const useAuthStore = defineStore('auth', {
     isAdmin: (state) => state.user && state.user.role === 'admin',
   },
   actions: {
-    login(userData, token) {
-      this.user = userData;
-      this.token = token;
+    async login(params) {
+      const data = await loginApi(params);
+      const { result: { userInfo, token } } = data;
+      this.setToken(token);
+      this.setUserInof(userInfo);
+      return data;
     },
     logout() {
       this.user = null;
       this.token = null;
       // Optionally, clear other stores or redirect
+    },
+    setToken(info) {
+      this.token = info ? info : ''; // for null or undefined value
+      // setAuthCache(TOKEN_KEY, info);
+    },
+     setUserInof(info) {
+      this.userInfo = info ? info : ''; // for null or undefined value
+      // setAuthCache(TOKEN_KEY, info);
     },
     // You'll add async actions for API calls here
     // async fetchUser() { ... }

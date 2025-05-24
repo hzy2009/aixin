@@ -17,24 +17,16 @@
     </div>
 
     <!-- 2. New Filter Accordion -->
-    <UserFilterAccordion
-      :filter-groups="filterConfigForPage"
-      :initial-filters="currentFilters"
-      @filters-changed="handleAccordionFiltersChange"
-      class="filter-accordion-section"
-      ref="userFilterAccordionRef"
-    />
+    <UserFilterAccordion :filter-groups="filterConfigForPage" :initial-filters="currentFilters"
+      @filters-changed="handleAccordionFiltersChange" class="filter-accordion-section" ref="userFilterAccordionRef" />
 
     <!-- 3. Search and Action Bar -->
     <div class="search-action-bar">
       <div class="search-input-wrapper">
-        <a-input
-          v-model:value="currentSearchTerm"
-          placeholder="请输入关键字"
-          allow-clear
-          @pressEnter="triggerSearch"
-        >
-          <template #prefix> <SearchOutlined /> </template>
+        <a-input v-model:value="currentSearchTerm" placeholder="请输入关键字" allow-clear @pressEnter="triggerSearch">
+          <template #prefix>
+            <SearchOutlined />
+          </template>
         </a-input>
         <a-button type="primary" @click="triggerSearch" class="search-btn">搜索</a-button>
       </div>
@@ -45,16 +37,8 @@
 
     <!-- 4. Results Table -->
     <div class="results-table-section">
-      <a-table
-        :columns="tableColumns"
-        :data-source="tableData"
-        :loading="isLoading"
-        :pagination="paginationConfig"
-        row-key="id"
-        @change="handleTableChange"
-        size="middle"
-        class="user-demands-table"
-      >
+      <a-table :columns="tableColumns" :data-source="tableData" :loading="isLoading" :pagination="paginationConfig"
+        row-key="id" @change="handleTableChange" size="middle" class="user-demands-table">
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'sourcingTitle'">
             <a @click="viewDetails(record.id)" class="title-link">{{ record.sourcingTitle }}</a>
@@ -124,7 +108,7 @@ const filterConfigForPage = ref([
       { value: 'found', label: '已寻到' }, { value: 'not_found', label: '未寻到' },
       { value: 'user_recommended', label: '用户推荐' }, { value: 'third_party_match', label: '三方对接' },
       { value: 'verified', label: '验证' }, { value: 'closed', label: '已关闭' },
-      { value: 'inProgress', label: '进行中'}, {value: 'pending', label: '未响应'} // Added from stats bar
+      { value: 'inProgress', label: '进行中' }, { value: 'pending', label: '未响应' } // Added from stats bar
     ]
   }
 ]);
@@ -156,7 +140,7 @@ const pagination = reactive({
     if (type === 'prev') return originalElement;
     if (type === 'next') return originalElement;
     if (type === 'jump-prev' || type === 'jump-next') {
-        return <span class="ant-pagination-item-ellipsis">•••</span>;
+      return <span class="ant-pagination-item-ellipsis">•••</span>;
     }
     return originalElement;
   },
@@ -164,8 +148,9 @@ const pagination = reactive({
 
 const tableColumns = computed(() => [
   { title: '国产替代寻源', dataIndex: 'sourcingTitle', key: 'sourcingTitle', ellipsis: true, width: '30%' },
-  { title: '寻源类型', dataIndex: 'sourcingTypeDisplay', key: 'sourcingType', width: '12%', align: 'center' },
-  { title: '寻源状态', dataIndex: 'sourcingStatus', key: 'sourcingStatus', width: '10%', align: 'center' },
+  { title: '寻源类型', dataIndex: 'sourcingType', key: 'sourcingType', width: '12%', align: 'center' },
+  { title: '寻源件类型', dataIndex: 'reqPartsType', key: 'sourcingStatus', width: '10%', align: 'center' },
+  { title: '状态名称', dataIndex: 'reqPartsType', key: 'sourcingStatus', width: '10%', align: 'center' },
   { title: '截止日期', dataIndex: 'deadlineDate', key: 'deadlineDate', width: '12%', align: 'center' },
   { title: '发布日期', dataIndex: 'publishDate', key: 'publishDate', width: '12%', align: 'center' },
   { title: '流程编号', dataIndex: 'processNumber', key: 'processNumber', width: '12%', ellipsis: true },
@@ -183,7 +168,7 @@ const statusMap = {
   user_recommended: { text: '用户推荐', color: 'purple' },
   third_party_match: { text: '三方对接', color: 'magenta' },
   verified: { text: '验证', color: 'lime' },
-  all: { text: '全部', color: 'default'} // For filter display if needed
+  all: { text: '全部', color: 'default' } // For filter display if needed
 };
 const getStatusColor = (statusKey) => statusMap[statusKey]?.color || 'default';
 
@@ -207,13 +192,13 @@ async function fetchTableData() {
     mockDataPool.push({
       id: `demand-${i}`,
       sourcingTitle: `LETH ${675 - i}-092 T091 Parts寻源标题示例，${currentSearchTerm.value} 关键词 ${i}`,
-      sourcingType: types[i % types.length].toLowerCase().replace('寻源',''),
+      sourcingType: types[i % types.length].toLowerCase().replace('寻源', ''),
       sourcingTypeDisplay: types[i % types.length],
       sourcingStatus: statusKey,
       sourcingStatusDisplay: statusMap[statusKey]?.text || statusKey,
       deadlineDate: `2024/0${(i % 5) + 4}/${(i % 20) + 10}`,
       publishDate: `2024/0${(i % 5) + 3}/${(i % 20) + 10}`,
-      processNumber: `A0009234${String(i % 7 + 1).padStart(2,'0')}`,
+      processNumber: `A0009234${String(i % 7 + 1).padStart(2, '0')}`,
     });
   }
 
@@ -288,23 +273,27 @@ onMounted(() => {
     display: flex;
     align-items: center;
     gap: @spacing-sm;
+
     .ant-input-affix-wrapper {
       width: 280px; // Fixed width for search input
       border-radius: @border-radius-base;
     }
+
     .search-btn {
       // Uses AntD primary button style
       border-radius: @border-radius-base;
     }
   }
+
   .create-new-btn {
-     background-color: @primary-color; // Ensure it's the brand red
-     border-color: @primary-color;
-     border-radius: @border-radius-base;
-     &:hover {
-        background-color: darken(@primary-color, 10%);
-        border-color: darken(@primary-color, 10%);
-     }
+    background-color: @primary-color; // Ensure it's the brand red
+    border-color: @primary-color;
+    border-radius: @border-radius-base;
+
+    &:hover {
+      background-color: darken(@primary-color, 10%);
+      border-color: darken(@primary-color, 10%);
+    }
   }
 }
 
@@ -312,21 +301,25 @@ onMounted(() => {
   .title-link {
     color: @text-color-base; // Default title color
     font-weight: 500;
+
     &:hover {
       color: @primary-color;
       text-decoration: underline;
     }
   }
+
   .status-tag {
-      border-radius: @border-radius-sm; // Small rounded corners
-      padding: 2px 8px;
-      font-size: 12px;
-      border-width: 0px; // No border for these tags as per design
+    border-radius: @border-radius-sm; // Small rounded corners
+    padding: 2px 8px;
+    font-size: 12px;
+    border-width: 0px; // No border for these tags as per design
   }
+
   .action-link {
     padding: 0 @spacing-xs;
+
     .anticon {
-        margin-right: 3px;
+      margin-right: 3px;
     }
   }
 
@@ -336,6 +329,7 @@ onMounted(() => {
     overflow: hidden; // Needed for border-radius to apply to header
     // border: 1px solid @border-color-light;
   }
+
   :deep(.ant-table-thead > tr > th) {
     background-color: #fafafa !important; // Lighter header background
     color: @text-color-base;
@@ -343,49 +337,65 @@ onMounted(() => {
     padding: 12px @spacing-md; // Adjust header padding
     border-bottom: 1px solid @border-color-light; // Stronger line below header
   }
+
   :deep(.ant-table-tbody > tr > td) {
     padding: 12px @spacing-md; // Adjust cell padding
     font-size: 14px;
     color: @text-color-secondary;
     border-bottom: 1px solid @border-color-light; // Lighter cell separator
   }
+
   :deep(.ant-table-tbody > tr:last-child > td) {
     border-bottom: none; // No border on the very last row's cells
   }
+
   :deep(.ant-table-tbody > tr.ant-table-row:hover > td) {
     background-color: #f5f7fa; // Subtle hover for rows
   }
+
   :deep(.ant-pagination) {
     margin-top: @spacing-lg;
     justify-content: flex-end; // Align pagination to the right
   }
-   :deep(.ant-pagination-item-active) {
+
+  :deep(.ant-pagination-item-active) {
     background-color: @primary-color;
     border-color: @primary-color;
+
     a {
-        color: white;
+      color: white;
     }
+
     &:hover {
-        background-color: darken(@primary-color, 10%);
-        border-color: darken(@primary-color, 10%);
-        a { color: white; }
+      background-color: darken(@primary-color, 10%);
+      border-color: darken(@primary-color, 10%);
+
+      a {
+        color: white;
+      }
     }
   }
-  :deep(.ant-pagination-item-link) { // Prev/Next buttons
+
+  :deep(.ant-pagination-item-link) {
+
+    // Prev/Next buttons
     &:not(.ant-pagination-disabled):hover {
-        // color: @primary-color;
-        // border-color: @primary-color;
+      // color: @primary-color;
+      // border-color: @primary-color;
     }
   }
-   :deep(.ant-pagination-options-quick-jumper input) {
-        border-radius: @border-radius-sm;
-        &:hover {
-            border-color: @primary-color;
-        }
-        &:focus {
-            border-color: @primary-color;
-            box-shadow: 0 0 0 2px fade(@primary-color, 20%);
-        }
-   }
+
+  :deep(.ant-pagination-options-quick-jumper input) {
+    border-radius: @border-radius-sm;
+
+    &:hover {
+      border-color: @primary-color;
+    }
+
+    &:focus {
+      border-color: @primary-color;
+      box-shadow: 0 0 0 2px fade(@primary-color, 20%);
+    }
+  }
 }
 </style>

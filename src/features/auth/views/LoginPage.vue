@@ -16,18 +16,9 @@
             <h3 class="form-section-title">用户</h3>
           </div>
 
-          <a-form
-            :model="loginFormState"
-            name="login"
-            class="auth-form"
-            @finish="onLoginFinish"
-            @finishFailed="onFormFinishFailed"
-            layout="vertical"
-          >
-            <a-form-item
-              name="username"
-              :rules="[{ required: true, message: '请输入您的邮箱或账号!' }]"
-            >
+          <a-form :model="loginFormState" name="login" class="auth-form" @finish="onLoginFinish"
+            @finishFailed="onFormFinishFailed" layout="vertical">
+            <a-form-item name="username" :rules="[{ required: true, message: '请输入您的邮箱或账号!' }]">
               <a-input v-model:value="loginFormState.username" placeholder="请输入邮箱或账号">
                 <template #prefix>
                   <UserOutlined class="site-form-item-icon" />
@@ -35,15 +26,26 @@
               </a-input>
             </a-form-item>
 
-            <a-form-item
-              name="password"
-              :rules="[{ required: true, message: '请输入您的密码!' }]"
-            >
+            <a-form-item name="password" :rules="[{ required: true, message: '请输入您的密码!' }]">
               <a-input-password v-model:value="loginFormState.password" placeholder="请输入密码">
                 <template #prefix>
                   <LockOutlined class="site-form-item-icon" />
                 </template>
               </a-input-password>
+            </a-form-item>
+            <a-form-item name="captcha">
+              <a-input v-model:value="loginFormState.captcha" placeholder="请输入验证码">
+                <template #prefix>
+                  <UserOutlined class="site-form-item-icon" />
+                </template>
+
+              </a-input>
+              <div class="captcha-code">
+                <img v-if="randCodeData.requestCodeSuccess" style="margin-top: 2px; max-width: initial"
+                  :src="randCodeData.randCodeImage" @click="handleChangeCheckCode" />
+                <img v-else style="margin-top: 2px; max-width: initial" src="@/assets/images/checkcode.png"
+                  @click="handleChangeCheckCode" />
+              </div>
             </a-form-item>
 
             <a-form-item class="form-options">
@@ -75,18 +77,9 @@
             请输入您要找回的账号，境外用户请输入手机号
           </p>
 
-          <a-form
-            :model="forgotPasswordFormState"
-            name="forgotPassword"
-            class="auth-form"
-            @finish="onForgotPasswordFinish"
-            @finishFailed="onFormFinishFailed"
-            layout="vertical"
-          >
-            <a-form-item
-              name="account"
-              :rules="[{ required: true, message: '请输入账号或手机号!' }]"
-            >
+          <a-form :model="forgotPasswordFormState" name="forgotPassword" class="auth-form"
+            @finish="onForgotPasswordFinish" @finishFailed="onFormFinishFailed" layout="vertical">
+            <a-form-item name="account" :rules="[{ required: true, message: '请输入账号或手机号!' }]">
               <a-input v-model:value="forgotPasswordFormState.account" placeholder="请输入账号或手机号">
                 <template #prefix>
                   <MailOutlined class="site-form-item-icon" />
@@ -104,7 +97,8 @@
             </div>
           </a-form>
           <div class="back-to-login-container">
-            <a @click="switchToLogin" class="interactive-link">< 返回登录</a>
+            <a @click="switchToLogin" class="interactive-link">
+              < 返回登录</a>
           </div>
         </div>
       </div>
@@ -115,7 +109,7 @@
 
 <script setup>
 // Script remains the same as the previous version
-import { reactive, ref } from 'vue';
+import { reactive, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/store/authStore';
 import {
@@ -128,6 +122,7 @@ import {
   message
 } from 'ant-design-vue';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons-vue';
+import { getCodeInfo, loginApi, getUserInfo } from '@/api/user.js';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -139,17 +134,38 @@ const forgotPasswordFormState = reactive({ account: '' });
 
 const switchToForgotPassword = () => { currentView.value = 'forgotPassword'; };
 const switchToLogin = () => { currentView.value = 'login'; };
-
+const randCodeData = reactive({
+  requestCodeSuccess: false,
+  randCodeImage: ''
+});
+const getCaptchaCode = async () => {
+  try {
+    randCodeData.checkKey = new Date().getTime() + Math.random().toString(36).slice(-4); // 1629428467008;
+    getCodeInfo(randCodeData.checkKey).then((res) => {
+      randCodeData.randCodeImage = res.result;
+      randCodeData.requestCodeSuccess = true;
+    });
+  } catch (error) {
+    message.error('验证码获取失败，请重试。');
+  }
+};
 const onLoginFinish = async values => {
   loginLoading.value = true;
   try {
-    console.log('Simulating login with:', values);
-    const dummyUser = { id: Date.now(), name: values.username, role: 'member' };
-    const dummyToken = 'fake-jwt-token-' + Date.now();
-    authStore.login(dummyUser, dummyToken);
+    // console.log('Simulating login with:', values);
+    // const dummyUser = { id: Date.now(), name: values.username, role: 'member' };
+    // const dummyToken = 'fake-jwt-token-' + Date.now();
+    let data = {
+      username: values.username,
+      password: values.password,
+      checkKey: randCodeData.checkKey,
+      captcha: values.captcha
+    };
+    await authStore.login(data);
+
     message.success('登录成功!');
-    const redirectPath = router.currentRoute.value.query.redirect || '/';
-    router.push(redirectPath);
+    // const redirectPath = router.currentRoute.value.query.redirect || '/';
+    router.push('/user/demands/alternative-sourcing');
   } catch (error) {
     message.error(error?.response?.data?.message || error?.message || '登录失败!');
   } finally {
@@ -171,6 +187,17 @@ const onForgotPasswordFinish = async values => {
 const onFormFinishFailed = errorInfo => { console.log('Form submission failed:', errorInfo); };
 const navigateToRegister = () => { router.push('/register'); };
 const contactSupport = () => { message.info('联系人工客服功能暂未实现。'); };
+
+const handleChangeCheckCode = () => {
+  randCodeData.requestCodeSuccess = false;
+  getCaptchaCode();
+};
+
+onMounted(() => {
+  getCaptchaCode()
+});
+
+
 </script>
 
 <style scoped lang="less">
@@ -200,13 +227,15 @@ const contactSupport = () => { message.info('联系人工客服功能暂未实�
   overflow: hidden; // Prevent scrollbars if pseudo-elements are large
 
   // Circuit Background Images - Adjusted for better screen coverage and subtlety
-  &::before, &::after {
+  &::before,
+  &::after {
     content: '';
     position: absolute;
     background-repeat: no-repeat;
     pointer-events: none;
     z-index: 0;
   }
+
   // Left image
   &::before {
     background-image: url('@/assets/images/auth/circuit-bg-left.png');
@@ -216,8 +245,9 @@ const contactSupport = () => { message.info('联系人工客服功能暂未实�
     width: 38vw; // Use viewport units for better coverage
     height: 70vh;
     background-size: cover; // Cover the area, may crop if aspect ratio differs
-                           // Or 'contain' if you want the whole image visible but possibly smaller
+    // Or 'contain' if you want the whole image visible but possibly smaller
   }
+
   // Right image
   &::after {
     background-image: url('@/assets/images/auth/circuit-bg-right.png');
@@ -251,6 +281,7 @@ const contactSupport = () => { message.info('联系人工客服功能暂未实�
     width: @header-logo-width; // Using auto for aspect ratio
     margin-right: 10px; // Slightly reduced margin
   }
+
   .site-name {
     font-size: @header-sitename-font-size;
     font-weight: 600;
@@ -296,7 +327,7 @@ const contactSupport = () => { message.info('联系人工客服功能暂未实�
   font-weight: 500;
   color: @text-color-base;
   display: inline-block;
-  margin:0;
+  margin: 0;
   position: relative;
 
   &::after {
@@ -327,12 +358,24 @@ const contactSupport = () => { message.info('联系人工客服功能暂未实�
   :deep(.ant-input-affix-wrapper) {
     border-radius: @border-radius-sm;
     height: @login-input-height;
-    .ant-input { height: 100%; font-size: 14px; }
-    .site-form-item-icon { color: #BFBFBF; font-size: 16px; }
+
+    .ant-input {
+      height: 100%;
+      font-size: 14px;
+    }
+
+    .site-form-item-icon {
+      color: #BFBFBF;
+      font-size: 16px;
+    }
   }
+
   :deep(.ant-input-password) {
     height: @login-input-height;
-    .ant-input { height: 100%; }
+
+    .ant-input {
+      height: 100%;
+    }
   }
 
   .form-options {
@@ -340,13 +383,16 @@ const contactSupport = () => { message.info('联系人工客服功能暂未实�
     justify-content: space-between;
     align-items: center;
     margin-bottom: 25px; // Adjusted
+
     .ant-checkbox-wrapper {
       font-size: 14px;
       color: @text-color-secondary;
+
       :deep(.ant-checkbox-checked .ant-checkbox-inner) {
         background-color: @primary-color;
         border-color: @primary-color;
       }
+
       :deep(.ant-checkbox-wrapper:hover .ant-checkbox-inner),
       :deep(.ant-checkbox:hover .ant-checkbox-inner),
       :deep(.ant-checkbox-input:focus + .ant-checkbox-inner) {
@@ -359,6 +405,7 @@ const contactSupport = () => { message.info('联系人工客服功能暂未实�
     font-size: 14px;
     color: @text-color-secondary;
     cursor: pointer;
+
     &:hover {
       color: @primary-color;
       text-decoration: underline;
@@ -376,7 +423,8 @@ const contactSupport = () => { message.info('联系人工客服功能暂未实�
     display: block;
     margin: 0 auto;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       background-color: darken(@primary-color, 5%);
       border-color: darken(@primary-color, 5%);
     }
@@ -393,7 +441,8 @@ const contactSupport = () => { message.info('联系人工客服功能暂未实�
     display: block;
     margin: @spacing-sm auto 0 auto;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       color: darken(@primary-color, 5%);
       border-color: darken(@primary-color, 5%);
       background-color: lighten(@primary-color, 45%);
@@ -407,9 +456,18 @@ const contactSupport = () => { message.info('联系人工客服功能暂未实�
     text-align: center;
   }
 }
+
 .back-to-login-container {
-    margin-top: @spacing-lg; // Adjusted
-    text-align: center;
-    padding-top: 0;
+  margin-top: @spacing-lg; // Adjusted
+  text-align: center;
+  padding-top: 0;
+}
+
+.captcha-code {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  cursor: pointer;
+  z-index: 1;
 }
 </style>
