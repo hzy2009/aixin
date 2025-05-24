@@ -1,13 +1,7 @@
 <template>
   <div class="user-center-sidebar">
-    <a-menu
-      v-model:openKeys="openKeys"
-      v-model:selectedKeys="selectedKeys"
-      mode="inline"
-      :theme="sidebarTheme"
-      :items="menuItems"
-      @click="handleMenuClick"
-    />
+    <a-menu v-model:openKeys="openKeys" v-model:selectedKeys="selectedKeys" mode="inline" :theme="sidebarTheme"
+      :items="menuItems" @click="handleMenuClick" />
   </div>
 </template>
 
@@ -48,7 +42,8 @@ const menuItems = computed(() => [
     label: '需求广场',
     icon: () => h(AppstoreOutlined), // Or relevant icon
     children: [
-      { key: 'UserMyAlternativeSourcing', label: '国产替代寻源', path: '/user/demands/alternative-sourcing' },
+      { key: 'DomesticSourcing', label: '国产替代寻源', path: '/user/demands/DomesticSourcing' },
+      { key: 'OEMPartsSourcing', label: '原厂件寻源', path: '/user/demands/OEMPartsSourcing' },
       // ... other demand types like 'UserMyOriginalSourcing'
     ],
   },
@@ -96,7 +91,7 @@ watch(
         // If the parent is not already open, open it.
         // This avoids closing other open submenus unnecessarily if you want multiple open.
         if (!openKeys.value.includes(parentKey)) {
-            openKeys.value = [...openKeys.value, parentKey];
+          openKeys.value = [...openKeys.value, parentKey];
         }
       } else {
         // If it's a top-level item, you might want to close all submenus,
@@ -123,7 +118,7 @@ const handleMenuClick = ({ key, item }) => {
   // `key` is the route name if path is not explicitly defined
   const targetPath = item.props?.path || router.hasRoute(key) ? { name: key } : key;
 
-  if (targetPath && ( (typeof targetPath === 'string' && targetPath !== route.path) || (typeof targetPath === 'object' && targetPath.name !== route.name) ) ) {
+  if (targetPath && ((typeof targetPath === 'string' && targetPath !== route.path) || (typeof targetPath === 'object' && targetPath.name !== route.name))) {
     router.push(targetPath);
   }
 };
@@ -134,13 +129,17 @@ const handleMenuClick = ({ key, item }) => {
 
 .user-center-sidebar {
   height: 100%;
+
   :deep(.ant-menu) {
     height: 100%;
     border-right: none !important;
   }
-  :deep(.ant-menu-item), :deep(.ant-menu-submenu-title) {
+
+  :deep(.ant-menu-item),
+  :deep(.ant-menu-submenu-title) {
     font-size: 14px;
   }
+
   // Optional: if you want a very specific selected style
   :deep(.ant-menu-light .ant-menu-item-selected) {
     // background-color: fade(@primary-color, 8%) !important;
@@ -149,6 +148,7 @@ const handleMenuClick = ({ key, item }) => {
     //   border-right-color: @primary-color !important;
     // }
   }
+
   :deep(.ant-menu-light .ant-menu-submenu-selected > .ant-menu-submenu-title) {
     // color: @primary-color !important;
   }

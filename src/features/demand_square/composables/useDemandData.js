@@ -14,7 +14,7 @@ export function useDemandData(demandTypeKey) {
     pageSize: 9, // Default page size, can be overridden by parent component
   });
   const currentFilters = ref({});
-  const currentSearchTerm = ref('');
+  const keyWord = ref('');
 
   // --- Mock API Call ---
   // TODO: Replace this entire function with actual API calls using an Axios instance.
@@ -33,7 +33,7 @@ export function useDemandData(demandTypeKey) {
         views: Math.floor(Math.random() * 200) + 10,
       };
 
-      if (typeKey === 'alternativeSourcing') {
+      if (typeKey === 'domestic') {
         allMockDataForType.push({
           ...baseItem,
           category: (['Pump', 'Sensor', 'Valve', 'MFC', 'Motor'])[uniqueId % 5],
@@ -155,7 +155,7 @@ export function useDemandData(demandTypeKey) {
     try {
       // TODO: When connecting to real API, you'll construct the endpoint:
       // const endpoint = `${API_BASE_URL}/${demandTypeKey}/list`;
-      // const params = { ...currentFilters.value, search: currentSearchTerm.value, page: pagination.currentPage, limit: pagination.pageSize };
+      // const params = { ...currentFilters.value, search: keyWord.value, page: pagination.currentPage, limit: pagination.pageSize };
       // const response = await axios.get(endpoint, { params });
       // items.value = response.data.items;
       // totalItems.value = response.data.total;
@@ -163,7 +163,7 @@ export function useDemandData(demandTypeKey) {
       const response = await fetchItemsAPI(
         demandTypeKey,
         currentFilters.value,
-        currentSearchTerm.value,
+        keyWord.value,
         pagination.currentPage,
         pagination.pageSize
       );
@@ -182,7 +182,7 @@ export function useDemandData(demandTypeKey) {
 
   const updateFiltersAndSearch = (newFilters, newSearchTerm) => {
     currentFilters.value = { ...newFilters };
-    currentSearchTerm.value = newSearchTerm || ''; // Ensure searchTerm is always a string
+    keyWord.value = newSearchTerm || ''; // Ensure searchTerm is always a string
     pagination.currentPage = 1; // Reset to first page on any filter/search change
     loadItems();
   };
@@ -190,7 +190,7 @@ export function useDemandData(demandTypeKey) {
   // This function might be redundant if updateFiltersAndSearch covers it,
   // but can be kept if you want a specific "only search term changed" trigger.
   const updateSearchTerm = (newSearchTerm) => {
-    currentSearchTerm.value = newSearchTerm || '';
+    keyWord.value = newSearchTerm || '';
     pagination.currentPage = 1;
     loadItems();
   }
@@ -207,7 +207,7 @@ export function useDemandData(demandTypeKey) {
     // totalItems.value = 0; // loadItems will replace this
     pagination.currentPage = 1;
     // currentFilters.value = {}; // Let parent component manage initial filters on tab change
-    // currentSearchTerm.value = ''; // Let parent component manage initial search on tab change
+    // keyWord.value = ''; // Let parent component manage initial search on tab change
     // Note: loadItems() is usually called by the parent component after reset and re-initialization
   };
 
@@ -217,7 +217,7 @@ export function useDemandData(demandTypeKey) {
     totalItems,
     pagination,     // Expose the reactive pagination object
     currentFilters, // Expose for parent to set initial state if needed
-    currentSearchTerm, // Expose for parent to set initial state if needed
+    keyWord, // Expose for parent to set initial state if needed
     loadItems,
     updateFiltersAndSearch,
     updateSearchTerm,

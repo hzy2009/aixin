@@ -6,16 +6,16 @@ import { message } from 'ant-design-vue';
 import { useAuthStore } from '@/store/authStore';
 import { useRouter } from 'vue-router'; // 用于新建成功后跳转
 
-export function useDemandDetail(demandIdProp, modeProp, demandTypeProp) { // 接收 props
+export function useDemandDetail({demandIdProp, mode, demandTypeProp}) { // 接收 props
   const demandDetail = ref(null);
   const isLoading = ref(false);
   const error = ref(null);
   const authStore = useAuthStore();
   const router = useRouter();
 
-  const operationMode = ref(modeProp || (demandIdProp ? 'view' : 'create')); // 'create', 'view'
+  const operationMode = ref(mode || (demandIdProp ? 'view' : 'create')); // 'create', 'view'
   const internalDemandId = ref(demandIdProp); // 用于内部追踪ID
-  const demandType = ref(demandTypeProp || 'alternativeSourcing'); // 默认为国产替代
+  const demandType = ref(demandTypeProp); // 默认为国产替代
 
   // --- 权限计算 ---
   const canEditThisDemand = computed(() => {
@@ -40,13 +40,9 @@ export function useDemandDetail(demandIdProp, modeProp, demandTypeProp) { // 接
     if (operationMode.value === 'create' || !internalDemandId.value) {
       // 新建模式或没有ID，初始化空/默认表单数据
       demandDetail.value = {
-        // TODO: 根据 demandType 设置合理的默认值
-        sourcingType: demandType.value === 'alternativeSourcing' ? 'pump' : (demandType.value === 'originalSourcing' ? 'mcu' : ''),
-        validUntil: null,
-        status: 'published', // 默认状态
+        sourcingType: demandType == 'domestic' ? '国产替代寻源' : '原厂件寻源',
+        // status: 'published', // 默认状态
         remarks: '',
-        creatorId: authStore.user?.id, // 预填创建者
-        creatorName: authStore.user?.name,
         // ... 其他类型可能需要的默认字段 ...
       };
       isLoading.value = false;
@@ -58,8 +54,8 @@ export function useDemandDetail(demandIdProp, modeProp, demandTypeProp) { // 接
     try {
       // 实际API: GET apm/apmSourcing/queryById
       const response = await getDemandById({ id: internalDemandId.value } );
-      if (response.data && response.data.success) { // 假设API返回结构 { success: true, data: {...} }
-        demandDetail.value = response.data.data;
+      if (response.success) {
+        demandDetail.value = response.result;
       } else {
         throw new Error(response.data.message || '获取需求详情失败');
       }
@@ -83,7 +79,6 @@ export function useDemandDetail(demandIdProp, modeProp, demandTypeProp) { // 接
     let response;
     try {
       const payload = { ...formData }; // 可以根据需要调整 payload 结构
-      // TODO: 确保 formData 包含所有后端需要的字段，包括 demandType 等
 
       if (operationMode.value === 'create') {
         // 实际API: POST apm/apmSourcing/add
@@ -131,7 +126,7 @@ export function useDemandDetail(demandIdProp, modeProp, demandTypeProp) { // 接
   // async function fetchDemandList(params) { /* ... apiClient.get('apm/apmSourcing/list', { params }) ... */ }
 
   onMounted(() => {
-    fetchDemandDetail(); // 会根据 operationMode 判断是加载还是设置默认值
+      fetchDemandDetail(); // 会根据 operationMode 判断是加载还是设置默认值
   });
 
   return {

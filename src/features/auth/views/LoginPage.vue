@@ -165,7 +165,7 @@ const onLoginFinish = async values => {
 
     message.success('登录成功!');
     // const redirectPath = router.currentRoute.value.query.redirect || '/';
-    router.push('/user/demands/alternative-sourcing');
+    router.push('/user/demands/DomesticSourcing');
   } catch (error) {
     message.error(error?.response?.data?.message || error?.message || '登录失败!');
   } finally {

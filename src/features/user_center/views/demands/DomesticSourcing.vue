@@ -1,5 +1,5 @@
 <template>
-  <div class="my-alternative-sourcing-page">
+  <div class="list-page">
     <!-- 1. Stats Bar -->
     <div class="stats-bar">
       <UserStatCard label="未响应" :value="stats.pendingResponse || 0">
@@ -23,7 +23,7 @@
     <!-- 3. Search and Action Bar -->
     <div class="search-action-bar">
       <div class="search-input-wrapper">
-        <a-input v-model:value="currentSearchTerm.value" placeholder="请输入关键字" allow-clear @pressEnter="triggerSearch">
+        <a-input v-model:value="keyWord.value" placeholder="请输入关键字" allow-clear @pressEnter="triggerSearch">
           <template #prefix>
             <SearchOutlined />
           </template>
@@ -37,16 +37,15 @@
 
     <!-- 4. Results Table -->
     <div class="results-table-section">
-      <a-table :columns="tableColumns" :data-source="tableData.value" :loading="isLoading.value"
-        :pagination="paginationConfig" row-key="id" @change="handleTablePaginationChange" size="middle"
-        class="user-demands-table">
+      <a-table :columns="tableColumns" :dataSource="tableData" :loading="isLoading" :pagination="paginationConfig"
+        row-key="id" @change="handleTablePaginationChange" size="middle" class="user-demands-table">
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'sourcingTitle'">
             <a @click="viewDetails(record.id)" class="title-link">{{ record.sourcingTitle }}</a>
           </template>
-          <template v-else-if="column.key === 'sourcingStatusDisplay'">
+          <template v-else-if="column.key === 'statusCode'">
             <a-tag :color="getStatusTagColor(record.sourcingStatus)" class="status-tag">
-              {{ record.sourcingStatusDisplay }}
+              {{ record.statusCode }}
             </a-tag>
           </template>
           <template v-else-if="column.key === 'actions'">
@@ -84,7 +83,7 @@ const filterConfigForPage = ref([
 const {
   stats,
   currentFilters,       // Ref from hook
-  currentSearchTerm,    // Ref from hook
+  keyWord,    // Ref from hook
   isLoading,            // Ref from hook
   tableData,            // Ref from hook
   pagination,           // Reactive object from hook
@@ -92,15 +91,15 @@ const {
   triggerSearch,        // Method from hook
   handleTablePaginationChange, // Method from hook
   getStatusTagColor     // Method from hook
-} = useUserDemandList('alternativeSourcing'); // Pass the specific type for this page
+} = useUserDemandList('国产替代寻源'); // Pass the specific type for this page
 
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = computed(() => [
-  { title: '国产替代寻源', dataIndex: 'sourcingTitle', key: 'sourcingTitle', ellipsis: true, width: '30%' },
+  { title: '国产替代寻源', dataIndex: 'sourcingTitle', key: 'sourcingTitle', ellipsis: true, },
   { title: '寻源类型', dataIndex: 'sourcingType', key: 'sourcingType', width: '12%', align: 'center' }, // This should be 'sourcingType' from mock
-  { title: '寻源件类型', dataIndex: 'reqPartsType', key: 'reqPartsType', width: '10%', align: 'center' }, // Corrected key
-  { title: '状态名称', dataIndex: 'sourcingStatusDisplay', key: 'sourcingStatusDisplay', width: '10%', align: 'center' }, // Key matches display field
-  { title: '截止日期', dataIndex: 'deadlineDate', key: 'deadlineDate', width: '12%', align: 'center' },
+  { title: '寻源件类型', dataIndex: 'reqPartsType', key: 'reqPartsType', width: '12%', align: 'center' }, // Corrected key
+  { title: '状态名称', dataIndex: 'statusName', key: 'statusName', width: '10%', align: 'center' }, // Key matches display field
+  { title: '寻源有效期', dataIndex: 'expireDate', key: 'expireDate', width: '12%', align: 'center' },
   { title: '发布日期', dataIndex: 'publishDate', key: 'publishDate', width: '12%', align: 'center' },
   { title: '流程编号', dataIndex: 'processNumber', key: 'processNumber', width: '12%', ellipsis: true },
   { title: '操作', key: 'actions', width: '10%', align: 'center', fixed: 'right' },
@@ -112,7 +111,7 @@ const paginationConfig = computed(() => ({
   itemRender: ({ type, originalElement }) => { // Custom render directly here
     if (type === 'prev' || type === 'next' || type === 'page') return originalElement;
     if (type === 'jump-prev' || type === 'jump-next') {
-      return <span class="ant-pagination-item-ellipsis">•••</span>;
+      return <span class="ant-pagination-item-ellipsis" >•••</span>;
     }
     return null; // Should not happen for other types
   },
@@ -122,170 +121,17 @@ const paginationConfig = computed(() => ({
 // --- Navigation Methods (remain in component) ---
 const viewDetails = (id) => {
   // Pass demandType if your detail route needs it
-  router.push(`user/demands/alternative-sourcing/${id}?type=alternativeSourcing`);
+  router.push(`/user/demands/DemandDetailPage/${id}?type=domestic&business_type=domestic`);
 };
 const createNewSourcing = () => {
-  router.push(`/user/demands/alternative-sourcing/create?type=alternativeSourcing`);
+  router.push(`/user/demands/DemandDetailPage/create?type=domestic&business_type=domestic`);
 };
 
 // onMounted is now handled by the hook for data fetching.
-// If MyAlternativeSourcingPage needs its own onMounted logic for other things, add it here.
+// If DomesticSourcing needs its own onMounted logic for other things, add it here.
 </script>
 
 <style scoped lang="less">
 @import '@/assets/styles/_variables.less';
-
-.my-alternative-sourcing-page {
-  // Page itself has no extra padding, UserCenterLayout handles it
-}
-
-.stats-bar {
-  display: grid; // Use grid for equal width distribution
-  grid-template-columns: repeat(4, 1fr); // 4 cards
-  gap: @spacing-lg;
-  margin-bottom: @spacing-xl;
-}
-
-.filter-accordion-section {
-  margin-bottom: @spacing-lg;
-}
-
-.search-action-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: @spacing-lg;
-  background-color: #f7f8fa; // Light grey background for this bar
-  padding: @spacing-md @spacing-lg;
-  border-radius: @border-radius-base;
-
-  .search-input-wrapper {
-    display: flex;
-    align-items: center;
-    gap: @spacing-sm;
-
-    .ant-input-affix-wrapper {
-      width: 280px; // Fixed width for search input
-      border-radius: @border-radius-base;
-    }
-
-    .search-btn {
-      // Uses AntD primary button style
-      border-radius: @border-radius-base;
-    }
-  }
-
-  .create-new-btn {
-    background-color: @primary-color; // Ensure it's the brand red
-    border-color: @primary-color;
-    border-radius: @border-radius-base;
-
-    &:hover {
-      background-color: darken(@primary-color, 10%);
-      border-color: darken(@primary-color, 10%);
-    }
-  }
-}
-
-.results-table-section {
-  .title-link {
-    color: @text-color-base; // Default title color
-    font-weight: 500;
-
-    &:hover {
-      color: @primary-color;
-      text-decoration: underline;
-    }
-  }
-
-  .status-tag {
-    border-radius: @border-radius-sm; // Small rounded corners
-    padding: 2px 8px;
-    font-size: 12px;
-    border-width: 0px; // No border for these tags as per design
-  }
-
-  .action-link {
-    padding: 0 @spacing-xs;
-
-    .anticon {
-      margin-right: 3px;
-    }
-  }
-
-  // Ant Design Table Customizations
-  :deep(.ant-table) {
-    border-radius: @border-radius-base; // Rounded corners for the table
-    overflow: hidden; // Needed for border-radius to apply to header
-    // border: 1px solid @border-color-light;
-  }
-
-  :deep(.ant-table-thead > tr > th) {
-    background-color: #fafafa !important; // Lighter header background
-    color: @text-color-base;
-    font-weight: 600;
-    padding: 12px @spacing-md; // Adjust header padding
-    border-bottom: 1px solid @border-color-light; // Stronger line below header
-  }
-
-  :deep(.ant-table-tbody > tr > td) {
-    padding: 12px @spacing-md; // Adjust cell padding
-    font-size: 14px;
-    color: @text-color-secondary;
-    border-bottom: 1px solid @border-color-light; // Lighter cell separator
-  }
-
-  :deep(.ant-table-tbody > tr:last-child > td) {
-    border-bottom: none; // No border on the very last row's cells
-  }
-
-  :deep(.ant-table-tbody > tr.ant-table-row:hover > td) {
-    background-color: #f5f7fa; // Subtle hover for rows
-  }
-
-  :deep(.ant-pagination) {
-    margin-top: @spacing-lg;
-    justify-content: flex-end; // Align pagination to the right
-  }
-
-  :deep(.ant-pagination-item-active) {
-    background-color: @primary-color;
-    border-color: @primary-color;
-
-    a {
-      color: white;
-    }
-
-    &:hover {
-      background-color: darken(@primary-color, 10%);
-      border-color: darken(@primary-color, 10%);
-
-      a {
-        color: white;
-      }
-    }
-  }
-
-  :deep(.ant-pagination-item-link) {
-
-    // Prev/Next buttons
-    &:not(.ant-pagination-disabled):hover {
-      // color: @primary-color;
-      // border-color: @primary-color;
-    }
-  }
-
-  :deep(.ant-pagination-options-quick-jumper input) {
-    border-radius: @border-radius-sm;
-
-    &:hover {
-      border-color: @primary-color;
-    }
-
-    &:focus {
-      border-color: @primary-color;
-      box-shadow: 0 0 0 2px fade(@primary-color, 20%);
-    }
-  }
-}
+@import './styles/index.less';
 </style>

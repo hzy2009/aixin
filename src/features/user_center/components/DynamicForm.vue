@@ -146,9 +146,11 @@ const resetFields = () => {
   Object.assign(internalFormModel, props.initialModel || {});
 };
 const clearValidate = () => formRef.value?.clearValidate();
+const getAllData = () => {
+  return internalFormModel;
+}
 
-
-defineExpose({ validate, resetFields, clearValidate, formModel: internalFormModel });
+defineExpose({ validate, resetFields, clearValidate, getAllData, formModel: internalFormModel });
 </script>
 
 <style scoped lang="less">

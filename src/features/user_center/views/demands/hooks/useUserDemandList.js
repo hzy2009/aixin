@@ -16,10 +16,10 @@ const defaultStatusMap = {
   all: { text: '全部', color: 'default' }
 };
 
-export function useUserDemandList(demandTypeKey = 'alternativeSourcing', initialPageSize = 10, statusMapping = defaultStatusMap) {
+export function useUserDemandList(sourcingType = '国产替代寻源', initialPageSize = 10, statusMapping = defaultStatusMap) {
   const stats = ref({ pendingResponse: 0, inProgress: 0, completed: 0, total: 0 });
   const currentFilters = ref({});
-  const currentSearchTerm = ref('');
+  const keyWord = ref('');
   const isLoading = ref(false);
   const tableData = ref([]);
   const pagination = reactive({
@@ -35,7 +35,7 @@ export function useUserDemandList(demandTypeKey = 'alternativeSourcing', initial
   // --- API Call Placeholders ---
   // TODO: Replace with actual API calls
   async function fetchStatsAPI() {
-    console.log(`[MOCK API] Fetching stats for ${demandTypeKey}`);
+    console.log(`[MOCK API] Fetching stats for ${sourcingType}`);
     await new Promise(resolve => setTimeout(resolve, 300));
     // Simulate different stats for different demand types if necessary
     return { pendingResponse: 26, inProgress: 12, completed: 52, total: 90 }; // Adjusted total
@@ -53,13 +53,13 @@ export function useUserDemandList(demandTypeKey = 'alternativeSourcing', initial
       const params = {
         pageNo: pagination.current,
         pageSize: pagination.pageSize,
-        sourcingType: '国产替代寻源',
+        sourcingType: sourcingType,
         filters: { ...currentFilters.value }, 
-        search: currentSearchTerm.value,
+        keyWord: keyWord.value,
       };
-      // const response = await getList(params);
-      // tableData.value = response.items;
-      // pagination.total = response.total;
+      const response = await getList(params);
+      tableData.value = response.result.records || [];
+      pagination.total = response.result.total || 0;
     } catch (error) {
       console.error("Failed to fetch table data:", error);
       tableData.value = [];
@@ -77,8 +77,8 @@ export function useUserDemandList(demandTypeKey = 'alternativeSourcing', initial
   };
 
   const handleSearchTermChange = (newSearchTerm) => {
-    currentSearchTerm.value = newSearchTerm;
-    // Decide if search triggers immediately or on button click
+    keyWord.value = newSearchTerm;
+    // Decide if keyWord triggers immediately or on button click
     // For now, let's assume it triggers on button click or Enter
   };
 
@@ -104,7 +104,7 @@ export function useUserDemandList(demandTypeKey = 'alternativeSourcing', initial
   return {
     stats,
     currentFilters,
-    currentSearchTerm,
+    keyWord,
     isLoading,
     tableData,
     pagination, // Expose the reactive pagination object
@@ -112,7 +112,7 @@ export function useUserDemandList(demandTypeKey = 'alternativeSourcing', initial
     loadStats,
     loadTableData,
     handleFiltersChange,
-    handleSearchTermChange, // If you want to bind v-model directly to currentSearchTerm
+    handleSearchTermChange, // If you want to bind v-model directly to keyWord
     triggerSearch,
     handleTablePaginationChange,
     getStatusTagColor,

@@ -54,10 +54,10 @@ import { useAuthStore } from '@/store/authStore';
 const props = defineProps({
   demandIdProp: { type: String, default: null },
   mode: { type: String, default: 'view' }, // 'create', 'view'
-  demandType: { type: String, default: 'alternativeSourcing' } // e.g., 'alternativeSourcing', 'originalSourcing'
+  demandType: { type: String, default: 'domestic' }, // e.g., 'domestic', 'originalSourcing'
+  business_type: { type: String, default: 'domestic' }, // 业务类型
 });
 
-const route = useRoute();
 const router = useRouter();
 
 const {
@@ -69,8 +69,7 @@ const {
   canViewStatusHistoryTable,
   fetchDemandDetail,
   submitDemand,
-} = useDemandDetail(props.demandIdProp, props.mode, props.demandType);
-
+} = useDemandDetail({ demandIdProp: props.demandIdProp, mode: props.mode, business_type: props.business_type, demandTypeProp: props.demandType });
 const dynamicFormRef = ref(null);
 const isSubmitting = ref(false); // 用于提交按钮的 loading 状态
 const formModel = ref({});
@@ -83,10 +82,7 @@ watch(demandDetailData, (newDetail) => {
   } else if (operationMode.value === 'create') {
     // 如果是新建模式且 newDetail 为 null（例如 hook 初始化时），确保 formModel 有基础结构
     formModel.value = { // 根据 demandType 设置默认值
-      sourcingType: props.demandType === 'alternativeSourcing' ? 'pump' : '',
-      validUntil: null,
-      status: 'published',
-      remarks: '',
+      expireDate: null,
       // ... 其他类型需要的默认字段 ...
     };
   } else {
@@ -105,16 +101,16 @@ const isFormEditable = computed(() => {
 // --- 表单配置 ---
 // TODO: 为每种 demandType 定义具体的表单配置
 const formConfigs = {
-  alternativeSourcing: [
-    { label: '寻源件类型', field: 'reqPartsType', fieldType: 'select', dictKey: 'req_parts_type', rules: [{ required: true, message: '必填!' }], span: 24 },
-    { label: '需求有效期', field: 'validUntil', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, },
+  domestic: [
+    // , rules: [{ required: true, message: '必填!' }]
+    { label: '寻源件类型', field: 'reqPartsType', fieldType: 'select', dictKey: 'req_parts_type', span: 24 },
+    { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, },
     { label: '寻源件状态', field: 'statusCode', fieldType: 'select', dictKey: 'sourcing_status', span: 24 },
-    // ... 其他 "国产替代" 字段 ...
   ],
   originalSourcing: [
     { label: '品牌', field: 'manufacturer', fieldType: 'select', options: [{ value: 'ti', label: 'TI' }], rules: [{ required: true, message: '必填!' }], span: 24 },
     { label: '器件分类', field: 'partCategory', fieldType: 'select', options: [{ value: 'mcu', label: 'MCU' }], rules: [{ required: true, message: '必填!' }], span: 24 },
-    { label: '需求有效期', field: 'validUntil', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24 },
+    { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24 },
     { label: '供货状态', field: 'availability', fieldType: 'select', options: [{ value: 'inStock', label: '现货' }], rules: [{ required: true, message: '必填!' }], span: 24 },
     { label: '详细描述', field: 'description', fieldType: 'textarea', rows: 3, span: 24 },
     // ... 其他 "原厂件" 字段 ...
@@ -138,13 +134,11 @@ const currentFormConfig = computed(() => {
 const statusHistoryColumns = [{ title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' }, { title: '状态', dataIndex: 'status', key: 'status' }, { title: '完成日期', dataIndex: 'date', key: 'date' }, { title: '单号', dataIndex: 'orderNo', key: 'orderNo' }, { title: '时间', dataIndex: 'time', key: 'time' }, { title: '备注', dataIndex: 'note', key: 'note' },];
 
 const handleSubmitForm = async () => {
-  const authStore = useAuthStore();
-  console.log('提交表单:', authStore.token);
   try {
     await dynamicFormRef.value?.validate();
+    const params = dynamicFormRef.value?.getAllData()
     isSubmitting.value = true;
-    // formModel.value 中已包含编辑后的数据
-    const success = await submitDemand(formModel.value);
+    const success = await submitDemand(params);
     if (success && operationMode.value !== 'create') { // 编辑成功
       // 此时 hook 内部的 operationMode 可能已变回 'view'，或者 demandDetailData 已更新
       // isFormEditable 会自动更新
@@ -171,10 +165,7 @@ const handleCancelAction = () => {
     if (dynamicFormRef.value) dynamicFormRef.value.resetFields(); // AntD form reset
     // 手动重置 formModel 到创建时的初始状态
     formModel.value = JSON.parse(JSON.stringify(demandDetailData.value || { // 使用hook中的初始值
-      sourcingType: props.demandType === 'alternativeSourcing' ? 'pump' : '',
-      validUntil: null,
-      status: 'published',
-      remarks: '',
+      expireDate: null,
     }));
     message.info('表单已重置');
   } else { // 查看或编辑模式
@@ -199,7 +190,7 @@ const goBack = () => {
 
 // --- 面包屑和标题 ---
 const demandTypeDisplayNameMap = {
-  alternativeSourcing: "国产替代寻源",
+  domestic: "国产替代寻源",
   originalSourcing: "原厂件寻源",
   rndCollaboration: "研发攻关",
   testingValidation: "检测验证",
