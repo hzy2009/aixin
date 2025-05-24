@@ -1,37 +1,26 @@
 <template>
-  <a-form
-    ref="formRef"
-    :model="internalFormModel"
-    :label-col="labelCol"
-    :wrapper-col="wrapperCol"
-    class="dynamic-form"
-    :layout="formLayout"
-    @finish="onFinish"
-    @finishFailed="onFinishFailed"
-  >
+  <a-form ref="formRef" :model="internalFormModel" :label-col="labelCol" :wrapper-col="wrapperCol" class="dynamic-form"
+    :layout="formLayout" @finish="onFinish" @finishFailed="onFinishFailed">
     <a-row :gutter="[16, 0]">
       <template v-for="field in formConfig" :key="field.field">
-        <a-col :span="field.span || defaultSpan"> 
-          <a-form-item
-            :label="field.label"
-            :name="field.field"
-            :rules="isEditMode ? field.rules : []"
+        <a-col :span="field.span || defaultSpan">
+          <a-form-item :label="field.label" :name="field.field" :rules="isEditMode ? field.rules : []"
             :extra="!isEditMode && field.displayExtra ? field.displayExtra(internalFormModel[field.field], internalFormModel) : null"
-            class="form-item-custom"
-          >
+            class="form-item-custom">
             <!-- Display Mode -->
             <template v-if="!isEditMode">
               <span v-if="field.fieldType === 'select' && field.options" class="form-text-display">
                 {{ getSelectDisplayValue(field, internalFormModel[field.field]) }}
               </span>
-              <span v-else-if="field.fieldType === 'dateRange' && Array.isArray(internalFormModel[field.field])" class="form-text-display">
+              <span v-else-if="field.fieldType === 'dateRange' && Array.isArray(internalFormModel[field.field])"
+                class="form-text-display">
                 {{ internalFormModel[field.field][0] }} - {{ internalFormModel[field.field][1] }}
               </span>
-               <span v-else-if="field.fieldType === 'amount'" class="form-text-display">
+              <span v-else-if="field.fieldType === 'amount'" class="form-text-display">
                 {{ formatAmount(internalFormModel[field.field]) }}
               </span>
               <span v-else-if="field.displayFormatter" class="form-text-display">
-                  {{ field.displayFormatter(internalFormModel[field.field], internalFormModel) }}
+                {{ field.displayFormatter(internalFormModel[field.field], internalFormModel) }}
               </span>
               <span v-else class="form-text-display">
                 {{ internalFormModel[field.field] || '-' }}
@@ -40,65 +29,30 @@
 
             <!-- Edit Mode -->
             <template v-else>
-              <a-input
-                v-if="field.fieldType === 'input'"
-                v-model:value="internalFormModel[field.field]"
-                :placeholder="field.placeholder || `请输入${field.label}`"
-                :disabled="field.disabled"
-                allow-clear
-              />
-              <a-select
-                v-else-if="field.fieldType === 'select'"
-                v-model:value="internalFormModel[field.field]"
+              <a-input v-if="field.fieldType === 'input'" v-model:value="internalFormModel[field.field]"
+                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear />
+              <a-select v-else-if="field.fieldType === 'select'" v-model:value="internalFormModel[field.field]"
                 :placeholder="field.placeholder || `请选择${field.label}`"
-                :options="field.options"
-                :mode="field.selectMode"
+                :options="field.options || selectOptions(field.dictKey)" :mode="field.selectMode"
                 :filter-option="field.remoteSearch ? false : filterOption"
-                :show-search="field.remoteSearch || field.showSearch"
-                :loading="field.loading"
-                @search="field.remoteSearch ? (value) => field.onRemoteSearch(value) : null"
-                :disabled="field.disabled"
-                allow-clear
-              />
-              <a-radio-group
-                v-else-if="field.fieldType === 'radio'"
-                v-model:value="internalFormModel[field.field]"
-                :options="field.options"
-                :disabled="field.disabled"
-              />
-              <a-date-picker
-                v-else-if="field.fieldType === 'date'"
-                v-model:value="internalFormModel[field.field]"
-                :placeholder="field.placeholder || `请选择${field.label}`"
-                value-format="YYYY-MM-DD"
-                style="width: 100%;"
-                :disabled="field.disabled"
-              />
-               <a-range-picker
-                v-else-if="field.fieldType === 'dateRange'"
-                v-model:value="internalFormModel[field.field]"
-                value-format="YYYY-MM-DD"
-                style="width: 100%;"
-                :disabled="field.disabled"
-              />
-              <a-textarea
-                v-else-if="field.fieldType === 'textarea'"
-                v-model:value="internalFormModel[field.field]"
-                :placeholder="field.placeholder || `请输入${field.label}`"
-                :rows="field.rows || 3"
-                :disabled="field.disabled"
-                allow-clear
-              />
-              <a-input-number
-                v-else-if="field.fieldType === 'amount'"
-                v-model:value="internalFormModel[field.field]"
+                :show-search="field.remoteSearch || field.showSearch" :loading="field.loading"
+                @search="field.remoteSearch ? (value) => field.onRemoteSearch(value) : null" :disabled="field.disabled"
+                allow-clear />
+              <a-radio-group v-else-if="field.fieldType === 'radio'" v-model:value="internalFormModel[field.field]"
+                :options="field.options" :disabled="field.disabled" />
+              <a-date-picker v-else-if="field.fieldType === 'date'" v-model:value="internalFormModel[field.field]"
+                :placeholder="field.placeholder || `请选择${field.label}`" value-format="YYYY-MM-DD" style="width: 100%;"
+                :disabled="field.disabled" />
+              <a-range-picker v-else-if="field.fieldType === 'dateRange'" v-model:value="internalFormModel[field.field]"
+                value-format="YYYY-MM-DD" style="width: 100%;" :disabled="field.disabled" />
+              <a-textarea v-else-if="field.fieldType === 'textarea'" v-model:value="internalFormModel[field.field]"
+                :placeholder="field.placeholder || `请输入${field.label}`" :rows="field.rows || 3"
+                :disabled="field.disabled" allow-clear />
+              <a-input-number v-else-if="field.fieldType === 'amount'" v-model:value="internalFormModel[field.field]"
                 :formatter="value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
-                :parser="value => value.replace(/\$\s?|(,*)/g, '')"
-                :precision="field.precision || 2"
-                style="width: 100%;"
-                :placeholder="field.placeholder || `请输入${field.label}`"
-                :disabled="field.disabled"
-              />
+                :parser="value => value.replace(/\$\s?|(,*)/g, '')" :precision="field.precision || 2"
+                style="width: 100%;" :placeholder="field.placeholder || `请输入${field.label}`"
+                :disabled="field.disabled" />
               <!-- Add more field types as needed -->
             </template>
           </a-form-item>
@@ -109,6 +63,7 @@
 </template>
 
 <script setup>
+import { useAuthStore } from '@/store/authStore';
 import { ref, watch, reactive, onMounted } from 'vue';
 import {
   Form as AForm, FormItem as AFormItem, Input as AInput,
@@ -116,6 +71,12 @@ import {
   Textarea as ATextarea, InputNumber as AInputNumber, Row as ARow, Col as ACol,
   RangePicker as ARangePicker,
 } from 'ant-design-vue';
+const auth = useAuthStore();
+const selectOptions = (dictKey) => {
+  if (!dictKey) return [];
+  if (!auth.sysAllDictItems[dictKey]) return []
+  return auth.sysAllDictItems[dictKey].map(({ label, value }) => ({ label, value })) || [];
+};
 
 const props = defineProps({
   formConfig: { type: Array, required: true },
@@ -156,10 +117,10 @@ const getSelectDisplayValue = (fieldConfig, value) => {
 };
 
 const formatAmount = (value) => {
-    if (value === null || value === undefined || value === '') return '-';
-    const num = Number(value);
-    if (isNaN(num)) return value; // Return original if not a number
-    return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  if (value === null || value === undefined || value === '') return '-';
+  const num = Number(value);
+  if (isNaN(num)) return value; // Return original if not a number
+  return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
 
 
@@ -179,10 +140,10 @@ const onFinishFailed = (errorInfo) => {
 
 const validate = () => formRef.value?.validate();
 const resetFields = () => {
-    formRef.value?.resetFields();
-    // Also reset internalFormModel to initial or empty if needed,
-    // as AntD resetFields only resets to initial values of the form item itself.
-    Object.assign(internalFormModel, props.initialModel || {});
+  formRef.value?.resetFields();
+  // Also reset internalFormModel to initial or empty if needed,
+  // as AntD resetFields only resets to initial values of the form item itself.
+  Object.assign(internalFormModel, props.initialModel || {});
 };
 const clearValidate = () => formRef.value?.clearValidate();
 
@@ -198,16 +159,19 @@ defineExpose({ validate, resetFields, clearValidate, formModel: internalFormMode
 }
 
 .form-item-custom {
+  width: 400px;
+
   // Styling for antd form item to match the design
   :deep(.ant-form-item-label > label) {
     color: @text-color-secondary; // Label color from design
     font-size: 14px;
   }
-   // For vertical layout specifically, make labels less prominent
+
+  // For vertical layout specifically, make labels less prominent
   &.ant-form-item-label-top :deep(.ant-form-item-label > label) {
-      // height: auto;
-      // line-height: 1.5;
-      padding-bottom: 4px; // Reduce space below label in vertical mode
+    // height: auto;
+    // line-height: 1.5;
+    padding-bottom: 4px; // Reduce space below label in vertical mode
   }
 
 
@@ -222,8 +186,11 @@ defineExpose({ validate, resetFields, clearValidate, formModel: internalFormMode
   }
 
   // Inputs in edit mode
-  :deep(.ant-select), :deep(.ant-input), :deep(.ant-input-number),
-  :deep(.ant-picker), :deep(.ant-input-textarea-show-count > .ant-input) {
+  :deep(.ant-select),
+  :deep(.ant-input),
+  :deep(.ant-input-number),
+  :deep(.ant-picker),
+  :deep(.ant-input-textarea-show-count > .ant-input) {
     border-radius: @border-radius-sm; // More subtle rounding
     // border-color: @border-color-base; // Lighter border
     // &:hover {
@@ -234,19 +201,24 @@ defineExpose({ validate, resetFields, clearValidate, formModel: internalFormMode
     //   box-shadow: 0 0 0 2px fade(@primary-color, 20%);
     // }
   }
-   :deep(.ant-input), :deep(.ant-input-number-input) {
-       height: 36px; // Standard height
-   }
-   :deep(.ant-select-selector) {
-       height: 36px !important;
-       padding-top: 2px !important; // Adjust select text vertical alignment
-       padding-bottom: 2px !important;
-   }
-   :deep(.ant-picker) {
-       height: 36px;
-   }
-   :deep(.ant-input-textarea .ant-input) {
-       min-height: 80px; // Example for textarea
-   }
+
+  :deep(.ant-input),
+  :deep(.ant-input-number-input) {
+    height: 36px; // Standard height
+  }
+
+  :deep(.ant-select-selector) {
+    height: 36px !important;
+    padding-top: 2px !important; // Adjust select text vertical alignment
+    padding-bottom: 2px !important;
+  }
+
+  :deep(.ant-picker) {
+    height: 36px;
+  }
+
+  :deep(.ant-input-textarea .ant-input) {
+    min-height: 80px; // Example for textarea
+  }
 }
 </style>

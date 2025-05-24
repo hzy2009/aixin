@@ -106,9 +106,9 @@ const isFormEditable = computed(() => {
 // TODO: 为每种 demandType 定义具体的表单配置
 const formConfigs = {
   alternativeSourcing: [
-    { label: '寻源件类型', field: 'reqPartsType', fieldType: 'select', options: [{ value: 'pump', label: 'Pump' }, { value: 'mfc', label: 'MFC' }], rules: [{ required: true, message: '必填!' }], span: 24 },
-    { label: '需求有效期', field: 'validUntil', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24 },
-    { label: '寻源件状态', field: 'statusCode', fieldType: 'select', options: [{ value: 'published', label: '寻源发布' }, { value: 'sourcing', label: '寻源中' }], rules: [{ required: true, message: '必填!' }], span: 24 },
+    { label: '寻源件类型', field: 'reqPartsType', fieldType: 'select', dictKey: 'req_parts_type', rules: [{ required: true, message: '必填!' }], span: 24 },
+    { label: '需求有效期', field: 'validUntil', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, },
+    { label: '寻源件状态', field: 'statusCode', fieldType: 'select', dictKey: 'sourcing_status', span: 24 },
     // ... 其他 "国产替代" 字段 ...
   ],
   originalSourcing: [

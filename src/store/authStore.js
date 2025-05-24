@@ -6,6 +6,7 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     userInfo: null,
     token: null,
+    sysAllDictItems: [],
   }),
   getters: {
     isAuthenticated: (state) => !!state.token && !!state.user,
@@ -16,9 +17,10 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     async login(params) {
       const data = await loginApi(params);
-      const { result: { userInfo, token } } = data;
+      const { result: { userInfo, token, sysAllDictItems } } = data;
       this.setToken(token);
       this.setUserInof(userInfo);
+      this.setSysAllDictItems(sysAllDictItems);
       return data;
     },
     logout() {
@@ -34,6 +36,10 @@ export const useAuthStore = defineStore('auth', {
       this.userInfo = info ? info : ''; // for null or undefined value
       // setAuthCache(TOKEN_KEY, info);
     },
+    setSysAllDictItems(info) {
+      this.sysAllDictItems = info ? info : []; // for null or undefined value
+      // setAuthCache(TOKEN_KEY, info);
+    }
     // You'll add async actions for API calls here
     // async fetchUser() { ... }
   },
