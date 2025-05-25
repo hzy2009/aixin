@@ -5,7 +5,7 @@ import { message } from 'ant-design-vue';
 import { useAuthStore } from '@/store/authStore';
 import { useRouter } from 'vue-router'; // 用于新建成功后跳转
 
-export function useDemandDetail({demandIdProp, mode, demandTypeProp, url}) { // 接收 props
+export function useDemandDetail({demandIdProp, mode, demandTypeProp, url, otherParams}) { // 接收 props
   const demandDetail = ref(null);
   const isLoading = ref(false);
   const error = ref(null);
@@ -39,8 +39,7 @@ export function useDemandDetail({demandIdProp, mode, demandTypeProp, url}) { // 
     if (operationMode.value === 'create' || !internalDemandId.value) {
       // 新建模式或没有ID，初始化空/默认表单数据
       demandDetail.value = {
-        sourcingType: demandType == 'domestic' ? '国产替代寻源' : '原厂件寻源',
-        // status: 'published', // 默认状态
+        ...otherParams
         // ... 其他类型可能需要的默认字段 ...
       };
       isLoading.value = false;

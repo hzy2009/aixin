@@ -126,10 +126,10 @@ const paginationConfig = computed(() => ({
 // --- Navigation Methods (remain in component) ---
 const viewDetails = (id) => {
     // Pass demandType if your detail route needs it
-    router.push(`/user/demands/DemandDetailPage/${id}?type=domestic&business_type=domestic`);
+    router.push(`/user/demands/DemandDetailPage/${id}?type=originalSourcing&business_type=originalSourcing`);
 };
 const createNewSourcing = () => {
-    router.push(`/user/demands/DemandDetailPage/create?type=domestic&business_type=domestic`);
+    router.push(`/user/demands/DemandDetailPage/create?type=originalSourcing&business_type=originalSourcing`);
 };
 
 // onMounted is now handled by the hook for data fetching.

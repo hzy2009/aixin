@@ -59,6 +59,7 @@ const props = defineProps({
 });
 
 const router = useRouter();
+console.log('DemandDetailPage props:', props.demandType);
 
 const {
   demandDetail: demandDetailData,
@@ -76,7 +77,11 @@ const {
     detail: 'apm/apmSourcing/queryById',
     submit: 'apm/apmSourcing/submit',
     delete: 'apm/apmSourcing/delete',
-  }
+  },
+  otherParams: {
+    sourcingType: props.demandType == 'domestic' ? '国产替代寻源' : '原厂件寻源',
+    // 其他参数
+  },
 });
 const dynamicFormRef = ref(null);
 const isSubmitting = ref(false); // 用于提交按钮的 loading 状态
@@ -109,7 +114,7 @@ const isFormEditable = computed(() => {
 // --- 表单配置 ---
 // TODO: 为每种 demandType 定义具体的表单配置
 const formConfigs = {
-  domestic: [
+  base: [
     // , rules: [{ required: true, message: '必填!' }]
     { label: '寻源件类型', field: 'reqPartsType', fieldType: 'select', dictKey: 'req_parts_type', span: 24 },
     { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, },
@@ -127,7 +132,7 @@ const formConfigs = {
 };
 
 const currentFormConfig = computed(() => {
-  const baseConfig = formConfigs[props.demandType] || [];
+  const baseConfig = formConfigs.base || [];
   // 根据 isFormEditable 动态调整规则的 required 状态
   return baseConfig.map(field => ({
     ...field,
@@ -200,8 +205,6 @@ const goBack = () => {
 const demandTypeDisplayNameMap = {
   domestic: "国产替代寻源",
   originalSourcing: "原厂件寻源",
-  rndCollaboration: "研发攻关",
-  testingValidation: "检测验证",
   // ...
 };
 const demandTypeDisplayName = computed(() => demandTypeDisplayNameMap[props.demandType] || "需求");
