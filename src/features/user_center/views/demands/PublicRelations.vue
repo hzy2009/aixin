@@ -31,7 +31,7 @@
                 <a-button type="primary" @click="triggerSearch" class="search-btn">搜索</a-button>
             </div>
             <a-button type="primary" @click="createNewSourcing" class="create-new-btn">
-                创建原厂件寻源
+                创建研发公关
             </a-button>
         </div>
 
@@ -93,20 +93,18 @@ const {
     getStatusTagColor     // Method from hook
 } = useUserDemandList({
     otherParams: {
-        sourcingType: '原厂件寻源'
     },
-    url: 'apm/apmSourcing/list'
+    url: 'apm/apmRdBreakthrough/list'
 }); // Pass the specific type for this page
 
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = computed(() => [
-    { title: '原厂件寻源', dataIndex: 'sourcingTitle', key: 'sourcingTitle', ellipsis: true, },
-    { title: '寻源类型', dataIndex: 'sourcingType', key: 'sourcingType', width: '12%', align: 'center' }, // This should be 'sourcingType' from mock
-    { title: '寻源件类型', dataIndex: 'reqPartsType', key: 'reqPartsType', width: '12%', align: 'center' }, // Corrected key
+    { title: '攻关方向编码', dataIndex: 'rdCode', key: 'rdCode', ellipsis: true, },
+    { title: '攻关方向名称', dataIndex: 'rdType', key: 'rdType', width: '12%', align: 'center' }, // This should be 'sourcingType' from mock
+    { title: '研发需求描述', dataIndex: 'sourceDesc', key: 'sourceDesc', width: '12%', align: 'center' }, // Corrected key
     { title: '状态名称', dataIndex: 'statusName', key: 'statusName', width: '10%', align: 'center' }, // Key matches display field
-    { title: '寻源有效期', dataIndex: 'expireDate', key: 'expireDate', width: '12%', align: 'center' },
-    { title: '发布日期', dataIndex: 'publishDate', key: 'publishDate', width: '12%', align: 'center' },
-    { title: '流程编号', dataIndex: 'processNumber', key: 'processNumber', width: '12%', ellipsis: true },
+    { title: '描述', dataIndex: 'desc', key: 'desc', width: '12%', align: 'center' },
+    { title: '有效期', dataIndex: 'expireDate', key: 'expireDate', width: '12%', align: 'center' },
     { title: '操作', key: 'actions', width: '10%', align: 'center', fixed: 'right' },
 ]);
 
@@ -126,14 +124,13 @@ const paginationConfig = computed(() => ({
 // --- Navigation Methods (remain in component) ---
 const viewDetails = (id) => {
     // Pass demandType if your detail route needs it
-    router.push(`/user/demands/DemandDetailPage/${id}?type=domestic&business_type=domestic`);
+    router.push(`/user/demands/PublicRelationsDetailPage/${id}`);
 };
 const createNewSourcing = () => {
-    router.push(`/user/demands/DemandDetailPage/create?type=domestic&business_type=domestic`);
+    router.push(`/user/demands/PublicRelationsDetailPage/create`);
 };
 
 // onMounted is now handled by the hook for data fetching.
-// If DomesticSourcing needs its own onMounted logic for other things, add it here.
 </script>
 
 <style scoped lang="less">

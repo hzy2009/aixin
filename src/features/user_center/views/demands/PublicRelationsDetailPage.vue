@@ -54,8 +54,8 @@ import { useAuthStore } from '@/store/authStore';
 const props = defineProps({
   demandIdProp: { type: String, default: null },
   mode: { type: String, default: 'view' }, // 'create', 'view'
-  demandType: { type: String, default: 'domestic' }, // e.g., 'domestic', 'originalSourcing'
-  business_type: { type: String, default: 'domestic' }, // 业务类型
+  demandType: { type: String, default: 'rndCollaboration' }, // e.g., 'domestic', 'originalSourcing'
+  business_type: { type: String, default: 'rndCollaboration' }, // 业务类型
 });
 
 const router = useRouter();
@@ -70,12 +70,12 @@ const {
   fetchDemandDetail,
   submitDemand,
 } = useDemandDetail({
-  demandIdProp: props.demandIdProp, mode: props.mode, business_type: props.business_type, demandTypeProp: props.demandType, url: {
-    add: 'apm/apmSourcing/add',
-    edit: 'apm/apmSourcing/edit',
-    detail: 'apm/apmSourcing/queryById',
-    submit: 'apm/apmSourcing/submit',
-    delete: 'apm/apmSourcing/delete',
+  demandIdProp: props.demandIdProp, mode: props.mode, business_type: props.business_type, url: {
+    add: 'apm/apmInspection/add',
+    edit: 'apm/apmInspection/edit',
+    detail: 'apm/apmInspection/queryById',
+    submit: 'apm/apmInspection/submit',
+    delete: 'apm/apmInspection/delete',
   }
 });
 const dynamicFormRef = ref(null);
@@ -109,11 +109,12 @@ const isFormEditable = computed(() => {
 // --- 表单配置 ---
 // TODO: 为每种 demandType 定义具体的表单配置
 const formConfigs = {
-  domestic: [
+  base: [
     // , rules: [{ required: true, message: '必填!' }]
-    { label: '寻源件类型', field: 'reqPartsType', fieldType: 'select', dictKey: 'req_parts_type', span: 24 },
+    { label: '研发公关方向', field: 'rdType', fieldType: 'select', dictKey: 'rnd_pr_strategic_goals', span: 24 },
+    { label: '研发公关需求', field: 'sourceDesc', fieldType: 'input', span: 24, },
+    { label: '研发公关最新需求状态', field: 'statusCode', fieldType: 'select', dictKey: 'rd_breakthrough_status', span: 24, disabled: true },
     { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, },
-    { label: '寻源件状态', field: 'statusCode', fieldType: 'select', dictKey: 'sourcing_status', span: 24 },
   ],
   originalSourcing: [
     { label: '品牌', field: 'manufacturer', fieldType: 'select', options: [{ value: 'ti', label: 'TI' }], rules: [{ required: true, message: '必填!' }], span: 24 },
@@ -127,7 +128,7 @@ const formConfigs = {
 };
 
 const currentFormConfig = computed(() => {
-  const baseConfig = formConfigs[props.demandType] || [];
+  const baseConfig = formConfigs.base || [];
   // 根据 isFormEditable 动态调整规则的 required 状态
   return baseConfig.map(field => ({
     ...field,
@@ -196,16 +197,7 @@ const goBack = () => {
   router.go(-1); // 或 router.push({ name: 'MyDemandsList' })
 };
 
-// --- 面包屑和标题 ---
-const demandTypeDisplayNameMap = {
-  domestic: "国产替代寻源",
-  originalSourcing: "原厂件寻源",
-  rndCollaboration: "研发攻关",
-  testingValidation: "检测验证",
-  // ...
-};
-const demandTypeDisplayName = computed(() => demandTypeDisplayNameMap[props.demandType] || "需求");
-
+const demandTypeDisplayName = ref('研发攻关')
 const pageTitle = computed(() => {
   if (operationMode.value === 'create') {
     return `新建${demandTypeDisplayName.value}`;
@@ -213,13 +205,6 @@ const pageTitle = computed(() => {
   return `${demandTypeDisplayName.value}详情`;
 });
 
-const parentBreadcrumbName = computed(() => {
-  // 根据实际用户中心菜单结构调整
-  return "我的需求"; // 或 "需求广场"
-});
-const parentPathForBreadcrumb = computed(() => {
-  return '/user/my-demands'; // 对应列表页
-});
 
 // 当路由参数（尤其是 demandIdProp）实际发生变化时，重新加载数据
 // 这主要用于：用户在详情页A，通过某种方式（非浏览器前进后退）直接导航到详情页B

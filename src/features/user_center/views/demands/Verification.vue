@@ -31,7 +31,7 @@
                 <a-button type="primary" @click="triggerSearch" class="search-btn">搜索</a-button>
             </div>
             <a-button type="primary" @click="createNewSourcing" class="create-new-btn">
-                创建原厂件寻源
+                创建检验验证
             </a-button>
         </div>
 
@@ -93,14 +93,13 @@ const {
     getStatusTagColor     // Method from hook
 } = useUserDemandList({
     otherParams: {
-        sourcingType: '原厂件寻源'
     },
-    url: 'apm/apmSourcing/list'
+    url: 'apm/apmInspection/list'
 }); // Pass the specific type for this page
 
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = computed(() => [
-    { title: '原厂件寻源', dataIndex: 'sourcingTitle', key: 'sourcingTitle', ellipsis: true, },
+    { title: '国产替代寻源', dataIndex: 'sourcingTitle', key: 'sourcingTitle', ellipsis: true, },
     { title: '寻源类型', dataIndex: 'sourcingType', key: 'sourcingType', width: '12%', align: 'center' }, // This should be 'sourcingType' from mock
     { title: '寻源件类型', dataIndex: 'reqPartsType', key: 'reqPartsType', width: '12%', align: 'center' }, // Corrected key
     { title: '状态名称', dataIndex: 'statusName', key: 'statusName', width: '10%', align: 'center' }, // Key matches display field
@@ -126,10 +125,10 @@ const paginationConfig = computed(() => ({
 // --- Navigation Methods (remain in component) ---
 const viewDetails = (id) => {
     // Pass demandType if your detail route needs it
-    router.push(`/user/demands/DemandDetailPage/${id}?type=domestic&business_type=domestic`);
+    router.push(`/user/demands/Verification/${id}`);
 };
 const createNewSourcing = () => {
-    router.push(`/user/demands/DemandDetailPage/create?type=domestic&business_type=domestic`);
+    router.push(`/user/demands/Verification/create`);
 };
 
 // onMounted is now handled by the hook for data fetching.

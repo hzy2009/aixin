@@ -44,6 +44,8 @@ const menuItems = computed(() => [
     children: [
       { key: 'DomesticSourcing', label: '国产替代寻源', path: '/user/demands/DomesticSourcing' },
       { key: 'OEMPartsSourcing', label: '原厂件寻源', path: '/user/demands/OEMPartsSourcing' },
+      { key: 'PublicRelations', label: '研发公关', path: '/user/demands/PublicRelations' },
+      { key: 'Verification', label: '检验验证', path: '/user/demands/Verification' },
       // ... other demand types like 'UserMyOriginalSourcing'
     ],
   },

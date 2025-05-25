@@ -1,5 +1,5 @@
 import { ref, reactive, computed, onMounted } from 'vue';
-import { getDemandById, getList } from '@/api/demands'; // 你的 Axios 实例
+import defHttp from '@/utils/http/axios'
 
 // 模拟的状态映射表，可以从外部传入或在这里定义
 const defaultStatusMap = {
@@ -16,7 +16,7 @@ const defaultStatusMap = {
   all: { text: '全部', color: 'default' }
 };
 
-export function useUserDemandList(sourcingType = '国产替代寻源', initialPageSize = 10, statusMapping = defaultStatusMap) {
+export function useUserDemandList({otherParams, initialPageSize = 10, statusMapping = defaultStatusMap, url}) {
   const stats = ref({ pendingResponse: 0, inProgress: 0, completed: 0, total: 0 });
   const currentFilters = ref({});
   const keyWord = ref('');
@@ -35,7 +35,6 @@ export function useUserDemandList(sourcingType = '国产替代寻源', initialPa
   // --- API Call Placeholders ---
   // TODO: Replace with actual API calls
   async function fetchStatsAPI() {
-    console.log(`[MOCK API] Fetching stats for ${sourcingType}`);
     await new Promise(resolve => setTimeout(resolve, 300));
     // Simulate different stats for different demand types if necessary
     return { pendingResponse: 26, inProgress: 12, completed: 52, total: 90 }; // Adjusted total
@@ -53,11 +52,11 @@ export function useUserDemandList(sourcingType = '国产替代寻源', initialPa
       const params = {
         pageNo: pagination.current,
         pageSize: pagination.pageSize,
-        sourcingType: sourcingType,
         filters: { ...currentFilters.value }, 
         keyWord: keyWord.value,
+        ...otherParams,
       };
-      const response = await getList(params);
+      const response = await defHttp.get({url: url, params});
       tableData.value = response.result.records || [];
       pagination.total = response.result.total || 0;
     } catch (error) {

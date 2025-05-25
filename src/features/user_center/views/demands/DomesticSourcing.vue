@@ -91,7 +91,12 @@ const {
   triggerSearch,        // Method from hook
   handleTablePaginationChange, // Method from hook
   getStatusTagColor     // Method from hook
-} = useUserDemandList('国产替代寻源'); // Pass the specific type for this page
+} = useUserDemandList({
+  otherParams: {
+    sourcingType: '国产替代寻源'
+  },
+  url: 'apm/apmSourcing/list'
+}); // Pass the specific type for this page
 
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = computed(() => [

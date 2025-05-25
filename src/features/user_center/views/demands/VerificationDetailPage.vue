@@ -71,11 +71,11 @@ const {
   submitDemand,
 } = useDemandDetail({
   demandIdProp: props.demandIdProp, mode: props.mode, business_type: props.business_type, demandTypeProp: props.demandType, url: {
-    add: 'apm/apmSourcing/add',
-    edit: 'apm/apmSourcing/edit',
-    detail: 'apm/apmSourcing/queryById',
-    submit: 'apm/apmSourcing/submit',
-    delete: 'apm/apmSourcing/delete',
+    add: 'apm/apmRdBreakthrough/add',
+    edit: 'apm/apmRdBreakthrough/edit',
+    detail: 'apm/apmRdBreakthrough/queryById',
+    submit: 'apm/apmRdBreakthrough/submit',
+    delete: 'apm/apmRdBreakthrough/delete',
   }
 });
 const dynamicFormRef = ref(null);
@@ -109,11 +109,11 @@ const isFormEditable = computed(() => {
 // --- 表单配置 ---
 // TODO: 为每种 demandType 定义具体的表单配置
 const formConfigs = {
-  domestic: [
+  base: [
     // , rules: [{ required: true, message: '必填!' }]
-    { label: '寻源件类型', field: 'reqPartsType', fieldType: 'select', dictKey: 'req_parts_type', span: 24 },
+    { label: '检测验证类型', field: 'projectType', fieldType: 'select', dictKey: 'inspection_type', span: 24 },
     { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, },
-    { label: '寻源件状态', field: 'statusCode', fieldType: 'select', dictKey: 'sourcing_status', span: 24 },
+    { label: '检测验证需求状态', field: 'statusCode', fieldType: 'select', dictKey: 'sourcing_status', span: 24 },
   ],
   originalSourcing: [
     { label: '品牌', field: 'manufacturer', fieldType: 'select', options: [{ value: 'ti', label: 'TI' }], rules: [{ required: true, message: '必填!' }], span: 24 },
@@ -127,7 +127,7 @@ const formConfigs = {
 };
 
 const currentFormConfig = computed(() => {
-  const baseConfig = formConfigs[props.demandType] || [];
+  const baseConfig = formConfigs.base || [];
   // 根据 isFormEditable 动态调整规则的 required 状态
   return baseConfig.map(field => ({
     ...field,
@@ -196,29 +196,13 @@ const goBack = () => {
   router.go(-1); // 或 router.push({ name: 'MyDemandsList' })
 };
 
-// --- 面包屑和标题 ---
-const demandTypeDisplayNameMap = {
-  domestic: "国产替代寻源",
-  originalSourcing: "原厂件寻源",
-  rndCollaboration: "研发攻关",
-  testingValidation: "检测验证",
-  // ...
-};
-const demandTypeDisplayName = computed(() => demandTypeDisplayNameMap[props.demandType] || "需求");
+const demandTypeDisplayName = ref('检测验证');
 
 const pageTitle = computed(() => {
   if (operationMode.value === 'create') {
     return `新建${demandTypeDisplayName.value}`;
   }
   return `${demandTypeDisplayName.value}详情`;
-});
-
-const parentBreadcrumbName = computed(() => {
-  // 根据实际用户中心菜单结构调整
-  return "我的需求"; // 或 "需求广场"
-});
-const parentPathForBreadcrumb = computed(() => {
-  return '/user/my-demands'; // 对应列表页
 });
 
 // 当路由参数（尤其是 demandIdProp）实际发生变化时，重新加载数据

@@ -1,12 +1,11 @@
 // src/features/user_center/composables/useDemandDetail.js
 import { ref, onMounted, computed, reactive } from 'vue';
-import { addDemand, editDemand, submitDemand, deleteDemand, getDemandById, getList } from '@/api/demands.js'; // 用于获取路由参数
-import apiClient from '@/utils/http/axios.js'; // 你的 Axios 实例
+import defHttp from '@/utils/http/axios'
 import { message } from 'ant-design-vue';
 import { useAuthStore } from '@/store/authStore';
 import { useRouter } from 'vue-router'; // 用于新建成功后跳转
 
-export function useDemandDetail({demandIdProp, mode, demandTypeProp}) { // 接收 props
+export function useDemandDetail({demandIdProp, mode, demandTypeProp, url}) { // 接收 props
   const demandDetail = ref(null);
   const isLoading = ref(false);
   const error = ref(null);
@@ -42,7 +41,6 @@ export function useDemandDetail({demandIdProp, mode, demandTypeProp}) { // 接�
       demandDetail.value = {
         sourcingType: demandType == 'domestic' ? '国产替代寻源' : '原厂件寻源',
         // status: 'published', // 默认状态
-        remarks: '',
         // ... 其他类型可能需要的默认字段 ...
       };
       isLoading.value = false;
@@ -52,8 +50,7 @@ export function useDemandDetail({demandIdProp, mode, demandTypeProp}) { // 接�
     isLoading.value = true;
     error.value = null;
     try {
-      // 实际API: GET apm/apmSourcing/queryById
-      const response = await getDemandById({ id: internalDemandId.value } );
+      const response = await defHttp.get({ url: url.detail, params: {id: internalDemandId.value} });
       if (response.success) {
         demandDetail.value = response.result;
       } else {
@@ -82,16 +79,16 @@ export function useDemandDetail({demandIdProp, mode, demandTypeProp}) { // 接�
 
       if (operationMode.value === 'create') {
         // 实际API: POST apm/apmSourcing/add
-        response = await addDemand(payload);
+        response = await defHttp.post({ url: url.add, data: payload });
       } else { // 编辑模式
         // 实际API: POST apm/apmSourcing/edit (通常编辑用 PUT，但你提供的是 POST)
         payload.id = internalDemandId.value; // 确保编辑时带上ID
-        response = await aeditDemand(payload);
+        response = await defHttp.post({ url: url.edit, data: payload });
       }
 
-      if (response.data && response.data.success) {
+      if (response && response.success) {
         message.success(operationMode.value === 'create' ? '需求创建成功!' : '需求更新成功!');
-        const newId = operationMode.value === 'create' ? response.data.data?.id : internalDemandId.value; // 假设新建成功后后端返回新ID
+        const newId = operationMode.value === 'create' ? response.result?.id : internalDemandId.value; // 假设新建成功后后端返回新ID
         
         if (operationMode.value === 'create' && newId) {
             // 新建成功后，通常会跳转到详情页或列表页
@@ -110,7 +107,7 @@ export function useDemandDetail({demandIdProp, mode, demandTypeProp}) { // 接�
         }
         return true;
       } else {
-        throw new Error(response.data.message || '操作失败');
+        throw new Error(response.message || '操作失败');
       }
     } catch (err) {
       console.error("提交需求失败:", err);
@@ -121,9 +118,6 @@ export function useDemandDetail({demandIdProp, mode, demandTypeProp}) { // 接�
       isLoading.value = false;
     }
   }
-
-  // `list` 接口通常在列表页使用，这里不直接包含，但可以作为参考
-  // async function fetchDemandList(params) { /* ... apiClient.get('apm/apmSourcing/list', { params }) ... */ }
 
   onMounted(() => {
       fetchDemandDetail(); // 会根据 operationMode 判断是加载还是设置默认值
