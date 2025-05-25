@@ -13,7 +13,7 @@
 
 .industry-dynamics-hero {
   height: 300px; // Adjust height as needed based on your image/design
-  background-image: url('@/assets/images/industryDynamics/hero-bg.jpg'); // Replace with your actual hero image for this page
+  // background-image: url('@/assets/images/industryDynamics/banner.png'); // Replace with your actual hero image for this page
   background-size: cover;
   background-position: center;
   // No text overlay as per the provided full-page image for industry dynamics
