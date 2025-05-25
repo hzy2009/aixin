@@ -1,7 +1,9 @@
 <template>
   <a-card :bordered="true" class="sourcing-card">
     <div class="card-top-row">
-      <a-tag v-if="item.category" :color="getCategoryColor(item.category)" class="category-tag">{{ item.category }}</a-tag>
+      <a-tag v-if="item.reqPartsType" :color="getCategoryColor(item.reqPartsType)" class="category-tag">{{
+        item.reqPartsType
+      }}</a-tag>
       <span class="card-views">
         <UserOutlined /> {{ item.views || 0 }}
       </span>
@@ -17,8 +19,12 @@
 
     <div class="card-footer">
       <div class="card-meta">
-        <span class="meta-item"><CalendarOutlined /> {{ item.date }}</span>
-        <span class="meta-item"><EnvironmentOutlined /> {{ item.location }}</span>
+        <span class="meta-item">
+          <CalendarOutlined /> {{ item.expireDate }}
+        </span>
+        <span class="meta-item">
+          <EnvironmentOutlined /> {{ item.location }}
+        </span>
       </div>
       <a-button type="default" @click="viewDetails(item.id)" class="details-btn">查看详情</a-button>
     </div>
@@ -29,22 +35,24 @@
 import { Card as ACard, Tag as ATag, Button as AButton } from 'ant-design-vue';
 import { UserOutlined, CalendarOutlined, EnvironmentOutlined } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/store/authStore';
 
 const props = defineProps({
   item: {
     type: Object,
     required: true,
     default: () => ({
-        id: '',
-        category: 'Pump',
-        title: '28nm工艺节点芯片设计优化',
-        views: 86,
-        description: '攻关内容攻关内容攻关内容攻关内容攻关内容攻关内容攻关内容攻关内容攻关内容攻关内容攻关内容攻关内容...',
-        date: '2024/6/18',
-        location: '华东'
+      id: '',
+      category: 'Pump',
+      title: '28nm工艺节点芯片设计优化',
+      views: 86,
+      description: '攻关内容攻关内容攻关内容攻关内容攻关内容攻关内容攻关内容攻关内容攻关内容攻关内容攻关内容攻关内容...',
+      date: '2024/6/18',
+      location: '华东'
     })
   }
 });
+const authStore = useAuthStore();
 
 const router = useRouter();
 
@@ -59,8 +67,14 @@ const getCategoryFontColor = (category) => {
 
 
 const viewDetails = (id) => {
+  authStore.tkone
+  if (isLogin) {
+    router.push(`/user/demands/DemandDetailPage/${id}`);
+  } else {
+    router.push('/login');
+  }
   // TODO: Navigate to actual details page
-  router.push(`/demand-square/detail/${id}`);
+  // router.push(`/demand-square/detail/${id}`);
   console.log('View details for item ID:', id);
 };
 </script>
@@ -78,7 +92,8 @@ const viewDetails = (id) => {
   flex-direction: column;
   height: 100%;
 
-  :deep(.ant-card-body) { // Remove AntD's default card body padding
+  :deep(.ant-card-body) {
+    // Remove AntD's default card body padding
     padding: 0;
     height: 100%;
     display: flex;
@@ -107,6 +122,7 @@ const viewDetails = (id) => {
   font-size: 14px;
   color: @primary-color; // Red color for views count
   font-weight: 500;
+
   .anticon-user {
     margin-right: 4px;
     font-size: 16px; // Slightly larger icon
@@ -170,6 +186,7 @@ const viewDetails = (id) => {
   .meta-item {
     display: flex;
     align-items: center;
+
     .anticon {
       margin-right: 6px; // Space after icon
       font-size: 14px;
@@ -185,7 +202,8 @@ const viewDetails = (id) => {
   padding: 5px 15px; // Adjust padding
   height: auto;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     border-color: @primary-color-dark;
     color: @primary-color-dark;
     background-color: fade(@primary-color, 5%); // Very light red background on hover

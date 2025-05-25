@@ -17,13 +17,13 @@
       <div :key="activeTabKey" class="tab-content-wrapper">
         <template v-if="currentDemandDataHookInstance">
           <FilterPanel :filter-config="currentFilterConfig"
-            :initial-filters="currentDemandDataHookInstance.currentFilters.value"
-            :initial-search-term="currentDemandDataHookInstance.keyWord.value" @filters-updated="handleFiltersUpdated"
+            :initial-filters="currentDemandDataHookInstance.currentFilters"
+            :initial-search-term="currentDemandDataHookInstance.keyWord" @filters-updated="handleFiltersUpdated"
             @search-term-applied="handleSearchTermApplied" ref="filterPanelRef" class="content-section" />
 
           <div class="results-summary-bar content-section">
             <div class="summary-text">
-              为您找到 <span class="count">{{ currentDemandDataHookInstance.totalItems.value }}</span> 个{{
+              为您找到 <span class="count">{{ currentDemandDataHookInstance.totalItems }}</span> 个{{
                 getTabName(activeTabKey) }}
             </div>
             <a-button type="primary" @click="createRequestOrEvent" class="create-request-btn">
@@ -31,23 +31,19 @@
             </a-button>
           </div>
 
-          <div v-if="currentDemandDataHookInstance.isLoading.value" class="loading-spinner content-section">
+          <div v-if="currentDemandDataHookInstance.isLoading" class="loading-spinner content-section">
             <a-spin size="large" />
           </div>
-
           <!-- Conditional Rendering for different list/grid views -->
-          <template
-            v-else-if="currentDemandDataHookInstance.items.value && currentDemandDataHookInstance.items.value.length > 0">
+          <template v-else-if="currentDemandDataHookInstance.items && currentDemandDataHookInstance.items.length > 0">
             <div v-if="activeTabKey === 'industryReport'" class="results-list content-section">
-              <IndustryReportItem v-for="item in currentDemandDataHookInstance.items.value" :key="item.id"
-                :report="item" />
+              <IndustryReportItem v-for="item in currentDemandDataHookInstance.items" :key="item.id" :report="item" />
             </div>
             <div v-else-if="activeTabKey === 'offlineEvents'" class="results-grid content-section">
-              <OfflineEventCard v-for="item in currentDemandDataHookInstance.items.value" :key="item.id"
-                :event="item" />
+              <OfflineEventCard v-for="item in currentDemandDataHookInstance.items" :key="item.id" :event="item" />
             </div>
-            <div v-else class="results-grid content-section"> {/* Default grid for sourcing types */}
-              <SourcingResultCard v-for="item in currentDemandDataHookInstance.items.value" :key="item.id" :item="item"
+            <div v-else class="results-grid content-section">
+              <SourcingResultCard v-for="item in currentDemandDataHookInstance.items" :key="item.id" :item="item"
                 :item-type="activeTabKey" />
             </div>
           </template>
@@ -56,10 +52,10 @@
           </div>
 
           <div
-            v-if="currentDemandDataHookInstance.items.value && currentDemandDataHookInstance.items.value.length > 0 && currentDemandDataHookInstance.totalItems.value > currentDemandDataHookInstance.pagination.pageSize"
+            v-if="currentDemandDataHookInstance.items && currentDemandDataHookInstance.items.length > 0 && currentDemandDataHookInstance.totalItems > currentDemandDataHookInstance.pagination.pageSize"
             class="pagination-container content-section">
             <a-pagination v-model:current="currentDemandDataHookInstance.pagination.currentPage"
-              :total="currentDemandDataHookInstance.totalItems.value"
+              :total="currentDemandDataHookInstance.totalItems"
               :page-size="currentDemandDataHookInstance.pagination.pageSize" show-less-items show-quick-jumper
               @change="handlePageChange" />
           </div>
@@ -85,14 +81,13 @@ import FilterPanel from '../components/FilterPanel.vue';
 import SourcingResultCard from '../components/SourcingResultCard.vue'; // Assuming this card is generic enough
 import IndustryReportItem from '../components/IndustryReportItem.vue'; // Import new component
 import OfflineEventCard from '../components/OfflineEventCard.vue'; // Import new card
-import { useDemandData } from '../composables/useDemandData.js';
+import { useDemandData } from '../hooks/useDemandData.js';
 
 const router = useRouter();
 const activeTabKey = ref('domestic');
 const filterPanelRef = ref(null);
 
 // --- Tab Configuration ---
-// Ensure 'originalSourcing' has usesDemandHook: true
 const pageTabs = ref([
   { key: 'domestic', label: '国产替代寻源', usesDemandHook: true, createActionText: '创建国产替代寻源', createActionIcon: PlusOutlined },
   { key: 'originalSourcing', label: '原厂件寻源', usesDemandHook: true, createActionText: '创建原厂件寻源', createActionIcon: PlusOutlined },
@@ -154,6 +149,8 @@ function initializeDemandDataForTab(tabKey) {
     else if (tabKey === 'offlineEvents') pageSizeForHook = 6; // Events might also look better with fewer items per page
 
     currentDemandDataHookInstance.value = useDemandData(tabKey);
+    console.log(`Initializing demand data for tab: ${tabKey}`);
+    console.log(`Initializing demand data for tab:`, currentDemandDataHookInstance.value);
     currentDemandDataHookInstance.value.pagination.pageSize = pageSizeForHook;
     currentDemandDataHookInstance.value.loadItems();
   } else {

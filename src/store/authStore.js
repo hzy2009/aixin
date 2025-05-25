@@ -13,6 +13,7 @@ export const useAuthStore = defineStore('auth', {
     // Example role getters - adjust based on your user object structure
     isMember: (state) => state.user && state.user.role === 'member',
     isAdmin: (state) => state.user && state.user.role === 'admin',
+    isLogin: (state) => !!state.userInfo,
   },
   actions: {
     async login(params) {
