@@ -30,7 +30,7 @@
         </a-input>
         <a-button type="primary" @click="triggerSearch" class="search-btn">搜索</a-button>
       </div>
-      <a-button type="primary" @click="createNewSourcing" class="create-new-btn">
+      <a-button type="primary" @click="createNewSourcing" class="create-new-btn" v-if="isVIP">
         创建国产替代寻源
       </a-button>
     </div>
@@ -86,7 +86,8 @@ const {
   handleFiltersChange,  // Method from hook
   triggerSearch,        // Method from hook
   handleTablePaginationChange, // Method from hook
-  getStatusTagColor     // Method from hook
+  getStatusTagColor,
+  isVIP, // Ref from hook
 } = useUserDemandList({
   otherParams: {
     sourcingType: '国产替代寻源'

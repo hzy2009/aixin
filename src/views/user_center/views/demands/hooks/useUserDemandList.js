@@ -101,7 +101,10 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
   };
 
   const getStatusTagColor = (statusKey) => statusMapping[statusKey]?.color || 'default';
-
+  
+  const isVIP = computed(() => {
+    return auth.isVIP || false;
+  });
 
   onMounted(() => {
     loadStats();
@@ -124,5 +127,6 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     handleTablePaginationChange,
     getStatusTagColor,
     selectOptions,
+    isVIP,
   };
 }
