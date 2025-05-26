@@ -20,7 +20,7 @@ export function useDemandDetail({demandIdProp, mode, url, otherParams}) { // 接
     return authStore.isVip && authStore.userInfo?.username === demandDetail.value?.createBy
   });
 
-  const canViewStatusHistoryTable = computed(() => {
+  const isManagerAdmin = computed(() => {
     return authStore.isManagerAdmin
   });
   // --- 权限计算结束 ---
@@ -126,7 +126,7 @@ export function useDemandDetail({demandIdProp, mode, url, otherParams}) { // 接
     error,
     operationMode, // 'create' or 'view'
     canEditThisDemand,
-    canViewStatusHistoryTable,
+    isManagerAdmin,
     fetchDemandDetail, // 允许外部刷新
     handleSave,
     handleSubmit,

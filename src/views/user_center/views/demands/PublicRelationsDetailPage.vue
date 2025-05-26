@@ -15,11 +15,10 @@
           <h3 class="section-title">基本信息</h3>
         </div>
         <DynamicForm ref="dynamicFormRef" :form-config="currentFormConfig" :initial-model="formModel"
-          :is-edit-mode="isFormEditable" :default-span="12" form-layout="vertical" />
+          :is-edit-mode="isFormEditable || isManagerAdmin" :default-span="12" form-layout="vertical" />
       </section>
 
-      <section v-if="canViewStatusHistoryTable && operationMode !== 'create'"
-        class="info-section status-history-section">
+      <section v-if="isManagerAdmin && operationMode !== 'create'" class="info-section status-history-section">
         <div class="section-header">
           <span class="decorator"></span>
           <!-- <h3 class="section-title">{{ demandTypeDisplayName }}状态</h3> -->
@@ -38,6 +37,9 @@
         <a-button v-if="isFormEditable" type="primary" @click="handleSubmitForm" :loading="isSubmitting"
           style="margin-left: 8px;">
           {{ '提交' }}
+        </a-button>
+        <a-button v-if="isManagerAdmin" type="primary" @click="save" :loading="isSubmitting" style="margin-left: 8px;">
+          {{ '审批' }}
         </a-button>
       </div>
 
@@ -67,7 +69,7 @@ const {
   error,
   operationMode, // 现在从 hook 中获取
   canEditThisDemand,
-  canViewStatusHistoryTable,
+  isManagerAdmin,
   fetchDemandDetail,
   handleSave,
   handleSubmit,
@@ -110,10 +112,10 @@ const isFormEditable = computed(() => {
 
 // --- 表单配置 ---
 const formConfigs = [
-  { label: '研发公关方向', field: 'rdType', fieldType: 'select', dictKey: 'rd_type', span: 24 },
-  { label: '研发公关需求', field: 'sourceDesc', fieldType: 'input', span: 24, },
-  { label: '研发公关最新需求状态', field: 'statusCode', fieldType: 'select', dictKey: 'rd_breakthrough_status', span: 24, disabled: !canViewStatusHistoryTable },
-  { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, },
+  { label: '研发公关方向', field: 'rdType', fieldType: 'select', dictKey: 'rd_type', span: 24, disabled: isManagerAdmin },
+  { label: '研发公关需求', field: 'sourceDesc', fieldType: 'input', span: 24, disabled: isManagerAdmin },
+  { label: '研发公关最新需求状态', field: 'statusCode', fieldType: 'select', dictKey: 'rd_breakthrough_status', span: 24, disabled: !isManagerAdmin },
+  { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, disabled: isManagerAdmin },
 ]
 
 const currentFormConfig = computed(() => {
