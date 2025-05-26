@@ -52,13 +52,11 @@ import { useRoute, useRouter } from 'vue-router';
 import { Button as AButton, Spin as ASpin, Alert as AAlert, Empty as AEmpty, Table as ATable, Breadcrumb as ABreadcrumb, BreadcrumbItem as ABreadcrumbItem, message } from 'ant-design-vue';
 import DynamicForm from '../../components/DynamicForm.vue';
 import { useDemandDetail } from './hooks/useDemandDetail.js';
-import { useAuthStore } from '@/store/authStore';
 
 const props = defineProps({
   demandIdProp: { type: String, default: null },
   mode: { type: String, default: 'view' }, // 'create', 'view'
   demandType: { type: String, default: 'domestic' }, // e.g., 'domestic', 'originalSourcing'
-  business_type: { type: String, default: 'domestic' }, // 业务类型
 });
 
 const router = useRouter();
@@ -75,7 +73,7 @@ const {
   handleSave,
   handleSubmit,
 } = useDemandDetail({
-  demandIdProp: props.demandIdProp, mode: props.mode, business_type: props.business_type, demandTypeProp: props.demandType, url: {
+  demandIdProp: props.demandIdProp, mode: props.mode, demandTypeProp: props.demandType, url: {
     add: 'apm/apmSourcing/add',
     edit: 'apm/apmSourcing/edit',
     detail: 'apm/apmSourcing/queryById',

@@ -22,19 +22,22 @@
         class="info-section status-history-section">
         <div class="section-header">
           <span class="decorator"></span>
-          <h3 class="section-title">{{ demandTypeDisplayName }}状态</h3>
+          <!-- <h3 class="section-title">{{ demandTypeDisplayName }}状态</h3> -->
+          <h3 class="section-title">历史状态</h3>
         </div>
-        <a-table :columns="statusHistoryColumns" :data-source="demandDetailData.statusHistory" :pagination="false"
+        <a-table :columns="statusHistoryColumns" :data-source="demandDetailData.logList" :pagination="false"
           row-key="seq" bordered size="small" />
       </section>
 
       <div class="page-actions">
-        <!-- "取消" 按钮：新建时是“重置”，编辑查看时是“返回”或“取消编辑” -->
-        <a-button @click="handleCancelAction">{{ cancelActionText }}</a-button>
+        <a-button @click="goBack">{{ '返回' }}</a-button>
         <!-- "保存" 或 "提交" 按钮：仅在可编辑时显示 -->
+        <a-button v-if="isFormEditable" type="primary" @click="save" :loading="isSubmitting" style="margin-left: 8px;">
+          {{ '保存' }}
+        </a-button>
         <a-button v-if="isFormEditable" type="primary" @click="handleSubmitForm" :loading="isSubmitting"
           style="margin-left: 8px;">
-          {{ operationMode === 'create' ? '提交创建' : '保存修改' }}
+          {{ '提交' }}
         </a-button>
       </div>
 
@@ -49,16 +52,15 @@ import { useRoute, useRouter } from 'vue-router';
 import { Button as AButton, Spin as ASpin, Alert as AAlert, Empty as AEmpty, Table as ATable, Breadcrumb as ABreadcrumb, BreadcrumbItem as ABreadcrumbItem, message } from 'ant-design-vue';
 import DynamicForm from '../../components/DynamicForm.vue';
 import { useDemandDetail } from './hooks/useDemandDetail.js';
-import { useAuthStore } from '@/store/authStore';
 
 const props = defineProps({
   demandIdProp: { type: String, default: null },
   mode: { type: String, default: 'view' }, // 'create', 'view'
-  demandType: { type: String, default: 'domestic' }, // e.g., 'domestic', 'originalSourcing'
-  business_type: { type: String, default: 'domestic' }, // 业务类型
+  demandType: { type: String, default: 'rndCollaboration' }, // e.g., 'domestic', 'originalSourcing'
 });
 
 const router = useRouter();
+console.log('DemandDetailPage props:', props.demandType);
 
 const {
   demandDetail: demandDetailData,
@@ -69,8 +71,9 @@ const {
   canViewStatusHistoryTable,
   fetchDemandDetail,
   handleSave,
+  handleSubmit,
 } = useDemandDetail({
-  demandIdProp: props.demandIdProp, mode: props.mode, business_type: props.business_type, demandTypeProp: props.demandType, url: {
+  demandIdProp: props.demandIdProp, mode: props.mode, url: {
     add: 'apm/apmRdBreakthrough/add',
     edit: 'apm/apmRdBreakthrough/edit',
     detail: 'apm/apmRdBreakthrough/queryById',
@@ -89,7 +92,7 @@ watch(demandDetailData, (newDetail) => {
     formModel.value = JSON.parse(JSON.stringify(newDetail)); // 深拷贝以编辑
   } else if (operationMode.value === 'create') {
     // 如果是新建模式且 newDetail 为 null（例如 hook 初始化时），确保 formModel 有基础结构
-    formModel.value = { // 根据 demandType 设置默认值
+    formModel.value = {
       expireDate: null,
       // ... 其他类型需要的默认字段 ...
     };
@@ -107,27 +110,15 @@ const isFormEditable = computed(() => {
 
 
 // --- 表单配置 ---
-// TODO: 为每种 demandType 定义具体的表单配置
-const formConfigs = {
-  base: [
-    // , rules: [{ required: true, message: '必填!' }]
-    { label: '检测验证类型', field: 'projectType', fieldType: 'select', dictKey: 'inspection_type', span: 24 },
-    { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, },
-    { label: '检测验证需求状态', field: 'statusCode', fieldType: 'select', dictKey: 'sourcing_status', span: 24 },
-  ],
-  originalSourcing: [
-    { label: '品牌', field: 'manufacturer', fieldType: 'select', options: [{ value: 'ti', label: 'TI' }], rules: [{ required: true, message: '必填!' }], span: 24 },
-    { label: '器件分类', field: 'partCategory', fieldType: 'select', options: [{ value: 'mcu', label: 'MCU' }], rules: [{ required: true, message: '必填!' }], span: 24 },
-    { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24 },
-    { label: '供货状态', field: 'availability', fieldType: 'select', options: [{ value: 'inStock', label: '现货' }], rules: [{ required: true, message: '必填!' }], span: 24 },
-    { label: '详细描述', field: 'description', fieldType: 'textarea', rows: 3, span: 24 },
-    // ... 其他 "原厂件" 字段 ...
-  ],
-  // ... 为 rndCollaboration, testingValidation 等也定义配置 ...
-};
+const formConfigs = [
+  // , rules: [{ required: true, message: '必填!' }]
+  { label: '检测验证类型', field: 'projectType', fieldType: 'select', dictKey: 'inspection_type', span: 24 },
+  { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, },
+  { label: '检测验证需求状态', field: 'statusCode', fieldType: 'select', dictKey: 'sourcing_status', span: 24 },
+]
 
 const currentFormConfig = computed(() => {
-  const baseConfig = formConfigs.base || [];
+  const baseConfig = formConfigs || [];
   // 根据 isFormEditable 动态调整规则的 required 状态
   return baseConfig.map(field => ({
     ...field,
@@ -139,21 +130,19 @@ const currentFormConfig = computed(() => {
   }));
 });
 
-const statusHistoryColumns = [{ title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' }, { title: '状态', dataIndex: 'status', key: 'status' }, { title: '完成日期', dataIndex: 'date', key: 'date' }, { title: '单号', dataIndex: 'orderNo', key: 'orderNo' }, { title: '时间', dataIndex: 'time', key: 'time' }, { title: '备注', dataIndex: 'note', key: 'note' },];
+const statusHistoryColumns = [
+  { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' },
+  { title: '状态', dataIndex: 'operateCode', key: 'operateCode' },
+  { title: '完成日期', dataIndex: 'createTime', key: 'createTime' },
+  { title: '备注', dataIndex: 'remark', key: 'remark' },
+]
 
-const handleSubmitForm = async () => {
+const save = async () => {
   try {
     await dynamicFormRef.value?.validate();
     const params = dynamicFormRef.value?.getAllData()
     isSubmitting.value = true;
-    const success = await handleSave(params);
-    if (success && operationMode.value !== 'create') { // 编辑成功
-      // 此时 hook 内部的 operationMode 可能已变回 'view'，或者 demandDetailData 已更新
-      // isFormEditable 会自动更新
-    } else if (success && operationMode.value === 'create') {
-      // 新建成功，hook内部已处理跳转和状态更新
-      router.go(-1); // 或者跳转到列表页
-    }
+    await handleSave(params);
   } catch (validationError) {
     console.log('表单校验失败:', validationError);
   } finally {
@@ -161,43 +150,24 @@ const handleSubmitForm = async () => {
   }
 };
 
-const cancelActionText = computed(() => {
-  if (operationMode.value === 'create') return '重置表单';
-  if (isFormEditable.value) return '放弃修改'; // 如果是从查看模式点击编辑按钮后
-  return '关闭'; // 默认查看模式下，取消按钮可能是关闭/返回
-});
-
-const handleCancelAction = () => {
-  if (operationMode.value === 'create') {
-    // 重置表单到初始/默认状态
-    if (dynamicFormRef.value) dynamicFormRef.value.resetFields(); // AntD form reset
-    // 手动重置 formModel 到创建时的初始状态
-    formModel.value = JSON.parse(JSON.stringify(demandDetailData.value || { // 使用hook中的初始值
-      expireDate: null,
-    }));
-    message.info('表单已重置');
-  } else { // 查看或编辑模式
-    // 如果当前是可编辑状态（意味着用户可能修改了数据），则恢复到原始数据
-    if (isFormEditable.value && demandDetailData.value) {
-      formModel.value = JSON.parse(JSON.stringify(demandDetailData.value));
-      if (dynamicFormRef.value) dynamicFormRef.value.clearValidate();
-      message.info('修改已取消');
-      // 注意：这里不改变 operationMode，因为 "放弃修改" 后用户应仍在查看页面。
-      // 如果你的逻辑是 "放弃修改" = "返回上一页"，则调用 goBack()
-    } else {
-      // 如果是查看模式，"取消" 按钮等同于 "返回"
-      goBack();
-    }
+const handleSubmitForm = async () => {
+  try {
+    await dynamicFormRef.value?.validate();
+    const params = dynamicFormRef.value?.getAllData()
+    isSubmitting.value = true;
+    await handleSubmit(params);
+  } catch (validationError) {
+    console.log('表单校验失败:', validationError);
+  } finally {
+    isSubmitting.value = false;
   }
 };
-
 
 const goBack = () => {
   router.go(-1); // 或 router.push({ name: 'MyDemandsList' })
 };
 
-const demandTypeDisplayName = ref('检测验证');
-
+const demandTypeDisplayName = ref('研发攻关')
 const pageTitle = computed(() => {
   if (operationMode.value === 'create') {
     return `新建${demandTypeDisplayName.value}`;
