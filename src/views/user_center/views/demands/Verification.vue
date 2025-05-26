@@ -54,7 +54,7 @@ const pageData = ref({
 })
 
 
-function viewDetails(id) {
+function viewDetails({ id }) {
     router.push(`/user/demands/Verification/${id}`);
 };
 function createNewSourcing() {

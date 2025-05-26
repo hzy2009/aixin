@@ -46,7 +46,7 @@
                         </a-tag>
                     </template>
                     <template v-else-if="column.key === 'actions'">
-                        <a-button type="link" @click="actions?.clickFn(record)" class="action-link"
+                        <a-button type="link" @click="action?.clickFn(record)" class="action-link"
                             v-for="(action, i) in actions" :key="i">
                             {{ action.text }}
                         </a-button>

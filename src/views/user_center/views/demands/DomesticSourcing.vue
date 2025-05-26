@@ -57,7 +57,7 @@ const pageData = ref({
 })
 
 
-function viewDetails(id) {
+function viewDetails({ id }) {
   router.push(`/user/demands/DomesticSourcing/${id}`);
 };
 function createNewSourcing() {

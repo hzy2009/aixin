@@ -52,7 +52,7 @@ const pageData = ref({
 })
 
 
-function viewDetails(id) {
+function viewDetails({ id }) {
     router.push(`/user/demands/PublicRelations/${id}`);
 };
 function createNewSourcing() {
