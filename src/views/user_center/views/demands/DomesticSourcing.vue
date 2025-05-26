@@ -23,7 +23,7 @@
     <!-- 3. Search and Action Bar -->
     <div class="search-action-bar">
       <div class="search-input-wrapper">
-        <a-input v-model:value="keyWord.value" placeholder="请输入关键字" allow-clear @pressEnter="triggerSearch">
+        <a-input v-model:value="search" placeholder="请输入关键字" allow-clear @pressEnter="triggerSearch">
           <template #prefix>
             <SearchOutlined />
           </template>
@@ -72,18 +72,14 @@ import { useUserDemandList } from './hooks/useUserDemandList.js'; // Adjust path
 const router = useRouter();
 const userFilterAccordionRef = ref(null); // Keep if you need to call methods on it
 
-// --- Filter Configuration (remains in component as it's UI specific) ---
-const filterConfigForPage = ref([
-  { id: 'sourcingType', label: '分类', maxVisibleWithoutMore: 7, options: [{ value: 'all', label: '全部' }, { value: 'pump', label: 'Pump' }, { value: 'mfc', label: 'MFC' }, { value: 'sensor', label: 'Sensor' }, { value: 'valve', label: 'Valve' }, { value: 'motor', label: 'Motor' }, { value: 'actuator', label: 'Actuator' }, { value: 'o-ring', label: 'O-ring' }, { value: 'filter', label: 'Filter' }, { value: 'seal', label: 'Seal' }, { value: 'bearing', label: 'Bearing' }] },
-  { id: 'region', label: '区域', maxVisibleWithoutMore: 3, options: [{ value: 'all', label: '全部' }, { value: 'huadong', label: '华东' }, { value: 'huanan', label: '华南' }, { value: 'huazhong', label: '华中' }, { value: 'huabei', label: '华北' }, { value: 'xinan', label: '西南' }, { value: 'xibei', label: '西北' }] },
-  { id: 'sourcingStatus', label: '寻源状态', maxVisibleWithoutMore: 7, options: [{ value: 'all', label: '全部' }, { value: 'published', label: '寻源发布' }, { value: 'sourcing', label: '寻源中' }, { value: 'found', label: '已寻到' }, { value: 'not_found', label: '未寻到' }, { value: 'user_recommended', label: '用户推荐' }, { value: 'third_party_match', label: '三方对接' }, { value: 'verified', label: '验证' }, { value: 'closed', label: '已关闭' }, { value: 'inProgress', label: '进行中' }, { value: 'pending', label: '未响应' }] }
-]);
+
 
 // --- Use the Hook ---
 const {
+  selectOptions,
   stats,
   currentFilters,       // Ref from hook
-  keyWord,    // Ref from hook
+  search,    // Ref from hook
   isLoading,            // Ref from hook
   tableData,            // Ref from hook
   pagination,           // Reactive object from hook
@@ -96,19 +92,25 @@ const {
     sourcingType: '国产替代寻源'
   },
   url: 'apm/apmSourcing/list'
-}); // Pass the specific type for this page
+});
+
+// --- Filter Configuration (remains in component as it's UI specific) ---
+const filterConfigForPage = ref([
+  { id: 'reqPartsType', label: '分类', maxVisibleWithoutMore: 7, options: selectOptions('req_parts_type') },
+  // { id: 'region', label: '区域', maxVisibleWithoutMore: 3, options: [{ value: 'all', label: '全部' }, { value: 'huadong', label: '华东' }, { value: 'huanan', label: '华南' }, { value: 'huazhong', label: '华中' }, { value: 'huabei', label: '华北' }, { value: 'xinan', label: '西南' }, { value: 'xibei', label: '西北' }] },
+  { id: 'statusCode', label: '寻源状态', maxVisibleWithoutMore: 7, options: selectOptions('sourcing_status') }
+]);
 
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = computed(() => [
-  { title: '单号', dataIndex: 'id', key: 'id', ellipsis: true, },
+  { title: '单号', dataIndex: 'id', key: 'id', ellipsis: true, width: '120px' },
   { title: '需求方', dataIndex: 'id', key: 'id', ellipsis: true, },
-  { title: '国产替代寻源', dataIndex: 'sourcingTitle', key: 'sourcingTitle', ellipsis: true, },
-  { title: '寻源类型', dataIndex: 'sourcingType', key: 'sourcingType', width: '12%', align: 'center' }, // This should be 'sourcingType' from mock
-  { title: '寻源件类型', dataIndex: 'reqPartsType', key: 'reqPartsType', width: '12%', align: 'center' }, // Corrected key
-  { title: '状态名称', dataIndex: 'statusName', key: 'statusName', width: '10%', align: 'center' }, // Key matches display field
-  { title: '寻源有效期', dataIndex: 'expireDate', key: 'expireDate', width: '12%', align: 'center' },
-  { title: '发布日期', dataIndex: 'publishDate', key: 'publishDate', width: '12%', align: 'center' },
-  { title: '流程编号', dataIndex: 'processNumber', key: 'processNumber', width: '12%', ellipsis: true },
+  { title: '创建日期', dataIndex: 'createTime', key: 'createTime', ellipsis: true, },
+  { title: '计划完成日期', dataIndex: 'expireDate', key: 'expireDate', ellipsis: true, width: '120px' },
+  { title: '需求数量', dataIndex: 'xx', key: 'xx', ellipsis: true, },
+  { title: '需求状态', dataIndex: 'statusName', key: 'statusName', ellipsis: true, width: '80px' },
+  { title: '已寻到数量', dataIndex: 'xx', key: 'xx', ellipsis: true, },
+  { title: '未寻到数量', dataIndex: 'xx', key: 'xx', ellipsis: true, },
   { title: '操作', key: 'actions', width: '10%', align: 'center', fixed: 'right' },
 ]);
 
@@ -140,5 +142,5 @@ const createNewSourcing = () => {
 
 <style scoped lang="less">
 @import '@/assets/styles/_variables.less';
-@import './styles/index.less';
+@import './styles/list.less';
 </style>

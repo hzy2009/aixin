@@ -22,18 +22,22 @@
         class="info-section status-history-section">
         <div class="section-header">
           <span class="decorator"></span>
-          <h3 class="section-title">{{ demandTypeDisplayName }}状态</h3>
+          <!-- <h3 class="section-title">{{ demandTypeDisplayName }}状态</h3> -->
+          <h3 class="section-title">历史状态</h3>
         </div>
-        <a-table :columns="statusHistoryColumns" :data-source="demandDetailData.statusHistory" :pagination="false"
+        <a-table :columns="statusHistoryColumns" :data-source="demandDetailData.logList" :pagination="false"
           row-key="seq" bordered size="small" />
       </section>
 
       <div class="page-actions">
-        <a-button @click="handleCancelAction">{{ cancelActionText }}</a-button>
+        <a-button @click="goBack">{{ '返回' }}</a-button>
         <!-- "保存" 或 "提交" 按钮：仅在可编辑时显示 -->
+        <a-button v-if="isFormEditable" type="primary" @click="save" :loading="isSubmitting" style="margin-left: 8px;">
+          {{ '保存' }}
+        </a-button>
         <a-button v-if="isFormEditable" type="primary" @click="handleSubmitForm" :loading="isSubmitting"
           style="margin-left: 8px;">
-          {{ '保存' }}
+          {{ '提交' }}
         </a-button>
       </div>
 
@@ -68,7 +72,8 @@ const {
   canEditThisDemand,
   canViewStatusHistoryTable,
   fetchDemandDetail,
-  submitDemand,
+  handleSave,
+  handleSubmit,
 } = useDemandDetail({
   demandIdProp: props.demandIdProp, mode: props.mode, business_type: props.business_type, demandTypeProp: props.demandType, url: {
     add: 'apm/apmSourcing/add',
@@ -111,27 +116,14 @@ const isFormEditable = computed(() => {
 
 
 // --- 表单配置 ---
-// TODO: 为每种 demandType 定义具体的表单配置
-const formConfigs = {
-  base: [
-    // , rules: [{ required: true, message: '必填!' }]
-    { label: '寻源件类型', field: 'reqPartsType', fieldType: 'select', dictKey: 'req_parts_type', span: 24 },
-    { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, },
-    { label: '寻源件状态', field: 'statusCode', fieldType: 'select', dictKey: 'sourcing_status', span: 24, disabled: true },
-  ],
-  originalSourcing: [
-    { label: '品牌', field: 'manufacturer', fieldType: 'select', options: [{ value: 'ti', label: 'TI' }], rules: [{ required: true, message: '必填!' }], span: 24 },
-    { label: '器件分类', field: 'partCategory', fieldType: 'select', options: [{ value: 'mcu', label: 'MCU' }], rules: [{ required: true, message: '必填!' }], span: 24 },
-    { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24 },
-    { label: '供货状态', field: 'availability', fieldType: 'select', options: [{ value: 'inStock', label: '现货' }], rules: [{ required: true, message: '必填!' }], span: 24 },
-    { label: '详细描述', field: 'description', fieldType: 'textarea', rows: 3, span: 24 },
-    // ... 其他 "原厂件" 字段 ...
-  ],
-  // ... 为 rndCollaboration, testingValidation 等也定义配置 ...
-};
+const formConfigs = [
+  { label: '寻源件类型', field: 'reqPartsType', fieldType: 'select', dictKey: 'req_parts_type', span: 24 },
+  { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, },
+  { label: '寻源件状态', field: 'statusCode', detailField: 'statusName', fieldType: 'select', dictKey: 'sourcing_status', span: 24, disabled: true },
+]
 
 const currentFormConfig = computed(() => {
-  const baseConfig = formConfigs.base || [];
+  const baseConfig = formConfigs || [];
   // 根据 isFormEditable 动态调整规则的 required 状态
   return baseConfig.map(field => ({
     ...field,
@@ -143,21 +135,19 @@ const currentFormConfig = computed(() => {
   }));
 });
 
-const statusHistoryColumns = [{ title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' }, { title: '状态', dataIndex: 'status', key: 'status' }, { title: '完成日期', dataIndex: 'date', key: 'date' }, { title: '单号', dataIndex: 'orderNo', key: 'orderNo' }, { title: '时间', dataIndex: 'time', key: 'time' }, { title: '备注', dataIndex: 'note', key: 'note' },];
+const statusHistoryColumns = [
+  { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' },
+  { title: '状态', dataIndex: 'operateCode', key: 'operateCode' },
+  { title: '完成日期', dataIndex: 'createTime', key: 'createTime' },
+  { title: '备注', dataIndex: 'remark', key: 'remark' },
+]
 
-const handleSubmitForm = async () => {
+const save = async () => {
   try {
     await dynamicFormRef.value?.validate();
     const params = dynamicFormRef.value?.getAllData()
     isSubmitting.value = true;
-    const success = await submitDemand(params);
-    if (success && operationMode.value !== 'create') { // 编辑成功
-      // 此时 hook 内部的 operationMode 可能已变回 'view'，或者 demandDetailData 已更新
-      // isFormEditable 会自动更新
-    } else if (success && operationMode.value === 'create') {
-      // 新建成功，hook内部已处理跳转和状态更新
-      router.go(-1); // 或者跳转到列表页
-    }
+    await handleSave(params);
   } catch (validationError) {
     console.log('表单校验失败:', validationError);
   } finally {
@@ -165,36 +155,18 @@ const handleSubmitForm = async () => {
   }
 };
 
-const cancelActionText = computed(() => {
-  if (operationMode.value === 'create') return '重置表单';
-  if (isFormEditable.value) return '放弃修改'; // 如果是从查看模式点击编辑按钮后
-  return '关闭'; // 默认查看模式下，取消按钮可能是关闭/返回
-});
-
-const handleCancelAction = () => {
-  if (operationMode.value === 'create') {
-    // 重置表单到初始/默认状态
-    if (dynamicFormRef.value) dynamicFormRef.value.resetFields(); // AntD form reset
-    // 手动重置 formModel 到创建时的初始状态
-    formModel.value = JSON.parse(JSON.stringify(demandDetailData.value || { // 使用hook中的初始值
-      expireDate: null,
-    }));
-    message.info('表单已重置');
-  } else { // 查看或编辑模式
-    // 如果当前是可编辑状态（意味着用户可能修改了数据），则恢复到原始数据
-    if (isFormEditable.value && demandDetailData.value) {
-      formModel.value = JSON.parse(JSON.stringify(demandDetailData.value));
-      if (dynamicFormRef.value) dynamicFormRef.value.clearValidate();
-      message.info('修改已取消');
-      // 注意：这里不改变 operationMode，因为 "放弃修改" 后用户应仍在查看页面。
-      // 如果你的逻辑是 "放弃修改" = "返回上一页"，则调用 goBack()
-    } else {
-      // 如果是查看模式，"取消" 按钮等同于 "返回"
-      goBack();
-    }
+const handleSubmitForm = async () => {
+  try {
+    await dynamicFormRef.value?.validate();
+    const params = dynamicFormRef.value?.getAllData()
+    isSubmitting.value = true;
+    await handleSubmit(params);
+  } catch (validationError) {
+    console.log('表单校验失败:', validationError);
+  } finally {
+    isSubmitting.value = false;
   }
 };
-
 
 const goBack = () => {
   router.go(-1); // 或 router.push({ name: 'MyDemandsList' })
@@ -232,132 +204,5 @@ watch(() => props.demandIdProp, (newId) => {
 </script>
 
 <style scoped lang="less">
-@import '@/assets/styles/_variables.less';
-
-.demand-detail-page {
-  background-color: @background-color-base; // Assuming content area is white
-  // padding: @spacing-lg; // Padding is handled by UserCenterLayout's content area
-  // border-radius: @border-radius-base;
-  // box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-}
-
-.page-header-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: @spacing-md;
-  margin-bottom: @spacing-lg;
-  border-bottom: 1px solid @border-color-light;
-}
-
-.page-breadcrumb {
-  font-size: 14px;
-  // No margin needed if it's part of flex
-}
-
-.detail-header-info {
-  margin-bottom: @spacing-xl;
-  display: flex;
-  align-items: baseline; // Align title and ID nicely
-
-  .main-title {
-    font-size: 20px;
-    font-weight: 600;
-    color: @text-color-base;
-    margin: 0;
-  }
-
-  .demand-id-display {
-    margin-left: @spacing-md;
-    font-size: 14px;
-    color: @text-color-secondary;
-    background-color: #f0f2f5;
-    padding: 3px 10px;
-    border-radius: @border-radius-sm;
-  }
-}
-
-.info-section {
-  margin-bottom: @spacing-xxl;
-
-  .section-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: @spacing-lg;
-
-    .decorator {
-      width: 4px;
-      height: 16px; // Slightly shorter decorator
-      background-color: @primary-color;
-      margin-right: @spacing-sm;
-      // No border-radius needed to match design
-    }
-
-    .section-title {
-      font-size: 16px;
-      font-weight: 500; // Less bold section title
-      color: @text-color-base;
-      margin: 0;
-    }
-  }
-}
-
-
-.info-section {
-  margin-bottom: @spacing-xxl;
-
-  .section-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: @spacing-lg;
-
-    .decorator {
-      width: 4px;
-      height: 18px;
-      background-color: @primary-color;
-      margin-right: @spacing-sm;
-      border-radius: 2px;
-    }
-
-    .section-title {
-      font-size: 16px;
-      font-weight: 600;
-      color: @text-color-base;
-      margin: 0;
-    }
-  }
-}
-
-.status-history-section {
-  :deep(.ant-table-thead > tr > th) {
-    background-color: #fafafa;
-    font-weight: 500;
-  }
-
-  :deep(.ant-table-tbody > tr > td) {
-    font-size: 13px;
-  }
-}
-
-
-.page-actions {
-  text-align: left; // Buttons are left-aligned in this design screenshot
-  margin-top: @spacing-xl;
-  padding-top: @spacing-lg;
-  border-top: 1px solid @border-color-light;
-
-  .ant-btn {
-    min-width: 80px; // Ensure buttons have some width
-  }
-}
-
-.loading-state,
-.error-state,
-.no-data-state {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
-  padding: @spacing-xl;
-}
+@import './styles/detail.less';
 </style>

@@ -23,7 +23,7 @@
         <!-- 3. Search and Action Bar -->
         <div class="search-action-bar">
             <div class="search-input-wrapper">
-                <a-input v-model:value="keyWord.value" placeholder="请输入关键字" allow-clear @pressEnter="triggerSearch">
+                <a-input v-model:value="search" placeholder="请输入关键字" allow-clear @pressEnter="triggerSearch">
                     <template #prefix>
                         <SearchOutlined />
                     </template>
@@ -72,18 +72,13 @@ import { useUserDemandList } from './hooks/useUserDemandList.js'; // Adjust path
 const router = useRouter();
 const userFilterAccordionRef = ref(null); // Keep if you need to call methods on it
 
-// --- Filter Configuration (remains in component as it's UI specific) ---
-const filterConfigForPage = ref([
-    { id: 'sourcingType', label: '分类', maxVisibleWithoutMore: 7, options: [{ value: 'all', label: '全部' }, { value: 'pump', label: 'Pump' }, { value: 'mfc', label: 'MFC' }, { value: 'sensor', label: 'Sensor' }, { value: 'valve', label: 'Valve' }, { value: 'motor', label: 'Motor' }, { value: 'actuator', label: 'Actuator' }, { value: 'o-ring', label: 'O-ring' }, { value: 'filter', label: 'Filter' }, { value: 'seal', label: 'Seal' }, { value: 'bearing', label: 'Bearing' }] },
-    { id: 'region', label: '区域', maxVisibleWithoutMore: 3, options: [{ value: 'all', label: '全部' }, { value: 'huadong', label: '华东' }, { value: 'huanan', label: '华南' }, { value: 'huazhong', label: '华中' }, { value: 'huabei', label: '华北' }, { value: 'xinan', label: '西南' }, { value: 'xibei', label: '西北' }] },
-    { id: 'sourcingStatus', label: '寻源状态', maxVisibleWithoutMore: 7, options: [{ value: 'all', label: '全部' }, { value: 'published', label: '寻源发布' }, { value: 'sourcing', label: '寻源中' }, { value: 'found', label: '已寻到' }, { value: 'not_found', label: '未寻到' }, { value: 'user_recommended', label: '用户推荐' }, { value: 'third_party_match', label: '三方对接' }, { value: 'verified', label: '验证' }, { value: 'closed', label: '已关闭' }, { value: 'inProgress', label: '进行中' }, { value: 'pending', label: '未响应' }] }
-]);
 
 // --- Use the Hook ---
 const {
+    selectOptions,
     stats,
     currentFilters,       // Ref from hook
-    keyWord,    // Ref from hook
+    search,    // Ref from hook
     isLoading,            // Ref from hook
     tableData,            // Ref from hook
     pagination,           // Reactive object from hook
@@ -96,6 +91,12 @@ const {
     },
     url: 'apm/apmRdBreakthrough/list'
 }); // Pass the specific type for this page
+
+// --- Filter Configuration (remains in component as it's UI specific) ---
+const filterConfigForPage = ref([
+    { id: 'rdCode', label: '攻关方向', maxVisibleWithoutMore: 7, options: selectOptions('rd_type') },
+    { id: 'statusCode', label: '研发状态', maxVisibleWithoutMore: 7, options: selectOptions('rd_breakthrough_status') }
+]);
 
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = computed(() => [
@@ -135,5 +136,5 @@ const createNewSourcing = () => {
 
 <style scoped lang="less">
 @import '@/assets/styles/_variables.less';
-@import './styles/index.less';
+@import './styles/list.less';
 </style>

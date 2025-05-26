@@ -24,7 +24,7 @@ export function editDemand(data) {
 export function getDemandById(params) {
     return defHttp.get({ url: Api.queryById, params });
 }
-export function submitDemand(data) {
+export function handleSave(data) {
     return defHttp.post({ url: Api.submit, data });
 }
 export function deleteDemand(params) {

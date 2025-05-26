@@ -68,7 +68,7 @@ const {
   canEditThisDemand,
   canViewStatusHistoryTable,
   fetchDemandDetail,
-  submitDemand,
+  handleSave,
 } = useDemandDetail({
   demandIdProp: props.demandIdProp, mode: props.mode, business_type: props.business_type, demandTypeProp: props.demandType, url: {
     add: 'apm/apmRdBreakthrough/add',
@@ -146,7 +146,7 @@ const handleSubmitForm = async () => {
     await dynamicFormRef.value?.validate();
     const params = dynamicFormRef.value?.getAllData()
     isSubmitting.value = true;
-    const success = await submitDemand(params);
+    const success = await handleSave(params);
     if (success && operationMode.value !== 'create') { // 编辑成功
       // 此时 hook 内部的 operationMode 可能已变回 'view'，或者 demandDetailData 已更新
       // isFormEditable 会自动更新
@@ -221,132 +221,5 @@ watch(() => props.demandIdProp, (newId) => {
 </script>
 
 <style scoped lang="less">
-@import '@/assets/styles/_variables.less';
-
-.demand-detail-page {
-  background-color: @background-color-base; // Assuming content area is white
-  // padding: @spacing-lg; // Padding is handled by UserCenterLayout's content area
-  // border-radius: @border-radius-base;
-  // box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-}
-
-.page-header-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: @spacing-md;
-  margin-bottom: @spacing-lg;
-  border-bottom: 1px solid @border-color-light;
-}
-
-.page-breadcrumb {
-  font-size: 14px;
-  // No margin needed if it's part of flex
-}
-
-.detail-header-info {
-  margin-bottom: @spacing-xl;
-  display: flex;
-  align-items: baseline; // Align title and ID nicely
-
-  .main-title {
-    font-size: 20px;
-    font-weight: 600;
-    color: @text-color-base;
-    margin: 0;
-  }
-
-  .demand-id-display {
-    margin-left: @spacing-md;
-    font-size: 14px;
-    color: @text-color-secondary;
-    background-color: #f0f2f5;
-    padding: 3px 10px;
-    border-radius: @border-radius-sm;
-  }
-}
-
-.info-section {
-  margin-bottom: @spacing-xxl;
-
-  .section-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: @spacing-lg;
-
-    .decorator {
-      width: 4px;
-      height: 16px; // Slightly shorter decorator
-      background-color: @primary-color;
-      margin-right: @spacing-sm;
-      // No border-radius needed to match design
-    }
-
-    .section-title {
-      font-size: 16px;
-      font-weight: 500; // Less bold section title
-      color: @text-color-base;
-      margin: 0;
-    }
-  }
-}
-
-
-.info-section {
-  margin-bottom: @spacing-xxl;
-
-  .section-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: @spacing-lg;
-
-    .decorator {
-      width: 4px;
-      height: 18px;
-      background-color: @primary-color;
-      margin-right: @spacing-sm;
-      border-radius: 2px;
-    }
-
-    .section-title {
-      font-size: 16px;
-      font-weight: 600;
-      color: @text-color-base;
-      margin: 0;
-    }
-  }
-}
-
-.status-history-section {
-  :deep(.ant-table-thead > tr > th) {
-    background-color: #fafafa;
-    font-weight: 500;
-  }
-
-  :deep(.ant-table-tbody > tr > td) {
-    font-size: 13px;
-  }
-}
-
-
-.page-actions {
-  text-align: left; // Buttons are left-aligned in this design screenshot
-  margin-top: @spacing-xl;
-  padding-top: @spacing-lg;
-  border-top: 1px solid @border-color-light;
-
-  .ant-btn {
-    min-width: 80px; // Ensure buttons have some width
-  }
-}
-
-.loading-state,
-.error-state,
-.no-data-state {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
-  padding: @spacing-xl;
-}
+@import './styles/detail.less';
 </style>

@@ -1,5 +1,6 @@
 import { ref, reactive, computed, onMounted } from 'vue';
 import defHttp from '@/utils/http/axios'
+import { useAuthStore } from '@/store/authStore';
 
 // 模拟的状态映射表，可以从外部传入或在这里定义
 const defaultStatusMap = {
@@ -18,8 +19,9 @@ const defaultStatusMap = {
 
 export function useUserDemandList({otherParams, initialPageSize = 10, statusMapping = defaultStatusMap, url}) {
   const stats = ref({ pendingResponse: 0, inProgress: 0, completed: 0, total: 0 });
+  const auth = useAuthStore();
   const currentFilters = ref({});
-  const keyWord = ref('');
+  const search = ref('');
   const isLoading = ref(false);
   const tableData = ref([]);
   const pagination = reactive({
@@ -31,7 +33,13 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     showTotal: (total) => `共 ${total} 条`,
     // itemRender can be customized directly in component if needed, or passed as prop to hook
   });
-
+  const selectOptions = (dictKey) => {
+    const all = { value: '', label: '全部' }
+    if (!dictKey) return [];
+    if (!auth.sysAllDictItems[dictKey]) return [all]
+    const options = auth.sysAllDictItems[dictKey].map(({ label, value }) => ({ label, value })) || [];
+    return [all, ...options];
+  }
   // --- API Call Placeholders ---
   // TODO: Replace with actual API calls
   async function fetchStatsAPI() {
@@ -52,8 +60,8 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
       const params = {
         pageNo: pagination.current,
         pageSize: pagination.pageSize,
-        filters: { ...currentFilters.value }, 
-        keyWord: keyWord.value,
+        ...currentFilters.value, 
+        search: search.value,
         ...otherParams,
       };
       const response = await defHttp.get({url: url, params});
@@ -76,8 +84,8 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
   };
 
   const handleSearchTermChange = (newSearchTerm) => {
-    keyWord.value = newSearchTerm;
-    // Decide if keyWord triggers immediately or on button click
+    search.value = newSearchTerm;
+    // Decide if search triggers immediately or on button click
     // For now, let's assume it triggers on button click or Enter
   };
 
@@ -103,7 +111,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
   return {
     stats,
     currentFilters,
-    keyWord,
+    search,
     isLoading,
     tableData,
     pagination, // Expose the reactive pagination object
@@ -111,9 +119,10 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     loadStats,
     loadTableData,
     handleFiltersChange,
-    handleSearchTermChange, // If you want to bind v-model directly to keyWord
+    handleSearchTermChange, // If you want to bind v-model directly to search
     triggerSearch,
     handleTablePaginationChange,
     getStatusTagColor,
+    selectOptions,
   };
 }

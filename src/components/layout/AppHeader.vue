@@ -30,7 +30,7 @@
                 <a-menu-item key="profile">
                   <router-link to="/user/profile">个人中心</router-link>
                 </a-menu-item>
-                <a-menu-item v-if="auth.isAdmin" key="admin">
+                <a-menu-item v-if="auth.isManagerAdmin" key="admin">
                   <router-link to="/admin">后台管理</router-link>
                 </a-menu-item>
                 <a-menu-divider />
@@ -109,6 +109,7 @@ const handleLogout = () => {
     font-weight: 600;
     margin-right: 8px;
   }
+
   .logo-text {
     font-size: 18px;
     font-weight: 500;
@@ -144,7 +145,7 @@ const handleLogout = () => {
   transition: color 0.2s ease, background-color 0.2s ease;
   white-space: nowrap;
   position: relative; // For the ::after pseudo-element
-  
+
   &:hover {
     background-color: @primary-color;
     color: @text-color-light !important;
@@ -181,19 +182,21 @@ const handleLogout = () => {
 
 .login-link {
   color: @text-color-secondary;
+
   &:hover {
     background-color: @primary-color;
-    color: @text-color-light; 
+    color: @text-color-light;
     font-weight: 500;
   }
 }
 
 .register-link {
   background-color: @primary-color;
-  color: @text-color-light; 
+  color: @text-color-light;
   font-weight: 500;
-  &:hover{
-    color:  @text-color-secondary;
+
+  &:hover {
+    color: @text-color-secondary;
     background-color: @background-color-base;
   }
 }
@@ -201,6 +204,7 @@ const handleLogout = () => {
 .user-greeting {
   color: @text-color-secondary;
   cursor: pointer;
+
   &:hover {
     color: @primary-color;
   }
@@ -210,12 +214,22 @@ const handleLogout = () => {
 :deep(.ant-dropdown-menu) {
   .ant-dropdown-menu-item {
     font-size: 14px;
-    a { color: @text-color-base; }
+
+    a {
+      color: @text-color-base;
+    }
+
     &:hover {
       background-color: lighten(@primary-color, 40%);
-      a { color: @primary-color; }
+
+      a {
+        color: @primary-color;
+      }
     }
   }
-  .ant-dropdown-menu-item-divider { margin: 4px 0; }
+
+  .ant-dropdown-menu-item-divider {
+    margin: 4px 0;
+  }
 }
 </style>

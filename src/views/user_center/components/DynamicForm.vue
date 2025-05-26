@@ -9,7 +9,8 @@
             class="form-item-custom">
             <!-- Display Mode -->
             <template v-if="!isEditMode">
-              <span v-if="field.fieldType === 'select' && field.options" class="form-text-display">
+              <span v-if="field.fieldType === 'select' && (field.options || selectOptions(field.dictKey))"
+                class="form-text-display">
                 {{ getSelectDisplayValue(field, internalFormModel[field.field]) }}
               </span>
               <span v-else-if="field.fieldType === 'dateRange' && Array.isArray(internalFormModel[field.field])"
@@ -103,15 +104,16 @@ watch(() => props.initialModel, (newModel) => {
 
 
 const getSelectDisplayValue = (fieldConfig, value) => {
-  if (!fieldConfig.options) return value || '-';
+  let optionsList = fieldConfig.options || selectOptions(fieldConfig.dictKey)
+  if (!optionsList) return value || '-';
   if (fieldConfig.selectMode === 'multiple' || fieldConfig.selectMode === 'tags') {
     if (!Array.isArray(value) || value.length === 0) return '-';
     return value.map(val => {
-      const option = fieldConfig.options.find(opt => opt.value === val);
+      const option = optionsList.find(opt => opt.value === val);
       return option ? option.label : val;
     }).join(', ');
   } else {
-    const option = fieldConfig.options.find(opt => opt.value === value);
+    const option = optionsList.find(opt => opt.value === value);
     return option ? option.label : (value || '-');
   }
 };

@@ -4,31 +4,28 @@
       <div class="filter-row">
         <div class="filter-row__label">{{ group.label }}:</div>
         <div class="filter-row__options">
-          <a-tag
-            v-for="option in group.options.slice(0, group.maxVisibleWithoutMore || group.options.length)"
+          <a-tag v-for="option in group.options.slice(0, group.maxVisibleWithoutMore || group.options.length)"
             :key="option.value"
             :class="['filter-tag', { 'filter-tag--active': selectedFilters[group.id] === option.value }]"
-            @click="toggleFilter(group.id, option.value)"
-          >
+            @click="toggleFilter(group.id, option.value)">
             {{ option.label }}
           </a-tag>
         </div>
-        <div v-if="group.options.length > (group.maxVisibleWithoutMore || group.options.length)" class="filter-row__more">
+        <div v-if="group.options.length > (group.maxVisibleWithoutMore || group.options.length)"
+          class="filter-row__more">
           <a @click="toggleExpand(group.id)" class="more-less-trigger">
             {{ expandedGroups[group.id] ? '收起' : '更多' }}
             <DownOutlined :class="{ 'rotate-icon': expandedGroups[group.id] }" />
           </a>
         </div>
       </div>
-      <a-collapse :activeKey="expandedGroups[group.id] ? [group.id] : []" :bordered="false" class="filter-accordion-collapse">
+      <a-collapse :activeKey="expandedGroups[group.id] ? [group.id] : []" :bordered="false"
+        class="filter-accordion-collapse">
         <a-collapse-panel :key="group.id" :showArrow="false" class="filter-accordion-panel">
           <div class="expanded-options">
-            <a-tag
-              v-for="option in group.options.slice(group.maxVisibleWithoutMore || 0)"
-              :key="option.value"
+            <a-tag v-for="option in group.options.slice(group.maxVisibleWithoutMore || 0)" :key="option.value"
               :class="['filter-tag', { 'filter-tag--active': selectedFilters[group.id] === option.value }]"
-              @click="toggleFilter(group.id, option.value)"
-            >
+              @click="toggleFilter(group.id, option.value)">
               {{ option.label }}
             </a-tag>
           </div>
@@ -82,11 +79,11 @@ const toggleExpand = (groupId) => {
 
 // Method to be called by parent to reset filters
 const resetAllFilters = () => {
-    selectedFilters.value = {};
-    props.filterGroups.forEach(group => {
-        expandedGroups.value[group.id] = false;
-    });
-    emit('filtersChanged', {});
+  selectedFilters.value = {};
+  props.filterGroups.forEach(group => {
+    expandedGroups.value[group.id] = false;
+  });
+  emit('filtersChanged', {});
 };
 defineExpose({ resetAllFilters });
 
@@ -104,8 +101,28 @@ defineExpose({ resetAllFilters });
 
 .filter-group {
   border-bottom: 1px dotted @border-color-light;
+
   &:last-child {
     border-bottom: none;
+  }
+}
+
+.filter-tag {
+  cursor: pointer;
+  padding: 3px 10px;
+  border-radius: @border-radius-sm;
+  background-color: transparent;
+  color: @text-color-secondary; // Default tag color
+  font-size: 14px;
+  border: 1px solid transparent; // No border by default
+
+  &:hover {
+    color: @primary-color;
+  }
+
+  &--active {
+    color: @primary-color;
+    font-weight: 500;
   }
 }
 
@@ -131,25 +148,7 @@ defineExpose({ resetAllFilters });
     align-items: center;
   }
 
-  .filter-tag {
-    cursor: pointer;
-    padding: 3px 10px;
-    border-radius: @border-radius-sm;
-    background-color: transparent;
-    color: @text-color-secondary; // Default tag color
-    font-size: 14px;
-    border: 1px solid transparent; // No border by default
 
-    &:hover {
-      color: @primary-color;
-    }
-    &--active {
-      color: @primary-color;
-      font-weight: 500;
-      // background-color: fade(@primary-color, 10%); // Optional active background
-      // border-color: fade(@primary-color, 30%); // Optional active border
-    }
-  }
 
   &__more {
     margin-left: auto;
@@ -162,14 +161,17 @@ defineExpose({ resetAllFilters });
       cursor: pointer;
       display: inline-flex;
       align-items: center;
+
       &:hover {
         color: @primary-color;
       }
+
       .anticon-down {
         margin-left: 3px;
         font-size: 12px;
         transition: transform 0.2s;
       }
+
       .rotate-icon {
         transform: rotate(180deg);
       }
@@ -179,16 +181,20 @@ defineExpose({ resetAllFilters });
 
 .filter-accordion-collapse {
   background-color: transparent; // Make collapse background transparent
+
   :deep(.ant-collapse-item) {
     border-bottom: none !important; // No border on the collapse item itself
   }
+
   :deep(.ant-collapse-header) {
     display: none; // We use our own trigger
   }
+
   :deep(.ant-collapse-content) {
     padding: 0;
     background-color: transparent; // Background for the content box
   }
+
   :deep(.ant-collapse-content-box) {
     padding: @spacing-sm 0 @spacing-md (@spacing-sm + 80px); // Top/Bottom padding, Indent by label width + margin
   }

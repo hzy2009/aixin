@@ -122,7 +122,7 @@ import {
   message
 } from 'ant-design-vue';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons-vue';
-import { getCodeInfo, loginApi, getUserInfo } from '@/api/user.js';
+import { getCodeInfo } from '@/api/user.js';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -152,17 +152,16 @@ const getCaptchaCode = async () => {
 const onLoginFinish = async values => {
   loginLoading.value = true;
   try {
-    // console.log('Simulating login with:', values);
-    // const dummyUser = { id: Date.now(), name: values.username, role: 'member' };
-    // const dummyToken = 'fake-jwt-token-' + Date.now();
     let data = {
       username: values.username,
       password: values.password,
       checkKey: randCodeData.checkKey,
       captcha: values.captcha
     };
-    await authStore.login(data);
-
+    // 登录
+    let res = await authStore.login(data);
+    // 获取用户角色
+    await authStore.getUserRole(res?.result?.userInfo?.id);
     message.success('登录成功!');
     // const redirectPath = router.currentRoute.value.query.redirect || '/';
     router.push('/user/demands/DomesticSourcing');

@@ -5,6 +5,7 @@ const Api = {
   phoneLogin :'/sys/phoneLogin',
   Logout :'/sys/logout',
   GetUserInfo :'/sys/user/getUserInfo',
+  GetUserRole: '/sys/api/queryUserRolesById',
   // 获取系统权限
   // 1、查询用户拥有的按钮/表单访问权限
   // 2、所有权限
@@ -45,6 +46,6 @@ export function loginApi(data) {
 }
 
 // Get user information
-export function getUserInfo() {
-  return defHttp.get(Api.GetUserInfo);
+export function getUserRoleApi(userId) {
+  return defHttp.get({url:Api.GetUserRole, params: {userId}});
 }

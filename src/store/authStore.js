@@ -1,18 +1,18 @@
 // src/store/authStore.js
 import { defineStore } from 'pinia';
-import { loginApi, getUserInfo } from '@/api/user.js';
+import { loginApi, getUserRoleApi } from '@/api/user.js';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     userInfo: null,
     token: null,
     sysAllDictItems: [],
+    userRole: []
   }),
   getters: {
     isAuthenticated: (state) => !!state.token && !!state.user,
-    // Example role getters - adjust based on your user object structure
-    isMember: (state) => state.user && state.user.role === 'member',
-    isAdmin: (state) => state.user && state.user.role === 'admin',
+    isVip: (state) => state.userRole && state.userRole.includes('apm-vip'),
+    isManagerAdmin: (state) => state.userRole && state.userRole.includes('apm-manager'),
     isLogin: (state) => !!state.userInfo,
   },
   actions: {
@@ -22,6 +22,11 @@ export const useAuthStore = defineStore('auth', {
       this.setToken(token);
       this.setUserInof(userInfo);
       this.setSysAllDictItems(sysAllDictItems);
+      return data;
+    },
+    async getUserRole(userId) {
+      const data = await getUserRoleApi(userId);
+      this.setUserRose(data);
       return data;
     },
     logout() {
@@ -36,6 +41,9 @@ export const useAuthStore = defineStore('auth', {
      setUserInof(info) {
       this.userInfo = info ? info : ''; // for null or undefined value
       // setAuthCache(TOKEN_KEY, info);
+    },
+    setUserRose(info) {
+      this.userRole = info ? info : []; // for null or undefined value
     },
     setSysAllDictItems(info) {
       this.sysAllDictItems = info ? info : []; // for null or undefined value
