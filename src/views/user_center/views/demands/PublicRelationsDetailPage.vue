@@ -110,7 +110,7 @@ const isFormEditable = computed(() => {
 
 // --- 表单配置 ---
 const formConfigs = [
-  { label: '研发公关方向', field: 'rdType', fieldType: 'select', dictKey: 'rnd_pr_strategic_goals', span: 24 },
+  { label: '研发公关方向', field: 'rdType', fieldType: 'select', dictKey: 'rd_type', span: 24 },
   { label: '研发公关需求', field: 'sourceDesc', fieldType: 'input', span: 24, },
   { label: '研发公关最新需求状态', field: 'statusCode', fieldType: 'select', dictKey: 'rd_breakthrough_status', span: 24, disabled: true },
   { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, },
