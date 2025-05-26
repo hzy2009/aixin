@@ -101,14 +101,15 @@ const filterConfigForPage = ref([
 
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = computed(() => [
-    { title: '国产替代寻源', dataIndex: 'sourcingTitle', key: 'sourcingTitle', ellipsis: true, },
-    { title: '寻源类型', dataIndex: 'sourcingType', key: 'sourcingType', width: '12%', align: 'center' }, // This should be 'sourcingType' from mock
-    { title: '寻源件类型', dataIndex: 'reqPartsType', key: 'reqPartsType', width: '12%', align: 'center' }, // Corrected key
-    { title: '状态名称', dataIndex: 'statusName', key: 'statusName', width: '10%', align: 'center' }, // Key matches display field
-    { title: '寻源有效期', dataIndex: 'expireDate', key: 'expireDate', width: '12%', align: 'center' },
-    { title: '发布日期', dataIndex: 'publishDate', key: 'publishDate', width: '12%', align: 'center' },
-    { title: '流程编号', dataIndex: 'processNumber', key: 'processNumber', width: '12%', ellipsis: true },
-    { title: '操作', key: 'actions', width: '10%', align: 'center', fixed: 'right' },
+    { title: '单号', dataIndex: 'id', key: 'id', ellipsis: true, width: '120px' },
+    { title: '验证项目', dataIndex: 'projectName', key: 'projectName', align: 'center' }, // This should be 'sourcingType' from mock
+    { title: '产品类别', dataIndex: 'productType', key: 'productType', align: 'center' }, // Key matches display field
+    { title: '项目分类', dataIndex: 'projectType', key: 'projectType', align: 'center' }, // Corrected key
+    { title: '需求状态', dataIndex: 'statusName', key: 'statusName', align: 'center' }, // Corrected key
+    { title: '需求提出方', dataIndex: 'createBy', key: 'createBy', align: 'center' },
+    { title: '创建时间', dataIndex: 'createTime', key: 'publishDate', align: 'center' },
+    { title: '更新时间', dataIndex: 'updateTime', key: 'updateTime', ellipsis: true },
+    { title: '操作', key: 'actions', align: 'center', fixed: 'right' },
 ]);
 
 // --- Pagination Config (computed property using hook's pagination) ---
