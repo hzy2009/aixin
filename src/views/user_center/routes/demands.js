@@ -29,8 +29,9 @@ export const demandsRoutes = {
     },
     {
       path: 'DomesticSourcing/create', // 新建需求的路由
+      name: 'DomesticCreatePage',
       component: DomesticDetailPage, // 复用 DemandDetailPage
-      props: route => ({ mode: 'create', demandType: route.query.type, business_type: route.query.business_type }), // 通过 props 传递 mode
+      props: route => ({ mode: 'create', demandType: route.query.type }), // 通过 props 传递 mode
       meta: { title: '新建需求 - 用户中心', breadcrumb: ['新建需求'] }
     },
     {
@@ -41,13 +42,14 @@ export const demandsRoutes = {
     },
     {
       path: 'OEMPartsSourcing/create', // 新建需求的路由
-      name: 'OEMPartsSourcing',
+      name: 'OEMPartsCreatePage',
       component: OEMPartsDetailPage, // 复用 DemandDetailPage
-      props: route => ({ mode: 'create', demandType: route.query.type, business_type: route.query.business_type }), // 通过 props 传递 mode
+      props: route => ({ mode: 'create', demandType: route.query.type }), // 通过 props 传递 mode
       meta: { title: '新建需求 - 用户中心', breadcrumb: ['新建需求'] }
     },
     {
       path: 'OEMPartsSourcing/:demandId', // 查看/编辑需求的路由
+      name: 'OEMPartsDetailPage',
       component: OEMPartsDetailPage, // 复用 DemandDetailPage
       props: route => ({ demandIdProp: route.params.demandId, mode: 'view', demandType: route.query.type }), // 通过 props 传递 mode 和 id
       meta: { title: '需求详情 - 用户中心', breadcrumb: ['需求详情'] }
@@ -64,14 +66,14 @@ export const demandsRoutes = {
       name: 'CreatePublic',
       component: PublicRelationsDetailPage, // 复用 DemandDetailPage
       props: route => ({ mode: 'create', demandType: route.query.type || 'rndCollaboration', business_type: route.query.business_type }), // 通过 props 传递 mode
-      meta: { title: '新建研发公关 - 用户中心', breadcrumb: ['会员中心', '需求广场', '新建研发公关'] }
+      meta: { title: '新建研发公关 - 用户中心', breadcrumb: ['新建研发公关'] }
     },
     {
       path: 'PublicRelations/:demandId', // 查看/编辑需求的路由
       name: 'PublicDetail',
       component: PublicRelationsDetailPage, // 复用 DemandDetailPage
       props: route => ({ demandIdProp: route.params.demandId, mode: 'view', demandType: route.query.type || 'rndCollaboration' }), // 通过 props 传递 mode 和 id
-      meta: { title: '研发公关详情 - 用户中心', breadcrumb: ['会员中心', '需求广场', '研发公关详情'] }
+      meta: { title: '研发公关详情 - 用户中心', breadcrumb: [ '研发公关详情'] }
     },
     {
       path: 'Verification',
@@ -84,14 +86,14 @@ export const demandsRoutes = {
       name: 'CreateVerification',
       component: VerificationDetailPage, // 复用 DemandDetailPage
       props: route => ({ mode: 'create', demandType: route.query.type || 'Verification', business_type: route.query.business_type }), // 通过 props 传递 mode
-      meta: { title: '新建检验验证 - 用户中心', breadcrumb: ['会员中心', '需求广场', '新建检验验证'] }
+      meta: { title: '新建检验验证 - 用户中心', breadcrumb: [ '新建检验验证'] }
     },
      {
       path: 'Verification/:demandId', // 查看/编辑需求的路由
       name: 'VerificationDetail',
       component: VerificationDetailPage, // 复用 DemandDetailPage
       props: route => ({ demandIdProp: route.params.demandId, mode: 'view', demandType: route.query.type || 'Verification' }), // 通过 props 传递 mode 和 id
-      meta: { title: '检验验证详情 - 用户中心', breadcrumb: ['会员中心', '需求广场', '检验验证详情'] }
+      meta: { title: '检验验证详情 - 用户中心', breadcrumb: [ '检验验证详情'] }
     },
     
     // {

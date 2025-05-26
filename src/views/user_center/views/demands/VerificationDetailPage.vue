@@ -58,11 +58,9 @@ import { useDemandDetail } from './hooks/useDemandDetail.js';
 const props = defineProps({
   demandIdProp: { type: String, default: null },
   mode: { type: String, default: 'view' }, // 'create', 'view'
-  demandType: { type: String, default: 'rndCollaboration' }, // e.g., 'domestic', 'originalSourcing'
 });
 
 const router = useRouter();
-console.log('DemandDetailPage props:', props.demandType);
 
 const {
   demandDetail: demandDetailData,

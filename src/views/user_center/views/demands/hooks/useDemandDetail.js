@@ -18,7 +18,7 @@ export function useDemandDetail({demandIdProp, mode, url, otherParams}) { // 接
 
   // --- 权限计算 ---
   const canEditThisDemand = computed(() => {
-    return authStore.isVip && authStore.userInfo?.username === demandDetail.value?.createBy
+    return authStore.isVip && authStore.userInfo?.username === demandDetail.value?.createUserName
   });
 
   const isManagerAdmin = computed(() => {
@@ -70,10 +70,8 @@ export function useDemandDetail({demandIdProp, mode, url, otherParams}) { // 接
             internalDemandId.value = response.result?.id; // 更新内部ID
             const detailPath = route.path.replace('create', ''); // 获取详情路径
             router.replace({ path: `${detailPath}${response.result?.id}` });
-        } else {
-            // 编辑成功后，重新获取详情
-            await fetchDemandDetail();
         }
+        await fetchDemandDetail();
         return true;
       } else {
         throw new Error(response.message || '操作失败');
@@ -101,10 +99,8 @@ export function useDemandDetail({demandIdProp, mode, url, otherParams}) { // 接
             internalDemandId.value = response.result?.id; // 更新内部ID
             const detailPath = route.path.replace('create', ''); // 获取详情路径
             router.replace({ path: `${detailPath}${response.result?.id}` });
-        } else {
-            // 编辑成功后，重新获取详情
-            await fetchDemandDetail();
         }
+        await fetchDemandDetail();
         return true;
       } else {
         throw new Error(response.message || '操作失败');
