@@ -29,12 +29,11 @@
       </section>
 
       <div class="page-actions">
-        <!-- "取消" 按钮：新建时是“重置”，编辑查看时是“返回”或“取消编辑” -->
         <a-button @click="handleCancelAction">{{ cancelActionText }}</a-button>
         <!-- "保存" 或 "提交" 按钮：仅在可编辑时显示 -->
         <a-button v-if="isFormEditable" type="primary" @click="handleSubmitForm" :loading="isSubmitting"
           style="margin-left: 8px;">
-          {{ operationMode === 'create' ? '提交创建' : '保存修改' }}
+          {{ '保存' }}
         </a-button>
       </div>
 
@@ -118,7 +117,7 @@ const formConfigs = {
     // , rules: [{ required: true, message: '必填!' }]
     { label: '寻源件类型', field: 'reqPartsType', fieldType: 'select', dictKey: 'req_parts_type', span: 24 },
     { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, },
-    { label: '寻源件状态', field: 'statusCode', fieldType: 'select', dictKey: 'sourcing_status', span: 24 },
+    { label: '寻源件状态', field: 'statusCode', fieldType: 'select', dictKey: 'sourcing_status', span: 24, disabled: true },
   ],
   originalSourcing: [
     { label: '品牌', field: 'manufacturer', fieldType: 'select', options: [{ value: 'ti', label: 'TI' }], rules: [{ required: true, message: '必填!' }], span: 24 },
@@ -216,13 +215,6 @@ const pageTitle = computed(() => {
   return `${demandTypeDisplayName.value}详情`;
 });
 
-const parentBreadcrumbName = computed(() => {
-  // 根据实际用户中心菜单结构调整
-  return "我的需求"; // 或 "需求广场"
-});
-const parentPathForBreadcrumb = computed(() => {
-  return '/user/my-demands'; // 对应列表页
-});
 
 // 当路由参数（尤其是 demandIdProp）实际发生变化时，重新加载数据
 // 这主要用于：用户在详情页A，通过某种方式（非浏览器前进后退）直接导航到详情页B

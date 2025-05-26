@@ -6,12 +6,12 @@
         <UserCenterSidebar />
       </aside>
       <main class="user-center-page-content">
-       <a-breadcrumb v-if="breadcrumbs.length" class="page-breadcrumb">
-        <a-breadcrumb-item v-for="(crumb, index) in breadcrumbs" :key="index">
-          <router-link v-if="crumb.path" :to="crumb.path">{{ crumb.name }}</router-link>
-          <span v-else>{{ crumb.name }}</span>
-        </a-breadcrumb-item>
-      </a-breadcrumb>
+        <a-breadcrumb v-if="breadcrumbs.length" class="page-breadcrumb">
+          <a-breadcrumb-item v-for="(crumb, index) in breadcrumbs" :key="index">
+            <router-link v-if="crumb.path" :to="crumb.path">{{ crumb.name }}</router-link>
+            <span v-else>{{ crumb.name }}</span>
+          </a-breadcrumb-item>
+        </a-breadcrumb>
         <div class="content-area">
           <router-view v-slot="{ Component }">
             <transition name="fade" mode="out-in">
@@ -74,7 +74,7 @@ const breadcrumbs = computed(() => {
   flex-shrink: 0;
   background-color: @background-color-base; // White background for sidebar
   border-radius: @border-radius-base;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
   // overflow-y: auto; // If menu becomes too long
 }
 
@@ -83,7 +83,7 @@ const breadcrumbs = computed(() => {
   background-color: @background-color-base; // White background for content area
   padding: @spacing-lg;
   border-radius: @border-radius-base;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column; // To stack breadcrumb and content-area
   min-width: 0; // Prevent flexbox overflow issues with content
@@ -103,6 +103,7 @@ const breadcrumbs = computed(() => {
 .fade-leave-active {
   transition: opacity 0.2s ease;
 }
+
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;

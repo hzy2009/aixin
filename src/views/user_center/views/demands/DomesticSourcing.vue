@@ -100,6 +100,8 @@ const {
 
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = computed(() => [
+  { title: '单号', dataIndex: 'id', key: 'id', ellipsis: true, },
+  { title: '需求方', dataIndex: 'id', key: 'id', ellipsis: true, },
   { title: '国产替代寻源', dataIndex: 'sourcingTitle', key: 'sourcingTitle', ellipsis: true, },
   { title: '寻源类型', dataIndex: 'sourcingType', key: 'sourcingType', width: '12%', align: 'center' }, // This should be 'sourcingType' from mock
   { title: '寻源件类型', dataIndex: 'reqPartsType', key: 'reqPartsType', width: '12%', align: 'center' }, // Corrected key

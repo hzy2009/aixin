@@ -18,15 +18,16 @@ export function useDemandDetail({demandIdProp, mode, demandTypeProp, url, otherP
 
   // --- 权限计算 ---
   const canEditThisDemand = computed(() => {
-    if (!authStore.isAuthenticated) return false;
-    if (operationMode.value === 'create') return true; // 创建时总是有权限填写表单
-    if (!demandDetail.value) return false;
+    // if (!authStore.isAuthenticated) return false;
+    // if (operationMode.value === 'create') return true; // 创建时总是有权限填写表单
+    // if (!demandDetail.value) return false;
 
-    if (authStore.isAdmin) return true;
-    if (authStore.isMember && authStore.user?.id === demandDetail.value.creatorId) {
-      return true;
-    }
-    return false;
+    // if (authStore.isAdmin) return true;
+    // if (authStore.isMember && authStore.user?.id === demandDetail.value.creatorId) {
+    //   return true;
+    // }
+    // return false;
+    return true
   });
 
   const canViewStatusHistoryTable = computed(() => {

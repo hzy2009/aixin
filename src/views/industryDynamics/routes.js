@@ -3,7 +3,7 @@ const industryDynamicsRoutes = [
   {
     path: '/industry-dynamics', // Main page for the list
     name: 'IndustryDynamics',
-    component: () => import('@/features/industryDynamics/views/IndustryDynamicsPage.vue'),
+    component: () => import('@/views/industryDynamics/views/IndustryDynamicsPage.vue'),
     meta: { title: '行业动态 - 爱芯享信息共享平台' }
   },
   // Example for a detail page (you'll create this later)

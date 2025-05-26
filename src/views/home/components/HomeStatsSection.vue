@@ -1,16 +1,8 @@
-// src/features/home/components/HomeStatsSection.vue
-
 <template>
   <section class="home-stats-section">
     <div class="home-stats-section__content container">
-      <StatItem
-        v-for="stat in stats"
-        :key="stat.label"
-        :number="stat.number"
-        :title="stat.label"
-        :description="stat.description"
-        class="individual-stat-item"
-      />
+      <StatItem v-for="stat in stats" :key="stat.label" :number="stat.number" :title="stat.label"
+        :description="stat.description" class="individual-stat-item" />
     </div>
   </section>
 </template>
@@ -55,9 +47,11 @@ const stats = ref([
   @media (max-width: 1200px) {
     flex-basis: calc(33.33% - @spacing-md);
   }
+
   @media (max-width: 768px) {
     flex-basis: calc(50% - @spacing-md);
   }
+
   @media (max-width: 576px) {
     flex-basis: 100%;
   }
