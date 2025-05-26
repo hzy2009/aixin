@@ -87,6 +87,7 @@ const {
     // 其他参数
   },
 });
+console.log('isManagerAdmin', isManagerAdmin);
 const dynamicFormRef = ref(null);
 const isSubmitting = ref(false); // 用于提交按钮的 loading 状态
 const formModel = ref({});
@@ -117,9 +118,15 @@ const isFormEditable = computed(() => {
 
 // --- 表单配置 ---
 const formConfigs = [
-  { label: '寻源件类型', field: 'reqPartsType', fieldType: 'select', dictKey: 'req_parts_type', span: 24, disabled: isManagerAdmin },
-  { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, disabled: isManagerAdmin },
-  { label: '寻源件状态', field: 'statusCode', detailField: 'statusName', fieldType: 'select', dictKey: 'sourcing_status', span: 24, disabled: !isManagerAdmin },
+  { label: '寻源件类型', field: 'reqPartsType', fieldType: 'select', dictKey: 'req_parts_type', span: 24, disabled: isManagerAdmin.value },
+  { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, disabled: isManagerAdmin.value },
+  {
+    label: '寻源件状态', field: 'statusCode', detailField: 'statusName', fieldType: 'select', dictKey: 'sourcing_status', span: 24, disabled: !isManagerAdmin.value,
+    onChange: (value, form) => {
+      console.log('状态变更:', value);
+      console.log('状态变更:', form);
+    }
+  },
 ]
 
 const currentFormConfig = computed(() => {
