@@ -58,11 +58,9 @@ import { useDemandDetail } from './hooks/useDemandDetail.js';
 const props = defineProps({
   demandIdProp: { type: String, default: null },
   mode: { type: String, default: 'view' }, // 'create', 'view'
-  demandType: { type: String, default: 'domestic' }, // e.g., 'domestic', 'originalSourcing'
 });
 
 const router = useRouter();
-console.log('DemandDetailPage props:', props.demandType);
 
 const {
   demandDetail: demandDetailData,
@@ -75,7 +73,7 @@ const {
   handleSave,
   handleSubmit,
 } = useDemandDetail({
-  demandIdProp: props.demandIdProp, mode: props.mode, demandTypeProp: props.demandType, url: {
+  demandIdProp: props.demandIdProp, mode: props.mode, url: {
     add: 'apm/apmSourcing/add',
     edit: 'apm/apmSourcing/edit',
     detail: 'apm/apmSourcing/queryById',
@@ -87,7 +85,6 @@ const {
     // 其他参数
   },
 });
-console.log('isManagerAdmin', isManagerAdmin);
 const dynamicFormRef = ref(null);
 const isSubmitting = ref(false); // 用于提交按钮的 loading 状态
 const formModel = ref({});
@@ -99,7 +96,7 @@ watch(demandDetailData, (newDetail) => {
     formModel.value = JSON.parse(JSON.stringify(newDetail)); // 深拷贝以编辑
   } else if (operationMode.value === 'create') {
     // 如果是新建模式且 newDetail 为 null（例如 hook 初始化时），确保 formModel 有基础结构
-    formModel.value = { // 根据 demandType 设置默认值
+    formModel.value = {
       expireDate: null,
       // ... 其他类型需要的默认字段 ...
     };
@@ -178,19 +175,13 @@ const goBack = () => {
   router.go(-1); // 或 router.push({ name: 'MyDemandsList' })
 };
 
-// --- 面包屑和标题 ---
-const demandTypeDisplayNameMap = {
-  domestic: "国产替代寻源",
-  originalSourcing: "原厂件寻源",
-  // ...
-};
-const demandTypeDisplayName = computed(() => demandTypeDisplayNameMap[props.demandType] || "需求");
+const demandTypeDisplayName = '国产替代寻源';
 
 const pageTitle = computed(() => {
   if (operationMode.value === 'create') {
-    return `新建${demandTypeDisplayName.value}`;
+    return `新建${demandTypeDisplayName}`;
   }
-  return `${demandTypeDisplayName.value}详情`;
+  return `${demandTypeDisplayName}详情`;
 });
 
 

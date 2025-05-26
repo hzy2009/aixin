@@ -17,6 +17,7 @@ const defaultStatusMap = {
   all: { text: '全部', color: 'default' }
 };
 
+
 export function useUserDemandList({otherParams, initialPageSize = 10, statusMapping = defaultStatusMap, url}) {
   const stats = ref({ pendingResponse: 0, inProgress: 0, completed: 0, total: 0 });
   const auth = useAuthStore();

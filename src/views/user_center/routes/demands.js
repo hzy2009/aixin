@@ -21,14 +21,14 @@ export const demandsRoutes = {
       meta: { title: '国产替代寻源 - 用户中心', breadcrumb: ['国产替代寻源'] } // Appends to base
     },
      {
-      path: 'DomesticDetailPage/:demandId', // 查看/编辑需求的路由
+      path: 'DomesticSourcing/:demandId', // 查看/编辑需求的路由
       name: 'DomesticDetailPage',
       component: DomesticDetailPage, // 复用 DemandDetailPage
       props: route => ({ demandIdProp: route.params.demandId, mode: 'view', demandType: route.query.type }), // 通过 props 传递 mode 和 id
       meta: { title: '需求详情 - 用户中心', breadcrumb: ['需求详情'] }
     },
     {
-      path: 'DomesticDetailPage/create', // 新建需求的路由
+      path: 'DomesticSourcing/create', // 新建需求的路由
       component: DomesticDetailPage, // 复用 DemandDetailPage
       props: route => ({ mode: 'create', demandType: route.query.type, business_type: route.query.business_type }), // 通过 props 传递 mode
       meta: { title: '新建需求 - 用户中心', breadcrumb: ['新建需求'] }
@@ -40,14 +40,14 @@ export const demandsRoutes = {
       meta: { title: '原厂件寻源 - 用户中心', breadcrumb: ['原厂件寻源'] } // Appends to base
     },
     {
-      path: 'OEMPartsDetailPage/create', // 新建需求的路由
-      name: 'OEMPartsDetailPage',
+      path: 'OEMPartsSourcing/create', // 新建需求的路由
+      name: 'OEMPartsSourcing',
       component: OEMPartsDetailPage, // 复用 DemandDetailPage
       props: route => ({ mode: 'create', demandType: route.query.type, business_type: route.query.business_type }), // 通过 props 传递 mode
       meta: { title: '新建需求 - 用户中心', breadcrumb: ['新建需求'] }
     },
     {
-      path: 'OEMPartsDetailPage/:demandId', // 查看/编辑需求的路由
+      path: 'OEMPartsSourcing/:demandId', // 查看/编辑需求的路由
       component: OEMPartsDetailPage, // 复用 DemandDetailPage
       props: route => ({ demandIdProp: route.params.demandId, mode: 'view', demandType: route.query.type }), // 通过 props 传递 mode 和 id
       meta: { title: '需求详情 - 用户中心', breadcrumb: ['需求详情'] }
@@ -60,14 +60,14 @@ export const demandsRoutes = {
     },
     
     {
-      path: 'PublicRelationsDetailPage/create', // 新建需求的路由
+      path: 'PublicRelations/create', // 新建需求的路由
       name: 'CreatePublic',
       component: PublicRelationsDetailPage, // 复用 DemandDetailPage
       props: route => ({ mode: 'create', demandType: route.query.type || 'rndCollaboration', business_type: route.query.business_type }), // 通过 props 传递 mode
       meta: { title: '新建研发公关 - 用户中心', breadcrumb: ['会员中心', '需求广场', '新建研发公关'] }
     },
     {
-      path: 'PublicRelationsDetailPage/:demandId', // 查看/编辑需求的路由
+      path: 'PublicRelations/:demandId', // 查看/编辑需求的路由
       name: 'PublicDetail',
       component: PublicRelationsDetailPage, // 复用 DemandDetailPage
       props: route => ({ demandIdProp: route.params.demandId, mode: 'view', demandType: route.query.type || 'rndCollaboration' }), // 通过 props 传递 mode 和 id

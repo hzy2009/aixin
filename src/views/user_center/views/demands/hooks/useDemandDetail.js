@@ -3,7 +3,7 @@ import { ref, onMounted, computed, reactive } from 'vue';
 import defHttp from '@/utils/http/axios'
 import { message } from 'ant-design-vue';
 import { useAuthStore } from '@/store/authStore';
-import { useRouter } from 'vue-router'; // 用于新建成功后跳转
+import { useRouter, useRoute } from 'vue-router'; // 用于新建成功后跳转
 
 export function useDemandDetail({demandIdProp, mode, url, otherParams}) { // 接收 props
   const demandDetail = ref(null);
@@ -11,6 +11,7 @@ export function useDemandDetail({demandIdProp, mode, url, otherParams}) { // 接
   const error = ref(null);
   const authStore = useAuthStore();
   const router = useRouter();
+  const route = useRoute();
 
   const operationMode = ref(mode || (demandIdProp ? 'view' : 'create')); // 'create', 'view'
   const internalDemandId = ref(demandIdProp); // 用于内部追踪ID
@@ -67,7 +68,8 @@ export function useDemandDetail({demandIdProp, mode, url, otherParams}) { // 接
         message.success(response.message);
         if (!payload.id) {
             internalDemandId.value = response.result?.id; // 更新内部ID
-            router.replace({ name: 'DemandDetail', params: { demandId: response.result?.id }});
+            const detailPath = route.path.replace('create', ''); // 获取详情路径
+            router.replace({ path: `${detailPath}${response.result?.id}` });
         } else {
             // 编辑成功后，重新获取详情
             await fetchDemandDetail();
@@ -97,7 +99,8 @@ export function useDemandDetail({demandIdProp, mode, url, otherParams}) { // 接
         message.success(response.message);
         if (!payload.id) {
             internalDemandId.value = response.result?.id; // 更新内部ID
-            router.replace({ name: 'DemandDetail', params: { demandId: response.result?.id }});
+            const detailPath = route.path.replace('create', ''); // 获取详情路径
+            router.replace({ path: `${detailPath}${response.result?.id}` });
         } else {
             // 编辑成功后，重新获取详情
             await fetchDemandDetail();
