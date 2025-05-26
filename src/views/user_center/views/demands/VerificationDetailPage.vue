@@ -114,7 +114,7 @@ const formConfigs = [
   // , rules: [{ required: true, message: '必填!' }]
   { label: '检测验证类型', field: 'projectType', fieldType: 'select', dictKey: 'inspection_type', span: 24 },
   { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, },
-  { label: '检测验证需求状态', field: 'statusCode', fieldType: 'select', dictKey: 'sourcing_status', span: 24 },
+  { label: '检测验证需求状态', field: 'statusCode', fieldType: 'select', dictKey: 'sourcing_status', span: 24, disabled: !canViewStatusHistoryTable },
 ]
 
 const currentFormConfig = computed(() => {

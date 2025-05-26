@@ -1,7 +1,8 @@
 import UserCenterLayout from '../layouts/UserCenterLayout.vue';
 const DomesticSourcing = () => import('../views/demands/DomesticSourcing.vue');
 const OEMPartsSourcing = () => import('../views/demands/OEMPartsSourcing.vue');
-const DemandDetailPage = () => import('../views/demands/DemandDetailPage.vue');
+const DomesticDetailPage = () => import('../views/demands/DomesticDetailPage.vue');
+const OEMPartsDetailPage = () => import('../views/demands/OEMPartsDetailPage.vue');
 const PublicRelations = () => import('../views/demands/PublicRelations.vue');
 const Verification = () => import('../views/demands/Verification.vue');
 const PublicRelationsDetailPage = () => import('../views/demands/PublicRelationsDetailPage.vue');
@@ -19,6 +20,19 @@ export const demandsRoutes = {
       component: DomesticSourcing,
       meta: { title: '国产替代寻源 - 用户中心', breadcrumb: ['国产替代寻源'] } // Appends to base
     },
+     {
+      path: 'DomesticDetailPage/:demandId', // 查看/编辑需求的路由
+      name: 'DomesticDetailPage',
+      component: DomesticDetailPage, // 复用 DemandDetailPage
+      props: route => ({ demandIdProp: route.params.demandId, mode: 'view', demandType: route.query.type }), // 通过 props 传递 mode 和 id
+      meta: { title: '需求详情 - 用户中心', breadcrumb: ['需求详情'] }
+    },
+    {
+      path: 'DomesticDetailPage/create', // 新建需求的路由
+      component: DomesticDetailPage, // 复用 DemandDetailPage
+      props: route => ({ mode: 'create', demandType: route.query.type, business_type: route.query.business_type }), // 通过 props 传递 mode
+      meta: { title: '新建需求 - 用户中心', breadcrumb: ['新建需求'] }
+    },
     {
       path: 'OEMPartsSourcing',
       name: 'OEMPartsSourcing',
@@ -26,16 +40,15 @@ export const demandsRoutes = {
       meta: { title: '原厂件寻源 - 用户中心', breadcrumb: ['原厂件寻源'] } // Appends to base
     },
     {
-      path: 'DemandDetailPage/create', // 新建需求的路由
-      name: 'CreateDemand',
-      component: DemandDetailPage, // 复用 DemandDetailPage
+      path: 'OEMPartsDetailPage/create', // 新建需求的路由
+      name: 'OEMPartsDetailPage',
+      component: OEMPartsDetailPage, // 复用 DemandDetailPage
       props: route => ({ mode: 'create', demandType: route.query.type, business_type: route.query.business_type }), // 通过 props 传递 mode
       meta: { title: '新建需求 - 用户中心', breadcrumb: ['新建需求'] }
     },
     {
-      path: 'DemandDetailPage/:demandId', // 查看/编辑需求的路由
-      name: 'DemandDetail',
-      component: DemandDetailPage, // 复用 DemandDetailPage
+      path: 'OEMPartsDetailPage/:demandId', // 查看/编辑需求的路由
+      component: OEMPartsDetailPage, // 复用 DemandDetailPage
       props: route => ({ demandIdProp: route.params.demandId, mode: 'view', demandType: route.query.type }), // 通过 props 传递 mode 和 id
       meta: { title: '需求详情 - 用户中心', breadcrumb: ['需求详情'] }
     },

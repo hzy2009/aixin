@@ -81,7 +81,7 @@ const {
     delete: 'apm/apmSourcing/delete',
   },
   otherParams: {
-    sourcingType: props.demandType == 'domestic' ? '国产替代寻源' : '原厂件寻源',
+    sourcingType: '国产替代寻源',
     // 其他参数
   },
 });
@@ -117,7 +117,7 @@ const isFormEditable = computed(() => {
 const formConfigs = [
   { label: '寻源件类型', field: 'reqPartsType', fieldType: 'select', dictKey: 'req_parts_type', span: 24 },
   { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, },
-  { label: '寻源件状态', field: 'statusCode', detailField: 'statusName', fieldType: 'select', dictKey: 'sourcing_status', span: 24, disabled: true },
+  { label: '寻源件状态', field: 'statusCode', detailField: 'statusName', fieldType: 'select', dictKey: 'sourcing_status', span: 24, disabled: !canViewStatusHistoryTable },
 ]
 
 const currentFormConfig = computed(() => {
