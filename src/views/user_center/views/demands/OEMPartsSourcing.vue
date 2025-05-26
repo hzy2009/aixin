@@ -102,13 +102,14 @@ const filterConfigForPage = ref([
 
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = computed(() => [
-    { title: '原厂件寻源', dataIndex: 'sourcingTitle', key: 'sourcingTitle', ellipsis: true, },
-    { title: '寻源类型', dataIndex: 'sourcingType', key: 'sourcingType', width: '12%', align: 'center' }, // This should be 'sourcingType' from mock
-    { title: '寻源件类型', dataIndex: 'reqPartsType', key: 'reqPartsType', width: '12%', align: 'center' }, // Corrected key
-    { title: '状态名称', dataIndex: 'statusName', key: 'statusName', width: '10%', align: 'center' }, // Key matches display field
-    { title: '寻源有效期', dataIndex: 'expireDate', key: 'expireDate', width: '12%', align: 'center' },
-    { title: '发布日期', dataIndex: 'publishDate', key: 'publishDate', width: '12%', align: 'center' },
-    { title: '流程编号', dataIndex: 'processNumber', key: 'processNumber', width: '12%', ellipsis: true },
+    { title: '单号', dataIndex: 'id', key: 'id', ellipsis: true, width: '120px' },
+    { title: '需求方', dataIndex: 'createBy', key: 'createBy', ellipsis: true, },
+    { title: '创建日期', dataIndex: 'createTime', key: 'createTime', ellipsis: true, },
+    { title: '计划完成日期', dataIndex: 'expireDate', key: 'expireDate', ellipsis: true, width: '120px' },
+    { title: '需求数量', dataIndex: 'xx', key: 'xx', ellipsis: true, },
+    { title: '需求状态', dataIndex: 'statusName', key: 'statusName', ellipsis: true, width: '80px' },
+    { title: '已寻到数量', dataIndex: 'xx', key: 'xx', ellipsis: true, },
+    { title: '未寻到数量', dataIndex: 'xx', key: 'xx', ellipsis: true, },
     { title: '操作', key: 'actions', width: '10%', align: 'center', fixed: 'right' },
 ]);
 

@@ -105,7 +105,7 @@ const filterConfigForPage = ref([
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = computed(() => [
   { title: '单号', dataIndex: 'id', key: 'id', ellipsis: true, width: '120px' },
-  { title: '需求方', dataIndex: 'id', key: 'id', ellipsis: true, },
+  { title: '需求方', dataIndex: 'createBy', key: 'createBy', ellipsis: true, },
   { title: '创建日期', dataIndex: 'createTime', key: 'createTime', ellipsis: true, },
   { title: '计划完成日期', dataIndex: 'expireDate', key: 'expireDate', ellipsis: true, width: '120px' },
   { title: '需求数量', dataIndex: 'xx', key: 'xx', ellipsis: true, },
