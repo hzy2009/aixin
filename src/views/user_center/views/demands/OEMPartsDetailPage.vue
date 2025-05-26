@@ -122,7 +122,12 @@ const isFormEditable = computed(() => {
 const formConfigs = [
     { label: '寻源件类型', field: 'reqPartsType', fieldType: 'select', dictKey: 'req_parts_type', span: 24, disabled: isManagerAdmin.value },
     { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, disabled: isManagerAdmin.value },
-    { label: '寻源件状态', field: 'statusCode', detailField: 'statusName', fieldType: 'select', dictKey: 'sourcing_status', span: 24, disabled: !isManagerAdmin.value },
+    {
+        label: '寻源件状态', field: 'statusCode', detailField: 'statusName', fieldType: 'select', dictKey: 'sourcing_status', span: 24, disabled: !isManagerAdmin.value,
+        onChange: ({ value, form, options }) => {
+            form.statusName = options.find(opt => opt.value === value)?.label || '';
+        }
+    },
 ]
 
 const currentFormConfig = computed(() => {

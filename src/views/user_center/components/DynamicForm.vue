@@ -32,23 +32,29 @@
             <template v-else>
               <a-input v-if="field.fieldType === 'input'" v-model:value="internalFormModel[field.field]"
                 :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear />
+
               <a-select v-else-if="field.fieldType === 'select'" v-model:value="internalFormModel[field.field]"
                 :placeholder="field.placeholder || `请选择${field.label}`"
                 :options="field.options || selectOptions(field.dictKey)" :mode="field.selectMode"
-                :filter-option="field.remoteSearch ? false : filterOption"
-                :show-search="field.remoteSearch || field.showSearch" :loading="field.loading"
-                @search="field.remoteSearch ? (value) => field.onRemoteSearch(value) : null" :disabled="field.disabled"
+                :filter-option="field.remoteSearch ? false : filterOption" :loading="field.loading"
+                :disabled="field.disabled"
+                @change="(v) => handleSelectChange(v, field, field.options || selectOptions(field.dictKey))"
                 allow-clear />
+
               <a-radio-group v-else-if="field.fieldType === 'radio'" v-model:value="internalFormModel[field.field]"
                 :options="field.options" :disabled="field.disabled" />
+
               <a-date-picker v-else-if="field.fieldType === 'date'" v-model:value="internalFormModel[field.field]"
                 :placeholder="field.placeholder || `请选择${field.label}`" value-format="YYYY-MM-DD HH:mm:ss"
                 style="width: 100%;" :disabled="field.disabled" />
+
               <a-range-picker v-else-if="field.fieldType === 'dateRange'" v-model:value="internalFormModel[field.field]"
                 value-format="YYYY-MM-DD" style="width: 100%;" :disabled="field.disabled" />
+
               <a-textarea v-else-if="field.fieldType === 'textarea'" v-model:value="internalFormModel[field.field]"
                 :placeholder="field.placeholder || `请输入${field.label}`" :rows="field.rows || 3"
                 :disabled="field.disabled" allow-clear />
+
               <a-input-number v-else-if="field.fieldType === 'amount'" v-model:value="internalFormModel[field.field]"
                 :formatter="value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
                 :parser="value => value.replace(/\$\s?|(,*)/g, '')" :precision="field.precision || 2"
@@ -148,6 +154,13 @@ const resetFields = () => {
   Object.assign(internalFormModel, props.initialModel || {});
 };
 const clearValidate = () => formRef.value?.clearValidate();
+const handleSelectChange = (value, field, options) => {
+  if (field.onChange) {
+    field.onChange({ value, field, form: internalFormModel, options });
+  }
+};
+
+
 const getAllData = () => {
   return internalFormModel;
 }
