@@ -33,6 +33,10 @@
               <a-input v-if="field.fieldType === 'input'" v-model:value="internalFormModel[field.field]"
                 :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear />
 
+              <a-input-number v-else-if="field.fieldType === 'number'" v-model:value="internalFormModel[field.field]"
+                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear
+                style="width: 100%;" />
+
               <a-select v-else-if="field.fieldType === 'select'" v-model:value="internalFormModel[field.field]"
                 :placeholder="field.placeholder || `请选择${field.label}`"
                 :options="field.options || selectOptions(field.dictKey)" :mode="field.selectMode"
