@@ -44,7 +44,10 @@ const actions = reactive([
 ]);
 
 const pageData = ref({
-    url: 'apm/apmRdBreakthrough/list',
+    url: {
+        list: 'apm/apmRdBreakthrough/list',
+        overview: 'apm/apmRdBreakthrough/overview'
+    },
     filterConfigForPage,
     tableColumns,
     addButton,

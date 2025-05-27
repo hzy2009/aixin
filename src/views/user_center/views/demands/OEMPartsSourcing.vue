@@ -46,7 +46,10 @@ const actions = reactive([
 ]);
 
 const pageData = ref({
-    url: 'apm/apmSourcing/list',
+    url: {
+        list: 'apm/apmSourcing/list',
+        overview: 'apm/apmSourcing/overview'
+    },
     otherParams: {
         sourcingType: '原厂件寻源'
     },

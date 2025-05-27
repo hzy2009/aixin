@@ -46,7 +46,10 @@ const actions = reactive([
 ]);
 
 const pageData = ref({
-    url: 'apm/apmInspection/list',
+    url: {
+        list: 'apm/apmInspection/list',
+        overview: 'apm/apmInspection/overview'
+    },
     filterConfigForPage,
     tableColumns,
     addButton,
