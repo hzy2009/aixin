@@ -29,8 +29,9 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     current: 1,
     pageSize: initialPageSize,
     total: 0,
-    showSizeChanger: false,
+    showSizeChanger: true,
     showQuickJumper: true,
+    pageSizeOptions: ['10', '20', '30', '40', '50'],
     showTotal: (total) => `共 ${total} 条`,
     // itemRender can be customized directly in component if needed, or passed as prop to hook
   });
@@ -78,7 +79,6 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
       tableData.value = response.result.records || [];
       pagination.total = response.result.total || 0;
     } catch (error) {
-      console.error("Failed to fetch table data:", error);
       tableData.value = [];
       pagination.total = 0;
       // TODO: Show error to user
