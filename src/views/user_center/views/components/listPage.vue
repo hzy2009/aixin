@@ -2,6 +2,8 @@
     <div class="list-page">
         <!-- 1. Stats Bar -->
         <div class="stats-bar">
+            <!-- <UserStatCard :label="item.label" :value="item.count || 0" v-for="item in stats">
+            </UserStatCard> -->
             <UserStatCard label="未响应" :value="stats.pendingResponse || 0">
                 <template #icon><img src="@/assets/images/user_center/icon-pending.png" alt="未响应" /></template>
             </UserStatCard>
@@ -75,7 +77,7 @@ const props = defineProps({
     },
 });
 
-const { url, filterConfigForPage, tableColumns, addButton, actions, otherParams } = props.pageData;
+const { url, filterConfigForPage, tableColumns, addButton, actions, otherParams, statusDictKey } = props.pageData;
 const {
     selectOptions,
     stats,
@@ -91,7 +93,8 @@ const {
     isVIP, // Ref from hook
 } = useUserDemandList({
     otherParams,
-    url: url
+    url: url,
+    statusDictKey,
 });
 filterConfigForPage.forEach(item => {
     if (!item.options && item.dictKey) {

@@ -46,7 +46,6 @@ const menuItems = computed(() => [
       { key: 'OEMPartsSourcing', label: '原厂件寻源', path: '/user/demands/OEMPartsSourcing' },
       { key: 'PublicRelations', label: '研发公关', path: '/user/demands/PublicRelations' },
       { key: 'Verification', label: '检验验证', path: '/user/demands/Verification' },
-      // ... other demand types like 'UserMyOriginalSourcing'
     ],
   },
   {
@@ -54,7 +53,10 @@ const menuItems = computed(() => [
     label: '我发布的',
     icon: () => h(FileTextOutlined),
     children: [
-      { key: 'UserMyPublications', label: '已发布内容', path: '/user/publications/all' },
+      { key: 'MycDomesticSourcing', label: '国产替代寻源', path: '/user/publications/DomesticSourcing' },
+      { key: 'MyOEMPartsSourcing', label: '原厂件寻源', path: '/user/publications/OEMPartsSourcing' },
+      { key: 'MyPublicRelations', label: '研发公关', path: '/user/publications/PublicRelations' },
+      { key: 'MyVerification', label: '检验验证', path: '/user/publications/Verification' },
     ],
   },
   {
@@ -118,9 +120,8 @@ watch(
 const handleMenuClick = ({ key, item }) => {
   // `item.props.path` comes from our custom `path` property in the menuItems structure
   // `key` is the route name if path is not explicitly defined
-  const targetPath = item.props?.path || router.hasRoute(key) ? { name: key } : key;
-
-  if (targetPath && ((typeof targetPath === 'string' && targetPath !== route.path) || (typeof targetPath === 'object' && targetPath.name !== route.name))) {
+  const targetPath = item?.path ? { path: item?.path } : { name: key };
+  if (targetPath) {
     router.push(targetPath);
   }
 };

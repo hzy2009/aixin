@@ -37,7 +37,7 @@
         <div class="views-count">
           <EyeOutlined /> {{ event.views || 0 }}
         </div>
-        <a-button type="primary" ghost class="details-btn">查看详情</a-button>
+        <a-button type="primary" ghost class="details-btn">详情</a-button>
       </div>
     </a-card>
   </template>

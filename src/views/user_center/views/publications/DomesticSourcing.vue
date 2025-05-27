@@ -56,8 +56,7 @@ const pageData = ref({
   filterConfigForPage,
   tableColumns,
   addButton,
-  actions,
-  statusDictKey: 'sourcing_status'
+  actions
 })
 
 

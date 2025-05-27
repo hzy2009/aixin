@@ -26,7 +26,7 @@
           <EnvironmentOutlined /> {{ item.location }}
         </span>
       </div>
-      <a-button type="default" @click="viewDetails(item.id)" class="details-btn">查看详情</a-button>
+      <a-button type="default" @click="viewDetails(item.id)" class="details-btn">详情</a-button>
     </div>
   </a-card>
 </template>
