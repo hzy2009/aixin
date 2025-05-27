@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import DefaultLayout from '@/components/layout/DefaultLayout.vue';
 import homeRoutes from '@/views/home/routes';
 import authRoutes from '@/views/auth/routes'; // <-- Import
-import demandSquareRoutes from '@/views/demand_square/routes'; // Import new routes
+// import demandSquareRoutes from '@/views/demand_square/routes'; // Import new routes
 import industryDynamicsRoutes from '@/views/industryDynamics/routes'; // <-- Import
 import userCenterRoutes from '@/views/user_center/routes';
 
@@ -15,7 +15,7 @@ const routes = [
     component: DefaultLayout,
     children: [
       ...homeRoutes,
-      ...demandSquareRoutes,
+      // ...demandSquareRoutes,
       ...industryDynamicsRoutes,
       // ... other feature routes that use DefaultLayout
     ],

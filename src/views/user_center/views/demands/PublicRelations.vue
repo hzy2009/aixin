@@ -20,12 +20,12 @@ const filterConfigForPage = reactive([
 
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = reactive([
-    { title: '攻关方向编码', dataIndex: 'rdCode', key: 'rdCode', ellipsis: true, },
-    { title: '攻关方向名称', dataIndex: 'rdType', key: 'rdType', width: '12%', align: 'center' }, // This should be 'sourcingType' from mock
-    { title: '研发需求描述', dataIndex: 'sourceDesc', key: 'sourceDesc', width: '12%', align: 'center' }, // Corrected key
-    { title: '状态名称', dataIndex: 'statusName', key: 'statusName', width: '10%', align: 'center' }, // Key matches display field
-    { title: '描述', dataIndex: 'desc', key: 'desc', width: '12%', align: 'center' },
-    { title: '有效期', dataIndex: 'expireDate', key: 'expireDate', width: '12%', align: 'center' },
+    { title: '单号', dataIndex: 'code', key: 'code', ellipsis: true, },
+    { title: '攻关方向名称', dataIndex: 'rdType', key: 'rdType', align: 'center' }, // This should be 'sourcingType' from mock
+    { title: '研发需求', dataIndex: 'sourceDesc', key: 'sourceDesc', align: 'center' }, // Corrected key
+    { title: '需求状态', dataIndex: 'statusName', key: 'statusName', align: 'center' }, // Key matches display field
+    { title: '创建日期', dataIndex: 'createTime', key: 'createTime', align: 'center' },
+    { title: '希望匹配周期', dataIndex: 'xxx', key: 'xxx', align: 'center' },
     { title: '操作', key: 'actions', width: '10%', align: 'center', fixed: 'right' },
 ]);
 
