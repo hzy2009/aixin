@@ -106,6 +106,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
 
   const handleTablePaginationChange = (pageInfo) => {
     pagination.current = pageInfo.current;
+    pagination.pageSize = pageInfo.pageSize; // If page size changer enabled
     // pagination.pageSize = pageInfo.pageSize; // If page size changer enabled
     loadTableData();
   };
