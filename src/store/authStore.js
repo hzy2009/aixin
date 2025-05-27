@@ -1,6 +1,6 @@
 // src/store/authStore.js
 import { defineStore } from 'pinia';
-import { loginApi, getUserRoleApi } from '@/api/user.js';
+import { loginApi, getUserRoleApi, logoutApi } from '@/api/user.js';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -29,9 +29,13 @@ export const useAuthStore = defineStore('auth', {
       this.setUserRose(data);
       return data;
     },
-    logout() {
-      this.user = null;
-      this.token = null;
+
+    async logout() {
+      await logoutApi()
+      this.setToken(null);
+      this.setUserInof(null);
+      this.setSysAllDictItems([]);
+      this.setUserRose([]);
       // Optionally, clear other stores or redirect
     },
     setToken(info) {

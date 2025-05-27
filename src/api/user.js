@@ -45,6 +45,12 @@ export function loginApi(data) {
   return defHttp.post({ url: Api.Login, data }); // Or data: params if body
 }
 
+// Logout API
+export function logoutApi() {
+  return defHttp.get({ url: Api.Logout }); // Or data: params if body
+}
+
+
 // Get user information
 export function getUserRoleApi(userId) {
   return defHttp.get({url:Api.GetUserRole, params: {userId}});

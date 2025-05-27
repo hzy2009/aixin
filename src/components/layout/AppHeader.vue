@@ -20,21 +20,18 @@
     <!-- Right Side - Outside Container -->
     <div class="header-side header-side--right">
       <div class="user-actions">
-        <template v-if="auth.isAuthenticated">
+        <template v-if="auth.userInfo">
           <a-dropdown placement="bottomRight">
             <a class="user-action-link user-greeting" @click.prevent>
-              你好, {{ auth.user?.name || '会员' }}
+              你好, {{ auth.userInfo?.realname }}
               <DownOutlined style="font-size: 12px; margin-left: 4px;" />
             </a>
             <template #overlay>
               <a-menu>
-                <a-menu-item key="profile">
+                <!-- <a-menu-item key="profile">
                   <router-link to="/user/profile">个人中心</router-link>
-                </a-menu-item>
-                <a-menu-item v-if="auth.isManagerAdmin" key="admin">
-                  <router-link to="/admin">后台管理</router-link>
-                </a-menu-item>
-                <a-menu-divider />
+                </a-menu-item> -->
+                <!-- <a-menu-divider /> -->
                 <a-menu-item key="logout" @click="handleLogout">
                   退出登录
                 </a-menu-item>
