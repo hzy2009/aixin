@@ -64,7 +64,7 @@ import { SearchOutlined } from '@ant-design/icons-vue';
 
 import UserStatCard from '@/views/user_center/components/UserStatCard.vue';
 import UserFilterAccordion from '@/views/user_center/components/UserFilterAccordion.vue';
-import { useUserDemandList } from '../hooks/useUserDemandList.js'; // Adjust path
+import { useUserDemandList } from './hooks/useUserDemandList.js'; // Adjust path
 
 const userFilterAccordionRef = ref(null);
 
@@ -113,5 +113,5 @@ const paginationConfig = computed(() => ({
 </script>
 
 <style scoped lang="less">
-@import '../styles/list.less';
+@import './styles/list.less';
 </style>

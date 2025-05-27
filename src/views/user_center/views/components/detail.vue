@@ -52,8 +52,8 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
 import { Button as AButton, Spin as ASpin, Alert as AAlert, Empty as AEmpty, Table as ATable, message } from 'ant-design-vue';
-import DynamicForm from '../../../components/DynamicForm.vue';
-import { useDemandDetail } from '../hooks/useDemandDetail.js';
+import DynamicForm from '@/views/user_center/components/DynamicForm.vue';
+import { useDemandDetail } from './hooks/useDemandDetail.js';
 
 const props = defineProps({
     pageData: {
@@ -173,5 +173,5 @@ watch(() => props.demandIdProp, (newId) => {
 </script>
 
 <style scoped lang="less">
-@import '../styles/detail.less';
+@import './styles/detail.less';
 </style>
