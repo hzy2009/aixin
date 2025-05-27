@@ -7,7 +7,8 @@
         <div v-else-if="demandDetailData" class="content-wrapper">
             <div class="detail-header-info">
                 <h2 class="main-title">{{ pageTitle }}</h2>
-                <span v-if="operationMode !== 'create'" class="demand-id-display">ID: {{ demandDetailData.id }}</span>
+                <span v-if="operationMode !== 'create'" class="demand-id-display">{{ demandDetailData.code
+                }}</span>
             </div>
 
             <section class="info-section">

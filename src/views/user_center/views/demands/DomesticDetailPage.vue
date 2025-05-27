@@ -54,6 +54,10 @@ const pageTitle = computed(() => {
   }
   return `${demandTypeDisplayName}详情`;
 });
+const queryAfter = (data) => {
+  data.reqPartsUnfinish = data.reqPartsTotal - data.reqPartsFinish;
+  return data;
+};
 
 const pageData = reactive({
   demandIdProp: props.demandIdProp,
@@ -71,10 +75,7 @@ const pageData = reactive({
   formConfigs,
   statusHistoryColumns,
   pageTitle,
-  queryAfter: (data) => {
-    data.reqPartsUnfinish = data.reqPartsTotal - data.reqPartsFinish
-    return data;
-  },
+  queryAfter
 })
 
 const goBack = () => {
