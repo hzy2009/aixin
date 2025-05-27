@@ -6,15 +6,15 @@
         </div>
         <div v-else-if="demandDetailData" class="content-wrapper">
             <div class="detail-header-info">
-                <h2 class="main-title">{{ pageTitle }}</h2>
+                <h2 class="main-title"><span>{{ operationMode == 'create' ? '创建' : '' }}</span>{{ pageTitle }}</h2>
                 <span v-if="operationMode !== 'create'" class="demand-id-display">{{ demandDetailData.code
-                }}</span>
+                    }}</span>
             </div>
 
             <section class="info-section">
                 <div class="section-header">
                     <span class="decorator"></span>
-                    <h3 class="section-title">基本信息</h3>
+                    <h3 class="section-title">{{ pageTitle }}基本信息</h3>
                 </div>
                 <DynamicForm ref="dynamicFormRef" :form-config="currentFormConfig" :initial-model="formModel"
                     :is-edit-mode="isFormEditable || isManagerAdmin" :default-span="12" form-layout="vertical" />

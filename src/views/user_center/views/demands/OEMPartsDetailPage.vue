@@ -50,7 +50,7 @@ const demandTypeDisplayName = '原厂件寻源';
 
 const pageTitle = computed(() => {
   if (props.mode === 'create') {
-    return `新建${demandTypeDisplayName}`;
+    return `${demandTypeDisplayName}`;
   }
   return `${demandTypeDisplayName}详情`;
 });

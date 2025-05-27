@@ -35,7 +35,8 @@ export function useDemandDetail({demandIdProp, mode, url, otherParams, queryAfte
     if (!internalDemandId.value) {
       // 新建模式或没有ID，初始化空/默认表单数据
       demandDetail.value = {
-        ...otherParams
+        ...otherParams,
+        tenantName: authStore.userInfo.realname,
         // ... 其他类型可能需要的默认字段 ...
       };
       isLoading.value = false;

@@ -38,10 +38,7 @@ const formConfigs = [
     label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true,
   },
   {
-    label: '检测验证需求状态', field: 'statusCode', detailField: 'statusName', fieldType: 'select', dictKey: 'sourcing_status', span: 24, disabled: !isManagerAdmin.value,
-    onChange: ({ value, form, options }) => {
-      form.statusName = options.find(opt => opt.value === value)?.label || '';
-    }
+    label: '需求状态', field: 'statusCode', detailField: 'statusName', fieldType: 'select', dictKey: 'sourcing_status', span: 24, disabled: true
   },
 ]
 
@@ -56,7 +53,7 @@ const demandTypeDisplayName = '检测验证';
 
 const pageTitle = computed(() => {
   if (props.mode === 'create') {
-    return `新建${demandTypeDisplayName}`;
+    return `${demandTypeDisplayName}`;
   }
   return `${demandTypeDisplayName}详情`;
 });

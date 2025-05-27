@@ -25,23 +25,21 @@ const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
   {
-    label: '研发攻关方向', field: 'rdCode', fieldType: 'select', detailField: 'rdType', dictKey: 'rd_type', span: 24, disabled: isManagerAdmin.value,
+    label: '研发攻关方向', field: 'rdCode', fieldType: 'select', detailField: 'rdType', dictKey: 'rd_type', span: 24,
     onChange: ({ value, form, options }) => {
       form.rdType = options.find(opt => opt.value === value)?.label || '';
     }
   },
   { label: '创建日期', field: 'createDate', fieldType: 'date', span: 24, disabled: true },
+  { label: '研发需求', field: 'sourceDesc', fieldType: 'input', span: 24 },
   {
-    label: '期望匹配周期', field: 'period', detailField: 'statusName', fieldType: 'select', dictKey: 'rd_breakthrough_period', span: 24, disabled: !isManagerAdmin.value,
+    label: '期望匹配周期', field: 'period', detailField: 'statusName', fieldType: 'select', dictKey: 'rd_breakthrough_period', span: 24,
   },
-  { label: '研发攻关需求', field: 'sourceDesc', fieldType: 'input', span: 24, disabled: isManagerAdmin.value },
   {
-    label: '研发攻关最新需求状态', field: 'statusCode', detailField: 'statusName', fieldType: 'select', dictKey: 'rd_breakthrough_status', span: 24, disabled: !isManagerAdmin.value,
-    onChange: ({ value, form, options }) => {
-      form.statusName = options.find(opt => opt.value === value)?.label || '';
-    }
+    label: '需求状态', field: 'statusCode', detailField: 'statusName', fieldType: 'select', dictKey: 'rd_breakthrough_status', span: 24, disabled: !isManagerAdmin.value
   },
-  { label: '需求有效期', field: 'expireDate', fieldType: 'date', span: 24, disabled: isManagerAdmin.value },
+  { label: '需求有效期', field: 'expireDate', fieldType: 'date', span: 24 },
+  { label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true, },
 ]
 
 const statusHistoryColumns = [
@@ -55,7 +53,7 @@ const demandTypeDisplayName = '研发攻关';
 
 const pageTitle = computed(() => {
   if (props.mode === 'create') {
-    return `新建${demandTypeDisplayName}`;
+    return `${demandTypeDisplayName}`;
   }
   return `${demandTypeDisplayName}详情`;
 });

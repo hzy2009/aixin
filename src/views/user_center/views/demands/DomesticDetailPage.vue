@@ -24,9 +24,7 @@ const isManagerAdmin = computed(() => {
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
-  {
-    label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true,
-  },
+  { label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true, },
   { label: '计划完成日期', field: 'expireDate', fieldType: 'date', span: 24, disabled: isManagerAdmin.value },
   { label: '需求数量', field: 'reqPartsTotal', fieldType: 'number', span: 24, disabled: isManagerAdmin.value },
   {
@@ -50,7 +48,7 @@ const demandTypeDisplayName = '国产替代寻源';
 
 const pageTitle = computed(() => {
   if (props.mode === 'create') {
-    return `新建${demandTypeDisplayName}`;
+    return `${demandTypeDisplayName}需求`;
   }
   return `${demandTypeDisplayName}详情`;
 });
