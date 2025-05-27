@@ -24,10 +24,15 @@ const isManagerAdmin = computed(() => {
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
-  { label: '研发公关方向', field: 'rdType', fieldType: 'select', dictKey: 'rd_type', span: 24, disabled: isManagerAdmin.value },
+  {
+    label: '研发公关方向', field: 'rdCode', fieldType: 'select', detailField: 'rdType', dictKey: 'rd_type', span: 24, disabled: isManagerAdmin.value,
+    onChange: ({ value, form, options }) => {
+      form.rdType = options.find(opt => opt.value === value)?.label || '';
+    }
+  },
   { label: '研发公关需求', field: 'sourceDesc', fieldType: 'input', span: 24, disabled: isManagerAdmin.value },
   {
-    label: '研发公关最新需求状态', field: 'statusCode', fieldType: 'select', dictKey: 'rd_breakthrough_status', span: 24, disabled: !isManagerAdmin.value,
+    label: '研发公关最新需求状态', field: 'statusCode', detailField: 'statusName', fieldType: 'select', dictKey: 'rd_breakthrough_status', span: 24, disabled: !isManagerAdmin.value,
     onChange: ({ value, form, options }) => {
       form.statusName = options.find(opt => opt.value === value)?.label || '';
     }
@@ -67,8 +72,7 @@ const pageData = reactive({
 })
 
 const goBack = () => {
-  router.push('/user/demands/PublicRelations'); 
+  router.push('/user/demands/PublicRelations');
 };
 
 </script>
-

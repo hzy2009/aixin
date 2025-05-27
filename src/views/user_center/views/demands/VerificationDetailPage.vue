@@ -24,10 +24,15 @@ const isManagerAdmin = computed(() => {
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
-  { label: '检测验证类型', field: 'projectType', fieldType: 'select', dictKey: 'inspection_type', span: 24, disabled: isManagerAdmin.value },
+  {
+    label: '检测验证类型', field: 'projectType', fieldType: 'select', detailField: 'statusName', dictKey: 'inspection_type', span: 24, disabled: isManagerAdmin.value,
+    onChange: ({ value, form, options }) => {
+      form.statusName = options.find(opt => opt.value === value)?.label || '';
+    }
+  },
   { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, disabled: isManagerAdmin.value },
   {
-    label: '检测验证需求状态', field: 'statusCode', fieldType: 'select', dictKey: 'sourcing_status', span: 24, disabled: !isManagerAdmin.value,
+    label: '检测验证需求状态', field: 'statusCode', detailField: 'statusName', fieldType: 'select', dictKey: 'sourcing_status', span: 24, disabled: !isManagerAdmin.value,
     onChange: ({ value, form, options }) => {
       form.statusName = options.find(opt => opt.value === value)?.label || '';
     }
@@ -66,7 +71,7 @@ const pageData = reactive({
 })
 
 const goBack = () => {
-  router.push('/user/demands/verification'); 
+  router.push('/user/demands/verification');
 };
 
 </script>
