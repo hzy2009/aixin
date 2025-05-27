@@ -27,9 +27,7 @@ const formConfigs = [
   {
     label: '验证项目', field: 'projectName', fieldType: 'input', span: 24, disabled: isManagerAdmin.value,
   },
-  { label: '创建日期', field: 'createDate', fieldType: 'date', span: 24, disabled: true },
-
-  { label: '计划完成日期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, disabled: isManagerAdmin.value },
+  { label: '需求日期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, disabled: isManagerAdmin.value },
   {
     label: '产品类', field: 'projectName', fieldType: 'select', dictKey: 'product_type', span: 24, disabled: isManagerAdmin.value,
   },
