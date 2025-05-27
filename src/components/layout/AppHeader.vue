@@ -12,7 +12,7 @@
     <nav class="navigation-container container" role="navigation" aria-label="Main navigation">
       <router-link to="/" class="nav-link" exact-active-class="nav-link--active">首页</router-link>
       <router-link to="/industry-dynamics" class="nav-link" active-class="nav-link--active">行业动态</router-link>
-      <router-link to="user/demands/DomesticSourcing" class="nav-link"
+      <router-link to="/user/demands/DomesticSourcing" class="nav-link"
         active-class="nav-link--active">需求广场</router-link>
       <router-link to="/tech-forum" class="nav-link" active-class="nav-link--active">技术论坛</router-link>
     </nav>
