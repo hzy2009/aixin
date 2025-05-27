@@ -41,7 +41,7 @@ const formConfigs = [
       form.statusName = options.find(opt => opt.value === value)?.label || '';
     }
   },
-  { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, disabled: isManagerAdmin.value },
+  { label: '需求有效期', field: 'expireDate', fieldType: 'date', span: 24, disabled: isManagerAdmin.value },
 ]
 
 const statusHistoryColumns = [

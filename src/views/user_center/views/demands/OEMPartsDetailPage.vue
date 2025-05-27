@@ -27,7 +27,7 @@ const formConfigs = [
   {
     label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true,
   },
-  { label: '计划完成日期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, disabled: isManagerAdmin.value },
+  { label: '计划完成日期', field: 'expireDate', fieldType: 'date', span: 24, disabled: isManagerAdmin.value },
   { label: '需求数量', field: 'reqPartsTotal', fieldType: 'number', span: 24, disabled: isManagerAdmin.value },
   {
     label: '需求状态', field: 'statusCode', detailField: 'statusName', fieldType: 'select', dictKey: 'sourcing_status', span: 24, disabled: !isManagerAdmin.value,
