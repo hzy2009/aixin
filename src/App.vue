@@ -1,13 +1,11 @@
 <template>
-  <router-view />
+  <a-config-provider :locale="zhCN">
+    <router-view />
+  </a-config-provider>
 </template>
 
 <script setup>
-// Global setup logic can go here if needed
+import zhCN from 'ant-design-vue/es/locale/zh_CN';
 </script>
 
-<style lang="less">
-// You can keep this empty or add truly global, unscoped styles
-// if they are not covered by assets/styles/index.less
-// However, it's generally better to keep all global styles in assets/styles
-</style>
+<style lang="less"></style>
