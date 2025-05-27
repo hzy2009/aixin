@@ -30,7 +30,7 @@ const tableColumns = reactive([
 ]);
 
 const addButton = reactive({
-    text: '创建研发公关',
+    text: '创建研发攻关',
     clickFn: createNewSourcing
 })
 

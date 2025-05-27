@@ -58,7 +58,7 @@ export const demandsRoutes = {
       path: 'PublicRelations',
       name: 'PublicRelations',
       component: PublicRelations,
-      meta: { title: '研发公关 - 用户中心', breadcrumb: ['研发公关'] } // Appends to base
+      meta: { title: '研发攻关 - 用户中心', breadcrumb: ['研发攻关'] } // Appends to base
     },
     
     {
@@ -66,34 +66,34 @@ export const demandsRoutes = {
       name: 'CreatePublic',
       component: PublicRelationsDetailPage, // 复用 DemandDetailPage
       props: route => ({ mode: 'create', demandType: route.query.type || 'rndCollaboration', business_type: route.query.business_type }), // 通过 props 传递 mode
-      meta: { title: '新建研发公关 - 用户中心', breadcrumb: ['新建研发公关'] }
+      meta: { title: '新建研发攻关 - 用户中心', breadcrumb: ['新建研发攻关'] }
     },
     {
       path: 'PublicRelations/:demandId', // 查看/编辑需求的路由
       name: 'PublicDetail',
       component: PublicRelationsDetailPage, // 复用 DemandDetailPage
       props: route => ({ demandIdProp: route.params.demandId, mode: 'view', demandType: route.query.type || 'rndCollaboration' }), // 通过 props 传递 mode 和 id
-      meta: { title: '研发公关详情 - 用户中心', breadcrumb: [ '研发公关详情'] }
+      meta: { title: '研发攻关详情 - 用户中心', breadcrumb: [ '研发攻关详情'] }
     },
     {
       path: 'Verification',
       name: 'Verification',
       component: Verification,
-      meta: { title: '检验验证 - 用户中心', breadcrumb: ['检验验证'] } // Appends to base
+      meta: { title: '检测验证 - 用户中心', breadcrumb: ['检测验证'] } // Appends to base
     },
      {
       path: 'Verification/create', // 新建需求的路由
       name: 'CreateVerification',
       component: VerificationDetailPage, // 复用 DemandDetailPage
       props: route => ({ mode: 'create', demandType: route.query.type || 'Verification', business_type: route.query.business_type }), // 通过 props 传递 mode
-      meta: { title: '新建检验验证 - 用户中心', breadcrumb: [ '新建检验验证'] }
+      meta: { title: '新建检测验证 - 用户中心', breadcrumb: [ '新建检测验证'] }
     },
      {
       path: 'Verification/:demandId', // 查看/编辑需求的路由
       name: 'VerificationDetail',
       component: VerificationDetailPage, // 复用 DemandDetailPage
       props: route => ({ demandIdProp: route.params.demandId, mode: 'view', demandType: route.query.type || 'Verification' }), // 通过 props 传递 mode 和 id
-      meta: { title: '检验验证详情 - 用户中心', breadcrumb: [ '检验验证详情'] }
+      meta: { title: '检测验证详情 - 用户中心', breadcrumb: [ '检测验证详情'] }
     },
     
     // {

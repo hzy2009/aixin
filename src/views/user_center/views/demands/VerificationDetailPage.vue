@@ -25,12 +25,20 @@ const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
   {
-    label: '检测验证类型', field: 'projectType', fieldType: 'select', detailField: 'statusName', dictKey: 'inspection_type', span: 24, disabled: isManagerAdmin.value,
-    onChange: ({ value, form, options }) => {
-      form.statusName = options.find(opt => opt.value === value)?.label || '';
-    }
+    label: '验证项目', field: 'projectName', fieldType: 'input', span: 24, disabled: isManagerAdmin.value,
   },
-  { label: '需求有效期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, disabled: isManagerAdmin.value },
+  { label: '创建日期', field: 'createDate', fieldType: 'date', span: 24, disabled: true },
+
+  { label: '计划完成日期', field: 'expireDate', fieldType: 'date', rules: [{ required: true, message: '必填!' }], span: 24, disabled: isManagerAdmin.value },
+  {
+    label: '产品类', field: 'projectName', fieldType: 'select', dictKey: 'product_type', span: 24, disabled: isManagerAdmin.value,
+  },
+  {
+    label: '项目分类', field: 'projectName', fieldType: 'select', dictKey: 'project_type', span: 24, disabled: isManagerAdmin.value,
+  },
+  {
+    label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true,
+  },
   {
     label: '检测验证需求状态', field: 'statusCode', detailField: 'statusName', fieldType: 'select', dictKey: 'sourcing_status', span: 24, disabled: !isManagerAdmin.value,
     onChange: ({ value, form, options }) => {
@@ -46,7 +54,7 @@ const statusHistoryColumns = [
   { title: '备注', dataIndex: 'remark', key: 'remark' },
 ]
 
-const demandTypeDisplayName = '检验验证';
+const demandTypeDisplayName = '检测验证';
 
 const pageTitle = computed(() => {
   if (props.mode === 'create') {
@@ -59,11 +67,11 @@ const pageData = reactive({
   demandIdProp: props.demandIdProp,
   mode: props.mode,
   apiMap: {
-    add: 'apm/apmRdBreakthrough/add',
-    edit: 'apm/apmRdBreakthrough/edit',
-    detail: 'apm/apmRdBreakthrough/queryById',
-    submit: 'apm/apmRdBreakthrough/submit',
-    delete: 'apm/apmRdBreakthrough/delete',
+    add: 'apm/apmInspection/add',
+    edit: 'apm/apmInspection/edit',
+    detail: 'apm/apmInspection/queryById',
+    submit: 'apm/apmInspection/submit',
+    delete: 'apm/apmInspection/delete',
   },
   formConfigs,
   statusHistoryColumns,

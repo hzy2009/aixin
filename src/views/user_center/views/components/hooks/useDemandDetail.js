@@ -5,7 +5,7 @@ import { message } from 'ant-design-vue';
 import { useAuthStore } from '@/store/authStore';
 import { useRouter, useRoute } from 'vue-router'; // 用于新建成功后跳转
 
-export function useDemandDetail({demandIdProp, mode, url, otherParams}) { // 接收 props
+export function useDemandDetail({demandIdProp, mode, url, otherParams, queryAfter}) { // 接收 props
   const demandDetail = ref(null);
   const isLoading = ref(false);
   const error = ref(null);
@@ -47,6 +47,7 @@ export function useDemandDetail({demandIdProp, mode, url, otherParams}) { // 接
     try {
       const response = await defHttp.get({ url: url.detail, params: {id: internalDemandId.value} });
       if (response.success) {
+        queryAfter(response.result);
         demandDetail.value = response.result;
       } else {
         throw new Error(response.data.message || '获取需求详情失败');

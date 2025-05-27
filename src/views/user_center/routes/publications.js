@@ -23,12 +23,12 @@ export const publicationsRoutes = {
     {
       path: 'PublicRelations',
       component: PublicRelations,
-      meta: { title: '研发公关', breadcrumb: ['研发公关'] } // Appends to base
+      meta: { title: '研发攻关', breadcrumb: ['研发攻关'] } // Appends to base
     },
     {
       path: 'Verification',
       component: Verification,
-      meta: { title: '检验验证', breadcrumb: ['检验验证'] } // Appends to base
+      meta: { title: '检测验证', breadcrumb: ['检测验证'] } // Appends to base
     },
   ]
 };

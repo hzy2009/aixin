@@ -25,14 +25,18 @@ const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
   {
-    label: '研发公关方向', field: 'rdCode', fieldType: 'select', detailField: 'rdType', dictKey: 'rd_type', span: 24, disabled: isManagerAdmin.value,
+    label: '研发攻关方向', field: 'rdCode', fieldType: 'select', detailField: 'rdType', dictKey: 'rd_type', span: 24, disabled: isManagerAdmin.value,
     onChange: ({ value, form, options }) => {
       form.rdType = options.find(opt => opt.value === value)?.label || '';
     }
   },
-  { label: '研发公关需求', field: 'sourceDesc', fieldType: 'input', span: 24, disabled: isManagerAdmin.value },
+  { label: '创建日期', field: 'createDate', fieldType: 'date', span: 24, disabled: true },
   {
-    label: '研发公关最新需求状态', field: 'statusCode', detailField: 'statusName', fieldType: 'select', dictKey: 'rd_breakthrough_status', span: 24, disabled: !isManagerAdmin.value,
+    label: '期望匹配周期', field: 'period', detailField: 'statusName', fieldType: 'select', dictKey: 'rd_breakthrough_period', span: 24, disabled: !isManagerAdmin.value,
+  },
+  { label: '研发攻关需求', field: 'sourceDesc', fieldType: 'input', span: 24, disabled: isManagerAdmin.value },
+  {
+    label: '研发攻关最新需求状态', field: 'statusCode', detailField: 'statusName', fieldType: 'select', dictKey: 'rd_breakthrough_status', span: 24, disabled: !isManagerAdmin.value,
     onChange: ({ value, form, options }) => {
       form.statusName = options.find(opt => opt.value === value)?.label || '';
     }
@@ -60,11 +64,11 @@ const pageData = reactive({
   demandIdProp: props.demandIdProp,
   mode: props.mode,
   apiMap: {
-    add: 'apm/apmInspection/add',
-    edit: 'apm/apmInspection/edit',
-    detail: 'apm/apmInspection/queryById',
-    submit: 'apm/apmInspection/submit',
-    delete: 'apm/apmInspection/delete',
+    add: 'apm/apmRdBreakthrough/add',
+    edit: 'apm/apmRdBreakthrough/edit',
+    detail: 'apm/apmRdBreakthrough/queryById',
+    submit: 'apm/apmRdBreakthrough/submit',
+    delete: 'apm/apmRdBreakthrough/delete',
   },
   formConfigs,
   statusHistoryColumns,
