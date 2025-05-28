@@ -30,17 +30,23 @@ const formConfigs = [
       form.rdType = options.find(opt => opt.value === value)?.label || '';
     }
   },
-  { label: '创建日期', field: 'createDate', fieldType: 'date', span: 24, disabled: true },
+  { label: '创建日期', field: 'createDate', fieldType: 'date', span: 24, disabled: true, mode: 'view' },
   { label: '研发需求', field: 'sourceDesc', fieldType: 'input', span: 24 },
-  {
-    label: '期望匹配周期', field: 'period', fieldType: 'select', dictKey: 'rd_breakthrough_period', span: 24,
-  },
   {
     label: '需求状态', field: 'statusCode', detailField: 'statusName', fieldType: 'select', dictKey: 'rd_breakthrough_status', span: 24, disabled: !isManagerAdmin.value
   },
-  { label: '需求有效期', field: 'expireDate', fieldType: 'date', span: 24 },
+  {
+    label: '期望匹配周期', field: 'period', fieldType: 'select', dictKey: 'rd_breakthrough_period', span: 24,
+  },
+  // { label: '需求有效期', field: 'expireDate', fieldType: 'date', span: 24 },
   { label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true, },
-]
+].filter(item => {
+    if (props.mode == 'create' && item.mode == 'view') {
+      return false;
+    }
+    return true;
+  }
+);
 
 const statusHistoryColumns = [
   { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' },
