@@ -35,6 +35,7 @@ const tableColumns = reactive([
       return <span>{reqPartsUnfinish || '-'}</span>;
     }
   },
+  { title: '操作', key: 'actions', width: '10%', align: 'center', fixed: 'right' },
 ]);
 
 const addButton = reactive({
