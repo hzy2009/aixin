@@ -15,6 +15,8 @@ import {
   FileTextOutlined,
   BellOutlined,
 } from '@ant-design/icons-vue';
+import { useAuthStore } from '@/store/authStore';
+const authStore = useAuthStore();
 
 const props = defineProps({
   sidebarTheme: {
@@ -36,6 +38,7 @@ const menuItems = computed(() => [
       { key: 'UserMemberInfo', label: '会员信息', path: '/user/info/member' },
       { key: 'UserAccountSettings', label: '用户管理', path: '/user/info/settings' },
     ],
+    isLogIn: true
   },
   {
     key: 'userDemands', // Parent key
@@ -58,14 +61,22 @@ const menuItems = computed(() => [
       { key: 'MyPublicRelations', label: '研发攻关', path: '/user/publications/PublicRelations' },
       { key: 'MyVerification', label: '检测验证', path: '/user/publications/Verification' },
     ],
+    isLogIn: true
   },
   {
     key: 'UserMessageCenter', // Direct link
     label: '消息中心',
     icon: () => h(BellOutlined),
-    path: '/user/messages'
+    path: '/user/messages',
+    isLogIn: true
   },
-]);
+].filter(item => {
+  if (!authStore.token && item.isLogIn) {
+    return false
+  }
+  return true
+})
+);
 
 
 const selectedKeys = ref([]);
