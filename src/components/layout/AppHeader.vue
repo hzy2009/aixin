@@ -12,8 +12,10 @@
     <nav class="navigation-container container" role="navigation" aria-label="Main navigation">
       <router-link to="/" class="nav-link" exact-active-class="nav-link--active">首页</router-link>
       <router-link to="/industry-dynamics" class="nav-link" active-class="nav-link--active">行业动态</router-link>
-      <router-link to="/user/demands/DomesticSourcing" class="nav-link"
-        active-class="nav-link--active">需求广场</router-link>
+      <router-link to="/user/demands/DomesticSourcing" class="nav-link" active-class="nav-link--active">国产替代寻源</router-link>
+      <router-link to="/user/demands/OEMPartsSourcing" class="nav-link" active-class="nav-link--active">原厂件寻源</router-link>
+      <router-link to="/user/demands/PublicRelations" class="nav-link" active-class="nav-link--active">研发攻关</router-link>
+      <router-link to="/user/demands/Verification" class="nav-link" active-class="nav-link--active">检测验证  </router-link>
       <router-link to="/tech-forum" class="nav-link" active-class="nav-link--active">技术论坛</router-link>
     </nav>
 
@@ -134,7 +136,7 @@ const handleLogout = () => {
   align-items: center;
   justify-content: center;
   height: @layout-header-height;
-  padding: 0 44px; // Padding *inside* each link
+  padding: 0 24px; // Padding *inside* each link
   text-decoration: none;
   font-size: 15px;
   color: @text-color-secondary;
