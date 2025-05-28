@@ -1,10 +1,11 @@
 <template>
     <div class="list-page">
         <!-- 1. Stats Bar -->
-        <div class="stats-bar">
-            <!-- <UserStatCard :label="item.label" :value="item.count || 0" v-for="item in stats">
-            </UserStatCard> -->
-            <UserStatCard label="未响应" :value="stats.pendingResponse || 0">
+        <div class="stats-bar"> 
+            <UserStatCard :label="item.label" :value="item.count || 0" v-for="item in stats.list">
+                <template #icon><img src="@/assets/images/user_center/icon-pending.png" alt="未响应" /></template>
+            </UserStatCard>
+            <!-- <UserStatCard label="未响应" :value="stats.pendingResponse || 0">
                 <template #icon><img src="@/assets/images/user_center/icon-pending.png" alt="未响应" /></template>
             </UserStatCard>
             <UserStatCard label="进行中" :value="stats.inProgress || 0">
@@ -12,7 +13,7 @@
             </UserStatCard>
             <UserStatCard label="已完成" :value="stats.completed || 0">
                 <template #icon><img src="@/assets/images/user_center/icon-completed.png" alt="已完成" /></template>
-            </UserStatCard>
+            </UserStatCard> -->
             <UserStatCard label="总计" :value="stats.total || 0">
                 <template #icon><img src="@/assets/images/user_center/icon-total.png" alt="总计" /></template>
             </UserStatCard>

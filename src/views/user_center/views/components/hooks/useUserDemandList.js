@@ -45,18 +45,19 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
   // --- API Call Placeholders ---
   // TODO: Replace with actual API calls
   async function fetchStatsAPI() {
-    // const statusMapp = authStore.sysAllDictItems[statusDictKey]
-    // const {result} = await defHttp.get({url: url.overview});
-    // const countMap = {}
-    // result.forEach(item => {
-    //   countMap[item.status_code] = item.count
-    // })
-    // statusMapp.forEach(item => {
-    //   item.count = countMap[item.value]
-    // });
+    const statusMapp = authStore.sysAllDictItems[statusDictKey] || []
+    const {result} = await defHttp.get({url: url.overview, params: {...otherParams}});
+    const countMap = {}
+    let total = 0
+    result.forEach(item => {
+      countMap[item.status_code] = item.count
+      total = total + item.count
+    })
+    statusMapp.forEach(item => {
+      item.count = countMap[item.value]
+    });
     // Simulate different stats for different demand types if necessary
-    return { pendingResponse: 26, inProgress: 12, completed: 52, total: 90 }; // Adjusted total
-    // return statusMapp
+    return {list:statusMapp.slice(0, 3), total:total}
   }
 
   // --- End API Call Placeholders ---
