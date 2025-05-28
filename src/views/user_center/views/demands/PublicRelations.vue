@@ -31,7 +31,7 @@ const tableColumns = reactive([
     { title: '研发需求', dataIndex: 'sourceDesc', key: 'sourceDesc', align: 'center' }, // Corrected key
     { title: '需求状态', dataIndex: 'statusName', key: 'statusName', align: 'center' }, // Key matches display field
     { title: '创建日期', dataIndex: 'createTime', key: 'createTime', align: 'center' },
-    { title: '期望匹配周期', dataIndex: 'period', key: 'period', align: 'center' },
+    { title: '期望匹配周期', dataIndex: 'matchPeriodName', key: 'matchPeriodName', align: 'center' },
     { title: '操作', key: 'actions', width: '10%', align: 'center', fixed: 'right' },
 ]);
 

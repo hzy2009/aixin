@@ -38,7 +38,7 @@ const formConfigs = [
     label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true,
   },
   {
-    label: '需求状态', field: 'statusCode', detailField: 'statusName', fieldType: 'select', dictKey: 'sourcing_status', span: 24, disabled: !isManagerAdmin.value
+    label: '需求状态', field: 'statusName', detailField: 'statusName', fieldType: 'select', span: 24, disabled: true,
   },
 ]
 
@@ -49,7 +49,6 @@ const statusHistoryColumns = [
   { title: '备注', dataIndex: 'remark', key: 'remark' },
 ]
 
-const demandTypeDisplayName = '检测验证';
 
 const pageTitle = '检测验证'
 
