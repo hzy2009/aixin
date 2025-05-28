@@ -27,13 +27,13 @@ defineProps({
   display: flex;
   align-items: center;
   background-color: @background-color-base; // Assuming cards are on a slightly off-white bg
-  padding: @spacing-md @spacing-lg;
+  padding: @spacing-md @spacing-sm;
   border-radius: @border-radius-base;
   // box-shadow: 0 1px 3px rgba(0,0,0,0.04); // Very subtle shadow
   border: 1px solid @border-color-light;
-  gap: @spacing-md;
+  gap: @spacing-sm;
   flex: 1; // To make cards distribute space in a flex container
-  min-width: 180px; // Minimum width for a stat card
+  min-width: 140px; // Minimum width for a stat card
 }
 
 .stat-card__icon {
