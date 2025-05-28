@@ -4,5 +4,4 @@ VOLUME /tmp
 ENV LANG en_US.UTF-8
 ADD default.conf /etc/nginx/conf.d/
 ADD dist/ /opt/code/aixin/
-EXPOSE 80
-EXPOSE 443
+EXPOSE 8580
