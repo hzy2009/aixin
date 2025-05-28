@@ -80,7 +80,8 @@ const pageData = reactive({
 })
 
 const goBack = () => {
-  router.push('/user/demands/PublicRelations');
+  router.go(-1);
+  // router.push('/user/demands/PublicRelations');
 };
 
 </script>

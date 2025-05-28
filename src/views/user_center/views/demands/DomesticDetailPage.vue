@@ -84,7 +84,7 @@ const pageData = reactive({
 })
 
 const goBack = () => {
-  router.push('/user/demands/DomesticSourcing');
+  router.go(-1);
 };
 
 </script>
