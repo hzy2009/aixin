@@ -94,7 +94,7 @@ defineExpose({ resetAllFilters });
 
 .user-filter-accordion {
   background-color: @background-color-base;
-  padding: @spacing-xs @spacing-lg @spacing-md @spacing-lg; // Top padding reduced
+  padding: @spacing-xs @spacing-sm; // Top padding reduced
   border-radius: @border-radius-base;
   // No shadow, just border on bottom of each row
 }
