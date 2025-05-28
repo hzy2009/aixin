@@ -51,12 +51,7 @@ const statusHistoryColumns = [
 
 const demandTypeDisplayName = '检测验证';
 
-const pageTitle = computed(() => {
-  if (props.mode === 'create') {
-    return `${demandTypeDisplayName}`;
-  }
-  return `${demandTypeDisplayName}详情`;
-});
+const pageTitle = '检测验证'
 
 const pageData = reactive({
   demandIdProp: props.demandIdProp,

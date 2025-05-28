@@ -55,14 +55,9 @@ const statusHistoryColumns = [
   { title: '备注', dataIndex: 'remark', key: 'remark' },
 ]
 
-const demandTypeDisplayName = '研发攻关';
+// const demandTypeDisplayName = '研发攻关';
 
-const pageTitle = computed(() => {
-  if (props.mode === 'create') {
-    return `${demandTypeDisplayName}`;
-  }
-  return `${demandTypeDisplayName}详情`;
-});
+const pageTitle = '研发攻关'
 
 const pageData = reactive({
   demandIdProp: props.demandIdProp,

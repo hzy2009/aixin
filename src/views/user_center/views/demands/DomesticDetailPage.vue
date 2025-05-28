@@ -52,14 +52,9 @@ const statusHistoryColumns = [
   { title: '备注', dataIndex: 'remark', key: 'remark' },
 ]
 
-const demandTypeDisplayName = '国产替代寻源';
+// const demandTypeDisplayName = '国产替代寻源需求';
 
-const pageTitle = computed(() => {
-  if (props.mode === 'create') {
-    return `${demandTypeDisplayName}需求`;
-  }
-  return `${demandTypeDisplayName}详情`;
-});
+const pageTitle = '国产替代寻源需求'
 const queryAfter = (data) => {
   data.reqPartsUnfinish = data.reqPartsTotal - data.reqPartsFinish;
   return data;
