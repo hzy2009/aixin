@@ -12,7 +12,7 @@ const VerificationDetailPage = () => import('../views/demands/VerificationDetail
 export const demandsRoutes = {
   path: 'demands', // Parent path for this group
   component: UserCenterLayout,
-  meta: { breadcrumbBase: ['会员中心', '需求广场'] }, // Base for breadcrumbs in this group
+  meta: { breadcrumbBase: ['需求广场'] }, // Base for breadcrumbs in this group
   children: [
     {
       path: 'DomesticSourcing',
