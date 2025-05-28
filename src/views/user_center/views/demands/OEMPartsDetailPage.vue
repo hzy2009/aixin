@@ -52,7 +52,7 @@ const statusHistoryColumns = [
 ]
 
 
-const pageTitle = '原厂件寻源需求'
+const pageTitle = '原厂件寻源'
 
 const pageData = reactive({
   demandIdProp: props.demandIdProp,

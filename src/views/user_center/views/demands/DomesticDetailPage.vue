@@ -54,7 +54,7 @@ const statusHistoryColumns = [
 
 // const demandTypeDisplayName = '国产替代寻源需求';
 
-const pageTitle = '国产替代寻源需求'
+const pageTitle = '国产替代寻源'
 const queryAfter = (data) => {
   data.reqPartsUnfinish = data.reqPartsTotal - data.reqPartsFinish;
   return data;
@@ -71,7 +71,7 @@ const pageData = reactive({
     delete: 'apm/apmSourcing/delete',
   },
   otherParams: {
-    sourcingType: '国产替代寻源需求',
+    sourcingType: '国产替代寻源',
   },
   formConfigs,
   statusHistoryColumns,

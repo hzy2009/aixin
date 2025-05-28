@@ -66,7 +66,7 @@ export const demandsRoutes = {
       name: 'CreatePublic',
       component: PublicRelationsDetailPage, // 复用 DemandDetailPage
       props: route => ({ mode: 'create', demandType: route.query.type || 'rndCollaboration', business_type: route.query.business_type }), // 通过 props 传递 mode
-      meta: { title: '创建研发攻关 - 用户中心', breadcrumb: ['创建研发攻关'] }
+      meta: { title: '创建研发攻关 - 用户中心', breadcrumb: ['创建研发攻关需求'] }
     },
     {
       path: 'PublicRelations/:demandId', // 查看/编辑需求的路由
@@ -79,7 +79,7 @@ export const demandsRoutes = {
       path: 'Verification',
       name: 'Verification',
       component: Verification,
-      meta: { title: '检测验证 - 用户中心', breadcrumb: ['检测验证'] } // Appends to base
+      meta: { title: '检测验证 - 用户中心', breadcrumb: ['检测验证需求'] } // Appends to base
     },
      {
       path: 'Verification/create', // 新建需求的路由
