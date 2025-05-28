@@ -21,7 +21,6 @@ const defaultStatusMap = {
 export function useUserDemandList({otherParams, initialPageSize = 10, statusMapping = defaultStatusMap, url, statusDictKey}) {
   const stats = ref({ pendingResponse: 0, inProgress: 0, completed: 0, total: 0 });
   const authStore = useAuthStore();
-  console.log('222', authStore)
   const currentFilters = ref({});
   const search = ref('');
   const isLoading = ref(false);
@@ -37,11 +36,11 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     // itemRender can be customized directly in component if needed, or passed as prop to hook
   });
   const selectOptions = (dictKey) => {
-    const all = { value: '', label: '全部' }
+    // const all = { value: '', label: '全部' }
     if (!dictKey) return [];
-    if (!authStore.sysAllDictItems[dictKey]) return [all]
+    if (!authStore.sysAllDictItems[dictKey]) return []
     const options = authStore.sysAllDictItems[dictKey].map(({ label, value }) => ({ label, value })) || [];
-    return [all, ...options];
+    return [...options];
   }
   // --- API Call Placeholders ---
   // TODO: Replace with actual API calls
@@ -140,6 +139,5 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     getStatusTagColor,
     selectOptions,
     isVIP,
-    authStore
   };
 }

@@ -67,7 +67,11 @@ import { useRouter } from 'vue-router';
 import UserStatCard from '@/views/user_center/components/UserStatCard.vue';
 import UserFilterAccordion from '@/views/user_center/components/UserFilterAccordion.vue';
 import { useUserDemandList } from './hooks/useUserDemandList.js'; // Adjust path
+import { useAuthStore } from '@/store/authStore';
+
 import { notification as Notification} from 'ant-design-vue'
+
+const authStore = useAuthStore();
 
 const router = useRouter();
 
@@ -80,7 +84,7 @@ const props = defineProps({
     },
 });
 
-const { url, filterConfigForPage, tableColumns, addButton, actions, otherParams, statusDictKey, authStore } = props.pageData;
+const { url, filterConfigForPage, tableColumns, addButton, actions, otherParams, statusDictKey } = props.pageData;
 const {
     selectOptions,
     stats,
