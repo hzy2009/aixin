@@ -19,7 +19,7 @@ export function useDemandDetail({demandIdProp, mode, url, otherParams, queryAfte
   // --- 权限计算 ---
   const canEditThisDemand = computed(() => {
     if (demandDetail.value?.statusCode) {
-      if (['draft', 'submit'].includes(demandDetail.value.statusCode)) {
+      if (!['draft'].includes(demandDetail.value.statusCode)) {
         return false;
       }
     }
