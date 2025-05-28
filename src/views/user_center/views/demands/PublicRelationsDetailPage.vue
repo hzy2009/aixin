@@ -37,6 +37,9 @@ const formConfigs = [
   },
   {
     label: '期望匹配周期', field: 'matchPeriodCode', detailField: 'matchPeriodName', fieldType: 'select', dictKey: 'rd_breakthrough_period', span: 24,
+    onChange: ({ value, form, options }) => {
+      form.matchPeriodName = options.find(opt => opt.value === value)?.label || '';
+    }
   },
   // { label: '需求有效期', field: 'expireDate', fieldType: 'date', span: 24 },
   { label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true, },
