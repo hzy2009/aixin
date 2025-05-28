@@ -20,7 +20,8 @@ const defaultStatusMap = {
 
 export function useUserDemandList({otherParams, initialPageSize = 10, statusMapping = defaultStatusMap, url, statusDictKey}) {
   const stats = ref({ pendingResponse: 0, inProgress: 0, completed: 0, total: 0 });
-  const auth = useAuthStore();
+  const authStore = useAuthStore();
+  console.log('222', authStore)
   const currentFilters = ref({});
   const search = ref('');
   const isLoading = ref(false);
@@ -38,14 +39,14 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
   const selectOptions = (dictKey) => {
     const all = { value: '', label: '全部' }
     if (!dictKey) return [];
-    if (!auth.sysAllDictItems[dictKey]) return [all]
-    const options = auth.sysAllDictItems[dictKey].map(({ label, value }) => ({ label, value })) || [];
+    if (!authStore.sysAllDictItems[dictKey]) return [all]
+    const options = authStore.sysAllDictItems[dictKey].map(({ label, value }) => ({ label, value })) || [];
     return [all, ...options];
   }
   // --- API Call Placeholders ---
   // TODO: Replace with actual API calls
   async function fetchStatsAPI() {
-    // const statusMapp = auth.sysAllDictItems[statusDictKey]
+    // const statusMapp = authStore.sysAllDictItems[statusDictKey]
     // const {result} = await defHttp.get({url: url.overview});
     // const countMap = {}
     // result.forEach(item => {
@@ -114,7 +115,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
   const getStatusTagColor = (statusKey) => statusMapping[statusKey]?.color || 'default';
   
   const isVIP = computed(() => {
-    return auth.isVip || false;
+    return authStore.isVip || false;
   });
 
   onMounted(() => {
@@ -139,5 +140,6 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     getStatusTagColor,
     selectOptions,
     isVIP,
+    authStore
   };
 }

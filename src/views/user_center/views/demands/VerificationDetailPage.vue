@@ -38,7 +38,7 @@ const formConfigs = [
     label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true,
   },
   {
-    label: '需求状态', field: 'statusCode', detailField: 'statusName', fieldType: 'select', dictKey: 'sourcing_status', span: 24, disabled: true
+    label: '需求状态', field: 'statusCode', detailField: 'statusName', fieldType: 'select', dictKey: 'sourcing_status', span: 24, disabled: !isManagerAdmin.value
   },
 ]
 

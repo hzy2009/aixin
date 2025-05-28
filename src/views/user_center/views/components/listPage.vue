@@ -32,7 +32,7 @@
                 </a-input>
                 <a-button type="primary" @click="triggerSearch" class="search-btn">搜索</a-button>
             </div>
-            <a-button type="primary" @click="addButton?.clickFn" class="create-new-btn" v-if="isVIP">
+            <a-button type="primary" @click="handleAdd(addButton)" class="create-new-btn">
                 {{ addButton?.text }}
             </a-button>
         </div>
@@ -63,10 +63,13 @@
 import { ref, computed, toRefs } from 'vue'; // onMounted removed as hook handles it
 import { Table as ATable, Tag as ATag, Button as AButton, Input as AInput } from 'ant-design-vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
-
+import { useRouter } from 'vue-router';
 import UserStatCard from '@/views/user_center/components/UserStatCard.vue';
 import UserFilterAccordion from '@/views/user_center/components/UserFilterAccordion.vue';
 import { useUserDemandList } from './hooks/useUserDemandList.js'; // Adjust path
+import { notification as Notification} from 'ant-design-vue'
+
+const router = useRouter();
 
 const userFilterAccordionRef = ref(null);
 
@@ -77,7 +80,7 @@ const props = defineProps({
     },
 });
 
-const { url, filterConfigForPage, tableColumns, addButton, actions, otherParams, statusDictKey } = props.pageData;
+const { url, filterConfigForPage, tableColumns, addButton, actions, otherParams, statusDictKey, authStore } = props.pageData;
 const {
     selectOptions,
     stats,
@@ -113,6 +116,20 @@ const paginationConfig = computed(() => ({
         return null; // Should not happen for other types
     },
 }));
+const handleAdd = (btn) => {
+    if (authStore?.token) {
+        btn.clickFn();
+    } else {
+        Notification.info({
+            message: `没有权限创建`,
+            placement: 'topRight',
+            description: '请先登录',
+        });
+        setTimeout(() => {
+            router.push('/login');
+        }, 1000)
+    }
+}
 </script>
 
 <style scoped lang="less">
