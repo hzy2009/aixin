@@ -2,7 +2,7 @@
     <div class="list-page">
         <!-- 1. Stats Bar -->
         <div class="stats-bar"> 
-            <UserStatCard :label="item.label" :value="item.count || 0" v-for="item in stats.list">
+            <UserStatCard :label="item.label" :value="item.count || 0" v-for="item in stats.list" :key="item.label + item.count" @click="handleStatClick(item)">
                 <template #icon><img src="@/assets/images/user_center/icon-pending.png" alt="未响应" /></template>
             </UserStatCard>
             <!-- <UserStatCard label="未响应" :value="stats.pendingResponse || 0">
@@ -98,6 +98,7 @@ const {
     triggerSearch,        // Method from hook
     handleTablePaginationChange, // Method from hook
     getStatusTagColor,
+    handleStatClick,
     isVIP, // Ref from hook
 } = useUserDemandList({
     otherParams,
@@ -135,6 +136,7 @@ const handleAdd = (btn) => {
         }, 1000)
     }
 }
+
 </script>
 
 <style scoped lang="less">

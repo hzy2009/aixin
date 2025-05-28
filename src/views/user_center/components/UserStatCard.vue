@@ -24,6 +24,7 @@ defineProps({
 @import '@/assets/styles/_variables.less';
 
 .user-stat-card {
+  cursor: pointer;
   display: flex;
   align-items: center;
   background-color: @background-color-base; // Assuming cards are on a slightly off-white bg

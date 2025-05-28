@@ -22,6 +22,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
   const stats = ref({ pendingResponse: 0, inProgress: 0, completed: 0, total: 0 });
   const authStore = useAuthStore();
   const currentFilters = ref({});
+  const statusFilter = ref({});
   const search = ref('');
   const isLoading = ref(false);
   const tableData = ref([]);
@@ -74,6 +75,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
         pageSize: pagination.pageSize,
         ...currentFilters.value, 
         search: search.value,
+        ...statusFilter.value,
         ...otherParams,
       };
       const response = await defHttp.get({url: url.list, params});
@@ -90,6 +92,11 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
 
   const handleFiltersChange = (newFilters) => {
     currentFilters.value = { ...newFilters };
+    pagination.current = 1; // Reset to first page
+    loadTableData();
+  };
+  const handleStatClick = (statusKey) => {
+    currentFilters.value = { statusCode: statusKey?.value };
     pagination.current = 1; // Reset to first page
     loadTableData();
   };
@@ -134,6 +141,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     loadStats,
     loadTableData,
     handleFiltersChange,
+    handleStatClick,
     handleSearchTermChange, // If you want to bind v-model directly to search
     triggerSearch,
     handleTablePaginationChange,
