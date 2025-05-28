@@ -56,10 +56,10 @@ const menuItems = computed(() => [
     label: '我发布的',
     icon: () => h(FileTextOutlined),
     children: [
-      { key: 'MycDomesticSourcing', label: '国产替代寻源', path: '/user/publications/DomesticSourcing' },
-      { key: 'MyOEMPartsSourcing', label: '原厂件寻源', path: '/user/publications/OEMPartsSourcing' },
-      { key: 'MyPublicRelations', label: '研发攻关', path: '/user/publications/PublicRelations' },
-      { key: 'MyVerification', label: '检测验证', path: '/user/publications/Verification' },
+      { key: 'MyDomesticSourcing', label: '国产替代寻源', path: '/user/publications/MyDomesticSourcing' },
+      { key: 'MyOEMPartsSourcing', label: '原厂件寻源', path: '/user/publications/MyOEMPartsSourcing' },
+      { key: 'MyPublicRelations', label: '研发攻关', path: '/user/publications/MyPublicRelations' },
+      { key: 'MyVerification', label: '检测验证', path: '/user/publications/MyVerification' },
     ],
     isLogIn: true
   },

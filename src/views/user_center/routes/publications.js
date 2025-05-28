@@ -11,22 +11,26 @@ export const publicationsRoutes = {
   meta: { breadcrumbBase: ['我发布的'] }, // Base for breadcrumbs in this group
   children: [
     {
-      path: 'DomesticSourcing',
+      path: 'MyDomesticSourcing',
+      name: 'MyDomesticSourcing',
       component: DomesticSourcing,
       meta: { title: '国产替代寻源', breadcrumb: ['国产替代寻源'] } // Appends to base
     },
     {
-      path: 'OEMPartsSourcing',
+      path: 'MyOEMPartsSourcing',
+      name: 'MyOEMPartsSourcing',
       component: OEMPartsSourcing,
       meta: { title: '原厂件寻源', breadcrumb: ['原厂件寻源'] } // Appends to base
     },
     {
-      path: 'PublicRelations',
+      path: 'MyPublicRelations',
+      name: 'MyPublicRelations',
       component: PublicRelations,
       meta: { title: '研发攻关', breadcrumb: ['研发攻关'] } // Appends to base
     },
     {
-      path: 'Verification',
+      path: 'MyVerification',
+      name: 'MyVerification',
       component: Verification,
       meta: { title: '检测验证', breadcrumb: ['检测验证'] } // Appends to base
     },
