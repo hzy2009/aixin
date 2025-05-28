@@ -30,7 +30,7 @@
             </section>
 
             <div class="page-actions">
-                <a-button @click="goBack">{{ '返回' }}</a-button>
+                <a-button @click="goBack">{{ '取消' }}</a-button>
                 <a-button v-if="isFormEditable" type="primary" @click="save" :loading="isSubmitting"
                     style="margin-left: 8px;">
                     {{ '保存' }}

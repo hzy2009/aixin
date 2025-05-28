@@ -49,7 +49,7 @@
                 :options="field.options" :disabled="field.disabled" />
 
               <a-date-picker v-else-if="field.fieldType === 'date'" v-model:value="internalFormModel[field.field]"
-                :placeholder="field.placeholder || `请选择${field.label}`" value-format="YYYY-MM-DD HH:mm:ss"
+                :placeholder="field.placeholder || `请选择${field.label}`" value-format="YYYY-MM-DD "
                 style="width: 100%;" :disabled="field.disabled" />
 
               <a-range-picker v-else-if="field.fieldType === 'dateRange'" v-model:value="internalFormModel[field.field]"
