@@ -76,7 +76,7 @@ const pageData = reactive({
     delete: 'apm/apmSourcing/delete',
   },
   otherParams: {
-    sourcingType: '国产替代寻源',
+    sourcingType: '国产替代寻源需求',
   },
   formConfigs,
   statusHistoryColumns,

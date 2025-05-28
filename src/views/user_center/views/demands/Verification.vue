@@ -27,12 +27,12 @@ const tableColumns = reactive([
     { title: '需求状态', dataIndex: 'statusName', key: 'statusName', align: 'center' }, // Corrected key
     { title: '需求提出方', dataIndex: 'tenantName', key: 'tenantName', align: 'center' },
     { title: '创建时间', dataIndex: 'createTime', key: 'publishDate', align: 'center' },
-    { title: '更新时间', dataIndex: 'updateTime', key: 'updateTime', ellipsis: true },
+    { title: '状态更新时间', dataIndex: 'updateTime', key: 'updateTime', ellipsis: true },
     { title: '操作', key: 'actions', align: 'center', fixed: 'right' },
 ]);
 
 const addButton = reactive({
-    text: '创建检测验证',
+    text: '创建检测验证需求',
     clickFn: createNewSourcing
 })
 

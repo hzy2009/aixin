@@ -51,7 +51,7 @@ const statusHistoryColumns = [
   { title: '备注', dataIndex: 'remark', key: 'remark' },
 ]
 
-const demandTypeDisplayName = '原厂件寻源';
+const demandTypeDisplayName = '原厂件寻源需求';
 
 const pageTitle = computed(() => {
   if (props.mode === 'create') {
