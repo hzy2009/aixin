@@ -1,235 +1,197 @@
 <template>
-  <header class="app-header">
-    <!-- Left Side - Outside Container -->
-    <div class="header-side header-side--left">
-      <router-link to="/" class="logo-link">
-        <span class="logo-brand">LOGO</span>
-        <span class="logo-text">爱芯享信息共享平台</span>
-      </router-link>
-    </div>
-
-    <!-- Center Navigation - Inside Container -->
-    <nav class="navigation-container container" role="navigation" aria-label="Main navigation">
-      <router-link to="/" class="nav-link" exact-active-class="nav-link--active">首页</router-link>
-      <router-link to="/industry-dynamics" class="nav-link" active-class="nav-link--active">行业动态</router-link>
-      <router-link to="/user/demands/DomesticSourcing" class="nav-link" active-class="nav-link--active">国产替代寻源</router-link>
-      <router-link to="/user/demands/OEMPartsSourcing" class="nav-link" active-class="nav-link--active">原厂件寻源</router-link>
-      <router-link to="/user/demands/PublicRelations" class="nav-link" active-class="nav-link--active">研发攻关</router-link>
-      <router-link to="/user/demands/Verification" class="nav-link" active-class="nav-link--active">检测验证  </router-link>
-      <router-link to="/tech-forum" class="nav-link" active-class="nav-link--active">技术论坛</router-link>
-    </nav>
-
-    <!-- Right Side - Outside Container -->
-    <div class="header-side header-side--right">
-      <div class="user-actions">
-        <template v-if="auth.userInfo">
-          <a-dropdown placement="bottomRight">
-            <a class="user-action-link user-greeting" @click.prevent>
-              你好, {{ auth.userInfo?.realname }}
-              <DownOutlined style="font-size: 12px; margin-left: 4px;" />
-            </a>
-            <template #overlay>
-              <a-menu>
-                <!-- <a-menu-item key="profile">
-                  <router-link to="/user/profile">个人中心</router-link>
-                </a-menu-item> -->
-                <!-- <a-menu-divider /> -->
-                <a-menu-item key="logout" @click="handleLogout">
-                  退出登录
-                </a-menu-item>
-              </a-menu>
-            </template>
-          </a-dropdown>
-        </template>
-        <template v-else>
-          <router-link to="/login" class="user-action-link login-link">会员登录</router-link>
-          <router-link to="/register" class="user-action-link register-link">会员注册</router-link>
-        </template>
+  <header class="app-header-container">
+    <!-- Top Welcome Bar - Full Width -->
+    <div class="top-welcome-bar" v-if="showTopWelcomeBar">
+      <div class="top-welcome-bar__content container">
+        <span class="welcome-text">欢迎来到爱芯享信息共享平台!</span>
+        <div class="user-actions-top">
+          <template v-if="auth.isAuthenticated">
+            <router-link to="/user/my-published" class="top-action-link" v-if="isUserCenterPage">我发布的</router-link>
+            <router-link to="/user/member-info" class="top-action-link" v-if="isUserCenterPage">用户管理</router-link>
+            <router-link to="/" class="top-action-link" v-if="isUserCenterPage">爱芯享信息共享平台</router-link>
+            <a @click="handleLogout" class="top-action-link">退出登录</a>
+          </template>
+          <template v-else>
+            <a @click="navigateToLogin" class="top-action-link">会员登录</a>
+            <a @click="navigateToRegister" class="top-action-link register-link-top">会员注册</a>
+          </template>
+        </div>
       </div>
     </div>
+
+    <!-- Main Header Area (Logo) -->
+    <div class="main-header-logo-area">
+      <div class="main-header-logo-area__content container">
+        <div class="logo-section">
+          <router-link to="/" class="logo-link">
+            <img src="@/assets/images/home/banner.png" alt="LOGO" class="logo-image" />
+            <span class="logo-text">爱芯享信息共享平台</span>
+          </router-link>
+        </div>
+        <!-- Spacer or actions for UserCenter view if needed, but top bar mostly handles it -->
+        <div class="header-spacer-for-logo-area" v-if="isUserCenterPage"></div>
+      </div>
+    </div>
+
+    <!-- Unified Navigation Bar (Red Bar, only if NOT in user center) - Full Width -->
+    <nav class="unified-navigation-bar" v-if="!isUserCenterPage">
+      <div class="unified-navigation-bar__content container">
+        <router-link
+          v-for="item in navigationItems"
+          :key="item.key"
+          :to="item.path"
+          class="unified-nav-link"
+          :class="{ 'unified-nav-link--active': isActiveNavItem(item) }"
+        >
+          {{ item.label }}
+        </router-link>
+      </div>
+    </nav>
   </header>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
+import { computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/store/authStore';
-import { Dropdown as ADropdown, Menu as AMenu, MenuItem as AMenuItem, MenuDivider as AMenuDivider } from 'ant-design-vue';
-import { DownOutlined } from '@ant-design/icons-vue';
+import { useNavigation } from './hooks/useNavigation'; // Adjust path if needed
 
+const route = useRoute();
 const router = useRouter();
 const auth = useAuthStore();
+const { navigationItems, isActiveNavItem } = useNavigation();
+
+const isUserCenterPage = computed(() => route.path.startsWith('/user'));
+const showTopWelcomeBar = computed(() => true); // Always shown
+
+const navigateToLogin = () => router.push('/login');
+const navigateToRegister = () => router.push('/register');
 
 const handleLogout = () => {
   auth.logout();
-  router.push('/');
+  router.push('/login');
 };
 </script>
 
 <style scoped lang="less">
 @import '@/assets/styles/_variables.less';
 
-.app-header {
-  background-color: @background-color-base;
-  height: @layout-header-height; // e.g., 60px
-  display: flex;
-  align-items: center;
-  justify-content: space-between; // Pushes left/right sides to edges, nav centers
-  // border-bottom: 1px solid @border-color-light;
+.app-header-container {
   position: sticky;
   top: 0;
   z-index: @zindex-header;
-  width: 100%;
-  padding: 0 @content-padding-horizontal; // Default padding for the edges if needed, but sides handle their own
+  background-color: @background-color-base;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06); // Subtle shadow for the whole block
 }
 
-.header-side {
+// 1. Top Welcome Bar (remains similar)
+.top-welcome-bar {
+  background-color: #f8f8f8;
+  height: 36px;
   display: flex;
   align-items: center;
-  height: 100%;
+  font-size: 13px;
+  color: @text-color-secondary;
+  // border-bottom: 1px solid @border-color-light; // Optional border
+
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  .user-actions-top {
+    display: flex;
+    align-items: center;
+    gap: @spacing-lg; // Increased gap
+    .top-action-link {
+      color: @text-color-secondary;
+      text-decoration: none;
+      &:hover { color: @primary-color; }
+    }
+    .register-link-top { // Specific style if needed for top bar register
+        // e.g. color: @primary-color; font-weight: 500;
+    }
+  }
+}
+
+// 2. Main Header Logo Area
+.main-header-logo-area {
+  height: @layout-header-height; // e.g., 70px
+  display: flex;
+  align-items: center;
+  background-color: @background-color-base; // White
+  border-bottom: 1px solid @border-color-light; // Separator line before red nav if not in user center
+
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; // If actions were here for user center
+    width: 100%;
+  }
+}
+
+.logo-section { /* remains similar */
   flex-shrink: 0;
-
-  &--left {
-    // No specific justification needed, items will align left by default
-  }
-
-  &--right {
-    // No specific justification needed, items will align right by default within this div
-  }
+  .logo-link { display: flex; align-items: center; text-decoration: none; }
+  .logo-image { height: 36px; margin-right: @spacing-sm; } // Slightly larger logo
+  .logo-text { font-size: 24px; font-weight: 600; color: @text-color-base; }
+}
+.header-spacer-for-logo-area {
+    flex-grow: 1; // For user center view, if logo is alone and you want it left-aligned
 }
 
-.logo-link {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: @text-color-base;
-  // Removed margin-left: @content-padding-horizontal; as the .app-header padding handles edge spacing
 
-  .logo-brand {
-    font-size: 22px;
-    font-weight: 600;
-    margin-right: 8px;
-  }
-
-  .logo-text {
-    font-size: 18px;
-    font-weight: 500;
-    white-space: nowrap;
-  }
-}
-
-.navigation-container {
-  // .container styles (max-width, margin: auto) are applied globally via the class
-  // This element itself should NOT have horizontal padding, as it's the '版心'
-  // The router-links inside it will have padding.
-  padding-left: 0 !important; // Override container's default padding
-  padding-right: 0 !important; // Override container's default padding
-  display: flex;
-  align-items: center;
-  justify-content: flex-start; // Navigation items start from the left of the container
-  height: 100%;
-  flex-grow: 1; // Allow navigation to take up available space in the middle
-  overflow: hidden; // Prevent nav links from causing overflow if too many
-}
-
-.nav-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: @layout-header-height;
-  padding: 0 24px; // Padding *inside* each link
-  text-decoration: none;
-  font-size: 15px;
-  color: @text-color-secondary;
-  background-color: transparent;
-  border: none;
-  transition: color 0.2s ease, background-color 0.2s ease;
-  white-space: nowrap;
-  position: relative; // For the ::after pseudo-element
-
-  &:hover {
-    background-color: @primary-color;
-    color: @text-color-light !important;
-  }
-
-  // Active state styling from the image (red background for "首页")
-  &.nav-link--active {
-    background-color: @primary-color;
-    color: @text-color-light !important;
-    font-weight: 500;
-  }
-}
-
-.user-actions {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  // margin-right: @content-padding-horizontal; // Handled by .app-header padding
-}
-
-.user-action-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: @layout-header-height;
-  padding: 0 22px;
-  text-decoration: none;
-  font-size: 15px;
-  border: none;
-  background-color: transparent;
-  transition: color 0.2s ease, background-color 0.2s ease;
-  white-space: nowrap;
-}
-
-.login-link {
-  color: @text-color-secondary;
-
-  &:hover {
-    background-color: @primary-color;
-    color: @text-color-light;
-    font-weight: 500;
-  }
-}
-
-.register-link {
+// 3. Unified Navigation Bar (Red Bar)
+.unified-navigation-bar {
   background-color: @primary-color;
-  color: @text-color-light;
-  font-weight: 500;
+  height: 50px; // Adjust height
+  display: flex;
+  align-items: center;
 
-  &:hover {
-    color: @text-color-secondary;
-    background-color: @background-color-base;
+  &__content { // This is the .container
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 0; // No gap, links will manage their own padding/margin for "flat" look
+    overflow-x: auto; // Allow horizontal scrolling on small screens if many items
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    &::-webkit-scrollbar { /* Chrome, Safari, Opera */
+        display: none;
+    }
   }
-}
 
-.user-greeting {
-  color: @text-color-secondary;
-  cursor: pointer;
-
-  &:hover {
-    color: @primary-color;
-  }
-}
-
-// Ant Design Dropdown Menu Styling
-:deep(.ant-dropdown-menu) {
-  .ant-dropdown-menu-item {
-    font-size: 14px;
-
-    a {
-      color: @text-color-base;
+  .unified-nav-link {
+    color: fade(@text-color-light, 90%);
+    font-size: 15px; // Consistent font size
+    font-weight: 500;
+    text-decoration: none;
+    padding: 0 @spacing-md; // Horizontal padding for each link
+    height: 100%; // Make link take full height of the bar
+    // display: inline-flex;
+    align-items: center;
+    white-space: nowrap; // Prevent wrapping
+    transition: background-color 0.2s, color 0.2s;
+    border-right: 1px solid darken(@primary-color, 5%); // Subtle separator
+    flex: 1;
+    text-align: center;
+    &:first-child {
+        // border-left: 1px solid darken(@primary-color, 5%); // Optional left border for first
+    }
+    &:last-child {
+        border-right: none; // No separator for the last item
     }
 
     &:hover {
-      background-color: lighten(@primary-color, 40%);
-
-      a {
-        color: @primary-color;
-      }
+      color: @text-color-light;
+      background-color: darken(@primary-color, 8%);
     }
-  }
-
-  .ant-dropdown-menu-item-divider {
-    margin: 4px 0;
+    &--active {
+      color: @text-color-light;
+      background-color: darken(@primary-color, 12%);
+      font-weight: 600;
+    }
   }
 }
 </style>
