@@ -168,7 +168,8 @@ const handleLogout = () => {
     font-weight: 500;
     text-decoration: none;
     padding: 0 @spacing-md; // Horizontal padding for each link
-    height: 100%; // Make link take full height of the bar
+    height: 50px; // Make link take full height of the bar
+    line-height: 50px;
     // display: inline-flex;
     align-items: center;
     white-space: nowrap; // Prevent wrapping
