@@ -24,8 +24,11 @@ const stats = ref([
 @import '@/assets/styles/_variables.less';
 
 .home-stats-section {
-  padding: @spacing-xl 0;
-  background-color: @background-color-base;
+  z-index: 1;
+  margin-top: -100px;
+  position: relative;
+  // padding: @spacing-xl 0;
+  // background-color: @background-color-base;
 
   &__content {
     display: flex;

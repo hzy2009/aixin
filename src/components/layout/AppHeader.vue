@@ -41,9 +41,9 @@
           :key="item.key"
           :to="item.path"
           class="unified-nav-link"
-          :class="{ 'unified-nav-link--active': isActiveNavItem(item) }"
         >
           {{ item.label }}
+          <!-- :class="{ 'unified-nav-link--active': isActiveNavItem(item) }" -->
         </router-link>
       </div>
     </nav>
@@ -105,6 +105,7 @@ const handleLogout = () => {
     align-items: center;
     gap: @spacing-lg; // Increased gap
     .top-action-link {
+      cursor: pointer;
       color: @text-color-secondary;
       text-decoration: none;
       &:hover { color: @primary-color; }
@@ -174,7 +175,7 @@ const handleLogout = () => {
     align-items: center;
     white-space: nowrap; // Prevent wrapping
     transition: background-color 0.2s, color 0.2s;
-    border-right: 1px solid darken(@primary-color, 5%); // Subtle separator
+    // border-right: 1px solid darken(@primary-color, 5%); 
     flex: 1;
     text-align: center;
     &:first-child {

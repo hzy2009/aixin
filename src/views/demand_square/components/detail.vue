@@ -1,5 +1,6 @@
 <template>
-    <div class="demand-detail-page">
+    <div class="demand-detail-page container">
+        <breadcrumbs/>
         <div v-if="isLoading" class="loading-state"> <a-spin size="large" /> </div>
         <div v-else-if="error && !demandDetailData" class="error-state"> <a-alert type="error" :message="error"
                 show-icon />
@@ -54,6 +55,8 @@
 import { ref, computed, watch, onMounted } from 'vue';
 import { Button as AButton, Spin as ASpin, Alert as AAlert, Empty as AEmpty, Table as ATable, message } from 'ant-design-vue';
 import DynamicForm from '@/views/user_center/components/DynamicForm.vue';
+import breadcrumbs from './breadcrumbs.vue';
+
 import { useDemandDetail } from './hooks/useDemandDetail.js';
 
 const props = defineProps({

@@ -1,5 +1,5 @@
 <template>
-  <section class="home-hero-section">
+  <section class="home-hero-section" :style="{ height: height + 'px' }">
     <div class="home-hero-section__background-image container"></div> <!-- New div for bg image -->
     <!-- <div class="home-hero-section__content container">
       <h1>致力于为半导体行业提供专业的信息服务</h1>
@@ -12,6 +12,12 @@
 </template>
 
 <script setup>
+ defineProps({
+   height: {
+     type: Number,
+     default: 502
+   }
+ })
 // No specific script logic for this static section yet
 </script>
 
@@ -19,7 +25,6 @@
 @import '@/assets/styles/_variables.less';
 
 .home-hero-section {
-  height:502px;
   background-image: url('@/assets/images/home/banner.png'); // Moved to child div
   // background-size: cover;
   // background-position: center;
@@ -27,8 +32,8 @@
   text-align: center;
   position: relative; // Needed for absolute positioning of bg and z-index context
   // min-height: 500px; // Ensure it has some height even before image loads
-  padding-top: 80px; // Space for content from top
-  padding-bottom: 130px; // << INCREASED PADDING BOTTOM to make space for the overlapping stats. Adjust as needed.
+  // padding-top: 80px; // Space for content from top
+  // padding-bottom: 130px; // << INCREASED PADDING BOTTOM to make space for the overlapping stats. Adjust as needed.
 
   // &__background-image {
   //   position: absolute;

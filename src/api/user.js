@@ -33,6 +33,8 @@ const Api = {
   getLoginQrcode :'/sys/getLoginQrcode',
   //监控二维码扫描状态
   getQrcodeToken :'/sys/getQrcodeToken',
+  // 获取字典
+  queryAllDictItems: '/apm/sys/front/queryAllDictItems'
 }
 
 export function getCodeInfo(currdatetime) {
@@ -54,4 +56,9 @@ export function logoutApi() {
 // Get user information
 export function getUserRoleApi(userId) {
   return defHttp.get({url:Api.GetUserRole, params: {userId}});
+}
+
+// Get dictionary
+export function getAllDictApi() {
+  return defHttp.get({url:Api.queryAllDictItems});
 }

@@ -126,7 +126,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
   });
 
   onMounted(() => {
-    loadStats();
+    // loadStats();
     loadTableData();
   });
 
