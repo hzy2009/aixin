@@ -55,7 +55,7 @@ const actions = reactive([
 
 const pageData = ref({
     url: {
-        list: 'apm/apmSourcing/list',
+        list: 'apm/apmSourcing/list/front',
         overview: 'apm/apmSourcing/overview'
     },
     otherParams: {
