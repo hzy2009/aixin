@@ -30,7 +30,7 @@ const formConfigs = [
       form.rdType = options.find(opt => opt.value === value)?.label || '';
     }
   },
-  { label: '创建日期', field: 'createDate', fieldType: 'date', span: 24, disabled: true, mode: 'view' },
+  { label: '创建日期', field: 'createTime', fieldType: 'date', span: 24, disabled: true, mode: 'view' },
   { label: '研发需求', field: 'sourceDesc', fieldType: 'input', span: 24 },
   {
     label: '需求状态', field: 'statusName', detailField: 'statusName', fieldType: 'select', dictKey: 'rd_breakthrough_status', span: 24, disabled: !isManagerAdmin.value

@@ -96,7 +96,12 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     loadTableData();
   };
   const handleStatClick = (statusKey) => {
-    currentFilters.value = { statusCode: statusKey?.value };
+    const cacaedStatus = currentFilters.value.statusCode;
+    if (cacaedStatus === statusKey?.value) {
+      currentFilters.value = {statusCode: ''};
+    } else {
+      currentFilters.value = { ...currentFilters.value,statusCode: statusKey?.value };
+    }
     pagination.current = 1; // Reset to first page
     loadTableData();
   };
