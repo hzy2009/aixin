@@ -40,7 +40,8 @@ export const useAuthStore = defineStore('auth', {
     },
     async getDictItems() {
       const res =  await getAllDictApi()
-      console.log(res)
+      console.log('getDictItems', res.result);
+      this.setSysAllDictItems(res.result || []);
     },
     setToken(info) {
       this.token = info ? info : ''; // for null or undefined value
