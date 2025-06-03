@@ -24,9 +24,9 @@ const isManagerAdmin = computed(() => {
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
-  { label: '计划完成日期', field: 'expireDate', fieldType: 'date', span: 24, disabled: isManagerAdmin.value },
-  { label: '创建日期', field: 'createTime', fieldType: 'date', span: 24, disabled: isManagerAdmin.value, mode: 'view'  },
-  { label: '需求数量', field: 'reqPartsTotal', fieldType: 'number', span: 24, disabled: isManagerAdmin.value, min: 0  },
+  { label: '计划完成日期', field: 'expireDate', fieldType: 'date', span: 24 },
+  { label: '创建日期', field: 'createTime', fieldType: 'date', span: 24, mode: 'view'  },
+  { label: '需求数量', field: 'reqPartsTotal', fieldType: 'number', span: 24, min: 0  },
   {label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true,},
   // {
   //   label: '需求状态', field: 'statusCode', detailField: 'statusName', fieldType: 'select', dictKey: 'sourcing_status', span: 24, disabled: !isManagerAdmin.value,
@@ -37,8 +37,8 @@ const formConfigs = [
   {
     label: '需求状态', field: 'statusName', detailField: 'statusName', fieldType: 'input', span: 24, disabled:  !isManagerAdmin.value,
   },
-  { label: '已寻到数量', field: 'reqPartsFinish', fieldType: 'number', span: 24, disabled: true, mode: 'view' },
-  { label: '未寻到数量', field: 'reqPartsUnfinish', fieldType: 'number', span: 24, disabled: true, mode: 'view'  },
+  { label: '已寻到数量', field: 'reqPartsFinish', fieldType: 'number', span: 24, disabled:  !isManagerAdmin.value, mode: 'view' },
+  { label: '未寻到数量', field: 'reqPartsUnfinish', fieldType: 'number', span: 24, disabled:  !isManagerAdmin.value, mode: 'view'  },
 ].filter(item => {
     if (props.mode == 'create' && item.mode == 'view') {
       return false;
