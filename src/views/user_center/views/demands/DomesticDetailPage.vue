@@ -36,7 +36,7 @@ const formConfigs = [
   //   mode: 'view' 
   // },
   {
-    label: '需求状态', field: 'statusName', detailField: 'statusName', fieldType: 'input', span: 24, disabled: true,
+    label: '需求状态', field: 'statusName', detailField: 'statusName', fieldType: 'input', span: 24, disabled: !isManagerAdmin.value,
   },
   { label: '已寻到数量', field: 'reqPartsFinish', fieldType: 'number', span: 24, disabled: true, mode: 'view' },
   { label: '未寻到数量', field: 'reqPartsUnfinish', fieldType: 'number', span: 24, disabled: true, mode: 'view' },
