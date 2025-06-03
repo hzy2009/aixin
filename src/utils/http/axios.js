@@ -107,10 +107,10 @@ class AxiosHttpClient {
         }
       });
     } else {
-      //  router.push({
-      //     name: 'Login',
-      //     query: { redirect: router.currentRoute.value.fullPath }
-      //  }).finally(() => { Modal._hasPromise = false; });
+       router.push({
+          name: 'Login',
+          query: { redirect: router.currentRoute.value.fullPath }
+       }).finally(() => { Modal._hasPromise = false; });
     }
   }
 

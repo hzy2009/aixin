@@ -6,9 +6,10 @@
         </div>
         <div v-else-if="demandDetailData" class="content-wrapper">
             <div class="detail-header-info">
-                <h2 class="main-title"><span>{{ operationMode == 'create' ? '创建' : '' }}</span>{{ pageTitle }}需求<span>{{ operationMode == 'view' ? '详情' : '' }}</span></h2>
-                <span v-if="operationMode !== 'create'" class="demand-id-display">{{ demandDetailData.code
-                    }}</span>
+                <h2 class="main-title"><span>{{ operationMode == 'create' ? '创建' : '' }}</span>{{ pageTitle }}需求<span>{{
+                    operationMode == 'view' ? '详情' : '' }}</span></h2>
+                <span class="demand-id-display">{{ demandDetailData.code
+                }}</span>
             </div>
 
             <section class="info-section">

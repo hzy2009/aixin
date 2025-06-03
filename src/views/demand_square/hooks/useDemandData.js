@@ -5,10 +5,10 @@ import defHttp from '@/utils/http/axios'
 // For now, it's not directly used by the mock function but good to keep in mind for real API.
 // const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
 const APIMAP = {
-  domestic: 'apm/apmSourcing/list/front?sourcingType=国产替代寻源',
-  originalSourcing: 'apm/apmSourcing/list/front?sourcingType=原厂件寻源',
-  rndCollaboration: 'apm/apmRdBreakthrough/list/front',
-  testingValidation: 'apm/apmInspection/list/front',
+  domestic: 'apm/apmSourcing/list?sourcingType=国产替代寻源',
+  originalSourcing: 'apm/apmSourcing/list?sourcingType=原厂件寻源',
+  rndCollaboration: 'apm/apmRdBreakthrough/list',
+  testingValidation: 'apm/apmInspection/list',
   // industryReport: '/api/demand_square/industryReport',
   // offlineEvents: '/api/demand_square/offlineEvents',
   // myAlternativeSourcing: '/api/demand_square/myAlternativeSourcing',
