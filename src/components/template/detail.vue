@@ -55,7 +55,7 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
 import { Button as AButton, Spin as ASpin, Alert as AAlert, Empty as AEmpty, Table as ATable, message } from 'ant-design-vue';
-import DynamicForm from '@/views/user_center/components/DynamicForm.vue';
+import DynamicForm from '@/components/layout/DynamicForm.vue';
 import { useDemandDetail } from './hooks/useDemandDetail.js';
 
 const props = defineProps({

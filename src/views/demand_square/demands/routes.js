@@ -1,11 +1,11 @@
-const DomesticSourcing = () => import('./demands/DomesticSourcing.vue');
-const OEMPartsSourcing = () => import('./demands/OEMPartsSourcing.vue');
-const DomesticDetailPage = () => import('./demands/DomesticDetailPage.vue');
-const OEMPartsDetailPage = () => import('./demands/OEMPartsDetailPage.vue');
-const PublicRelations = () => import('./demands/PublicRelations.vue');
-const Verification = () => import('./demands/Verification.vue');
-const PublicRelationsDetailPage = () => import('./demands/PublicRelationsDetailPage.vue');
-const VerificationDetailPage = () => import('./demands/VerificationDetailPage.vue');
+const DomesticSourcing = () => import('./DomesticSourcing.vue');
+const OEMPartsSourcing = () => import('./OEMPartsSourcing.vue');
+const DomesticDetailPage = () => import('./DomesticDetailPage.vue');
+const OEMPartsDetailPage = () => import('./OEMPartsDetailPage.vue');
+const PublicRelations = () => import('./PublicRelations.vue');
+const Verification = () => import('./Verification.vue');
+const PublicRelationsDetailPage = () => import('./PublicRelationsDetailPage.vue');
+const VerificationDetailPage = () => import('./VerificationDetailPage.vue');
 // ... other demand related imports
 
 export default {
@@ -93,13 +93,5 @@ export default {
       props: route => ({ demandIdProp: route.params.demandId, mode: 'view', demandType: route.query.type || 'Verification' }), // 通过 props 传递 mode 和 id
       meta: { title: '检测验证需求详情', breadcrumb: [ '检测验证需求详情'] }
     },
-    
-    // {
-    //   path: 'original-sourcing',
-    //   name: 'UserMyOriginalSourcing',
-    //   component: () => import('./demands/MyOriginalSourcingPage.vue'),
-    //   meta: { title: '原厂件寻源', breadcrumb: ['原厂件寻源'] }
-    // },
-    // ... other demand types
   ]
 };

@@ -3,7 +3,7 @@
     <div class="list-page container">
         <!-- <breadcrumbs/> -->
         <!-- 1. Stats Bar -->
-        <div class="stats-bar" v-if="props.userStatCardVisible"> 
+        <div class="stats-bar" v-if="userStatCardVisible"> 
             <UserStatCard :label="item.label" :value="item.count || 0" v-for="item in stats.list" :key="item.label + item.count" @click="handleStatClick(item)">
                 <template #icon><img src="@/assets/images/user_center/icon-pending.png" alt="未响应" /></template>
             </UserStatCard>
@@ -68,8 +68,8 @@ import { Table as ATable, Tag as ATag, Button as AButton, Input as AInput } from
 import { SearchOutlined } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
 import HomeHeroSection from '@/views/home/components/HomeHeroSection.vue';
-import UserStatCard from '@/views/user_center/components/UserStatCard.vue';
-import UserFilterAccordion from '@/views/user_center/components/UserFilterAccordion.vue';
+import UserStatCard from '@/components/layout/UserStatCard.vue';
+import UserFilterAccordion from '@/components/layout/UserFilterAccordion.vue';
 import breadcrumbs from './breadcrumbs.vue';
 
 import { useUserDemandList } from './hooks/useUserDemandList.js'; // Adjust path
@@ -87,14 +87,10 @@ const props = defineProps({
     pageData: {
         type: Object,
         default: {},
-    },
-    userStatCardVisible: {
-        type: Boolean,
-        default: false
     }
 });
 
-const { url, filterConfigForPage, tableColumns, addButton, actions, otherParams, statusDictKey } = props.pageData;
+const { url, filterConfigForPage, tableColumns, addButton, actions, otherParams, statusDictKey, userStatCardVisible } = props.pageData;
 const {
     selectOptions,
     stats,
@@ -113,7 +109,7 @@ const {
     otherParams,
     url: url,
     statusDictKey,
-    userStatCardVisible:props.userStatCardVisible
+    userStatCardVisible
 });
 filterConfigForPage.forEach(item => {
     if (!item.options && item.dictKey) {

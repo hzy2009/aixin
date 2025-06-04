@@ -18,7 +18,7 @@ const defaultStatusMap = {
 };
 
 
-export function useUserDemandList({otherParams, initialPageSize = 10, statusMapping = defaultStatusMap, url, statusDictKey, userStatCardVisible}) {
+export function useUserDemandList({otherParams, initialPageSize = 10, statusMapping = defaultStatusMap, url, statusDictKey, userStatCardVisible = false}) {
   const stats = ref({ pendingResponse: 0, inProgress: 0, completed: 0, total: 0 });
   const authStore = useAuthStore();
   const currentFilters = ref({});

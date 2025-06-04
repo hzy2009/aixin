@@ -7,7 +7,7 @@
 <script setup>
 import { ref, computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import detail from '../components/detail.vue';
+import detail from '../../../components/template/detail.vue';
 import { useAuthStore } from '@/store/authStore';
 
 const authStore = useAuthStore();

@@ -5,10 +5,9 @@
       <div class="top-welcome-bar__content container">
         <span class="welcome-text">欢迎来到爱芯享信息共享平台!</span>
         <div class="user-actions-top">
-          <template v-if="auth.isAuthenticated">
-            <router-link to="/user/my-published" class="top-action-link" v-if="isUserCenterPage">我发布的</router-link>
-            <router-link to="/user/member-info" class="top-action-link" v-if="isUserCenterPage">用户管理</router-link>
-            <router-link to="/" class="top-action-link" v-if="isUserCenterPage">爱芯享信息共享平台</router-link>
+          <template v-if="auth.isLogin">
+            <router-link to="/user/my-published" class="top-action-link" >我发布的</router-link>
+            <router-link to="/user/member-info" class="top-action-link" >用户管理</router-link>
             <a @click="handleLogout" class="top-action-link">退出登录</a>
           </template>
           <template v-else>
@@ -29,12 +28,12 @@
           </router-link>
         </div>
         <!-- Spacer or actions for UserCenter view if needed, but top bar mostly handles it -->
-        <div class="header-spacer-for-logo-area" v-if="isUserCenterPage"></div>
+        <div class="header-spacer-for-logo-area" ></div>
       </div>
     </div>
 
     <!-- Unified Navigation Bar (Red Bar, only if NOT in user center) - Full Width -->
-    <nav class="unified-navigation-bar" v-if="!isUserCenterPage">
+    <nav class="unified-navigation-bar">
       <div class="unified-navigation-bar__content container">
         <router-link
           v-for="item in navigationItems"
@@ -61,7 +60,6 @@ const router = useRouter();
 const auth = useAuthStore();
 const { navigationItems, isActiveNavItem } = useNavigation();
 
-const isUserCenterPage = computed(() => route.path.startsWith('/user'));
 const showTopWelcomeBar = computed(() => true); // Always shown
 
 const navigateToLogin = () => router.push('/login');

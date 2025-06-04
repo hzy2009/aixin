@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import DefaultLayout from '@/components/layout/DefaultLayout.vue';
 import homeRoutes from '@/views/home/routes';
 import authRoutes from '@/views/auth/routes'; // <-- Import
-import demandsRoutes from '@/views/demand_square/routes.js'; // Import new routes
+import demandsRoutes from '@/views/demand_square/demands/routes.js'; // Import new routes
 import industryDynamicsRoutes from '@/views/industryDynamics/routes'; // <-- Import
 import userCenterRoutes from '@/views/user_center/routes';
 
