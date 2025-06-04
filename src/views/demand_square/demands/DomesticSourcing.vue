@@ -27,8 +27,9 @@ const tableColumns = reactive([
   { title: '需求数量', dataIndex: 'reqPartsTotal', key: 'reqPartsTotal', ellipsis: true, },
   { title: '需求状态', dataIndex: 'statusName', key: 'statusName', ellipsis: true, width: '80px' },
   { title: '已寻到数量', dataIndex: 'reqPartsFinish', key: 'reqPartsFinish', ellipsis: true, },
-  { title: '未寻到数量', dataIndex: 'reqPartsUnfinish', key: 'reqPartsUnfinish', ellipsis: true, 
-    customRender: ({record}) => {
+  {
+    title: '未寻到数量', dataIndex: 'reqPartsUnfinish', key: 'reqPartsUnfinish', ellipsis: true,
+    customRender: ({ record }) => {
       const { reqPartsTotal, reqPartsFinish } = record;
       // 计算未完成数量
       const reqPartsUnfinish = reqPartsTotal - reqPartsFinish;

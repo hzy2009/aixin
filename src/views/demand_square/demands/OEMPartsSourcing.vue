@@ -20,22 +20,23 @@ const filterConfigForPage = reactive([
 
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = reactive([
-  { title: '单号', dataIndex: 'code', key: 'code', ellipsis: true, width: '120px' },
-  { title: '需求方', dataIndex: 'tenantName', key: 'tenantName', ellipsis: true, },
-  { title: '创建日期', dataIndex: 'createTime', key: 'createTime', ellipsis: true, },
-  { title: '计划完成日期', dataIndex: 'expireDate', key: 'expireDate', ellipsis: true, width: '120px' },
-  { title: '需求数量', dataIndex: 'reqPartsTotal', key: 'reqPartsTotal', ellipsis: true, },
-  { title: '需求状态', dataIndex: 'statusName', key: 'statusName', ellipsis: true, width: '80px' },
-  { title: '已寻到数量', dataIndex: 'reqPartsFinish', key: 'reqPartsFinish', ellipsis: true, },
-  { title: '未寻到数量', dataIndex: 'reqPartsUnfinish', key: 'reqPartsUnfinish', ellipsis: true, 
-    customRender: ({record}) => {
-      const { reqPartsTotal, reqPartsFinish } = record;
-      // 计算未完成数量
-      const reqPartsUnfinish = reqPartsTotal - reqPartsFinish;
-      return <span>{reqPartsUnfinish || '-'}</span>;
-    }
-  },
-  { title: '操作', key: 'actions', width: '10%', align: 'center', fixed: 'right' },
+    { title: '单号', dataIndex: 'code', key: 'code', ellipsis: true, width: '120px' },
+    { title: '需求方', dataIndex: 'tenantName', key: 'tenantName', ellipsis: true, },
+    { title: '创建日期', dataIndex: 'createTime', key: 'createTime', ellipsis: true, },
+    { title: '计划完成日期', dataIndex: 'expireDate', key: 'expireDate', ellipsis: true, width: '120px' },
+    { title: '需求数量', dataIndex: 'reqPartsTotal', key: 'reqPartsTotal', ellipsis: true, },
+    { title: '需求状态', dataIndex: 'statusName', key: 'statusName', ellipsis: true, width: '80px' },
+    { title: '已寻到数量', dataIndex: 'reqPartsFinish', key: 'reqPartsFinish', ellipsis: true, },
+    {
+        title: '未寻到数量', dataIndex: 'reqPartsUnfinish', key: 'reqPartsUnfinish', ellipsis: true,
+        customRender: ({ record }) => {
+            const { reqPartsTotal, reqPartsFinish } = record;
+            // 计算未完成数量
+            const reqPartsUnfinish = reqPartsTotal - reqPartsFinish;
+            return <span>{reqPartsUnfinish || '-'}</span>;
+        }
+    },
+    { title: '操作', key: 'actions', width: '10%', align: 'center', fixed: 'right' },
 ]);
 
 const addButton = reactive({

@@ -48,8 +48,8 @@ export function useDemandDetail({demandIdProp, mode, url, otherParams, queryAfte
     try {
       const response = await defHttp.get({ url: url.detail, params: {id: internalDemandId.value} });
       if (response.success) {
-        queryAfter && queryAfter(response.result);
-        demandDetail.value = response.result;
+        const data = queryAfter && queryAfter(response.result) || response.result;
+        demandDetail.value = data;
       } else {
         throw new Error(response.data.message || '获取需求详情失败');
       }

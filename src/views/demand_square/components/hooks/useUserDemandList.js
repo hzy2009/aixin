@@ -18,7 +18,7 @@ const defaultStatusMap = {
 };
 
 
-export function useUserDemandList({otherParams, initialPageSize = 10, statusMapping = defaultStatusMap, url, statusDictKey}) {
+export function useUserDemandList({otherParams, initialPageSize = 10, statusMapping = defaultStatusMap, url, statusDictKey, userStatCardVisible}) {
   const stats = ref({ pendingResponse: 0, inProgress: 0, completed: 0, total: 0 });
   const authStore = useAuthStore();
   const currentFilters = ref({});
@@ -96,7 +96,12 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     loadTableData();
   };
   const handleStatClick = (statusKey) => {
-    currentFilters.value = { statusCode: statusKey?.value };
+    const cacaedStatus = currentFilters.value.statusCode;
+    if (cacaedStatus === statusKey?.value) {
+      currentFilters.value = {statusCode: ''};
+    } else {
+      currentFilters.value = { ...currentFilters.value,statusCode: statusKey?.value };
+    }
     pagination.current = 1; // Reset to first page
     loadTableData();
   };
@@ -126,7 +131,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
   });
 
   onMounted(() => {
-    // loadStats();
+    if (userStatCardVisible) loadStats();
     loadTableData();
   });
 

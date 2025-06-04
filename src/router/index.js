@@ -20,7 +20,7 @@ const routes = [
       // ... other feature routes that use DefaultLayout
     ],
   },
-  ...userCenterRoutes, 
+  // ...userCenterRoutes, 
   ...authRoutes, // <-- Add auth routes (they don't use DefaultLayout)
   {
     path: '/:pathMatch(.*)*',

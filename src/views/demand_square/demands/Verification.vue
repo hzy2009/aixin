@@ -25,20 +25,22 @@ const filterConfigForPage = reactive([
 const tableColumns = reactive([
     { title: '单号', dataIndex: 'code', key: 'code', ellipsis: true, width: '120px' },
     { title: '验证项目', dataIndex: 'projectName', key: 'projectName', align: 'center' }, // This should be 'sourcingType' from mock
-    { title: '产品类别', dataIndex: 'productType', key: 'productType', align: 'center',
-        customRender: ({record}) => {
+    {
+        title: '产品类别', dataIndex: 'productType', key: 'productType', align: 'center',
+        customRender: ({ record }) => {
             const dictMap = authStore.sysAllDictItems['product_type'];
             const str = dictMap.find(item => item.value == record.productType);
             return <span>{str?.label || '-'}</span>;
         }
-     }, // Key matches display field
-    { title: '项目分类', dataIndex: 'projectType', key: 'projectType', align: 'center',
-        customRender: ({record}) => {
+    }, // Key matches display field
+    {
+        title: '项目分类', dataIndex: 'projectType', key: 'projectType', align: 'center',
+        customRender: ({ record }) => {
             const dictMap = authStore.sysAllDictItems['project_type'];
             const str = dictMap.find(item => item.value == record.productType);
             return <span>{str?.label || '-'}</span>;
         }
-     }, // Corrected key
+    }, // Corrected key
     { title: '需求状态', dataIndex: 'statusName', key: 'statusName', align: 'center' }, // Corrected key
     { title: '需求提出方', dataIndex: 'tenantName', key: 'tenantName', align: 'center' },
     { title: '创建时间', dataIndex: 'createTime', key: 'publishDate', align: 'center' },

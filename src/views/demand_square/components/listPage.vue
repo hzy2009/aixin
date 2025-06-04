@@ -3,11 +3,11 @@
     <div class="list-page container">
         <!-- <breadcrumbs/> -->
         <!-- 1. Stats Bar -->
-        <!-- <div class="stats-bar"> 
+        <div class="stats-bar" v-if="props.userStatCardVisible"> 
             <UserStatCard :label="item.label" :value="item.count || 0" v-for="item in stats.list" :key="item.label + item.count" @click="handleStatClick(item)">
                 <template #icon><img src="@/assets/images/user_center/icon-pending.png" alt="未响应" /></template>
             </UserStatCard>
-            <UserStatCard label="未响应" :value="stats.pendingResponse || 0">
+            <!-- <UserStatCard label="未响应" :value="stats.pendingResponse || 0">
                 <template #icon><img src="@/assets/images/user_center/icon-pending.png" alt="未响应" /></template>
             </UserStatCard>
             <UserStatCard label="进行中" :value="stats.inProgress || 0">
@@ -15,11 +15,12 @@
             </UserStatCard>
             <UserStatCard label="已完成" :value="stats.completed || 0">
                 <template #icon><img src="@/assets/images/user_center/icon-completed.png" alt="已完成" /></template>
-            </UserStatCard>
+            </UserStatCard> -->
             <UserStatCard label="总计" :value="stats.total || 0">
                 <template #icon><img src="@/assets/images/user_center/icon-total.png" alt="总计" /></template>
             </UserStatCard>
-        </div> -->
+        </div>
+
         <!-- 2. Filter Accordion -->
         <UserFilterAccordion :filter-groups="filterConfigForPage" :initial-filters="currentFilters.value"
             @filters-changed="handleFiltersChange" class="filter-accordion-section" ref="userFilterAccordionRef" />
@@ -87,6 +88,10 @@ const props = defineProps({
         type: Object,
         default: {},
     },
+    userStatCardVisible: {
+        type: Boolean,
+        default: false
+    }
 });
 
 const { url, filterConfigForPage, tableColumns, addButton, actions, otherParams, statusDictKey } = props.pageData;
@@ -108,6 +113,7 @@ const {
     otherParams,
     url: url,
     statusDictKey,
+    userStatCardVisible:props.userStatCardVisible
 });
 filterConfigForPage.forEach(item => {
     if (!item.options && item.dictKey) {
