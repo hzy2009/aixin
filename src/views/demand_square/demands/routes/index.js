@@ -1,11 +1,11 @@
-const DomesticSourcing = () => import('./DomesticSourcing.vue');
-const OEMPartsSourcing = () => import('./OEMPartsSourcing.vue');
-const DomesticDetailPage = () => import('./DomesticDetailPage.vue');
-const OEMPartsDetailPage = () => import('./OEMPartsDetailPage.vue');
-const PublicRelations = () => import('./PublicRelations.vue');
-const Verification = () => import('./Verification.vue');
-const PublicRelationsDetailPage = () => import('./PublicRelationsDetailPage.vue');
-const VerificationDetailPage = () => import('./VerificationDetailPage.vue');
+const DomesticSourcing = () => import('../DomesticSourcing.vue');
+const OEMPartsSourcing = () => import('../OEMPartsSourcing.vue');
+const DomesticDetailPage = () => import('../DomesticDetailPage.vue');
+const OEMPartsDetailPage = () => import('../OEMPartsDetailPage.vue');
+const PublicRelations = () => import('../PublicRelations.vue');
+const Verification = () => import('../Verification.vue');
+const PublicRelationsDetailPage = () => import('../PublicRelationsDetailPage.vue');
+const VerificationDetailPage = () => import('../VerificationDetailPage.vue');
 // ... other demand related imports
 
 export default {

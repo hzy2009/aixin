@@ -7,7 +7,7 @@
 <script setup lang="jsx">// jsx for custom pagination render if kept
 import { ref, reactive } from 'vue'; // onMounted removed as hook handles it
 import { useRouter } from 'vue-router';
-import listPage from '../components/listPage.vue';
+import listPage from '@/components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 const router = useRouter();
 
@@ -51,7 +51,7 @@ const actions = reactive([
 
 const pageData = ref({
     url: {
-        list: 'apm/apmRdBreakthrough/list/owner',
+        list: 'apm/apmRdBreakthrough/list',
         overview: 'apm/apmRdBreakthrough/overview'
     },
     filterConfigForPage,

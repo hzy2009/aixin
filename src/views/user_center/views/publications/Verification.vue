@@ -7,7 +7,7 @@
 <script setup lang="jsx">// jsx for custom pagination render if kept
 import { ref, reactive } from 'vue'; // onMounted removed as hook handles it
 import { useRouter } from 'vue-router';
-import listPage from '../components/listPage.vue';
+import listPage from '@/components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 import { useAuthStore } from '@/store/authStore';
 const authStore = useAuthStore();
@@ -61,7 +61,7 @@ const actions = reactive([
 
 const pageData = ref({
     url: {
-        list: 'apm/apmInspection/list/owner',
+        list: 'apm/apmInspection/list',
         overview: 'apm/apmInspection/overview'
     },
     filterConfigForPage,
