@@ -21,13 +21,14 @@ const filterConfigForPage = reactive([
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = reactive([
     { title: '单号', dataIndex: 'code', key: 'code', ellipsis: true, },
-    { title: '研发攻关方向名称', dataIndex: 'rdType', key: 'rdType', align: 'center',
+    {
+        title: '研发攻关方向名称', dataIndex: 'rdType', key: 'rdType', align: 'center',
         // customRender: ({record}) => {
         // const { reqPartsTotal, reqPartsFinish } = record;
         // // 计算未完成数量
         // return <span>{reqPartsUnfinish || '-'}</span>;
         // }
-     }, // This should be 'sourcingType' from mock
+    }, // This should be 'sourcingType' from mock
     { title: '研发需求', dataIndex: 'sourceDesc', key: 'sourceDesc', align: 'center' }, // Corrected key
     { title: '需求状态', dataIndex: 'statusName', key: 'statusName', align: 'center' }, // Key matches display field
     { title: '创建日期', dataIndex: 'createTime', key: 'createTime', align: 'center' },
