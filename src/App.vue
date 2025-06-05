@@ -5,10 +5,10 @@
 </template>
 
 <script setup>
+import zhCN from 'ant-design-vue/es/locale/zh_CN';
 import { useAuthStore } from '@/store/authStore';
 useAuthStore().getDictItems();
 
-// import zhCN from 'ant-design-vue/es/locale/zh_CN';
 </script>
 
 <style lang="less"></style>
