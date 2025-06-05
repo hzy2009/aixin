@@ -1,5 +1,5 @@
 <template>
-    <HomeHeroSection :height="200"/>
+    <!-- <HomeHeroSection :height="200" /> -->
     <div class="list-page container">
         <!-- <breadcrumbs/> -->
         <!-- 1. Stats Bar -->

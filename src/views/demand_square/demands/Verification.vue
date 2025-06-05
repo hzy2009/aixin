@@ -71,14 +71,13 @@ const pageData = ref({
     tableColumns,
     addButton,
     actions,
-    statusDictKey: 'sourcing_status'
 })
 
 
 function viewDetails({ id }) {
-    router.push(`/user/demands/Verification/${id}`);
+    router.push(`/user/published/Verification/${id}`);
 };
 function createNewSourcing() {
-    router.push(`/user/demands/Verification/create`);
+    router.push(`/user/published/Verification/create`);
 };
 </script>

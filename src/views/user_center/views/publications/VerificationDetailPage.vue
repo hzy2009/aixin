@@ -69,7 +69,7 @@ const pageData = reactive({
 
 const goBack = () => {
   router.go(-1);
-  // router.push('/user/demands/verification');
+  // router.push('/user/published/verification');
 };
 
 </script>

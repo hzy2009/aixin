@@ -64,14 +64,15 @@ const pageData = ref({
   tableColumns,
   addButton,
   actions,
-  statusDictKey: 'sourcing_status'
+  statusDictKey: 'sourcing_status',
+  userStatCardVisible: true
 })
 
 
 function viewDetails({ id }) {
-  router.push(`/user/demands/DomesticSourcing/${id}`);
+  router.push(`/user/published/DomesticSourcing/${id}`);
 };
 function createNewSourcing() {
-  router.push(`/user/demands/DomesticSourcing/create`);
+  router.push(`/user/published/DomesticSourcing/create`);
 };
 </script>

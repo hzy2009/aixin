@@ -164,7 +164,7 @@ const onLoginFinish = async values => {
     await authStore.getUserRole(res?.result?.userInfo?.id);
     message.success('登录成功!');
     // const redirectPath = router.currentRoute.value.query.redirect || '/';
-    router.push('/user/demands/DomesticSourcing');
+    router.push('/user/published/DomesticSourcing');
   } catch (error) {
     message.error(error?.response?.data?.message || error?.message || '登录失败!');
   } finally {

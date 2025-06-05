@@ -76,7 +76,7 @@ const pageData = reactive({
 })
 
 const goBack = () => {
-  // router.push('/user/demands/OEMPartsSourcing');
+  // router.push('/user/published/OEMPartsSourcing');
   router.go(-1);
 };
 

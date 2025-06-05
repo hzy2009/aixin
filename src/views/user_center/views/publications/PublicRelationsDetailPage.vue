@@ -79,7 +79,7 @@ const pageData = reactive({
 
 const goBack = () => {
   router.go(-1);
-  // router.push('/user/demands/PublicRelations');
+  // router.push('/user/published/PublicRelations');
 };
 
 </script>

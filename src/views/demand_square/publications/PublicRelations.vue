@@ -63,9 +63,9 @@ const pageData = ref({
 
 
 function viewDetails({ id }) {
-    router.push(`/user/demands/PublicRelations/${id}`);
+    router.push(`/user/published/PublicRelations/${id}`);
 };
 function createNewSourcing() {
-    router.push(`/user/demands/PublicRelations/create`);
+    router.push(`/user/published/PublicRelations/create`);
 };
 </script>

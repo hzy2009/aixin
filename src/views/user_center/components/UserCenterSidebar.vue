@@ -45,10 +45,10 @@ const menuItems = computed(() => [
     label: '需求广场',
     icon: () => h(AppstoreOutlined), // Or relevant icon
     children: [
-      { key: 'DomesticSourcing', label: '国产替代寻源', path: '/user/demands/DomesticSourcing' },
-      { key: 'OEMPartsSourcing', label: '原厂件寻源', path: '/user/demands/OEMPartsSourcing' },
-      { key: 'PublicRelations', label: '研发攻关', path: '/user/demands/PublicRelations' },
-      { key: 'Verification', label: '检测验证', path: '/user/demands/Verification' },
+      { key: 'DomesticSourcing', label: '国产替代寻源', path: '/user/published/DomesticSourcing' },
+      { key: 'OEMPartsSourcing', label: '原厂件寻源', path: '/user/published/OEMPartsSourcing' },
+      { key: 'PublicRelations', label: '研发攻关', path: '/user/published/PublicRelations' },
+      { key: 'Verification', label: '检测验证', path: '/user/published/Verification' },
     ],
   },
   {

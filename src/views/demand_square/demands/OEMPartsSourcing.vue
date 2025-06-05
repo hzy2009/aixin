@@ -65,14 +65,13 @@ const pageData = ref({
     tableColumns,
     addButton,
     actions,
-    statusDictKey: 'sourcing_status'
 })
 
 
 function viewDetails({ id }) {
-    router.push(`/user/demands/OEMPartsSourcing/${id}`);
+    router.push(`/user/published/OEMPartsSourcing/${id}`);
 };
 function createNewSourcing() {
-    router.push(`/user/demands/OEMPartsSourcing/create`);
+    router.push(`/user/published/OEMPartsSourcing/create`);
 };
 </script>

@@ -17,12 +17,12 @@ const routes = [
     children: [
       ...homeRoutes,
       demandsRoutes,
+      ...userCenterRoutes, 
       // publicationsRoutes,
       ...industryDynamicsRoutes,
       // ... other feature routes that use DefaultLayout
     ],
   },
-  // ...userCenterRoutes, 
   ...authRoutes, // <-- Add auth routes (they don't use DefaultLayout)
   {
     path: '/:pathMatch(.*)*',
