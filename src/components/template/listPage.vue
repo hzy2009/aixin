@@ -40,25 +40,26 @@
             </a-button>
         </div>
 
-        <!-- 4. Results Table -->
-        <div class="results-table-section">
-            <a-table :columns="tableColumns" :dataSource="tableData" :loading="isLoading" :pagination="paginationConfig"
-                row-key="id" @change="handleTablePaginationChange" size="middle" class="user-demands-table">
-                <template #bodyCell="{ column, record }">
-                    <template v-if="column.key === 'statusCode'">
-                        <a-tag :color="getStatusTagColor(record.sourcingStatus)" class="status-tag">
-                            {{ record.statusCode }}
-                        </a-tag>
+        <slot name="content" :dataSource="tableData">
+            <div class="results-table-section">
+                <a-table :columns="tableColumns" :dataSource="tableData" :loading="isLoading" :pagination="paginationConfig"
+                    row-key="id" @change="handleTablePaginationChange" size="middle" class="user-demands-table">
+                    <template #bodyCell="{ column, record }">
+                        <template v-if="column.key === 'statusCode'">
+                            <a-tag :color="getStatusTagColor(record.sourcingStatus)" class="status-tag">
+                                {{ record.statusCode }}
+                            </a-tag>
+                        </template>
+                        <template v-else-if="column.key === 'actions'">
+                            <a-button type="link" @click="action?.clickFn(record)" class="action-link"
+                                v-for="(action, i) in actions" :key="i">
+                                {{ action.text }}
+                            </a-button>
+                        </template>
                     </template>
-                    <template v-else-if="column.key === 'actions'">
-                        <a-button type="link" @click="action?.clickFn(record)" class="action-link"
-                            v-for="(action, i) in actions" :key="i">
-                            {{ action.text }}
-                        </a-button>
-                    </template>
-                </template>
-            </a-table>
-        </div>
+                </a-table>
+            </div>
+        </slot>
     </div>
 </template>
 
