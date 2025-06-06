@@ -31,6 +31,7 @@ const pageData = ref({
     overview: 'apm/apmResearchReport/overview'
   },
   filterConfigForPage,
+  showBanner: true
 })
 
 const currentPage = ref(1);

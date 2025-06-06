@@ -1,5 +1,5 @@
 <template>
-    <!-- <HomeHeroSection :height="200" /> -->
+    <HomeHeroSection :height="200" v-if="showBanner"/>
     <div class="list-page container">
         <!-- <breadcrumbs/> -->
         <!-- 1. Stats Bar -->
@@ -91,7 +91,7 @@ const props = defineProps({
     }
 });
 
-const { url, filterConfigForPage, tableColumns, addButton, actions, otherParams, statusDictKey, userStatCardVisible } = props.pageData;
+const { url, filterConfigForPage, tableColumns, addButton, actions, otherParams, statusDictKey, userStatCardVisible, showBanner = false } = props.pageData;
 const {
     selectOptions,
     stats,

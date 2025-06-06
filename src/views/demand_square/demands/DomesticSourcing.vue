@@ -65,6 +65,7 @@ const pageData = ref({
   tableColumns,
   addButton,
   actions,
+  showBanner: true
 })
 
 
