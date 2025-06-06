@@ -5,6 +5,7 @@ const PublicRelations = () => import('../PublicRelations.vue');
 const Verification = () => import('../Verification.vue');
 // const OfflineEvent = () => import('../OfflineEvent.vue');
 const IndustryReport = () => import('../IndustryReport.vue');
+const IndustryReportDetailPage = () => import('../IndustryReportDetailPage.vue');
 // ... other demand related imports
 
 export default {
@@ -41,6 +42,13 @@ export default {
       component: IndustryReport,
       meta: { title: '行业报告', breadcrumb: ['行业报告'] } // Appends to base
     },
+    {
+      path: 'IndustryReportDetailPage/:id',
+      name: 'IndustryReportDetailPage',
+      component: IndustryReportDetailPage,
+      meta: { title: '行业报告详情', breadcrumb: ['行业报告详情'] } // Appends to base
+    },
+    
     // {
     //   path: 'OfflineEvent',
     //   name: 'OfflineEvent',

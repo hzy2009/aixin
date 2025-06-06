@@ -16,7 +16,7 @@
         <p class="report-summary">{{ report.summary }}</p>
       </div>
       <div class="report-item__actions">
-        <span class="report-views"><EyeOutlined /> {{ report.views || 0 }}</span>
+        <!-- <span class="report-views"><EyeOutlined /> {{ report.views || 0 }}</span> -->
         <RightOutlined class="details-arrow" />
       </div>
     </div>
@@ -83,7 +83,7 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.07);
     transition: box-shadow 0.3s ease;
     cursor: pointer;
-  
+    margin-bottom: 20px;
     &:hover {
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       .report-title {
@@ -103,7 +103,7 @@
     justify-content: center;
     text-align: center;
     padding-right: @spacing-lg;
-    border-right: 1px solid @border-color-light;
+    // border-right: 1px solid @border-color-light;
     margin-right: @spacing-lg;
     flex-shrink: 0;
   
@@ -207,7 +207,7 @@
     justify-content: space-between; // Pushes views to top, arrow to bottom (relative to this column)
     margin-left: @spacing-lg;
     padding-left: @spacing-lg;
-    border-left: 1px solid @border-color-light;
+    // border-left: 1px solid @border-color-light;
     flex-shrink: 0;
     width: 80px; // Fixed width for actions column
   
