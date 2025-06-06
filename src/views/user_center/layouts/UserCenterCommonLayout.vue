@@ -107,8 +107,8 @@ const handleSubTabClick = (key) => {
 }
 
 .uc-banner {
-  background: linear-gradient(to right, #2d070a 0%, #3c0a0e 30%, @primary-color 100%),
-              url('@/assets/images/user_center/banner-pattern.png'); // 假设你有这个图案
+  // background: linear-gradient(to right, #2d070a 0%, #3c0a0e 30%, @primary-color 100%),
+  //             url('@/assets/images/user_center/banner-pattern.png'); // 假设你有这个图案
   background-blend-mode: multiply, normal; // 将颜色与图案混合
   background-size: auto, auto 150px; // 图案大小
   background-position: center, right 20px center;
