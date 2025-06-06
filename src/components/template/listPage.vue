@@ -35,12 +35,12 @@
                 </a-input>
                 <a-button type="primary" @click="triggerSearch" class="search-btn">搜索</a-button>
             </div>
-            <a-button type="primary" @click="handleAdd(addButton)" class="create-new-btn">
+            <a-button type="primary" v-if="addButton" @click="handleAdd(addButton)" class="create-new-btn">
                 {{ addButton?.text }}
             </a-button>
         </div>
 
-        <slot name="content" :dataSource="tableData">
+        <slot name="content" :dataSource="tableData" :paginationConfig="paginationConfig">
             <div class="results-table-section">
                 <a-table :columns="tableColumns" :dataSource="tableData" :loading="isLoading" :pagination="paginationConfig"
                     row-key="id" @change="handleTablePaginationChange" size="middle" class="user-demands-table">

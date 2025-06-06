@@ -12,13 +12,13 @@ export function useNavigation() {
   const navigationItems = ref([
     { key: 'home', label: '首页', path: '/', matchPaths: ['/'] },
     { key: 'industryDynamics', label: '行业动态', path: '/industry-dynamics', matchPaths: ['/industry-dynamics'] },
-    { key: 'alternativeSourcing', label: '国产替代寻源', path: '/demands/DomesticSourcing', queryParams: { type: 'DomesticSourcing'}, basePath: '/demand-square' },
-    { key: 'originalSourcing', label: '原厂件寻源', path: '/demands/OEMPartsSourcing', queryParams: { type: 'OEMPartsSourcing'}, basePath: '/demand-square' },
-    { key: 'rndCollaboration', label: '研发攻关', path: '/demands/PublicRelations', queryParams: { type: 'PublicRelations'}, basePath: '/demand-square' },
-    { key: 'testingValidation', label: '检测验证', path: '/demands/Verification', queryParams: { type: 'Verification'}, basePath: '/demand-square' },
-    { key: 'offlineEvents', label: '线下活动', path: '/demand-square?type=offlineEvents', queryParams: { type: 'offlineEvents'}, basePath: '/demand-square' },
-    { key: 'industryReport', label: '行业报告', path: '/demand-square?type=industryReport', queryParams: { type: 'industryReport'}, basePath: '/demand-square' },
-    { key: 'industryTalent', label: '行业人才', path: '/demand-square?type=industryTalent', queryParams: { type: 'industryTalent'}, basePath: '/demand-square' },
+    { key: 'alternativeSourcing', label: '国产替代寻源', path: '/demands/DomesticSourcing', queryParams: { type: 'DomesticSourcing'}, basePath: '/demand' },
+    { key: 'originalSourcing', label: '原厂件寻源', path: '/demands/OEMPartsSourcing', queryParams: { type: 'OEMPartsSourcing'}, basePath: '/demand' },
+    { key: 'rndCollaboration', label: '研发攻关', path: '/demands/PublicRelations', queryParams: { type: 'PublicRelations'}, basePath: '/demand' },
+    { key: 'testingValidation', label: '检测验证', path: '/demands/Verification', queryParams: { type: 'Verification'}, basePath: '/demand' },
+    { key: 'offlineEvents', label: '线下活动', path: '/demand?type=offlineEvents', queryParams: { type: 'offlineEvents'}, basePath: '/demand' },
+    { key: 'industryReport', label: '行业报告', path: '/demands/IndustryReport', queryParams: { type: 'industryReport'}, basePath: '/demand' },
+    { key: 'industryTalent', label: '行业人才', path: '/demand?type=industryTalent', queryParams: { type: 'industryTalent'}, basePath: '/demand' },
     { key: 'techForum', label: '技术论坛', path: '/tech-forum', matchPaths: ['/tech-forum'] },
     // Add more items as needed
   ]);
