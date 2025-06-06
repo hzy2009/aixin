@@ -1,19 +1,19 @@
 <template>
     <div class="industry-report-item" @click="viewReportDetails(report.id)">
       <div class="report-item__date-badge">
-        <div class="date-month-day">{{ formatDate(report.publishDate, 'MM/DD') }}</div>
-        <div class="date-year">{{ formatDate(report.publishDate, 'YYYY') }}</div>
+        <div class="date-month-day">{{ formatDate(report.updateTime, 'MM/DD') }}</div>
+        <div class="date-year">{{ formatDate(report.updateTime, 'YYYY') }}</div>
       </div>
       <div class="report-item__image-container">
         <img :src="report.thumbnailUrl || defaultThumbnail" :alt="report.title" class="report-image" />
       </div>
       <div class="report-item__content">
         <div class="content-header">
-          <a-tag v-if="report.category" class="category-tag">{{ report.category }}</a-tag>
+          <a-tag v-if="report.reportTag" class="category-tag">{{ report.reportTag }}</a-tag>
           <h3 class="report-title">{{ report.title }}</h3>
         </div>
         <p v-if="report.author" class="report-author">作者：{{ report.author }}</p>
-        <p class="report-summary">{{ report.summary }}</p>
+        <p class="report-description">{{ report.description }}</p>
       </div>
       <div class="report-item__actions">
         <!-- <span class="report-views"><EyeOutlined /> {{ report.views || 0 }}</span> -->
@@ -36,7 +36,7 @@
         id: '',
         title: '2024年中国半导体制造业发展报告',
         author: '张明',
-        summary: '随着人工智能产业的快速发展，AI 相关的云端 (服务器) 和终端 (AIPC、AI 手机) 产品出货量快速增长，产生大量高端芯片需求。受 AI 需求驱动，全球半导体销售金额在2023年2月触底后迅速回升。',
+        description: '随着人工智能产业的快速发展，AI 相关的云端 (服务器) 和终端 (AIPC、AI 手机) 产品出货量快速增长，产生大量高端芯片需求。受 AI 需求驱动，全球半导体销售金额在2023年2月触底后迅速回升。',
         category: '半导体技术',
         publishDate: '2025-04-22',
         thumbnailUrl: null, // Will use placeholder if null
@@ -66,7 +66,7 @@
   
   const viewReportDetails = (id) => {
     // TODO: Navigate to the actual report detail page
-    router.push(`/reports/detail/${id}`); // Example route
+    router.push(`/demands/IndustryReportDetailPage/${id}`); // Example route
     console.log('View report details:', id);
   };
   </script>
@@ -186,14 +186,14 @@
       margin-bottom: @spacing-sm;
     }
   
-    .report-summary {
+    .report-description {
       font-size: 14px;
       color: @text-color-secondary;
       line-height: 1.6;
       margin-bottom: 0;
       // Multi-line ellipsis
       display: -webkit-box;
-      -webkit-line-clamp: 2; // Show 2 lines for summary
+      -webkit-line-clamp: 2; // Show 2 lines for description
       -webkit-box-orient: vertical;
       overflow: hidden;
       text-overflow: ellipsis;

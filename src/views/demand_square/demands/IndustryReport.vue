@@ -1,15 +1,10 @@
 <template>
-  <div>
+  <div class="industry-report-page">
     <listPage :pageData="pageData" >
         <template #content="{ dataSource, paginationConfig }">
-            <!-- {{ dataSource }}
-            <div>
-                {{ paginationConfig }}
-            </div> -->
-            <!-- <a-pagination v-model:current="paginationConfig.current" show-quick-jumper :total="dataSource.length" @change="onChange" /> -->
-            <!-- <IndustryReportItem v-for="item in dataSource" :key="item.id" :report="item" /> -->
-            <IndustryReportItem v-for="item in mock" :key="item.id" :report="item" />
-            <!-- <a-pagination v-model:current="paginationConfig.current" show-quick-jumper v-bind="paginationConfig" @change="onChange" /> -->
+            <IndustryReportItem v-for="item in dataSource" :key="item.id" :report="item" />
+            <!-- <IndustryReportItem v-for="item in mock" :key="item.id" :report="item" /> -->
+            <a-pagination v-model:current="paginationConfig.current" show-quick-jumper v-bind="paginationConfig" @change="onChange" />
         </template>
     </listPage>
   </div>
@@ -112,3 +107,8 @@ function createNewSourcing() {
   router.push(`/user/published/DomesticSourcing/create`);
 };
 </script>
+<style scoped lang="less">
+.industry-report-page {
+  min-height: 500px;
+}
+</style>
