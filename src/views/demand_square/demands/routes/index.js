@@ -3,7 +3,7 @@ const OEMPartsSourcing = () => import('../OEMPartsSourcing.vue');
 
 const PublicRelations = () => import('../PublicRelations.vue');
 const Verification = () => import('../Verification.vue');
-// const OfflineEvent = () => import('../OfflineEvent.vue');
+const OfflineEvent = () => import('../OfflineEvent.vue');
 const IndustryReport = () => import('../IndustryReport.vue');
 const IndustryReportDetailPage = () => import('../IndustryReportDetailPage.vue');
 // ... other demand related imports
@@ -48,7 +48,12 @@ export default {
       component: IndustryReportDetailPage,
       meta: { title: '行业报告详情', breadcrumb: ['行业报告详情'] } // Appends to base
     },
-    
+    {
+      path: 'OfflineEvent',
+      name: 'OfflineEvent',
+      component: OfflineEvent,
+      meta: { title: '线下活动', breadcrumb: ['线下活动'] } // Appends to base
+    },
     // {
     //   path: 'OfflineEvent',
     //   name: 'OfflineEvent',
