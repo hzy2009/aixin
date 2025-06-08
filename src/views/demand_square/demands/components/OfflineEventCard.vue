@@ -1,263 +1,212 @@
 <template>
-    <a-card :bordered="false" hoverable class="event-card" @click="viewEventDetails(event.id)">
-      <template #cover>
-        <div class="event-cover-image-wrapper">
-          <img :alt="event.title" :src="event.bannerUrl || defaultEventBanner" class="event-cover-image" />
-          <div v-if="event.organizerLogo" class="organizer-logo">
-            <img :src="event.organizerLogo" alt="Organizer" />
-          </div>
-           <div v-else-if="event.organizerName" class="organizer-name-badge">
-            {{ event.organizerName.substring(0, 10) }} <!-- Show short name if no logo -->
-          </div>
-        </div>
-      </template>
-  
-      <div class="event-card-body">
-        <h3 class="event-title">{{ event.title }}</h3>
-        <div class="event-meta">
-          <a-tag v-if="event.eventType" class="event-type-tag">{{ event.eventType }}</a-tag>
-          <span class="meta-item"><EnvironmentOutlined /> {{ event.location }}</span>
-          <span class="meta-item"><CalendarOutlined /> {{ event.eventDate }}</span>
-        </div>
-        <div class="event-registration">
-          <span class="reg-label">报名人数</span>
-          <a-progress
-            :percent="registrationPercent"
-            :show-info="false"
-            :stroke-color="primaryColor"
-            trail-color="#e6e6e6"
-            stroke-width="6"
-            class="reg-progress"
-          />
-          <span class="reg-count">{{ event.registeredCount }}/{{ event.maxCapacity }}</span>
+  <a-card :bordered="true" hoverable class="event-card" @click="viewEventDetails(event)">
+    <template #cover>
+      <div class="event-cover-image-wrapper">
+        <img :alt="event.activityName" :src="event.bannerUrl || defaultEventBanner" class="event-cover-image" />
+        <div v-if="event.organizerName" class="organizer-badge">
+          <span class="organizer-decorator"></span> {{ event.organizerName }}
         </div>
       </div>
-  
-      <div class="event-card-footer">
-        <div class="views-count">
-          <EyeOutlined /> {{ event.views || 0 }}
-        </div>
-        <a-button type="primary" ghost class="details-btn">查看详情</a-button>
+    </template>
+
+    <div class="event-card-content">
+      <h3 class="event-title">{{ event.activityName }}</h3>
+      <div class="event-meta">
+        <a-tag v-if="event.activityTypeName" class="event-type-tag">{{ event.activityTypeName }}</a-tag>
+        <div class="event-date"><CalendarOutlined /> {{ event.activityDate }}</div>
       </div>
-    </a-card>
-  </template>
-  
-  <script setup>
-  import { computed } from 'vue';
-  import { Card as ACard, Tag as ATag, Progress as AProgress, Button as AButton } from 'ant-design-vue';
-  import { EnvironmentOutlined, CalendarOutlined, EyeOutlined } from '@ant-design/icons-vue';
-  import { useRouter } from 'vue-router';
-  import defaultEventBannerPlaceholder from '@/assets/images/home/banner.png'; // Create a placeholder
-  import { theme } from 'ant-design-vue'; // To get theme variables
-  
-  const { useToken } = theme;
-  const { token } = useToken();
-  const primaryColor = token.value.colorPrimary;
-  
-  
-  const props = defineProps({
-    event: {
-      type: Object,
-      required: true,
-      default: () => ({
-        id: '',
-        title: '2024年半导体制造工艺技术峰会',
-        bannerUrl: null,
-        organizerLogo: null, // e.g., '@/assets/images/events/future-logo.png'
-        organizerName: '[Future]', // Fallback if no logo
-        eventType: '技术研讨会',
-        location: '华东',
-        eventDate: '2024/6/18',
-        registeredCount: 48,
-        maxCapacity: 100,
-        views: 86,
-      })
-    }
-  });
-  
-  const router = useRouter();
-  const defaultEventBanner = defaultEventBannerPlaceholder;
-  
-  const registrationPercent = computed(() => {
-    if (props.event.maxCapacity > 0) {
-      return Math.min(Math.round((props.event.registeredCount / props.event.maxCapacity) * 100), 100);
-    }
-    return 0;
-  });
-  
-  const viewEventDetails = (id) => {
-    // TODO: Navigate to actual event detail page
-    router.push(`/events/detail/${id}`); // Example route
-    console.log('View event details:', id);
-  };
-  </script>
-  
-  <style scoped lang="less">
-  @import '@/assets/styles/_variables.less';
-  
-  .event-card {
-    border-radius: @border-radius-base;
-    overflow: hidden; // Important for cover image and overall card shape
-    display: flex;
-    flex-direction: column;
-    height: 100%; // Ensure cards in a grid have same height
-    cursor: pointer;
-    border: 1px solid @border-color-light;
-  
-    &:hover {
-      border-color: @primary-color;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      .event-cover-image {
-          transform: scale(1.03);
-      }
-    }
-  
-    :deep(.ant-card-cover) {
-      height: 180px; // Fixed height for the event banner
-      overflow: hidden;
-      position: relative; // For organizer logo positioning
-    }
-    .event-cover-image-wrapper {
-        width: 100%;
-        height: 100%;
-        position: relative;
-    }
+    </div>
+
+    <template #actions>
+      <div class="event-card-action">
+        <span @click.stop="viewEventDetails(event)">查看详情</span>
+      </div>
+    </template>
+  </a-card>
+</template>
+
+<script setup>
+import { Card as ACard, Tag as ATag } from 'ant-design-vue';
+import { CalendarOutlined } from '@ant-design/icons-vue';
+import { useRouter } from 'vue-router';
+import defaultEventBannerPlaceholder from '@/assets/images/home/offline.png'; // 确保你有一个占位图
+
+const props = defineProps({
+  event: {
+    type: Object,
+    required: true,
+    default: () => ({
+      id: 'evt-001',
+      title: '会议主题会议主题会议主题会议主题',
+      bannerUrl: null, // 将使用占位图
+      activityTypeCode: 'Future', // 主办方，例如图片中的 "Future"
+      activityTypeName: '活动类型', // 例如 "技术研讨会"
+      eventDate: '2024/6/18',
+    })
+  }
+});
+const emit = defineEmits(['handleDetails']);
+const router = useRouter();
+const defaultEventBanner = defaultEventBannerPlaceholder;
+
+const viewEventDetails = (payLoad) => {
+  // 阻止事件冒泡，以防父级 card 的 click 事件也触发（如果 action 本身也是可点击区域）
+  // event.stopPropagation(); // 在这里不需要，因为 action 的 click 事件会处理导航
+  // TODO: 导航到实际的活动详情页面
+  // router.push(`/events/detail/${id}`); // 示例路由
+  console.log('查看活动详情:', payLoad);
+  emit('handleDetails', payLoad);
+
+};
+</script>
+
+<style scoped lang="less">
+@import '@/assets/styles/_variables.less';
+
+.event-card {
+  border-radius: @border-radius-sm; // 图片中卡片边角非常柔和
+  overflow: hidden;
+  border: 1px solid @border-color-light; // 卡片有一个细边框
+  box-shadow: none; // 图片中没有明显阴影，或者非常非常淡
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    border-color: @primary-color;
+    // box-shadow: 0 4px 12px rgba(0,0,0,0.08); // 可选：悬停时轻微阴影
     .event-cover-image {
+        transform: scale(1.03); // 图片轻微放大
+    }
+    .event-card-action span {
+        color: @primary-color-dark; // 详情按钮文字颜色加深
+        border-color: @primary-color-dark;
+    }
+  }
+
+  // 覆盖层 (封面图片)
+  :deep(.ant-card-cover) {
+    height: 170px; // 根据图片比例调整，与设计稿匹配
+    overflow: hidden;
+    position: relative;
+  }
+  .event-cover-image-wrapper {
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      transition: transform 0.3s ease-in-out;
+      position: relative; // 为了主办方徽标定位
+  }
+  .event-cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+  }
+  .organizer-badge {
+    position: absolute;
+    top: @spacing-sm + 2px; // 距离顶部
+    left: @spacing-sm + 2px;  // 距离左侧
+    background-color: rgba(0,0,0,0.4); // 半透明黑色背景
+    color: @text-color-light;
+    font-size: 12px;
+    padding: 3px 8px 3px 6px; // 细微调整padding
+    border-radius: @border-radius-sm;
+    display: inline-flex; // 使其内容内联排列
+    align-items: center;
+
+    .organizer-decorator {
+      display: inline-block;
+      width: 3px;
+      height: 10px; // 装饰条高度
+      background-color: @primary-color; // 红色装饰条
+      margin-right: 5px; // 与文字间距
     }
-    .organizer-logo {
-      position: absolute;
-      top: @spacing-sm;
-      left: @spacing-sm;
-      background-color: rgba(255,255,255,0.8);
-      padding: 3px;
-      border-radius: @border-radius-sm;
-      img {
-        height: 20px; // Adjust as needed
-        max-width: 80px;
-        display: block;
-      }
+  }
+
+  // 卡片主体内容区
+  :deep(.ant-card-body) {
+    padding: @spacing-md; // 主体内容的内边距
+  }
+}
+
+.event-card-content {
+  // 此区域用于放置标题、标签和日期
+  // 如果需要固定高度，可以在这里设置，并处理内容溢出
+}
+
+.event-title {
+  font-size: 16px; // 标题字体大小
+  font-weight: 500; // 标题字重
+  color: @text-color-base;
+  margin-bottom: @spacing-xs; // 标题与下方元素的间距
+  line-height: 1.4;
+  // 单行省略号
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: @spacing-sm; // 与下方（或卡片底部，如果没actions）的间距
+}
+
+.event-meta {
+  // display: flex;
+  // justify-content: space-between; // 将标签和日期推向两端
+  align-items: center;
+  // margin-bottom: @spacing-md; // 与下方（或卡片底部，如果没actions）的间距
+  font-size: 13px;
+  color: @text-color-secondary;
+
+  .event-type-tag {
+    font-size: 12px;
+    color: @text-color-secondary; // 标签文字颜色
+    background-color: #f5f5f5; // 标签背景色
+    border-color: @border-color-light; // 标签边框颜色
+    border-radius: @border-radius-sm;
+    padding: 1px 6px; // 标签内边距
+    margin: 0; // 清除AntD Tag的默认外边距
+    margin-bottom: @spacing-sm; // 与下方（或卡片底部，如果没actions）的间距
+  }
+  .event-date {
+    align-items: center;
+    .anticon-calendar {
+      margin-right: 5px;
+      color: @text-color-tertiary; // 日期图标颜色
     }
-    .organizer-name-badge {
-      position: absolute;
-      top: @spacing-sm;
-      left: @spacing-sm;
-      background-color: rgba(0,0,0,0.5);
+  }
+}
+
+// 卡片操作区（底部按钮）
+:deep(.ant-card-actions) {
+  padding: 0; // 清除AntD actions的默认padding
+  border-top: 1px solid @border-color-light; // 分割线
+  background-color: @background-color-base; // 确保背景色
+  > li {
+    margin: 0; // 清除AntD li的默认外边距
+    text-align: right; // 使内容靠右
+    padding: @spacing-sm @spacing-md; // 给操作项内边距
+
+    > span { // 直接针对span，因为只有一个操作项
+        width: auto; // 允许内容自适应宽度
+        display: inline-block; // 使其像按钮一样
+    }
+  }
+}
+
+.event-card-action {
+  display: flex; // 使用flex来方便对齐（如果未来有多个按钮）
+  justify-content: flex-end; // 按钮靠右
+  width: 100%; // 确保填满actions的li
+
+  span { // “查看详情” 文本按钮样式
+    font-size: 13px;
+    color: @primary-color;
+    border: 1px solid @primary-color;
+    padding: 4px 12px;
+    border-radius: @border-radius-sm;
+    cursor: pointer;
+    transition: color 0.3s, border-color 0.3s, background-color 0.3s;
+
+    &:hover {
       color: @text-color-light;
-      font-size: 12px;
-      padding: 3px 6px;
-      border-radius: @border-radius-sm;
-    }
-  
-  
-    :deep(.ant-card-body) {
-      padding: @spacing-md;
-      flex-grow: 1; // Allows body to expand and push footer down
-      display: flex;
-      flex-direction: column;
+      background-color: @primary-color;
+      border-color: @primary-color;
     }
   }
-  
-  .event-card-body {
-      flex-grow: 1; // Push footer down
-  }
-  
-  .event-title {
-    font-size: 17px;
-    font-weight: 600;
-    color: @text-color-base;
-    margin-bottom: @spacing-sm;
-    line-height: 1.4;
-    // Ellipsis for 2 lines
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    min-height: calc(1.4em * 2); // Ensure space for two lines
-  }
-  
-  .event-meta {
-    display: flex;
-    flex-wrap: wrap; // Allow tags/meta to wrap if space is tight
-    gap: @spacing-sm @spacing-md; // row and column gap
-    align-items: center;
-    margin-bottom: @spacing-md;
-    font-size: 13px;
-    color: @text-color-secondary;
-  
-    .event-type-tag {
-      font-size: 12px;
-      border-radius: @border-radius-sm;
-      // background-color: #e6f7ff;
-      // color: #1890ff;
-      // border-color: #91d5ff;
-      background-color: fade(@primary-color, 10%);
-      color: @primary-color;
-      border: 1px solid fade(@primary-color, 30%);
-      margin: 0; // Remove default AntD tag margin if any
-    }
-    .meta-item {
-      display: inline-flex;
-      align-items: center;
-      .anticon {
-        margin-right: 5px;
-      }
-    }
-  }
-  
-  .event-registration {
-    display: flex;
-    align-items: center;
-    font-size: 13px;
-    color: @text-color-secondary;
-    margin-top: auto; // Push to bottom if event-card-body is flex column
-  
-    .reg-label {
-      margin-right: @spacing-sm;
-      white-space: nowrap;
-    }
-    .reg-progress {
-      flex-grow: 1;
-      margin-right: @spacing-sm;
-      // :deep(.ant-progress-inner) {
-      //     background-color: #f0f0f0; // Trail color
-      // }
-      // :deep(.ant-progress-bg) {
-      //     background-color: @primary-color; // Active color
-      //     height: 6px !important;
-      // }
-    }
-    .reg-count {
-      white-space: nowrap;
-      font-weight: 500;
-      color: @text-color-base;
-    }
-  }
-  
-  .event-card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: @spacing-md;
-      border-top: 1px solid @border-color-light;
-      margin-top: @spacing-md; // Add margin if not pushed by flex-grow in body
-  
-      .views-count {
-          font-size: 13px;
-          color: @text-color-tertiary;
-          .anticon {
-              margin-right: 4px;
-          }
-      }
-      .details-btn {
-          // Using primary ghost button
-          padding: 3px 12px;
-          height: auto;
-          font-size: 13px;
-      }
-  }
-  </style>
+}
+</style>

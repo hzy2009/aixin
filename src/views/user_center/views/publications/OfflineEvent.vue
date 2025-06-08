@@ -23,21 +23,27 @@ const filterConfigForPage = reactive([
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = reactive([
     { title: '单号', dataIndex: 'code', key: 'code', ellipsis: true, width: '120px' },
-    { title: '验证项目', dataIndex: 'projectName', key: 'projectName', align: 'center' }, // This should be 'sourcingType' from mock
-    { title: '产品类别', dataIndex: 'productType', key: 'productType', align: 'center',
-        customRender: ({record}) => {
-            const dictMap = authStore.sysAllDictItems['product_type'];
-            const str = dictMap.find(item => item.value == record.productType);
-            return <span>{str?.label || '-'}</span>;
-        }
-     }, // Key matches display field
-    { title: '项目分类', dataIndex: 'projectType', key: 'projectType', align: 'center',
-        customRender: ({record}) => {
-            const dictMap = authStore.sysAllDictItems['project_type'];
-            const str = dictMap.find(item => item.value == record.productType);
-            return <span>{str?.label || '-'}</span>;
-        }
-     },
+    { title: '活动名称', dataIndex: 'activityName', key: 'activityName', align: 'center' }, // This should be 'sourcingType' from mock
+    { title: '类型名称', dataIndex: 'activityTypeName', key: 'activityTypeName', align: 'center' }, // This should be 'sourcingType' from mock
+    { title: '规模', dataIndex: 'registerLimit', key: 'registerLimit', align: 'center' }, // This should be 'sourcingType' from mock
+    { title: '活动日期', dataIndex: 'activityDate', key: 'activityDate', align: 'center' }, // This should be 'sourcingType' from mock
+    { title: '活动区域', dataIndex: 'activityArea', key: 'activityArea', align: 'center' }, // This should be 'sourcingType' from mock
+    { title: '活动地址', dataIndex: 'activityAddress', key: 'activityAddress', align: 'center' }, // This should be 'sourcingType' from mock
+    { title: '内容', dataIndex: 'description', key: 'description', align: 'center' }, // This should be 'sourcingType' from mock
+    // { title: '产品类别', dataIndex: 'productType', key: 'productType', align: 'center',
+    //     customRender: ({record}) => {
+    //         const dictMap = authStore.sysAllDictItems['product_type'];
+    //         const str = dictMap.find(item => item.value == record.productType);
+    //         return <span>{str?.label || '-'}</span>;
+    //     }
+    //  }, // Key matches display field
+    // { title: '项目分类', dataIndex: 'projectType', key: 'projectType', align: 'center',
+    //     customRender: ({record}) => {
+    //         const dictMap = authStore.sysAllDictItems['project_type'];
+    //         const str = dictMap.find(item => item.value == record.productType);
+    //         return <span>{str?.label || '-'}</span>;
+    //     }
+    //  },
     { title: '需求状态', dataIndex: 'statusName', key: 'statusName', align: 'center' }, // Corrected key
     { title: '需求提出方', dataIndex: 'tenantName', key: 'tenantName', align: 'center' },
     { title: '创建时间', dataIndex: 'createTime', key: 'publishDate', align: 'center' },
@@ -61,14 +67,15 @@ const actions = reactive([
 
 const pageData = ref({
     url: {
-        list: 'apm/apmInspection/list',
-        overview: 'apm/apmInspection/overview'
+        list: 'apm/apmOfflineActivity/list',
+        overview: 'apm/apmOfflineActivity/overview'
     },
     filterConfigForPage,
     tableColumns,
     addButton,
     actions,
-    statusDictKey: 'sourcing_status'
+    statusDictKey: 'sourcing_status',
+  userStatCardVisible: true
 })
 
 

@@ -1,15 +1,18 @@
 // src/features/user_center/routes.js
 import UserCenterCommonLayout from './layouts/UserCenterCommonLayout.vue'; // 新的通用布局
 
-// const MyAlternativeSourcingPage = () => import('./views/MyAlternativeSourcingPage.vue'); // 假设已存在
+// const MyAlternativeSourcingPage = () => import('./views/MyAlternativeSourcingPage.vue'); 
 // const MyOriginalSourcingPage = () => import('./views/MyOriginalSourcingPage.vue'); // 需要创建
 // ... 其他视图 ...
 // const DemandDetailPage = () => import('./views/DemandDetailPage.vue');
 // const MemberInfoPage = () => import('./views/MemberInfoPage.vue');
-const DomesticSourcing = () => import('./views/publications/DomesticSourcing.vue'); // 假设已存在
-const OEMPartsSourcing = () => import('./views/publications/OEMPartsSourcing.vue'); // 假设已存在
-const PublicRelations = () => import('./views/publications/PublicRelations.vue'); // 假设已存在
-const Verification = () => import('./views/publications/Verification.vue'); // 假设已存在
+const DomesticSourcing = () => import('./views/publications/DomesticSourcing.vue'); 
+const OEMPartsSourcing = () => import('./views/publications/OEMPartsSourcing.vue'); 
+const PublicRelations = () => import('./views/publications/PublicRelations.vue'); 
+const Verification = () => import('./views/publications/Verification.vue'); 
+const OfflineEvent = () => import('./views/publications/OfflineEvent.vue'); 
+
+
 
 const DomesticDetailPage = () => import('./views/publications/DomesticDetailPage.vue');
 const OEMPartsDetailPage = () => import('./views/publications/OEMPartsDetailPage.vue');
@@ -102,12 +105,12 @@ const userCenterRoutes = [
         props: route => ({ demandIdProp: route.params.demandId, mode: 'view', demandType: route.query.type || 'Verification' }), // 通过 props 传递 mode 和 id
         meta: { title: '检测验证需求详情', breadcrumb: [ '检测验证需求详情'] }
       },
-      // {
-      //   path: 'offline-events',
-      //   name: 'PublishedOfflineEvents',
-      //   component: () => import('./views/MyEventsPage.vue'), // 示例
-      //   meta: { title: '我发布的 - 线下活动' }
-      // },
+      {
+        path: 'OfflineEvent',
+        name: 'PublishedOfflineEvents',
+        component: OfflineEvent, // 示例
+        meta: { title: '我发布的 - 线下活动' }
+      },
       // // 详情页和新建页可以放在这个层级，也可以放在更顶层
       // {
       //   path: ':demandType/new', // e.g., /user/published/alternative-sourcing/new

@@ -32,5 +32,11 @@ export default {
       component: Verification,
       meta: { title: '检测验证', breadcrumb: ['检测验证'] } // Appends to base
     },
+     {
+      path: 'MyOfflineEvent',
+      name: 'MyOfflineEvent',
+      component: OfflineEvent,
+      meta: { title: '线下活动', breadcrumb: ['线下活动'] } // Appends to base
+    },
   ]
 };

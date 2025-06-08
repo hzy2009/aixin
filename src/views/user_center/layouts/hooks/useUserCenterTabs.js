@@ -13,7 +13,7 @@ const defaultTabsConfig = {
       { key: 'publishedOriginalSourcing', label: '原厂件寻源', path: '/user/published/OEMPartsSourcing' },
       { key: 'publishedRndCollaboration', label: '研发攻关', path: '/user/published/PublicRelations' },
       { key: 'publishedTestingValidation', label: '检测验证', path: '/user/published/Verification' },
-      { key: 'publishedOfflineEvents', label: '线下活动', path: '/user/published/offline-events' },
+      { key: 'publishedOfflineEvents', label: '线下活动', path: '/user/published/OfflineEvent' },
       // ... 更多 "我发布的" 子页签
     ],
   },

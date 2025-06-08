@@ -51,7 +51,7 @@ const actions = reactive([
 
 const pageData = ref({
     url: {
-        list: 'apm/apmRdBreakthrough/list',
+        list: 'apm/apmOfflineActivity/list',
         overview: 'apm/apmRdBreakthrough/overview'
     },
     filterConfigForPage,

@@ -2,15 +2,16 @@
   <div>
     <listPage :pageData="pageData" >
         <template #content="{ dataSource, paginationConfig }">
-            {{ dataSource }}
-             <OfflineEventCard v-for="event in dataSource" :key="event.id" :event="event"/>
-            <a-pagination v-model:current="paginationConfig.current" show-quick-jumper :total="dataSource.length" @change="onChange" />
+          <div class="results-grid">
+            <OfflineEventCard v-for="event in dataSource" :key="event.id" :event="event" @handleDetails="handleDetails(event)"/>
+          </div>
+          <a-pagination v-model:current="paginationConfig.current" show-quick-jumper :total="dataSource.length" @change="onChange" />
         </template>
     </listPage>
   </div>
 </template>
 
-<script setup lang="jsx">// jsx for custom pagination render if kept
+<script setup lang="jsx">
 import { ref, reactive } from 'vue'; // onMounted removed as hook handles it
 import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
@@ -26,8 +27,8 @@ const filterConfigForPage = reactive([
 
 const pageData = ref({
   url: {
-    list: 'apm/apmResearchReport/list/front',
-    overview: 'apm/apmResearchReport/overview'
+    list: 'apm/apmOfflineActivity/list/front',
+    overview: 'apm/apmOfflineActivity/overview'
   },
   filterConfigForPage,
   showBanner: true
@@ -38,10 +39,33 @@ const paginationConfig = reactive({
   current: 1,
   pageSize: 10
 })
-function viewDetails({ id }) {
-  router.push(`/user/published/DomesticSourcing/${id}`);
+function handleDetails({ id }) {
+  router.push(`/demands/OfflineEventDetailPage/${id}`);
 };
 function createNewSourcing() {
   router.push(`/user/published/DomesticSourcing/create`);
 };
 </script>
+
+<style scoped lang="less">
+@import '@/assets/styles/_variables.less';
+   .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(580px, 1fr));
+    gap: @spacing-lg;
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+
+    @media (max-width: 400px) {
+      grid-template-columns: 1fr;
+    }
+  } 
+  .content-section {
+    margin-bottom: @spacing-lg;
+   &:last-child {
+      margin-bottom: 0;
+   }
+  }
+</style>
