@@ -1,13 +1,13 @@
 <template>
   <div>
-    <detail :pageData="pageData" @goBack="goBack"></detail>
+    <edit :pageData="pageData" @goBack="goBack"></edit>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import detail from '@/components/template/detail.vue';
+import edit from '@/components/template/edit.vue';
 import { useAuthStore } from '@/store/authStore';
 
 const authStore = useAuthStore();

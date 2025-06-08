@@ -1,0 +1,153 @@
+@import '@/assets/styles/_variables';
+
+.edit-page {
+    // This component is expected to be rendered within UserCenterCommonLayout's content area
+    padding: @spacing-lg @spacing-xl; // Inner padding for the content block
+    background-color: @background-color-base;
+    border-radius: @border-radius-sm;
+}
+
+.page-main-title {
+    font-size: 20px; // "创建国产替代寻源需求"
+    font-weight: 600;
+    color: @text-color-base;
+    margin-bottom: @spacing-xl; // Space below main title
+    text-align: left;
+}
+
+.form-section-container {
+    margin-bottom: @spacing-xxl; // Space between form and action buttons
+}
+
+.form-section-title-wrapper {
+    margin-bottom: @spacing-lg;
+    padding-bottom: @spacing-sm; // Space for the gray line
+    border-bottom: 1px solid @border-color-light; // The long gray line
+    position: relative; // Needed for the absolute positioning of the red line
+}
+
+.form-section-title {
+    font-size: 14px;
+    font-weight: 400;
+    color: @text-color-secondary; // Gray text for "基本信息"
+    margin: 0;
+    display: inline-block; // Crucial: makes the ::after pseudo-element size to the text
+    position: relative; // Allows z-index if needed, and for ::after positioning relative to this
+
+    // The short red underline directly under the text "基本信息"
+    &::after {
+        content: '';
+        display: block;
+        width: 100%; // Takes the width of "基本信息" text due to display: inline-block on parent
+        height: 2px; // Thickness of the red line
+        background-color: @primary-color; // Your primary red color
+        position: absolute;
+        bottom: -(@spacing-sm + 1px); // Position it exactly where the gray border-bottom is
+        // @spacing-sm is the padding-bottom of the wrapper
+        // +1px is to account for the border thickness itself
+        left: 0;
+        z-index: 1; // Ensure the red line is on top of the gray border-bottom
+    }
+}
+
+// Styles for DynamicForm when horizontal
+.custom-horizontal-form {
+    :deep(.ant-form-item) {
+        margin-bottom: @spacing-lg; // Space between form items
+        display: flex; // Needed for label and control alignment
+        flex-direction: row; // Default, but explicit
+        align-items: center; // Vertically align label and input
+    }
+
+    :deep(.ant-form-item-label) {
+        text-align: right; // Labels are right-aligned
+        padding-right: @spacing-sm; // Space between label and input
+        line-height: 36px; // Match input height
+
+        label {
+            color: @text-color-secondary; // Label text color
+        }
+    }
+
+    :deep(.ant-form-item-control) {
+        flex: 1; // Control takes remaining space
+    }
+
+    // Specific input styling to match the image
+    :deep(.ant-input),
+    :deep(.ant-select-selector),
+    :deep(.ant-picker) {
+        background-color: #F7F8FA; // Light gray background for inputs
+        border-color: #F7F8FA; // Border color to match background (almost invisible)
+        border-radius: @border-radius-sm;
+        height: 36px; // Standard height
+
+        &:hover,
+        &:focus,
+        &.ant-input-focused,
+        &.ant-select-focused .ant-select-selector {
+            background-color: @background-color-base; // White on hover/focus
+            border-color: @primary-color;
+            box-shadow: 0 0 0 2px fade(@primary-color, 20%);
+        }
+    }
+
+    :deep(.ant-input[disabled]) {
+        // Disabled input style
+        background-color: #F0F2F5; // Slightly darker gray for disabled
+        color: @text-color-tertiary;
+        border-color: #F0F2F5;
+        cursor: not-allowed;
+    }
+
+    :deep(.ant-picker) {
+        width: 100%; // Date pickers take full width of their column
+    }
+
+    :deep(.ant-select-arrow .anticon) {
+        // Arrow for select
+        color: @text-color-tertiary;
+    }
+}
+
+
+.page-actions-footer {
+    display: flex;
+    justify-content: flex-end; // Buttons to the right
+    margin-top: @spacing-xl;
+    padding-top: @spacing-lg;
+    // No border-top as per this image
+}
+
+.action-button {
+    min-width: 88px; // Standard button width
+    font-size: 14px;
+    border-radius: @border-radius-sm;
+
+    &.cancel-button {
+        margin-right: @spacing-md;
+        background-color: @background-color-base;
+        border: 1px solid @border-color-base; // Gray border
+        color: @text-color-base; // Black/dark gray text
+
+        &:hover {
+            color: @primary-color;
+            border-color: @primary-color;
+        }
+    }
+
+    &.submit-button {
+        // type="primary" danger should make it red
+        // If not, override:
+        // background-color: @primary-color;
+        // border-color: @primary-color;
+        // color: @text-color-light;
+    }
+}
+
+.action-submit-note {
+    text-align: right; // Note aligned with buttons
+    margin-top: @spacing-xs;
+    font-size: 12px;
+    color: @text-color-tertiary;
+}

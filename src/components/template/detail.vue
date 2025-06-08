@@ -1,99 +1,146 @@
 <template>
-    <div class="demand-detail-page">
-        <breadcrumbs/>
-        <div v-if="isLoading" class="loading-state"> <a-spin size="large" /> </div>
-        <div v-else-if="error && !demandDetailData" class="error-state"> <a-alert type="error" :message="error"
-                show-icon />
-        </div>
-        <div v-else-if="demandDetailData" class="content-wrapper">
-            <div class="detail-header-info">
-                <h2 class="main-title"><span>{{ operationMode == 'create' ? '创建' : '' }}</span>{{ pageTitle }}需求<span>{{
-                    operationMode == 'view' ? '详情' : '' }}</span></h2>
-                <span class="demand-id-display">{{ demandDetailData.code
-                }}</span>
-            </div>
+  <div class="detail-view-page">
+	<!-- 1. Page Title -->
+	<div class="page-title-header">
+	  <span class="title-decorator-bar"></span>
+	  <h2 class="page-main-heading">{{ pageTitle }}</h2>
+	</div>
 
-            <section class="info-section">
-                <div class="section-header">
-                    <span class="decorator"></span>
-                    <h3 class="section-title">{{ pageTitle }}基本信息</h3>
-                </div>
-                <DynamicForm ref="dynamicFormRef" :form-config="currentFormConfig" :initial-model="formModel"
-                    :is-edit-mode="isFormEditable || isManagerAdmin" :default-span="12" form-layout="vertical" />
-            </section>
+	<!-- Section: Basic Information -->
+	<section class="info-section">
+	  <div class="section-title-wrapper">
+		<h3 class="section-title-text">基本信息</h3>
+	  </div>
+	  <div class="basic-info-grid">
+		<div
+		  v-for="item in formConfigs"
+		  :key="item.label"
+		  class="info-grid-item"
+		  :style="{ gridColumn: item.span ? `span ${item.span}` : 'span 1' }"
+		>
+		  <span class="info-grid-label">{{ item.label }}：</span>
+		  <!-- Allow HTML for value if specified, otherwise render as text -->
+		  <span class="info-grid-value" v-if="item.fieldType === 'select' && (item.options || selectOptions(item.dictKey))" >
+			{{ getSelectDisplayValue(item, formModel[item.field]) }}
+		  </span>
+		  <span v-else class="info-grid-value">{{formModel[item.field]}}</span>
+		</div>
+	  </div>
+	</section>
 
-            <section v-if="isManagerAdmin && operationMode !== 'create'" class="info-section status-history-section">
-                <div class="section-header">
-                    <span class="decorator"></span>
-                    <h3 class="section-title">历史状态</h3>
-                </div>
-                <a-table :columns="statusHistoryColumns" :data-source="demandDetailData.logList" :pagination="false"
-                    row-key="seq" bordered size="small" />
-            </section>
+	<!-- Section: Dynamic Tables -->
+	<template v-for="(tableSection, index) in tableSections" :key="`table-section-${index}`">
+	  <section v-if="tableSection.items && tableSection.items.length > 0" class="info-section">
+		<div class="section-title-wrapper">
+		  <h3 class="section-title-text">{{ tableSection.title || '列表数据' }}</h3>
+		</div>
+		<a-table
+		  :columns="tableSection.columns"
+		  :data-source="tableSection.items"
+		  :pagination="false"
+		  :row-key="tableSection.rowKey || 'id'" 
+		  bordered
+		  size="middle"
+		  class="custom-detail-table"
+		/>
+	  </section>
+	</template>
 
-            <div class="page-actions">
-                <a-button @click="goBack">{{ '取消' }}</a-button>
-                <a-button v-if="isFormEditable" type="primary" @click="save" :loading="isSubmitting"
-                    style="margin-left: 8px;">
-                    {{ '保存' }}
-                </a-button>
-                <a-button v-if="isFormEditable" type="primary" @click="handleSubmitForm" :loading="isSubmitting"
-                    style="margin-left: 8px;">
-                    {{ '提交' }}
-                </a-button>
-                <a-button v-if="isManagerAdmin" type="primary" @click="save" :loading="isSubmitting"
-                    style="margin-left: 8px;">
-                    {{ '审批' }}
-                </a-button>
-            </div>
+	<!-- Section: Status Tracking (Timeline/Steps + Table) -->
+	<section v-if="statusTracking && statusTracking.steps && statusTracking.steps.length > 0" class="info-section">
+	  <div class="section-title-wrapper">
+		<h3 class="section-title-text">{{ statusTracking.title || '状态跟踪' }}</h3>
+	  </div>
+	  <a-steps :current="currentStepIndex" class="status-steps" progress-dot size="small">
+		<a-step
+		  v-for="(step, stepIdx) in statusTracking.steps"
+		  :key="`step-${stepIdx}`"
+		  :title="step.label"
+		  :description="step.date"
+		  :status="step.status" 
+		/>
+	  </a-steps>
+	  <a-table
+		v-if="formModel.logList && formModel.logList.length > 0"
+		:columns="statusHistoryColumns"
+		:data-source="formModel.logList"
+		:pagination="false"
+		:row-key="'id'"
+		bordered
+		size="middle"
+		class="custom-detail-table status-history-table"
+	  />
+	</section>
 
-        </div>
-        <div v-else class="no-data-state"> <a-empty description="未找到需求详情或无法创建" /> </div>
-    </div>
+	<!-- Action Buttons -->
+	<div class="page-actions-footer">
+	  <slot name="actions">
+		<a-button @click="handleDefaultCancel" class="action-button cancel-button">取消</a-button>
+		<a-button type="primary" danger @click="handleDefaultSubmit" class="action-button submit-button">一键敲门</a-button>
+	  </slot>
+	</div>
+	<p v-if="actionNote" class="action-submit-note">{{ actionNote }}</p>
+  </div>
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue';
-import { Button as AButton, Spin as ASpin, Alert as AAlert, Empty as AEmpty, Table as ATable, message } from 'ant-design-vue';
-import DynamicForm from '@/components/layout/DynamicForm.vue';
+import { computed, ref, watch } from 'vue';
+import { Button as AButton, Table as ATable, Steps as ASteps, Step as AStep } from 'ant-design-vue';
 import { useDemandDetail } from './hooks/useDemandDetail.js';
+import { useAuthStore } from '@/store/authStore';
+
+const auth = useAuthStore();
+const selectOptions = (dictKey) => {
+  if (!dictKey) return [];
+  if (!auth.sysAllDictItems[dictKey]) return []
+  return auth.sysAllDictItems[dictKey].map(({ label, value }) => ({ label, value })) || [];
+};
+
 
 const props = defineProps({
-    pageData: {
-        type: Object,
-        default: {},
-    },
+	pageData: {
+		type: Object,
+		default: {},
+	},
 });
+
 const {
-    demandIdProp,
-    mode,
-    pageTitle,
-    apiMap,
-    statusHistoryColumns,
-    otherParams,
-    formConfigs
+	demandIdProp,
+	mode,
+	pageTitle,
+	apiMap,
+	statusDictKey,
+	statusHistoryColumns,
+	otherParams,
+	formConfigs,
+	tableSections,
+	actionNote = '一键敲门后，客服人员将在30分钟内与您联系',
 } = props.pageData;
-const emit = defineEmits(['goBack']);
+
+const emit = defineEmits(['goBack','cancel', 'submit']);
+
 const {
     demandDetail: demandDetailData,
     isLoading,
     error,
     operationMode, // 现在从 hook 中获取
-    canEditThisDemand,
-    isManagerAdmin,
     fetchDemandDetail,
-    handleSave,
-    handleSubmit,
 } = useDemandDetail({
     demandIdProp,
     mode,
     url: apiMap,
     otherParams
 });
-const dynamicFormRef = ref(null);
-const isSubmitting = ref(false); // 用于提交按钮的 loading 状态
 const formModel = ref({});
 
+
+const statusTracking = computed(() => {
+	const steps = selectOptions(statusDictKey);
+	return {
+		title: '状态跟踪',
+		steps
+	}
+})
 
 // 监听从 hook 获取的原始数据，用于初始化/更新表单模型
 watch(demandDetailData, (newDetail) => {
@@ -111,70 +158,247 @@ watch(demandDetailData, (newDetail) => {
 }, { deep: true, immediate: true });
 
 
-// 表单是否真的可编辑：取决于操作模式和权限
-const isFormEditable = computed(() => {
-    if (operationMode.value === 'create') return true; // 新建模式下表单总是可编辑
-    return canEditThisDemand.value; // 查看模式下，取决于权限
+const currentStepIndex = computed(() => {
+  if (!statusTracking || !statusTracking.steps || statusTracking.steps.length === 0) return -1; 
+
+  const processIndex = statusTracking.steps.findIndex(step => step.status === 'process');
+  if (processIndex !== -1) return processIndex;
+
+  let lastFinishIndex = -1;
+  for (let i = statusTracking.steps.length - 1; i >= 0; i--) {
+	if (statusTracking.steps[i].status === 'finish') {
+	  lastFinishIndex = i;
+	  break;
+	}
+  }
+  if (lastFinishIndex === statusTracking.steps.length - 1) {
+	  return statusTracking.steps.length; // All finished
+  }
+  return lastFinishIndex >= 0 ? lastFinishIndex : 0; // Default to first step or last finished
 });
 
-const currentFormConfig = computed(() => {
-    const baseConfig = formConfigs || [];
-    // 根据 isFormEditable 动态调整规则的 required 状态
-    return baseConfig.map(field => ({
-        ...field,
-        rules: field.rules ? field.rules.map(rule => ({
-            ...rule,
-            // 只有在表单可编辑时，required 才真正生效
-            required: isFormEditable.value ? rule.required : false
-        })) : []
-    }));
-});
-
-const save = async () => {
-    try {
-        await dynamicFormRef.value?.validate();
-        const params = dynamicFormRef.value?.getAllData()
-        isSubmitting.value = true;
-        await handleSave(params);
-    } catch (validationError) {
-        console.log('表单校验失败:', validationError);
-    } finally {
-        isSubmitting.value = false;
-    }
+const getSelectDisplayValue = (fieldConfig, value) => {
+  let optionsList = fieldConfig.options || selectOptions(fieldConfig.dictKey)
+  if (!optionsList) return value || '-';
+  if (fieldConfig.selectMode === 'multiple' || fieldConfig.selectMode === 'tags') {
+    if (!Array.isArray(value) || value.length === 0) return '-';
+    return value.map(val => {
+      const option = optionsList.find(opt => opt.value === val);
+      return option ? option.label : val;
+    }).join(', ');
+  } else {
+    const option = optionsList.find(opt => opt.value === value);
+    return option ? option.label : (value || '-');
+  }
 };
 
-const handleSubmitForm = async () => {
-    try {
-        await dynamicFormRef.value?.validate();
-        const params = dynamicFormRef.value?.getAllData()
-        isSubmitting.value = true;
-        await handleSubmit(params);
-    } catch (validationError) {
-        console.log('表单校验失败:', validationError);
-    } finally {
-        isSubmitting.value = false;
-    }
+const formatAmount = (value) => {
+  if (value === null || value === undefined || value === '') return '-';
+  const num = Number(value);
+  if (isNaN(num)) return value; // Return original if not a number
+  return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
 
+
+
+const handleDefaultCancel = () => {
+  emit('cancel');
+};
 const goBack = () => {
     emit('goBack');
 };
 
-// 当路由参数（尤其是 demandIdProp）实际发生变化时，重新加载数据
-// 这主要用于：用户在详情页A，通过某种方式（非浏览器前进后退）直接导航到详情页B
-watch(() => props.demandIdProp, (newId) => {
-    if (newId && operationMode.value !== 'create') { // 仅在非新建模式下，ID变化才触发重新加载
-        // 更新 hook 内部的 ID (如果 hook 设计为可重用实例，否则 hook 会在路由切换时重新创建)
-        // useDemandDetail 每次路由组件渲染时都会重新执行，所以这里主要是确保 props 更新后 hook 能拿到新ID
-        fetchDemandDetail();
-    } else if (!newId && operationMode.value !== 'create') {
-        // 如果从有ID的路由变到没有ID的路由（理论上不应直接发生，应走/new），则清空
-        demandDetailData.value = null;
-    }
-});
+
+const handleDefaultSubmit = () => {
+  emit('submit');
+};
 
 </script>
 
 <style scoped lang="less">
-@import './styles/detail.less';
+@import '@/assets/styles/_variables.less'; // Your global LESS variables
+
+.detail-view-page {
+  padding: @spacing-lg @spacing-xl;
+  background-color: @background-color-base;
+  border-radius: @border-radius-sm;
+}
+
+.page-title-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: @spacing-xl;
+  .title-decorator-bar {
+	width: 4px;
+	height: 20px;
+	background-color: @primary-color;
+	margin-right: @spacing-sm;
+  }
+  .page-main-heading {
+	font-size: 18px;
+	font-weight: 500;
+	color: @text-color-base;
+	margin: 0;
+  }
+}
+
+.info-section {
+  margin-bottom: @spacing-xl + @spacing-md;
+}
+
+.section-title-wrapper {
+  margin-bottom: @spacing-md;
+  padding-bottom: @spacing-xs;
+  border-bottom: 1px solid @border-color-light;
+  position: relative;
+
+  .section-title-text {
+	font-size: 14px;
+	font-weight: 400;
+	color: @text-color-secondary;
+	margin: 0;
+	display: inline-block;
+	position: relative;
+
+	&::after {
+	  content: '';
+	  display: block;
+	  width: 100%;
+	  height: 2px;
+	  background-color: @primary-color;
+	  position: absolute;
+	  bottom: -(@spacing-xs + 1px);
+	  left: 0;
+	  z-index: 1;
+	}
+  }
+}
+
+.basic-info-grid {
+  display: grid;
+  grid-template-columns: 1fr; // Default to single column
+  gap: @spacing-sm @spacing-lg;
+  font-size: 14px;
+
+  // If you want a two-column layout for basic info sometimes for larger screens:
+   @media (min-width: 768px) { // Example breakpoint
+	 // By default, items take 1fr. If span=2, it takes 2fr (full width on 2-col grid)
+	 // This requires items to specify their span if they need to be full width.
+	 // For now, let's assume a dynamic grid based on item.span or a fixed 2-column layout.
+	 // To force a 2-column layout where items with span=1 take half:
+	 // grid-template-columns: repeat(2, 1fr);
+   }
+
+
+  .info-grid-item {
+	display: flex;
+	align-items: baseline;
+	padding: @spacing-xs 0;
+	line-height: 1.6;
+  }
+  .info-grid-label {
+	color: @text-color-secondary;
+	margin-right: @spacing-xs;
+	white-space: nowrap;
+	min-width: 100px; // Adjust as needed for your longest labels
+	text-align: right;
+  }
+  .info-grid-value {
+	color: @text-color-base;
+	word-break: break-word;
+	&.requester-id-value {
+		background-color: #F7F8FA;
+		padding: 2px 8px;
+		border-radius: @border-radius-sm;
+	}
+  }
+}
+
+.custom-detail-table {
+  margin-top: @spacing-xs;
+  :deep(.ant-table-thead > tr > th) {
+	background-color: #FAFAFA;
+	color: @text-color-base;
+	font-weight: 500;
+	font-size: 13px;
+	padding: 10px 8px;
+	text-align: left; // Ensure headers align left by default
+  }
+  :deep(.ant-table-tbody > tr > td) {
+	color: @text-color-secondary;
+	font-size: 13px;
+	padding: 10px 8px;
+	word-break: break-all;
+  }
+  :deep(.ant-table-bordered .ant-table-container) {
+	  border-color: @border-color-light !important;
+  }
+  :deep(.ant-table-cell) {
+	  border-color: @border-color-light !important;
+  }
+}
+
+.status-steps {
+  margin: @spacing-lg 0 @spacing-xl 0;
+  padding: 0 @spacing-xs; // Reduced horizontal padding a bit
+
+  :deep(.ant-steps-item-title) {
+	font-size: 13px;
+	font-weight: 400;
+  }
+  :deep(.ant-steps-item-description) {
+	font-size: 12px;
+	color: @text-color-tertiary;
+  }
+  :deep(.ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon .ant-steps-icon-dot),
+  :deep(.ant-steps-item-process .ant-steps-item-icon > .ant-steps-icon .ant-steps-icon-dot) {
+	background: @primary-color;
+  }
+  :deep(.ant-steps-item-wait .ant-steps-item-icon > .ant-steps-icon .ant-steps-icon-dot) {
+	background: #D9D9D9;
+  }
+  :deep(.ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-tail::after),
+  :deep(.ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-tail::after) { // Also color tail for current process
+	background-color: @primary-color;
+  }
+}
+
+.status-history-table {
+  // No specific overrides needed beyond .custom-detail-table for now
+}
+
+.page-actions-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: @spacing-xl;
+  padding-top: @spacing-lg;
+  border-top: 1px solid @border-color-light;
+}
+
+.action-button {
+  min-width: 88px;
+  height: 36px;
+  font-size: 14px;
+  border-radius: @border-radius-sm;
+
+  &.cancel-button {
+	margin-right: @spacing-md;
+	background-color: @background-color-base;
+	border: 1px solid #D9D9D9;
+	color: @text-color-base;
+	&:hover {
+	  color: @primary-color;
+	  border-color: @primary-color;
+	}
+  }
+  &.submit-button {
+	// type="primary" danger for red
+  }
+}
+.action-submit-note {
+  text-align: right;
+  margin-top: @spacing-xs;
+  font-size: 12px;
+  color: @text-color-tertiary;
+}
 </style>

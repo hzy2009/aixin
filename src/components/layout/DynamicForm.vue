@@ -3,171 +3,232 @@
     :layout="formLayout" @finish="onFinish" @finishFailed="onFinishFailed">
     <a-row :gutter="[16, 0]">
       <template v-for="field in formConfig" :key="field.field">
-        <a-col :span="field.span || defaultSpan">
-          <a-form-item :label="field.label" :name="field.field" :rules="isEditMode ? field.rules : []"
-            :extra="!isEditMode && field.displayExtra ? field.displayExtra(internalFormModel[field.field], internalFormModel) : null"
-            class="form-item-custom">
-            <!-- Display Mode -->
-            <template v-if="!isEditMode">
-              <span v-if="field.fieldType === 'select' && (field.options || selectOptions(field.dictKey))"
-                class="form-text-display">
-                {{ getSelectDisplayValue(field, internalFormModel[field.field]) }}
-              </span>
-              <span v-else-if="field.fieldType === 'dateRange' && Array.isArray(internalFormModel[field.field])"
-                class="form-text-display">
-                {{ internalFormModel[field.field][0] }} - {{ internalFormModel[field.field][1] }}
-              </span>
-              <span v-else-if="field.fieldType === 'amount'" class="form-text-display">
-                {{ formatAmount(internalFormModel[field.field]) }}
-              </span>
-              <span v-else-if="field.displayFormatter" class="form-text-display">
-                {{ field.displayFormatter(internalFormModel[field.field], internalFormModel) }}
-              </span>
-              <span v-else class="form-text-display">
-                {{ internalFormModel[field.field] || '-' }}
-              </span>
-            </template>
+        <a-col :span="field.span || defaultSpan" v-if="!field.hidden">
+          <a-form-item :label="field.label" :name="field.field" :rules="field.rules" class="form-item-custom"
+            :class="{ 'form-item-full-width-input': field.fieldType === 'textarea' || field.fullWidthInput }">
+            <a-input v-if="field.fieldType === 'input'" v-model:value="internalFormModel[field.field]"
+              :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear />
 
-            <!-- Edit Mode -->
-            <template v-else>
-              <a-input v-if="field.fieldType === 'input'" v-model:value="internalFormModel[field.field]"
-                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear />
+            <a-input-number v-else-if="field.fieldType === 'number'" v-model:value="internalFormModel[field.field]"
+              :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" style="width: 100%;"
+              :min="field.min" :max="field.max" />
 
-              <a-input-number v-else-if="field.fieldType === 'number'" v-model:value="internalFormModel[field.field]"
-                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear
-                style="width: 100%;" :min="field?.min" :max="field?.max" />
+            <a-select v-else-if="field.fieldType === 'select'" v-model:value="internalFormModel[field.field]"
+              :placeholder="field.placeholder || `请选择${field.label}`"
+              :options="field.options || selectOptions(field.dictKey)" :mode="field.selectMode"
+              :filter-option="field.remoteSearch ? false : filterOption" :loading="field.loading"
+              :disabled="field.disabled" @change="(v, option) => handleSelectChange(v, field, option)" allow-clear />
 
-              <a-select v-else-if="field.fieldType === 'select'" v-model:value="internalFormModel[field.field]"
-                :placeholder="field.placeholder || `请选择${field.label}`"
-                :options="field.options || selectOptions(field.dictKey)" :mode="field.selectMode"
-                :filter-option="field.remoteSearch ? false : filterOption" :loading="field.loading"
-                :disabled="field.disabled"
-                @change="(v) => handleSelectChange(v, field, field.options || selectOptions(field.dictKey))"
-                allow-clear />
+            <a-radio-group v-else-if="field.fieldType === 'radio'" v-model:value="internalFormModel[field.field]"
+              :options="field.options" :disabled="field.disabled" />
 
-              <a-radio-group v-else-if="field.fieldType === 'radio'" v-model:value="internalFormModel[field.field]"
-                :options="field.options" :disabled="field.disabled" />
+            <a-date-picker v-else-if="field.fieldType === 'date'" v-model:value="internalFormModel[field.field]"
+              :placeholder="field.placeholder || `请选择${field.label}`"
+              :value-format="field.valueFormat || 'YYYY-MM-DD HH:mm:ss'" :show-time="field.showTime"
+              style="width: 100%;" :disabled="field.disabled" />
 
-              <a-date-picker v-else-if="field.fieldType === 'date'" v-model:value="internalFormModel[field.field]"
-                :placeholder="field.placeholder || `请选择${field.label}`" value-format="YYYY-MM-DD hh:mm:ss"
-                style="width: 100%;" :disabled="field.disabled" />
+            <a-range-picker v-else-if="field.fieldType === 'dateRange'" v-model:value="internalFormModel[field.field]"
+              :value-format="field.valueFormat || 'YYYY-MM-DD'" :show-time="field.showTime" style="width: 100%;"
+              :disabled="field.disabled" />
 
-              <a-range-picker v-else-if="field.fieldType === 'dateRange'" v-model:value="internalFormModel[field.field]"
-                value-format="YYYY-MM-DD" style="width: 100%;" :disabled="field.disabled" />
+            <a-textarea v-else-if="field.fieldType === 'textarea'" v-model:value="internalFormModel[field.field]"
+              :placeholder="field.placeholder || `请输入${field.label}`" :rows="field.rows || 4" :disabled="field.disabled"
+              allow-clear :maxlength="field.maxLength" show-count />
 
-              <a-textarea v-else-if="field.fieldType === 'textarea'" v-model:value="internalFormModel[field.field]"
-                :placeholder="field.placeholder || `请输入${field.label}`" :rows="field.rows || 3"
-                :disabled="field.disabled" allow-clear />
+            <a-input-number v-else-if="field.fieldType === 'amount'" v-model:value="internalFormModel[field.field]"
+              :formatter="value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+              :parser="value => value.replace(/\$\s?|(,*)/g, '')"
+              :precision="field.precision !== undefined ? field.precision : 2" style="width: 100%;"
+              :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled"
+              :min="field.min !== undefined ? field.min : 0" />
 
-              <a-input-number v-else-if="field.fieldType === 'amount'" v-model:value="internalFormModel[field.field]"
-                :formatter="value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
-                :parser="value => value.replace(/\$\s?|(,*)/g, '')" :precision="field.precision || 2"
-                style="width: 100%;" :placeholder="field.placeholder || `请输入${field.label}`"
-                :disabled="field.disabled" />
-              <!-- Add more field types as needed -->
-            </template>
+            <!-- New Image Upload Field -->
+            <div v-else-if="field.fieldType === 'imageUpload'" class="image-upload-container">
+              <a-upload v-model:file-list="internalFormModel[field.field]" :name="field.uploadName || 'file'"
+                list-type="picture-card" class="custom-image-uploader"
+                :show-upload-list="field.showUploadList !== undefined ? field.showUploadList : true"
+                :action="field.uploadAction || '/api/upload/image'" :before-upload="field.beforeUpload || (() => true)"
+                @change="(info) => handleImageUploadChange(info, field)" @preview="handleImagePreview"
+                :max-count="field.maxCount || 1" :disabled="field.disabled">
+                <div
+                  v-if="(!internalFormModel[field.field] || internalFormModel[field.field].length < (field.maxCount || 1))">
+                  <PlusOutlined />
+                  <div style="margin-top: 8px">上传</div>
+                </div>
+              </a-upload>
+              <div v-if="field.uploadHint" class="upload-hint">{{ field.uploadHint }}</div>
+            </div>
+            <!-- Add more field types as needed -->
           </a-form-item>
         </a-col>
       </template>
     </a-row>
   </a-form>
+
+  <!-- Image Preview Modal -->
+  <a-modal :open="previewVisible" :title="previewTitle" :footer="null" @cancel="handlePreviewCancel">
+    <img alt="example" style="width: 100%" :src="previewImage" />
+  </a-modal>
 </template>
 
 <script setup>
-import { useAuthStore } from '@/store/authStore';
-import { ref, watch, reactive, onMounted } from 'vue';
+import { useAuthStore } from '@/store/authStore'; // Assuming this is for selectOptions
+import { ref, watch, reactive } from 'vue';
 import {
   Form as AForm, FormItem as AFormItem, Input as AInput,
   Select as ASelect, RadioGroup as ARadioGroup, DatePicker as ADatePicker,
   Textarea as ATextarea, InputNumber as AInputNumber, Row as ARow, Col as ACol,
-  RangePicker as ARangePicker,
+  RangePicker as ARangePicker, Upload as AUpload, Modal as AModal, message
 } from 'ant-design-vue';
-const auth = useAuthStore();
+import { PlusOutlined } from '@ant-design/icons-vue';
+
+const auth = useAuthStore(); // For dictionary options
+
 const selectOptions = (dictKey) => {
   if (!dictKey) return [];
-  if (!auth.sysAllDictItems[dictKey]) return []
+  if (!auth.sysAllDictItems || !auth.sysAllDictItems[dictKey]) return [];
   return auth.sysAllDictItems[dictKey].map(({ label, value }) => ({ label, value })) || [];
 };
 
 const props = defineProps({
   formConfig: { type: Array, required: true },
   initialModel: { type: Object, default: () => ({}) },
-  isEditMode: { type: Boolean, default: false },
-  formLayout: { type: String, default: 'vertical' }, // 'horizontal', 'vertical', 'inline'
-  labelCol: { type: Object, default: () => ({ span: 24 }) }, // Full width for vertical
-  wrapperCol: { type: Object, default: () => ({ span: 24 }) }, // Full width for vertical
-  defaultSpan: { type: Number, default: 12 } // Default to 2 columns if span not specified
+  formLayout: { type: String, default: 'horizontal' }, // Changed default to horizontal to match image
+  labelCol: { type: Object, default: () => ({ span: 3 }) }, // Default for horizontal
+  wrapperCol: { type: Object, default: () => ({ span: 8 }) },// Default for horizontal
+  defaultSpan: { type: Number, default: 12 } // Default to full width for each item in horizontal
 });
 
-const emit = defineEmits(['submit', 'validationFailed']);
+const emit = defineEmits(['submit', 'validationFailed', 'fieldChange']);
 
 const formRef = ref(null);
 const internalFormModel = reactive({});
 
-// Initialize or update internalFormModel when initialModel changes
 watch(() => props.initialModel, (newModel) => {
-  // Clear existing keys to avoid reactivity issues with deleted keys
   Object.keys(internalFormModel).forEach(key => delete internalFormModel[key]);
-  // Assign new model properties
-  Object.assign(internalFormModel, newModel || {});
+  const modelToAssign = JSON.parse(JSON.stringify(newModel || {}));
+
+  // Ensure fileList for imageUpload is initialized correctly
+  props.formConfig.forEach(field => {
+    if (field.fieldType === 'imageUpload') {
+      if (!modelToAssign[field.field] || !Array.isArray(modelToAssign[field.field])) {
+        modelToAssign[field.field] = []; // Initialize as empty array for AntD Upload
+      }
+    }
+  });
+  Object.assign(internalFormModel, modelToAssign);
 }, { deep: true, immediate: true });
 
 
-const getSelectDisplayValue = (fieldConfig, value) => {
-  let optionsList = fieldConfig.options || selectOptions(fieldConfig.dictKey)
-  if (!optionsList) return value || '-';
-  if (fieldConfig.selectMode === 'multiple' || fieldConfig.selectMode === 'tags') {
-    if (!Array.isArray(value) || value.length === 0) return '-';
-    return value.map(val => {
-      const option = optionsList.find(opt => opt.value === val);
-      return option ? option.label : val;
-    }).join(', ');
-  } else {
-    const option = optionsList.find(opt => opt.value === value);
-    return option ? option.label : (value || '-');
-  }
-};
-
-const formatAmount = (value) => {
-  if (value === null || value === undefined || value === '') return '-';
-  const num = Number(value);
-  if (isNaN(num)) return value; // Return original if not a number
-  return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-};
-
-
 const filterOption = (input, option) => {
-  return option.label.toLowerCase().includes(input.toLowerCase());
+  return option.label && option.label.toLowerCase().includes(input.toLowerCase());
 };
 
 const onFinish = (values) => {
   console.log('Form Submitted:', values);
-  emit('submit', { ...internalFormModel }); // Emit a copy
+  // Prepare formData for submission, especially for file uploads
+  const formDataToSubmit = { ...internalFormModel };
+  props.formConfig.forEach(field => {
+    if (field.fieldType === 'imageUpload' && Array.isArray(formDataToSubmit[field.field])) {
+      // AntD Upload fileList contains rich objects.
+      // You might need to extract just the server URL or ID for submission.
+      // Or if your API expects file objects, you might handle it differently (e.g., FormData)
+      formDataToSubmit[field.field] = formDataToSubmit[field.field]
+        .filter(file => file.status === 'done' && file.response) // Only successfully uploaded files
+        .map(file => file.response?.url || file.url || file.thumbUrl); // Extract URL or ID from response
+      if ((field.maxCount || 1) === 1 && formDataToSubmit[field.field].length > 0) {
+        formDataToSubmit[field.field] = formDataToSubmit[field.field][0]; // Single image, send string URL
+      } else if ((field.maxCount || 1) === 1 && formDataToSubmit[field.field].length === 0) {
+        formDataToSubmit[field.field] = null; // Or empty string, depending on backend
+      }
+    }
+  });
+  emit('submit', formDataToSubmit);
 };
 
 const onFinishFailed = (errorInfo) => {
-  console.log('Failed:', errorInfo);
+  console.log('Form Submission Failed:', errorInfo);
   emit('validationFailed', errorInfo);
 };
+
+const handleSelectChange = (value, fieldConfig, option) => {
+  // Emit a generic fieldChange event
+  emit('fieldChange', { field: fieldConfig.field, value, option, formModel: internalFormModel });
+  if (fieldConfig.onChange) {
+    fieldConfig.onChange({ value, field: fieldConfig, form: internalFormModel, option });
+  }
+};
+
+// --- Image Upload Specific Logic ---
+const previewVisible = ref(false);
+const previewImage = ref('');
+const previewTitle = ref('');
+
+function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+}
+
+const handleImagePreview = async file => {
+  if (!file.url && !file.preview) {
+    file.preview = await getBase64(file.originFileObj);
+  }
+  previewImage.value = file.url || file.preview;
+  previewVisible.value = true;
+  previewTitle.value = file.name || file.url.substring(file.url.lastIndexOf('/') + 1);
+};
+
+const handlePreviewCancel = () => {
+  previewVisible.value = false;
+};
+
+const handleImageUploadChange = (info, fieldConfig) => {
+  // internalFormModel[fieldConfig.field] is already bound with v-model:file-list
+  // This handler is for additional logic like showing messages or custom status updates
+  if (info.file.status === 'uploading') {
+    // fieldConfig.loading = true; // If you have a loading state per field
+    return;
+  }
+  if (info.file.status === 'done') {
+    // fieldConfig.loading = false;
+    message.success(`${info.file.name} 上传成功`);
+    // The file object in fileList will be updated by AntD.
+    // The response from server (e.g., image URL) should be in info.file.response
+    // If you need to map response to a specific structure in your formModel, do it here.
+    // For example, if your formModel expects just a URL string:
+    // if ((fieldConfig.maxCount || 1) === 1 && info.file.response?.url) {
+    //   internalFormModel[fieldConfig.field] = info.file.response.url;
+    // }
+  } else if (info.file.status === 'error') {
+    // fieldConfig.loading = false;
+    message.error(`${info.file.name} 上传失败.`);
+  }
+  emit('fieldChange', { field: fieldConfig.field, value: info.fileList, formModel: internalFormModel });
+};
+// --- End Image Upload Logic ---
+
 
 const validate = () => formRef.value?.validate();
 const resetFields = () => {
   formRef.value?.resetFields();
-  // Also reset internalFormModel to initial or empty if needed,
-  // as AntD resetFields only resets to initial values of the form item itself.
-  Object.assign(internalFormModel, props.initialModel || {});
+  // Re-initialize based on props.initialModel to ensure deep reactivity and correct fileList reset
+  const modelToAssign = JSON.parse(JSON.stringify(props.initialModel || {}));
+  props.formConfig.forEach(field => {
+    if (field.fieldType === 'imageUpload') {
+      if (!modelToAssign[field.field] || !Array.isArray(modelToAssign[field.field])) {
+        modelToAssign[field.field] = [];
+      }
+    }
+  });
+  Object.keys(internalFormModel).forEach(key => delete internalFormModel[key]);
+  Object.assign(internalFormModel, modelToAssign);
 };
 const clearValidate = () => formRef.value?.clearValidate();
-const handleSelectChange = (value, field, options) => {
-  if (field.onChange) {
-    field.onChange({ value, field, form: internalFormModel, options });
-  }
-};
-
-
-const getAllData = () => {
-  return internalFormModel;
-}
+const getAllData = () => ({ ...internalFormModel });
 
 defineExpose({ validate, resetFields, clearValidate, getAllData, formModel: internalFormModel });
 </script>
@@ -180,66 +241,123 @@ defineExpose({ validate, resetFields, clearValidate, getAllData, formModel: inte
 }
 
 .form-item-custom {
-  width: 400px;
+  // Default width for input elements to match the image (approx)
+  // This will be overridden if span is used to make it wider or narrower in a row.
+  // For horizontal layout, wrapperCol controls width primarily.
+  // This might be better handled by wrapperCol in horizontal layout.
 
-  // Styling for antd form item to match the design
   :deep(.ant-form-item-label > label) {
-    color: @text-color-secondary; // Label color from design
+    color: @text-color-base; // Label text color is darker in the image
     font-size: 14px;
+    font-weight: 400; // Not bold
+    // text-align: right; // Ensure labels are right-aligned for horizontal form
   }
 
-  // For vertical layout specifically, make labels less prominent
-  &.ant-form-item-label-top :deep(.ant-form-item-label > label) {
-    // height: auto;
-    // line-height: 1.5;
-    padding-bottom: 4px; // Reduce space below label in vertical mode
+  // AntD horizontal form specific label alignment
+  &.ant-form-horizontal :deep(.ant-form-item-label) {
+    text-align: right;
+    // You might need to adjust width based on props.labelCol if it's a fixed number of columns
+    // Default AntD behavior should handle this with labelCol prop.
   }
 
 
-  .form-text-display {
-    font-size: 14px;
-    color: @text-color-base;
-    line-height: 32px; // Match input height for alignment
-    display: inline-block; // Or block if it needs to take full width
-    padding: 0 @spacing-sm; // Mimic input padding for display text
-    min-height: 32px; // Ensure it has some height even if empty
-    word-break: break-all; // Break long text
-  }
-
-  // Inputs in edit mode
+  // Inputs, Selects, etc.
   :deep(.ant-select),
   :deep(.ant-input),
   :deep(.ant-input-number),
   :deep(.ant-picker),
   :deep(.ant-input-textarea-show-count > .ant-input) {
-    border-radius: @border-radius-sm; // More subtle rounding
-    // border-color: @border-color-base; // Lighter border
-    // &:hover {
-    //   border-color: @primary-color;
-    // }
-    // &:focus, &.ant-input-focused, &.ant-select-focused .ant-select-selector {
-    //   border-color: @primary-color;
-    //   box-shadow: 0 0 0 2px fade(@primary-color, 20%);
-    // }
+    // Target the inner input for textarea with show-count
+    border-radius: @border-radius-sm; // Subtle rounding
+    border-color: #D9D9D9; // Standard AntD border color
+
+    &:hover {
+      border-color: @primary-color;
+    }
+
+    &:focus,
+    &.ant-input-focused,
+    &.ant-select-focused .ant-select-selector,
+    &.ant-picker-focused {
+      // Add focused state for datepicker
+      border-color: @primary-color;
+      box-shadow: 0 0 0 2px fade(@primary-color, 20%);
+    }
   }
 
+  // Consistent height for input-like elements
   :deep(.ant-input),
-  :deep(.ant-input-number-input) {
-    height: 36px; // Standard height
-  }
-
-  :deep(.ant-select-selector) {
-    height: 36px !important;
-    padding-top: 2px !important; // Adjust select text vertical alignment
-    padding-bottom: 2px !important;
-  }
-
+  :deep(.ant-input-number),
+  // Wrapper for input number
+  :deep(.ant-select-selector),
   :deep(.ant-picker) {
-    height: 36px;
+    height: 36px !important; // Ensure consistent height
   }
 
+  :deep(.ant-input-number-input) {
+    // Actual input within input-number
+    height: 34px !important; // Adjust to fit within wrapper
+    line-height: 34px;
+  }
+
+  :deep(.ant-select-selection-item),
+  :deep(.ant-select-selection-placeholder) {
+    line-height: 34px !important; // Vertically center text in select
+  }
+
+  :deep(.ant-picker-input > input) {
+    line-height: 1.5715; // Default AntD, may need adjustment if text not centered
+  }
+
+
+  // Specific for Textarea to match image height
   :deep(.ant-input-textarea .ant-input) {
-    min-height: 80px; // Example for textarea
+    min-height: 120px; // Adjust based on image, looks like 3-4 lines input field + padding
+  }
+
+  // Specific for image upload to match design
+  .image-upload-container {
+    .custom-image-uploader {
+      :deep(.ant-upload.ant-upload-select-picture-card) {
+        width: 120px; // Width of the upload box
+        height: 120px; // Height of the upload box
+        margin: 0; // Remove default margins if any
+        background-color: #FAFAFA; // Light gray background for uploader
+        border: 1px dashed #D9D9D9; // Dashed border
+        border-radius: @border-radius-sm;
+
+        &:hover {
+          border-color: @primary-color;
+        }
+      }
+
+      // Style for already uploaded image thumbnail in list
+      :deep(.ant-upload-list-picture-card-container) {
+        width: 120px;
+        height: 120px;
+        margin: 0;
+      }
+
+      :deep(.ant-upload-list-item-actions .anticon) {
+        font-size: 16px; // Make preview/delete icons a bit larger
+      }
+    }
+
+    .upload-hint {
+      font-size: 12px;
+      color: @text-color-tertiary;
+      margin-top: @spacing-xs;
+      line-height: 1.5;
+    }
+  }
+
+  // If a field needs to take more width like textarea in horizontal form
+  &.form-item-full-width-input {
+    // This class might be used if labelCol/wrapperCol defaults are not enough
+    // For example, if label is short but input needs to be very wide
+    // :deep(.ant-form-item-control-input-content) {
+    //   max-width: 600px; // Example max width
+    // }
   }
 }
 </style>

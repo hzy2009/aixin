@@ -14,6 +14,7 @@ const OfflineEvent = () => import('./views/publications/OfflineEvent.vue');
 
 
 
+const DomesticEditPage = () => import('./views/publications/DomesticEditPage.vue');
 const DomesticDetailPage = () => import('./views/publications/DomesticDetailPage.vue');
 const OEMPartsDetailPage = () => import('./views/publications/OEMPartsDetailPage.vue');
 const PublicRelationsDetailPage = () => import('./views/publications/PublicRelationsDetailPage.vue');
@@ -32,11 +33,18 @@ const userCenterRoutes = [
         meta: { title: '我发布的 - 国产替代寻源' }
       },
       {
-        path: 'DomesticSourcing/:demandId', // 查看/编辑需求的路由
+        path: 'DomesticSourcing/edit/:demandId', // 查看/编辑需求的路由
+        name: 'DomesticEditPage',
+        component: DomesticEditPage, // 复用 DemandDetailPage
+        props: route => ({ demandIdProp: route.params.demandId, mode: 'view', demandType: route.query.type }), // 通过 props 传递 mode 和 id
+        meta: { title: '国产替代寻源', breadcrumb: ['国产替代寻源'] }
+      },
+      {
+        path: 'DomesticSourcing/detail/:demandId', // 查看/编辑需求的路由
         name: 'DomesticDetailPage',
         component: DomesticDetailPage, // 复用 DemandDetailPage
         props: route => ({ demandIdProp: route.params.demandId, mode: 'view', demandType: route.query.type }), // 通过 props 传递 mode 和 id
-        meta: { title: '国产替代寻源详情', breadcrumb: ['国产替代寻源详情'] }
+        meta: { title: '国产替代寻源', breadcrumb: ['国产替代寻源'] }
       },
       {
         path: 'DomesticSourcing/create', // 新建需求的路由
