@@ -1,11 +1,11 @@
 <template>
   <div class="industry-report-page">
-    <listPage :pageData="pageData" >
-        <template #content="{ dataSource, paginationConfig }">
-            <IndustryReportItem v-for="item in dataSource" :key="item.id" :report="item" />
-            <!-- <IndustryReportItem v-for="item in mock" :key="item.id" :report="item" /> -->
-            <a-pagination v-model:current="paginationConfig.current" show-quick-jumper v-bind="paginationConfig" @change="onChange" />
-        </template>
+    <listPage :pageData="pageData">
+      <template #content="{ dataSource, paginationConfig }">
+        <IndustryReportItem v-for="item in dataSource" :key="item.id" :report="item" />
+        <a-pagination v-model:current="paginationConfig.current" show-quick-jumper v-bind="paginationConfig"
+          @change="onChange" />
+      </template>
     </listPage>
   </div>
 </template>
@@ -32,76 +32,13 @@ const pageData = ref({
   filterConfigForPage,
   showBanner: true
 })
-
-const mock = [
-    {
-        id: '1',
-        title: '2024年中国半导体制造业发展报告',
-        author: '张明',
-        summary: '随着人工智能产业的快速发展，AI 相关的云端 (服务器) 和终端 (AIPC、AI 手机) 产品出货量快速增长，产生大量高端芯片需求。受 AI 需求驱动，全球半导体销售金额在2023年2月触底后迅速回升。',
-        category: '半导体技术',
-        publishDate: '2025-04-22',
-        thumbnailUrl: null, // Will use placeholder if null
-        views: 86,
-    },
-    {
-        id: '3',
-        title: '2024年中国半导体制造业发展报告',
-        author: '张明',
-        summary: '随着人工智能产业的快速发展，AI 相关的云端 (服务器) 和终端 (AIPC、AI 手机) 产品出货量快速增长，产生大量高端芯片需求。受 AI 需求驱动，全球半导体销售金额在2023年2月触底后迅速回升。',
-        category: '半导体技术',
-        publishDate: '2025-04-22',
-        thumbnailUrl: null, // Will use placeholder if null
-        views: 86,
-    },
-    {
-        id: '342',
-        title: '2024年中国半导体制造业发展报告',
-        author: '张明',
-        summary: '随着人工智能产业的快速发展，AI 相关的云端 (服务器) 和终端 (AIPC、AI 手机) 产品出货量快速增长，产生大量高端芯片需求。受 AI 需求驱动，全球半导体销售金额在2023年2月触底后迅速回升。',
-        category: '半导体技术',
-        publishDate: '2025-04-22',
-        thumbnailUrl: null, // Will use placeholder if null
-        views: 86,
-    },
-    {
-        id: '12434',
-        title: '2024年中国半导体制造业发展报告',
-        author: '张明',
-        summary: '随着人工智能产业的快速发展，AI 相关的云端 (服务器) 和终端 (AIPC、AI 手机) 产品出货量快速增长，产生大量高端芯片需求。受 AI 需求驱动，全球半导体销售金额在2023年2月触底后迅速回升。',
-        category: '半导体技术',
-        publishDate: '2025-04-22',
-        thumbnailUrl: null, // Will use placeholder if null
-        views: 86,
-    },
-    {
-        id: '441',
-        title: '2024年中国半导体制造业发展报告',
-        author: '张明',
-        summary: '随着人工智能产业的快速发展，AI 相关的云端 (服务器) 和终端 (AIPC、AI 手机) 产品出货量快速增长，产生大量高端芯片需求。受 AI 需求驱动，全球半导体销售金额在2023年2月触底后迅速回升。',
-        category: '半导体技术',
-        publishDate: '2025-04-22',
-        thumbnailUrl: null, // Will use placeholder if null
-        views: 86,
-    },
-    {
-        id: '5123',
-        title: '2024年中国半导体制造业发展报告',
-        author: '张明',
-        summary: '随着人工智能产业的快速发展，AI 相关的云端 (服务器) 和终端 (AIPC、AI 手机) 产品出货量快速增长，产生大量高端芯片需求。受 AI 需求驱动，全球半导体销售金额在2023年2月触底后迅速回升。',
-        category: '半导体技术',
-        publishDate: '2025-04-22',
-        thumbnailUrl: null, // Will use placeholder if null
-        views: 86,
-    },
-]
 // const currentPage = ref(1);
 // const paginationConfig = reactive({
 //   current: 1,
 //   pageSize: 10
 // })
 function viewDetails({ id }) {
-  router.push(`/user/published/DomesticSourcing/${id}`);
+  router.push(`/demands/IndustryReportDetailPage/${id}`);
 };
 function createNewSourcing() {
   router.push(`/user/published/DomesticSourcing/create`);

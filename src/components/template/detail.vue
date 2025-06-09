@@ -81,7 +81,7 @@ const props = defineProps({
 });
 
 const {
-	demandIdProp,
+	IdProp,
 	mode,
 	pageTitle,
 	apiMap,
@@ -102,7 +102,7 @@ const {
 	operationMode, // 现在从 hook 中获取
 	fetchDemandDetail,
 } = useDemandDetail({
-	demandIdProp,
+	IdProp,
 	mode,
 	url: apiMap,
 	otherParams
@@ -273,7 +273,7 @@ const handleDefaultSubmit = () => {
 		color: @text-color-secondary;
 		margin-right: @spacing-xs;
 		white-space: nowrap;
-		min-width: 100px; // Adjust as needed for your longest labels
+		min-width: 120px; // Adjust as needed for your longest labels
 		text-align: right;
 	}
 

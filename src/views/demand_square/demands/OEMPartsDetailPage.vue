@@ -21,7 +21,7 @@ import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayo
 const authStore = useAuthStore();
 
 const props = defineProps({
-  demandIdProp: { type: String, default: null },
+  IdProp: { type: String, default: null },
   mode: { type: String, default: 'view' }, // 'create', 'view'
 });
 
@@ -55,7 +55,7 @@ const queryAfter = (data) => {
 };
 
 const pageData = reactive({
-  demandIdProp: props.demandIdProp,
+  IdProp: props.IdProp,
   mode: props.mode,
   apiMap: {
     add: 'apm/apmSourcing/add',

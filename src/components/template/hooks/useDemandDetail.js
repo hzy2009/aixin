@@ -5,7 +5,7 @@ import { message } from 'ant-design-vue';
 import { useAuthStore } from '@/store/authStore';
 import { useRouter, useRoute } from 'vue-router'; // 用于新建成功后跳转
 
-export function useDemandDetail({demandIdProp, mode, url, otherParams, queryAfter}) { // 接收 props
+export function useDemandDetail({IdProp, mode, url, otherParams, queryAfter}) { // 接收 props
   const demandDetail = ref(null);
   const isLoading = ref(false);
   const error = ref(null);
@@ -13,8 +13,8 @@ export function useDemandDetail({demandIdProp, mode, url, otherParams, queryAfte
   const router = useRouter();
   const route = useRoute();
 
-  const operationMode = ref(mode || (demandIdProp ? 'view' : 'create')); // 'create', 'view'
-  const internalDemandId = ref(demandIdProp); // 用于内部追踪ID
+  const operationMode = ref(mode || (IdProp ? 'view' : 'create')); // 'create', 'view'
+  const internalDemandId = ref(IdProp); // 用于内部追踪ID
 
   // --- 权限计算 ---
   const canEditThisDemand = computed(() => {

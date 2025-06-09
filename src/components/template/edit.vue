@@ -1,25 +1,26 @@
 <template>
-     <div class="edit-page">
-    <!-- 1. Page Title -->
+    <div class="edit-page">
+        <!-- 1. Page Title -->
         <h1 class="page-main-title">{{ pageTitle }}</h1>
 
         <!-- 2. Form Section -->
         <div class="form-section-container">
-        <div class="form-section-title-wrapper">
-            <h2 class="form-section-title">基本信息</h2>
-        </div>
+            <div class="form-section-title-wrapper">
+                <h2 class="form-section-title">基本信息</h2>
+            </div>
             <DynamicForm ref="dynamicFormRef" :form-config="currentFormConfig" :initial-model="formModel"
-                    :is-edit-mode="isFormEditable || isManagerAdmin" :default-span="12" />
+                :is-edit-mode="isFormEditable || isManagerAdmin" :default-span="12" />
         </div>
-            <!-- 3. Action Buttons -->
-            <div class="page-actions-footer">
+        <!-- 3. Action Buttons -->
+        <div class="page-actions-footer">
             <a-button @click="goBack" class="action-button cancel-button">取消</a-button>
-            <a-button type="primary" danger @click="handleSubmitForm" :loading="isSubmitting" class="action-button submit-button">
+            <a-button type="primary" danger @click="handleSubmitForm" :loading="isSubmitting"
+                class="action-button submit-button">
                 一键敲门
             </a-button>
-            </div>
-            <p class="action-submit-note">“一键敲门”后，客服人员将在30分钟内与您联系</p>
-     </div>
+        </div>
+        <p class="action-submit-note">“一键敲门”后，客服人员将在30分钟内与您联系</p>
+    </div>
 </template>
 
 <script setup>
@@ -35,7 +36,7 @@ const props = defineProps({
     },
 });
 const {
-    demandIdProp,
+    IdProp,
     mode,
     pageTitle,
     apiMap,
@@ -55,7 +56,7 @@ const {
     handleSave,
     handleSubmit,
 } = useDemandDetail({
-    demandIdProp,
+    IdProp,
     mode,
     url: apiMap,
     otherParams
@@ -130,9 +131,9 @@ const goBack = () => {
     emit('goBack');
 };
 
-// 当路由参数（尤其是 demandIdProp）实际发生变化时，重新加载数据
+// 当路由参数（尤其是 IdProp）实际发生变化时，重新加载数据
 // 这主要用于：用户在详情页A，通过某种方式（非浏览器前进后退）直接导航到详情页B
-watch(() => props.demandIdProp, (newId) => {
+watch(() => props.IdProp, (newId) => {
     if (newId && operationMode.value !== 'create') { // 仅在非新建模式下，ID变化才触发重新加载
         // 更新 hook 内部的 ID (如果 hook 设计为可重用实例，否则 hook 会在路由切换时重新创建)
         // useDemandDetail 每次路由组件渲染时都会重新执行，所以这里主要是确保 props 更新后 hook 能拿到新ID

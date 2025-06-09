@@ -59,12 +59,13 @@ const pageData = ref({
     tableColumns,
     addButton,
     actions,
-    showBanner: true
+    showBanner: true,
+    pageTitle: '研发攻关'
 })
 
 
 function viewDetails({ id }) {
-    router.push(`/user/published/PublicRelations/${id}`);
+    router.push(`/demands/PublicRelationsDetailPage/${id}`);
 };
 function createNewSourcing() {
     router.push(`/user/published/PublicRelations/create`);

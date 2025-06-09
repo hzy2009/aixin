@@ -12,18 +12,19 @@
         <img :src="report.thumbnailUrl || defaultThumbnail" :alt="report.title" class="report-header-image" />
       </div>
       <div class="report-header__details">
-        <h1 class="report-main-title-header">{{ report.title }}</h1>
+        <h1 class="report-main-title-header">{{ report.reportName }}</h1>
         <div class="report-summary-header">
           <span class="summary-label">摘要：</span>
-          <p class="summary-text">{{ report.summary }}</p>
+          <p class="summary-text">{{ report.description }}</p>
         </div>
         <div class="report-meta-info-header">
-          <span>领域：{{ report.domain }}</span>
-          <span>报告编号：{{ report.reportNumber }}</span>
+          <span>领域：{{ report.reportTypeName }}</span>
+          <span>报告编号：{{ report.reportNumber || '未知字段' }}</span>
         </div>
         <div class="report-action-block">
-          <span class="report-price-header">¥ {{ report.price }}</span>
-          <a-button type="primary" danger size="large" @click="handlePurchase" :loading="isPurchasing" class="purchase-button-header">
+          <span class="report-price-header">¥ {{ report.unitPrice }}</span>
+          <a-button type="primary" danger size="large" @click="handlePurchase" :loading="isPurchasing"
+            class="purchase-button-header">
             联系管理员购买
           </a-button>
         </div>
@@ -33,22 +34,26 @@
     <!-- Outline Section Below -->
     <div class="report-outline-section">
       <h3 class="outline-title">大纲/目录</h3>
-      <ul class="outline-list">
+      <!-- <ul class="outline-list">
         <li v-for="(item, index) in report.outline" :key="index">{{ item }}</li>
-      </ul>
+      </ul> -->
+      <div v-html="report.outline" class="outline-list">
+      </div>
+
     </div>
 
     <!-- Full Content (If applicable and different from summary) -->
     <div v-if="report.fullContentHtml && showFullContent" class="report-body-content">
-        <h3 class="body-title">报告正文</h3>
-        <div v-html="report.fullContentHtml" class="report-text-full"></div>
+      <h3 class="body-title">报告正文</h3>
+      <div v-html="report.fullContentHtml" class="report-text-full"></div>
     </div>
 
 
     <!-- Previous/Next Navigation Below -->
     <div class="report-navigation-footer">
       <p v-if="report.previousReport">
-        上一篇：<router-link :to="`/reports/detail/${report.previousReport.id}`">{{ report.previousReport.title }}</router-link>
+        上一篇：<router-link :to="`/reports/detail/${report.previousReport.id}`">{{ report.previousReport.title
+        }}</router-link>
       </p>
       <p v-if="report.nextReport">
         下一篇：<router-link :to="`/reports/detail/${report.nextReport.id}`">{{ report.nextReport.title }}</router-link>
@@ -68,28 +73,28 @@ const props = defineProps({
     type: Object,
     required: true,
     default: () => ({
-        title: '一维/二维MOO2-ZNIN2S4异质结的构筑与光催化活性研究',
-        summary: '直接利用太阳能实现光催化还原制取氢气，是解决能源危机的有效策略之一。过渡金属硫化物具有优异的可见光谱利用率和适宜的能级带结构，使其成为研究热点，然而，过高的充电速率极大地制约了它的应用。',
-        domain: '光催化分解水;异质结;过渡金属硫化物;领域名称;',
-        reportNumber: 'A00000-0000',
-        price: 198,
-        thumbnailUrl: null, // Will use placeholder from import
-        outline: [
-            '一、锂离子电池行业定义',
-            '二、锂离子电池行业发展背景',
-            '三、上游产业介绍-原材料',
-            '四、中游产业介绍-锂离子电池生产',
-            '五、下游产业介绍-锂离子电池应用',
-            '六、未来趋势'
-        ],
-        previousReport: { id: 'prev-001', title: '2023年中国集成电路产业运行情况' },
-        nextReport: { id: 'next-002', title: '抢滩新能源赛道：六国化工加码投资电池级精制磷酸' },
-        fullContentHtml: "<p>这里是报告的<strong>完整HTML</strong>内容...</p>", // Optional full content
+      title: '一维/二维MOO2-ZNIN2S4异质结的构筑与光催化活性研究',
+      summary: '直接利用太阳能实现光催化还原制取氢气，是解决能源危机的有效策略之一。过渡金属硫化物具有优异的可见光谱利用率和适宜的能级带结构，使其成为研究热点，然而，过高的充电速率极大地制约了它的应用。',
+      domain: '光催化分解水;异质结;过渡金属硫化物;领域名称;',
+      reportNumber: 'A00000-0000',
+      price: 198,
+      thumbnailUrl: null, // Will use placeholder from import
+      outline: [
+        '一、锂离子电池行业定义',
+        '二、锂离子电池行业发展背景',
+        '三、上游产业介绍-原材料',
+        '四、中游产业介绍-锂离子电池生产',
+        '五、下游产业介绍-锂离子电池应用',
+        '六、未来趋势'
+      ],
+      previousReport: { id: 'prev-001', title: '2023年中国集成电路产业运行情况' },
+      nextReport: { id: 'next-002', title: '抢滩新能源赛道：六国化工加码投资电池级精制磷酸' },
+      fullContentHtml: "<p>这里是报告的<strong>完整HTML</strong>内容...</p>", // Optional full content
     })
   },
   showFullContent: { // Prop to control if full HTML content is shown below outline
-      type: Boolean,
-      default: false // By default, don't show it to keep this component focused on the header part
+    type: Boolean,
+    default: false // By default, don't show it to keep this component focused on the header part
   }
 });
 
@@ -117,11 +122,17 @@ const handlePurchase = () => {
 .page-global-breadcrumb {
   margin-bottom: @spacing-md; // Space below breadcrumb
   font-size: 13px;
+
   a {
     color: @text-color-secondary;
-    &:hover { color: @primary-color; }
+
+    &:hover {
+      color: @primary-color;
+    }
   }
-  :deep(span.ant-breadcrumb-link:last-child) { // Last item (current page)
+
+  :deep(span.ant-breadcrumb-link:last-child) {
+    // Last item (current page)
     color: @text-color-base;
   }
 }
@@ -130,12 +141,14 @@ const handlePurchase = () => {
   display: flex;
   align-items: center;
   margin-bottom: @spacing-lg; // Space after "行研报告" title
+
   .decorator {
     width: 4px;
     height: 20px;
     background-color: @primary-color;
     margin-right: @spacing-sm;
   }
+
   .title-text {
     font-size: 20px; // "行研报告" title size
     font-weight: 600;
@@ -149,7 +162,7 @@ const handlePurchase = () => {
   gap: @spacing-xl; // Space between image and details
   padding: @spacing-lg;
   background-color: @background-color-base; // White background for this block
-  border: 1px solid @border-color-light;
+  // border: 1px solid @border-color-light;
   margin-bottom: @spacing-xl; // Space before outline
 }
 
@@ -197,6 +210,7 @@ const handlePurchase = () => {
       font-weight: 500; // "摘要：" slightly bolder
       color: @text-color-base; // Matches "领域" and "报告编号" color
     }
+
     .summary-text {
       // Standard text, no extra styling needed unless different from paragraph default
       display: -webkit-box; // For multi-line ellipsis
@@ -231,6 +245,7 @@ const handlePurchase = () => {
       color: @primary-color;
       line-height: 1; // Ensure it aligns well with button
     }
+
     .purchase-button-header {
       font-size: 15px; // Button text size
       font-weight: 500;
@@ -245,7 +260,7 @@ const handlePurchase = () => {
   margin-bottom: @spacing-xxl;
   background-color: @background-color-base;
   padding: @spacing-lg;
-  border: 1px solid @border-color-light;
+  // border: 1px solid @border-color-light;
 
   .outline-title {
     font-size: 16px; // "大纲/目录" title size
@@ -255,11 +270,13 @@ const handlePurchase = () => {
     padding-bottom: @spacing-sm;
     border-bottom: 1px solid @border-color-light;
   }
+
   .outline-list {
     list-style: none;
     padding: 0;
     font-size: 14px;
     color: @text-color-secondary;
+
     li {
       padding: 6px 0; // Vertical padding for list items
       // border-bottom: 1px dotted #eee;
@@ -268,27 +285,51 @@ const handlePurchase = () => {
   }
 }
 
-.report-body-content { // If you choose to show full content via this component
-    margin-bottom: @spacing-xxl;
-    background-color: @background-color-base;
-    padding: @spacing-lg;
-    border: 1px solid @border-color-light;
-    .body-title {
-        font-size: 18px;
-        font-weight: 600;
-        margin-bottom: @spacing-lg;
-        padding-bottom: @spacing-md;
-        border-bottom: 1px solid @border-color-light;
+.report-body-content {
+  // If you choose to show full content via this component
+  margin-bottom: @spacing-xxl;
+  background-color: @background-color-base;
+  padding: @spacing-lg;
+  border: 1px solid @border-color-light;
+
+  .body-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: @spacing-lg;
+    padding-bottom: @spacing-md;
+    border-bottom: 1px solid @border-color-light;
+  }
+
+  .report-text-full {
+    font-size: 15px;
+    line-height: 1.8;
+    color: @text-color-base;
+
+    :deep(h2) {
+      font-size: 20px;
+      margin-top: @spacing-lg;
+      margin-bottom: @spacing-md;
+      font-weight: 600;
     }
-    .report-text-full {
-      font-size: 15px;
-      line-height: 1.8;
-      color: @text-color-base;
-      :deep(h2) { font-size: 20px; margin-top: @spacing-lg; margin-bottom: @spacing-md; font-weight: 600; }
-      :deep(h3) { font-size: 18px; margin-top: @spacing-md; margin-bottom: @spacing-sm; font-weight: 600; }
-      :deep(p) { margin-bottom: @spacing-md; }
-      :deep(img) { max-width: 100%; height: auto; margin: @spacing-md 0; border-radius: @border-radius-sm; }
+
+    :deep(h3) {
+      font-size: 18px;
+      margin-top: @spacing-md;
+      margin-bottom: @spacing-sm;
+      font-weight: 600;
     }
+
+    :deep(p) {
+      margin-bottom: @spacing-md;
+    }
+
+    :deep(img) {
+      max-width: 100%;
+      height: auto;
+      margin: @spacing-md 0;
+      border-radius: @border-radius-sm;
+    }
+  }
 }
 
 
@@ -298,11 +339,19 @@ const handlePurchase = () => {
   line-height: 1.6;
   padding: @spacing-md;
   background-color: @background-color-base;
-  border: 1px solid @border-color-light;
+  // border: 1px solid @border-color-light;
 
-  p { margin-bottom: @spacing-xs; &:last-child { margin-bottom: 0;}}
+  p {
+    margin-bottom: @spacing-xs;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
   a {
     color: @text-color-base; // Links are darker in this section
+
     &:hover {
       color: @primary-color;
       text-decoration: underline;

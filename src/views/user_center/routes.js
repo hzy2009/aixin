@@ -36,14 +36,14 @@ const userCenterRoutes = [
         path: 'DomesticSourcing/edit/:demandId', // 查看/编辑需求的路由
         name: 'DomesticEditPage',
         component: DomesticEditPage, // 复用 DemandDetailPage
-        props: route => ({ demandIdProp: route.params.demandId, mode: 'view', demandType: route.query.type }), // 通过 props 传递 mode 和 id
+        props: route => ({ IdProp: route.params.demandId, mode: 'view', demandType: route.query.type }), // 通过 props 传递 mode 和 id
         meta: { title: '国产替代寻源', breadcrumb: ['国产替代寻源'] }
       },
       {
         path: 'DomesticSourcing/detail/:demandId', // 查看/编辑需求的路由
         name: 'DomesticDetailPage',
         component: DomesticDetailPage, // 复用 DemandDetailPage
-        props: route => ({ demandIdProp: route.params.demandId, mode: 'view', demandType: route.query.type }), // 通过 props 传递 mode 和 id
+        props: route => ({ IdProp: route.params.demandId, mode: 'view', demandType: route.query.type }), // 通过 props 传递 mode 和 id
         meta: { title: '国产替代寻源', breadcrumb: ['国产替代寻源'] }
       },
       {
@@ -70,7 +70,7 @@ const userCenterRoutes = [
         path: 'OEMPartsSourcing/:demandId', // 查看/编辑需求的路由
         name: 'OEMPartsDetailPage',
         component: OEMPartsDetailPage, // 复用 DemandDetailPage
-        props: route => ({ demandIdProp: route.params.demandId, mode: 'view', demandType: route.query.type }), // 通过 props 传递 mode 和 id
+        props: route => ({ IdProp: route.params.demandId, mode: 'view', demandType: route.query.type }), // 通过 props 传递 mode 和 id
         meta: { title: '原厂件寻源详情', breadcrumb: ['原厂件寻源详情'] }
       },
       {
@@ -90,7 +90,7 @@ const userCenterRoutes = [
         path: 'PublicRelations/:demandId', // 查看/编辑需求的路由
         name: 'PublicDetail',
         component: PublicRelationsDetailPage, // 复用 DemandDetailPage
-        props: route => ({ demandIdProp: route.params.demandId, mode: 'view', demandType: route.query.type || 'rndCollaboration' }), // 通过 props 传递 mode 和 id
+        props: route => ({ IdProp: route.params.demandId, mode: 'view', demandType: route.query.type || 'rndCollaboration' }), // 通过 props 传递 mode 和 id
         meta: { title: '研发攻关需求详情', breadcrumb: [ '研发攻关需求详情'] }
       },
       {
@@ -110,7 +110,7 @@ const userCenterRoutes = [
         path: 'Verification/:demandId', // 查看/编辑需求的路由
         name: 'VerificationDetail',
         component: VerificationDetailPage, // 复用 DemandDetailPage
-        props: route => ({ demandIdProp: route.params.demandId, mode: 'view', demandType: route.query.type || 'Verification' }), // 通过 props 传递 mode 和 id
+        props: route => ({ IdProp: route.params.demandId, mode: 'view', demandType: route.query.type || 'Verification' }), // 通过 props 传递 mode 和 id
         meta: { title: '检测验证需求详情', breadcrumb: [ '检测验证需求详情'] }
       },
       {
@@ -136,7 +136,7 @@ const userCenterRoutes = [
       //   name: 'UserDemandDetail',
       //   component: DemandDetailPage,
       //   props: route => ({
-      //     demandIdProp: route.params.demandId,
+      //     IdProp: route.params.demandId,
       //     mode: 'view',
       //     demandType: route.params.demandType,
       //   }),

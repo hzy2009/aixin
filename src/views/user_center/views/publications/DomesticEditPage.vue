@@ -13,7 +13,7 @@ import { useAuthStore } from '@/store/authStore';
 const authStore = useAuthStore();
 
 const props = defineProps({
-  demandIdProp: { type: String, default: null },
+  IdProp: { type: String, default: null },
   mode: { type: String, default: 'view' }, // 'create', 'view'
 });
 
@@ -25,7 +25,7 @@ const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
   { label: '计划完成日期', field: 'expireDate', fieldType: 'date', span: 24 },
-  { label: '创建日期', field: 'createTime', fieldType: 'date', span: 24, mode: 'view'  },
+  { label: '创建日期', field: 'createTime', fieldType: 'date', span: 24, mode: 'view' },
   { label: '需求数量', field: 'reqPartsTotal', fieldType: 'number', span: 24, min: 0 },
   { label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true, },
   // {
@@ -41,11 +41,11 @@ const formConfigs = [
   { label: '已寻到数量', field: 'reqPartsFinish', fieldType: 'number', span: 24, disabled: true, mode: 'view' },
   { label: '未寻到数量', field: 'reqPartsUnfinish', fieldType: 'number', span: 24, disabled: true, mode: 'view' },
 ].filter(item => {
-    if (props.mode == 'create' && item.mode == 'view') {
-      return false;
-    }
-    return true;
+  if (props.mode == 'create' && item.mode == 'view') {
+    return false;
   }
+  return true;
+}
 );
 
 const statusHistoryColumns = [
@@ -64,7 +64,7 @@ const queryAfter = (data) => {
 };
 
 const pageData = reactive({
-  demandIdProp: props.demandIdProp,
+  IdProp: props.IdProp,
   mode: props.mode,
   apiMap: {
     add: 'apm/apmSourcing/add',

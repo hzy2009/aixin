@@ -71,12 +71,13 @@ const pageData = ref({
     tableColumns,
     addButton,
     actions,
-    showBanner: true
+    showBanner: true,
+    pageTitle: '检测验证'
 })
 
 
 function viewDetails({ id }) {
-    router.push(`/user/published/Verification/${id}`);
+    router.push(`/demands/VerificationDetailPage/${id}`);
 };
 function createNewSourcing() {
     router.push(`/user/published/Verification/create`);

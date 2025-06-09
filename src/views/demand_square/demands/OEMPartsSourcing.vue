@@ -65,12 +65,13 @@ const pageData = ref({
     tableColumns,
     addButton,
     actions,
-    showBanner: true
+    showBanner: true,
+    pageTitle: '原厂件寻源'
 })
 
 
 function viewDetails({ id }) {
-    router.push(`/user/published/OEMPartsSourcing/${id}`);
+    router.push(`/demands/OEMPartsDetailPage/${id}`);
 };
 function createNewSourcing() {
     router.push(`/user/published/OEMPartsSourcing/create`);

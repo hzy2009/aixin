@@ -1,19 +1,27 @@
 <template>
-  <div>
-    <edit :pageData="pageData" @goBack="goBack"></edit>
-  </div>
+  <ContentWithSidebarLayout>
+    <template #main>
+      <detail :pageData="pageData" @goBack="goBack"></detail>
+    </template>
+    <template #sidebar>
+      <RelatedItemsSidebar title="其他" :items="relatedEvents" :is-loading="isLoadingRelated" empty-description="暂无其他推荐"
+        @item-click="navigateToRelatedEvent" />
+    </template>
+  </ContentWithSidebarLayout>
 </template>
 
 <script setup>
 import { ref, computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import edit from '@/components/template/edit.vue';
+import detail from '@/components/template/detail.vue';
 import { useAuthStore } from '@/store/authStore';
+import RelatedItemsSidebar from '@/components/common/RelatedItemsSidebar.vue'; // Adjust path if needed
+import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue'; // Adjust path if needed
 
 const authStore = useAuthStore();
 
 const props = defineProps({
-  demandIdProp: { type: String, default: null },
+  IdProp: { type: String, default: null },
   mode: { type: String, default: 'view' }, // 'create', 'view'
 });
 
@@ -53,23 +61,53 @@ const statusHistoryColumns = [
 const pageTitle = '检测验证'
 
 const pageData = reactive({
-  demandIdProp: props.demandIdProp,
+  IdProp: props.IdProp,
   mode: props.mode,
   apiMap: {
     add: 'apm/apmInspection/add',
     edit: 'apm/apmInspection/edit',
-    detail: 'apm/apmInspection/queryById',
+    detail: 'apm/apmInspection/queryById/front',
     submit: 'apm/apmInspection/submit',
     delete: 'apm/apmInspection/delete',
   },
   formConfigs,
   statusHistoryColumns,
   pageTitle,
+  tableSections: [
+    {
+      title: '研发攻关承接方',
+      groupCode: 'materialList',
+      columns: [
+        { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' },
+        { title: '物料名称', dataIndex: 'materialName', key: 'materialName', align: 'center' },
+        { title: '物料数量', dataIndex: 'materialCount', key: 'materialCount', align: 'center' },
+        { title: '物料单位', dataIndex: 'materialUnit', key: 'materialUnit', align: 'center' },
+      ]
+    },
+    {
+      title: '关联业务',
+      groupCode: 'businessRefList',
+      columns: [
+        { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center', align: 'center' },
+        { title: '单据类型', dataIndex: 'businessRefTypeName', key: 'materialName', align: 'center' },
+        { title: '单据号', dataIndex: 'businessRefCode', key: 'materialCount', align: 'center' },
+      ]
+    }
+  ],
 })
 
 const goBack = () => {
   router.go(-1);
   // router.push('/user/published/verification');
+};
+const isLoadingRelated = ref(false);
+
+const relatedEvents = ref([]);
+
+const navigateToRelatedEvent = (relatedItem) => {
+  if (relatedItem.id && relatedItem.id !== eventId.value) {
+    router.push({ name: 'EventDetail', params: { id: relatedItem.id } });
+  }
 };
 
 </script>

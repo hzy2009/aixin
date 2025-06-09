@@ -13,7 +13,7 @@ import { useAuthStore } from '@/store/authStore';
 const authStore = useAuthStore();
 
 const props = defineProps({
-  demandIdProp: { type: String, default: null },
+  IdProp: { type: String, default: null },
   mode: { type: String, default: 'view' }, // 'create', 'view'
 });
 
@@ -63,7 +63,7 @@ const statusHistoryColumns = [
 const pageTitle = '研发攻关'
 
 const pageData = reactive({
-  demandIdProp: props.demandIdProp,
+  IdProp: props.IdProp,
   mode: props.mode,
   apiMap: {
     add: 'apm/apmRdBreakthrough/add',
