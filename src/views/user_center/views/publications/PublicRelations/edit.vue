@@ -57,7 +57,6 @@ const pageTitle = '研发攻关'
 
 const pageData = reactive({
   IdProp: props.IdProp,
-  mode: props.mode,
   apiMap: {
     add: 'apm/apmRdBreakthrough/add',
     edit: 'apm/apmRdBreakthrough/edit',

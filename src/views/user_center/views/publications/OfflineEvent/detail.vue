@@ -39,7 +39,6 @@ const pageTitle = '线下活动'
 
 const pageData = reactive({
   IdProp: props.IdProp,
-  mode: props.mode,
   apiMap: {
     add: 'apm/apmOfflineActivity/add',
     edit: 'apm/apmOfflineActivity/edit',

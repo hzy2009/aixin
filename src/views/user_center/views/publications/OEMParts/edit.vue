@@ -41,7 +41,6 @@ const pageTitle = '原厂件寻源'
 
 const pageData = reactive({
   IdProp: props.IdProp,
-  mode: props.mode,
   apiMap: {
     add: 'apm/apmSourcing/add',
     edit: 'apm/apmSourcing/edit',

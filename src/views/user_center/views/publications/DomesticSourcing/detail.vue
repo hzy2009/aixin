@@ -45,7 +45,6 @@ const queryAfter = (data) => {
 
 const pageData = reactive({
   IdProp: props.IdProp,
-  mode: props.mode,
   apiMap: {
     add: 'apm/apmSourcing/add',
     edit: 'apm/apmSourcing/edit',

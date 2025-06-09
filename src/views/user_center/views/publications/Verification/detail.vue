@@ -53,7 +53,6 @@ const pageTitle = '检测验证'
 
 const pageData = reactive({
   IdProp: props.IdProp,
-  mode: props.mode,
   apiMap: {
     add: 'apm/apmInspection/add',
     edit: 'apm/apmInspection/edit',
