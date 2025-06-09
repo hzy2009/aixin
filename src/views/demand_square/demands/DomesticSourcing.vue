@@ -66,7 +66,9 @@ const pageData = ref({
   addButton,
   actions,
   showBanner: true,
-  pageTitle: '国产替代寻源'
+  userStatCardVisible: true,
+  pageTitle: '国产替代寻源',
+  statusDictKey: 'sourcing_status',
 })
 
 

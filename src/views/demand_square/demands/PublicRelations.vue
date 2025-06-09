@@ -60,7 +60,8 @@ const pageData = ref({
     addButton,
     actions,
     showBanner: true,
-    pageTitle: '研发攻关'
+    pageTitle: '研发攻关',
+    statusDictKey: 'rd_breakthrough_status',
 })
 
 

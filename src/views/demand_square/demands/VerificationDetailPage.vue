@@ -46,7 +46,7 @@ const formConfigs = [
     label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true,
   },
   {
-    label: '需求状态', field: 'statusName', detailField: 'statusName', fieldType: 'select', span: 24, disabled: true,
+    label: '需求状态', field: 'statusName', fieldType: 'select', span: 24, disabled: true,
   },
 ]
 

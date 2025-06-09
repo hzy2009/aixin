@@ -66,7 +66,8 @@ const pageData = ref({
     addButton,
     actions,
     showBanner: true,
-    pageTitle: '原厂件寻源'
+    pageTitle: '原厂件寻源',
+    statusDictKey: 'sourcing_status',
 })
 
 

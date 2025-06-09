@@ -72,7 +72,8 @@ const pageData = ref({
     addButton,
     actions,
     showBanner: true,
-    pageTitle: '检测验证'
+    pageTitle: '检测验证',
+    statusDictKey: 'rd_breakthrough_status',
 })
 
 

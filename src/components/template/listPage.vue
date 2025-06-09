@@ -47,6 +47,11 @@
 
         <slot name="content" :dataSource="tableData" :paginationConfig="paginationConfig">
             <div class="results-table-section">
+                 <div class="table-operations">
+                    <a-button @click="setAgeSort">Sort age</a-button>
+                    <a-button @click="clearFilters">Clear filters</a-button>
+                    <a-button @click="clearAll">Clear filters and sorters</a-button>
+                </div>
                 <a-table :columns="tableColumns" :dataSource="tableData" :loading="isLoading"
                     :pagination="paginationConfig" row-key="id" @change="handleTablePaginationChange" size="middle"
                     class="user-demands-table">
