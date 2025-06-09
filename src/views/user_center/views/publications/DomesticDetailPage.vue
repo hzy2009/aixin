@@ -62,7 +62,20 @@ const pageData = reactive({
   formConfigs,
   statusHistoryColumns,
   pageTitle,
-  queryAfter
+  queryAfter,
+  tableSections: [
+    {
+      title: '物料清单',
+      groupCode: 'materialList',
+      columns: [
+        { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' },
+        { title: '物料名称', dataIndex: 'materialName', key: 'materialName' },
+        { title: '物料数量', dataIndex: 'materialCount', key: 'materialCount' },
+        { title: '物料单位', dataIndex: 'materialUnit', key: 'materialUnit' },
+      ]
+    }
+  ],
+  statusDictKey: 'sourcing_status',
 })
 
 const goBack = () => {

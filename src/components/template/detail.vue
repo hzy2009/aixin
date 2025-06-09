@@ -1,86 +1,60 @@
 <template>
-  <div class="detail-view-page">
-	<!-- 1. Page Title -->
-	<div class="page-title-header">
-	  <span class="title-decorator-bar"></span>
-	  <h2 class="page-main-heading">{{ pageTitle }}</h2>
-	</div>
-
-	<!-- Section: Basic Information -->
-	<section class="info-section">
-	  <div class="section-title-wrapper">
-		<h3 class="section-title-text">基本信息</h3>
-	  </div>
-	  <div class="basic-info-grid">
-		<div
-		  v-for="item in formConfigs"
-		  :key="item.label"
-		  class="info-grid-item"
-		  :style="{ gridColumn: item.span ? `span ${item.span}` : 'span 1' }"
-		>
-		  <span class="info-grid-label">{{ item.label }}：</span>
-		  <!-- Allow HTML for value if specified, otherwise render as text -->
-		  <span class="info-grid-value" v-if="item.fieldType === 'select' && (item.options || selectOptions(item.dictKey))" >
-			{{ getSelectDisplayValue(item, formModel[item.field]) }}
-		  </span>
-		  <span v-else class="info-grid-value">{{formModel[item.field]}}</span>
+	<div class="detail-view-page">
+		<!-- 1. Page Title -->
+		<div class="page-title-header">
+			<span class="title-decorator-bar"></span>
+			<h2 class="page-main-heading">{{ pageTitle }}</h2>
 		</div>
-	  </div>
-	</section>
 
-	<!-- Section: Dynamic Tables -->
-	<template v-for="(tableSection, index) in tableSections" :key="`table-section-${index}`">
-	  <section v-if="tableSection.items && tableSection.items.length > 0" class="info-section">
-		<div class="section-title-wrapper">
-		  <h3 class="section-title-text">{{ tableSection.title || '列表数据' }}</h3>
+		<!-- Section: Basic Information -->
+		<section class="info-section">
+			<div class="section-title-wrapper">
+				<h3 class="section-title-text">基本信息</h3>
+			</div>
+			<div class="basic-info-grid">
+				<div v-for="item in formConfigs" :key="item.label" class="info-grid-item"
+					:style="{ gridColumn: item.span ? `span ${item.span}` : 'span 1' }">
+					<span class="info-grid-label">{{ item.label }}：</span>
+					<span class="info-grid-value"
+						v-if="item.fieldType === 'select' && (item.options || selectOptions(item.dictKey))">
+						{{ getSelectDisplayValue(item, formModel[item.field]) }}
+					</span>
+					<span v-else class="info-grid-value">{{ formModel[item.field] }}</span>
+				</div>
+				<div v-for="(tableSection, index) in tableSections" :key="`table-section-${index}`" class="info-grid-item">
+					<span class="info-grid-label">{{ tableSection.title }}：</span>
+					<div class=" flex1">
+						<a-table :columns="tableSection.columns" :data-source="formModel[`${tableSection.groupCode}`] || []"
+							:pagination="false" :row-key="tableSection.rowKey || 'id'" bordered size="middle"
+							class="custom-detail-table" />
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Section: Status Tracking (Timeline/Steps + Table) -->
+		<section v-if="statusTracking && statusTracking.steps && statusTracking.steps.length > 0" class="info-section">
+			<div class="section-title-wrapper">
+				<h3 class="section-title-text">{{ statusTracking.title || '状态跟踪' }}</h3>
+			</div>
+			<a-steps :current="currentStepIndex" class="status-steps" progress-dot size="small">
+				<a-step v-for="(step, stepIdx) in statusTracking.steps" :key="`step-${stepIdx}`" :title="step.label"
+					:description="step.date" :status="step.status" />
+			</a-steps>
+			<a-table v-if="formModel.logList && formModel.logList.length > 0" :columns="statusHistoryColumns"
+				:data-source="formModel.logList" :pagination="false" :row-key="'id'" bordered size="middle"
+				class="custom-detail-table status-history-table" />
+		</section>
+
+		<!-- Action Buttons -->
+		<div class="page-actions-footer">
+			<slot name="actions">
+				<a-button @click="handleDefaultCancel" class="action-button cancel-button">取消</a-button>
+				<a-button type="primary" danger @click="handleDefaultSubmit" class="action-button submit-button">一键敲门</a-button>
+			</slot>
 		</div>
-		<a-table
-		  :columns="tableSection.columns"
-		  :data-source="tableSection.items"
-		  :pagination="false"
-		  :row-key="tableSection.rowKey || 'id'" 
-		  bordered
-		  size="middle"
-		  class="custom-detail-table"
-		/>
-	  </section>
-	</template>
-
-	<!-- Section: Status Tracking (Timeline/Steps + Table) -->
-	<section v-if="statusTracking && statusTracking.steps && statusTracking.steps.length > 0" class="info-section">
-	  <div class="section-title-wrapper">
-		<h3 class="section-title-text">{{ statusTracking.title || '状态跟踪' }}</h3>
-	  </div>
-	  <a-steps :current="currentStepIndex" class="status-steps" progress-dot size="small">
-		<a-step
-		  v-for="(step, stepIdx) in statusTracking.steps"
-		  :key="`step-${stepIdx}`"
-		  :title="step.label"
-		  :description="step.date"
-		  :status="step.status" 
-		/>
-	  </a-steps>
-	  <a-table
-		v-if="formModel.logList && formModel.logList.length > 0"
-		:columns="statusHistoryColumns"
-		:data-source="formModel.logList"
-		:pagination="false"
-		:row-key="'id'"
-		bordered
-		size="middle"
-		class="custom-detail-table status-history-table"
-	  />
-	</section>
-
-	<!-- Action Buttons -->
-	<div class="page-actions-footer">
-	  <slot name="actions">
-		<a-button @click="handleDefaultCancel" class="action-button cancel-button">取消</a-button>
-		<a-button type="primary" danger @click="handleDefaultSubmit" class="action-button submit-button">一键敲门</a-button>
-	  </slot>
+		<p v-if="actionNote" class="action-submit-note">{{ actionNote }}</p>
 	</div>
-	<p v-if="actionNote" class="action-submit-note">{{ actionNote }}</p>
-  </div>
 </template>
 
 <script setup>
@@ -91,9 +65,9 @@ import { useAuthStore } from '@/store/authStore';
 
 const auth = useAuthStore();
 const selectOptions = (dictKey) => {
-  if (!dictKey) return [];
-  if (!auth.sysAllDictItems[dictKey]) return []
-  return auth.sysAllDictItems[dictKey].map(({ label, value }) => ({ label, value })) || [];
+	if (!dictKey) return [];
+	if (!auth.sysAllDictItems[dictKey]) return []
+	return auth.sysAllDictItems[dictKey].map(({ label, value }) => ({ label, value })) || [];
 };
 
 
@@ -117,19 +91,19 @@ const {
 	actionNote = '一键敲门后，客服人员将在30分钟内与您联系',
 } = props.pageData;
 
-const emit = defineEmits(['goBack','cancel', 'submit']);
+const emit = defineEmits(['goBack', 'cancel', 'submit']);
 
 const {
-    demandDetail: demandDetailData,
-    isLoading,
-    error,
-    operationMode, // 现在从 hook 中获取
-    fetchDemandDetail,
+	demandDetail: demandDetailData,
+	isLoading,
+	error,
+	operationMode, // 现在从 hook 中获取
+	fetchDemandDetail,
 } = useDemandDetail({
-    demandIdProp,
-    mode,
-    url: apiMap,
-    otherParams
+	demandIdProp,
+	mode,
+	url: apiMap,
+	otherParams
 });
 const formModel = ref({});
 
@@ -144,73 +118,73 @@ const statusTracking = computed(() => {
 
 // 监听从 hook 获取的原始数据，用于初始化/更新表单模型
 watch(demandDetailData, (newDetail) => {
-    if (newDetail) {
-        formModel.value = JSON.parse(JSON.stringify(newDetail)); // 深拷贝以编辑
-    } else if (operationMode.value === 'create') {
-        // 如果是新建模式且 newDetail 为 null（例如 hook 初始化时），确保 formModel 有基础结构
-        formModel.value = {
-            expireDate: null,
-            // ... 其他类型需要的默认字段 ...
-        };
-    } else {
-        formModel.value = {};
-    }
+	if (newDetail) {
+		formModel.value = JSON.parse(JSON.stringify(newDetail)); // 深拷贝以编辑
+	} else if (operationMode.value === 'create') {
+		// 如果是新建模式且 newDetail 为 null（例如 hook 初始化时），确保 formModel 有基础结构
+		formModel.value = {
+			expireDate: null,
+			// ... 其他类型需要的默认字段 ...
+		};
+	} else {
+		formModel.value = {};
+	}
 }, { deep: true, immediate: true });
 
 
 const currentStepIndex = computed(() => {
-  if (!statusTracking || !statusTracking.steps || statusTracking.steps.length === 0) return -1; 
+	if (!statusTracking || !statusTracking.steps || statusTracking.steps.length === 0) return -1;
 
-  const processIndex = statusTracking.steps.findIndex(step => step.status === 'process');
-  if (processIndex !== -1) return processIndex;
+	const processIndex = statusTracking.steps.findIndex(step => step.status === 'process');
+	if (processIndex !== -1) return processIndex;
 
-  let lastFinishIndex = -1;
-  for (let i = statusTracking.steps.length - 1; i >= 0; i--) {
-	if (statusTracking.steps[i].status === 'finish') {
-	  lastFinishIndex = i;
-	  break;
+	let lastFinishIndex = -1;
+	for (let i = statusTracking.steps.length - 1; i >= 0; i--) {
+		if (statusTracking.steps[i].status === 'finish') {
+			lastFinishIndex = i;
+			break;
+		}
 	}
-  }
-  if (lastFinishIndex === statusTracking.steps.length - 1) {
-	  return statusTracking.steps.length; // All finished
-  }
-  return lastFinishIndex >= 0 ? lastFinishIndex : 0; // Default to first step or last finished
+	if (lastFinishIndex === statusTracking.steps.length - 1) {
+		return statusTracking.steps.length; // All finished
+	}
+	return lastFinishIndex >= 0 ? lastFinishIndex : 0; // Default to first step or last finished
 });
 
 const getSelectDisplayValue = (fieldConfig, value) => {
-  let optionsList = fieldConfig.options || selectOptions(fieldConfig.dictKey)
-  if (!optionsList) return value || '-';
-  if (fieldConfig.selectMode === 'multiple' || fieldConfig.selectMode === 'tags') {
-    if (!Array.isArray(value) || value.length === 0) return '-';
-    return value.map(val => {
-      const option = optionsList.find(opt => opt.value === val);
-      return option ? option.label : val;
-    }).join(', ');
-  } else {
-    const option = optionsList.find(opt => opt.value === value);
-    return option ? option.label : (value || '-');
-  }
+	let optionsList = fieldConfig.options || selectOptions(fieldConfig.dictKey)
+	if (!optionsList) return value || '-';
+	if (fieldConfig.selectMode === 'multiple' || fieldConfig.selectMode === 'tags') {
+		if (!Array.isArray(value) || value.length === 0) return '-';
+		return value.map(val => {
+			const option = optionsList.find(opt => opt.value === val);
+			return option ? option.label : val;
+		}).join(', ');
+	} else {
+		const option = optionsList.find(opt => opt.value === value);
+		return option ? option.label : (value || '-');
+	}
 };
 
 const formatAmount = (value) => {
-  if (value === null || value === undefined || value === '') return '-';
-  const num = Number(value);
-  if (isNaN(num)) return value; // Return original if not a number
-  return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+	if (value === null || value === undefined || value === '') return '-';
+	const num = Number(value);
+	if (isNaN(num)) return value; // Return original if not a number
+	return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
 
 
 
 const handleDefaultCancel = () => {
-  emit('cancel');
+	emit('goBack');
 };
 const goBack = () => {
-    emit('goBack');
+	emit('goBack');
 };
 
 
 const handleDefaultSubmit = () => {
-  emit('submit');
+	emit('submit');
 };
 
 </script>
@@ -218,187 +192,208 @@ const handleDefaultSubmit = () => {
 <style scoped lang="less">
 @import '@/assets/styles/_variables.less'; // Your global LESS variables
 
+.flex1 {
+	flex: 1
+}
+
 .detail-view-page {
-  padding: @spacing-lg @spacing-xl;
-  background-color: @background-color-base;
-  border-radius: @border-radius-sm;
+	padding: @spacing-lg @spacing-xl;
+	background-color: @background-color-base;
+	border-radius: @border-radius-sm;
 }
 
 .page-title-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: @spacing-xl;
-  .title-decorator-bar {
-	width: 4px;
-	height: 20px;
-	background-color: @primary-color;
-	margin-right: @spacing-sm;
-  }
-  .page-main-heading {
-	font-size: 18px;
-	font-weight: 500;
-	color: @text-color-base;
-	margin: 0;
-  }
+	display: flex;
+	align-items: center;
+	margin-bottom: @spacing-xl;
+
+	.title-decorator-bar {
+		width: 4px;
+		height: 20px;
+		background-color: @primary-color;
+		margin-right: @spacing-sm;
+	}
+
+	.page-main-heading {
+		font-size: 18px;
+		font-weight: 500;
+		color: @text-color-base;
+		margin: 0;
+	}
 }
 
 .info-section {
-  margin-bottom: @spacing-xl + @spacing-md;
+	margin-bottom: @spacing-xl + @spacing-md;
 }
 
 .section-title-wrapper {
-  margin-bottom: @spacing-md;
-  padding-bottom: @spacing-xs;
-  border-bottom: 1px solid @border-color-light;
-  position: relative;
-
-  .section-title-text {
-	font-size: 14px;
-	font-weight: 400;
-	color: @text-color-secondary;
-	margin: 0;
-	display: inline-block;
+	margin-bottom: @spacing-md;
+	padding-bottom: @spacing-xs;
+	border-bottom: 1px solid @border-color-light;
 	position: relative;
 
-	&::after {
-	  content: '';
-	  display: block;
-	  width: 100%;
-	  height: 2px;
-	  background-color: @primary-color;
-	  position: absolute;
-	  bottom: -(@spacing-xs + 1px);
-	  left: 0;
-	  z-index: 1;
+	.section-title-text {
+		font-size: 14px;
+		font-weight: 400;
+		color: @text-color-secondary;
+		margin: 0;
+		display: inline-block;
+		position: relative;
+
+		&::after {
+			content: '';
+			display: block;
+			width: 100%;
+			height: 2px;
+			background-color: @primary-color;
+			position: absolute;
+			bottom: -(@spacing-xs + 1px);
+			left: 0;
+			z-index: 1;
+		}
 	}
-  }
 }
 
 .basic-info-grid {
-  display: grid;
-  grid-template-columns: 1fr; // Default to single column
-  gap: @spacing-sm @spacing-lg;
-  font-size: 14px;
+	// display: grid;
+	// grid-template-columns: 1fr; // Default to single column
+	gap: @spacing-sm @spacing-lg;
+	font-size: 14px;
 
-  // If you want a two-column layout for basic info sometimes for larger screens:
-   @media (min-width: 768px) { // Example breakpoint
-	 // By default, items take 1fr. If span=2, it takes 2fr (full width on 2-col grid)
-	 // This requires items to specify their span if they need to be full width.
-	 // For now, let's assume a dynamic grid based on item.span or a fixed 2-column layout.
-	 // To force a 2-column layout where items with span=1 take half:
-	 // grid-template-columns: repeat(2, 1fr);
-   }
-
-
-  .info-grid-item {
-	display: flex;
-	align-items: baseline;
-	padding: @spacing-xs 0;
-	line-height: 1.6;
-  }
-  .info-grid-label {
-	color: @text-color-secondary;
-	margin-right: @spacing-xs;
-	white-space: nowrap;
-	min-width: 100px; // Adjust as needed for your longest labels
-	text-align: right;
-  }
-  .info-grid-value {
-	color: @text-color-base;
-	word-break: break-word;
-	&.requester-id-value {
-		background-color: #F7F8FA;
-		padding: 2px 8px;
-		border-radius: @border-radius-sm;
+	// If you want a two-column layout for basic info sometimes for larger screens:
+	@media (min-width: 768px) {
+		// Example breakpoint
+		// By default, items take 1fr. If span=2, it takes 2fr (full width on 2-col grid)
+		// This requires items to specify their span if they need to be full width.
+		// For now, let's assume a dynamic grid based on item.span or a fixed 2-column layout.
+		// To force a 2-column layout where items with span=1 take half:
+		// grid-template-columns: repeat(2, 1fr);
 	}
-  }
+
+
+	.info-grid-item {
+		display: flex;
+		padding: @spacing-md 0;
+		line-height: 1.6;
+	}
+
+	.info-grid-label {
+		color: @text-color-secondary;
+		margin-right: @spacing-xs;
+		white-space: nowrap;
+		min-width: 100px; // Adjust as needed for your longest labels
+		text-align: right;
+	}
+
+	.info-grid-value {
+		color: @text-color-base;
+		word-break: break-word;
+
+		&.requester-id-value {
+			background-color: #F7F8FA;
+			padding: 2px 8px;
+			border-radius: @border-radius-sm;
+		}
+	}
 }
 
 .custom-detail-table {
-  margin-top: @spacing-xs;
-  :deep(.ant-table-thead > tr > th) {
-	background-color: #FAFAFA;
-	color: @text-color-base;
-	font-weight: 500;
-	font-size: 13px;
-	padding: 10px 8px;
-	text-align: left; // Ensure headers align left by default
-  }
-  :deep(.ant-table-tbody > tr > td) {
-	color: @text-color-secondary;
-	font-size: 13px;
-	padding: 10px 8px;
-	word-break: break-all;
-  }
-  :deep(.ant-table-bordered .ant-table-container) {
-	  border-color: @border-color-light !important;
-  }
-  :deep(.ant-table-cell) {
-	  border-color: @border-color-light !important;
-  }
+	margin-top: @spacing-xs;
+
+	:deep(.ant-table-thead > tr > th) {
+		background-color: #FAFAFA;
+		color: @text-color-base;
+		font-weight: 500;
+		font-size: 13px;
+		padding: 10px 8px;
+		text-align: left; // Ensure headers align left by default
+	}
+
+	:deep(.ant-table-tbody > tr > td) {
+		color: @text-color-secondary;
+		font-size: 13px;
+		padding: 10px 8px;
+		word-break: break-all;
+	}
+
+	:deep(.ant-table-bordered .ant-table-container) {
+		border-color: @border-color-light !important;
+	}
+
+	:deep(.ant-table-cell) {
+		border-color: @border-color-light !important;
+	}
 }
 
 .status-steps {
-  margin: @spacing-lg 0 @spacing-xl 0;
-  padding: 0 @spacing-xs; // Reduced horizontal padding a bit
+	margin: @spacing-lg 0 @spacing-xl 0;
+	padding: 0 @spacing-xs; // Reduced horizontal padding a bit
 
-  :deep(.ant-steps-item-title) {
-	font-size: 13px;
-	font-weight: 400;
-  }
-  :deep(.ant-steps-item-description) {
-	font-size: 12px;
-	color: @text-color-tertiary;
-  }
-  :deep(.ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon .ant-steps-icon-dot),
-  :deep(.ant-steps-item-process .ant-steps-item-icon > .ant-steps-icon .ant-steps-icon-dot) {
-	background: @primary-color;
-  }
-  :deep(.ant-steps-item-wait .ant-steps-item-icon > .ant-steps-icon .ant-steps-icon-dot) {
-	background: #D9D9D9;
-  }
-  :deep(.ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-tail::after),
-  :deep(.ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-tail::after) { // Also color tail for current process
-	background-color: @primary-color;
-  }
+	:deep(.ant-steps-item-title) {
+		font-size: 13px;
+		font-weight: 400;
+	}
+
+	:deep(.ant-steps-item-description) {
+		font-size: 12px;
+		color: @text-color-tertiary;
+	}
+
+	:deep(.ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon .ant-steps-icon-dot),
+	:deep(.ant-steps-item-process .ant-steps-item-icon > .ant-steps-icon .ant-steps-icon-dot) {
+		background: @primary-color;
+	}
+
+	:deep(.ant-steps-item-wait .ant-steps-item-icon > .ant-steps-icon .ant-steps-icon-dot) {
+		background: #D9D9D9;
+	}
+
+	:deep(.ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-tail::after),
+	:deep(.ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-tail::after) {
+		// Also color tail for current process
+		background-color: @primary-color;
+	}
 }
 
 .status-history-table {
-  // No specific overrides needed beyond .custom-detail-table for now
+	// No specific overrides needed beyond .custom-detail-table for now
 }
 
 .page-actions-footer {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: @spacing-xl;
-  padding-top: @spacing-lg;
-  border-top: 1px solid @border-color-light;
+	display: flex;
+	justify-content: flex-end;
+	margin-top: @spacing-xl;
+	padding-top: @spacing-lg;
+	border-top: 1px solid @border-color-light;
 }
 
 .action-button {
-  min-width: 88px;
-  height: 36px;
-  font-size: 14px;
-  border-radius: @border-radius-sm;
+	min-width: 88px;
+	height: 36px;
+	font-size: 14px;
+	border-radius: @border-radius-sm;
 
-  &.cancel-button {
-	margin-right: @spacing-md;
-	background-color: @background-color-base;
-	border: 1px solid #D9D9D9;
-	color: @text-color-base;
-	&:hover {
-	  color: @primary-color;
-	  border-color: @primary-color;
+	&.cancel-button {
+		margin-right: @spacing-md;
+		background-color: @background-color-base;
+		border: 1px solid #D9D9D9;
+		color: @text-color-base;
+
+		&:hover {
+			color: @primary-color;
+			border-color: @primary-color;
+		}
 	}
-  }
-  &.submit-button {
-	// type="primary" danger for red
-  }
+
+	&.submit-button {
+		// type="primary" danger for red
+	}
 }
+
 .action-submit-note {
-  text-align: right;
-  margin-top: @spacing-xs;
-  font-size: 12px;
-  color: @text-color-tertiary;
+	text-align: right;
+	margin-top: @spacing-xs;
+	font-size: 12px;
+	color: @text-color-tertiary;
 }
 </style>
