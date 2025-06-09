@@ -10,7 +10,7 @@ import { useRouter } from 'vue-router';
 import edit from '@/components/template/edit.vue';
 import { useAuthStore } from '@/store/authStore';
 
-const authStore = useAuthStore();
+
 
 const props = defineProps({
   IdProp: { type: String, default: null },
@@ -65,6 +65,8 @@ const pageData = reactive({
   formConfigs,
   statusHistoryColumns,
   pageTitle,
+  detailPath: '/user/published/Verification/detail',
+  listPath: '/user/published/Verification',
 })
 
 const goBack = () => {

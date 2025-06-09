@@ -10,7 +10,6 @@ import { useRouter } from 'vue-router';
 import detail from '@/components/template/detail.vue';
 import { useAuthStore } from '@/store/authStore';
 
-const authStore = useAuthStore();
 
 const props = defineProps({
   IdProp: { type: String, default: null },

@@ -10,7 +10,7 @@ import { useRouter } from 'vue-router';
 import detail from '@/components/template/detail.vue';
 import { useAuthStore } from '@/store/authStore';
 
-const authStore = useAuthStore();
+
 
 const props = defineProps({
   IdProp: { type: String, default: null },
@@ -19,15 +19,12 @@ const props = defineProps({
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
-  { label: '活动名称', field: 'activityName', fieldType: 'input', span: 24},
+  { label: '活动名称', field: 'activityName', span: 24},
   { label: '活动图片', field: 'imageUrl', fieldType: 'imageUpload', span: 24 },
   {
-    label: '活动类型', field: 'activityTypeCode', fieldType: 'select', dictKey: 'activity_type', span: 24,
-    onChange: ({ value, form, option }) => {
-      form.activityTypeName = option.label || '';
-    }
+    label: '活动类型', field: 'activityTypeName', dictKey: 'activity_type', span: 24,
   },
-  { label: '活动内容', field: 'description', fieldType: 'textarea', span: 24 },
+  { label: '活动内容', field: 'description', span: 24 },
 ]
 
 const statusHistoryColumns = [

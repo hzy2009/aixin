@@ -68,6 +68,8 @@ const pageData = reactive({
   formConfigs,
   statusHistoryColumns,
   pageTitle,
+  detailPath: '/user/published/PublicRelations/detail',
+  listPath: '/user/published/PublicRelations',
 })
 
 const goBack = () => {

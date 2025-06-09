@@ -114,6 +114,7 @@ const userCenterRoutes = [
       },
       {
         path: 'OfflineEvent/detail/:id',
+        props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
         component: OfflineEventDetailPage,
         meta: { title: '创建线下活动' }
       },

@@ -10,7 +10,7 @@ import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 import { useAuthStore } from '@/store/authStore';
-const authStore = useAuthStore();
+
 const router = useRouter();
 
 // --- Filter Configuration (remains in component as it's UI specific) ---
@@ -75,14 +75,14 @@ const pageData = ref({
     addButton,
     actions,
     statusDictKey: 'sourcing_status',
-  userStatCardVisible: true
+    userStatCardVisible: true
 })
 
 
 function viewDetails({ id }) {
-    router.push(`/user/published/Verification/${id}`);
+    router.push(`/user/published/OfflineEvent/detail/${id}`);
 };
 function createNewSourcing() {
-    router.push(`/user/published/Verification/create`);
+    router.push(`/user/published/OfflineEvent/create`);
 };
 </script>

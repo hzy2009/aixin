@@ -10,7 +10,7 @@ import { useRouter } from 'vue-router';
 import edit from '@/components/template/edit.vue';
 import { useAuthStore } from '@/store/authStore';
 
-const authStore = useAuthStore();
+
 
 const props = defineProps({
   IdProp: { type: String, default: null },
@@ -54,7 +54,6 @@ const pageData = reactive({
   statusHistoryColumns,
   pageTitle,
   handleBeforeSave: (data) => {
-    debugger
     data.imageUrl = data.imageUrl.join(',');
   },
   detailPath: '/user/published/OfflineEventDetail',
