@@ -59,6 +59,27 @@ const pageData = reactive({
   },
   detailPath: '/user/published/OfflineEventDetail',
   listPath: '/user/published/OfflineEvent',
+  tableSections: [
+    {
+      title: '物料清单',
+      groupCode: 'materialList',
+      columns: [
+        { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' },
+        { title: '物料名称', dataIndex: 'materialName', key: 'materialName' },
+        { title: '物料数量', dataIndex: 'materialCount', key: 'materialCount' },
+        { title: '物料单位', dataIndex: 'materialUnit', key: 'materialUnit' },
+      ]
+    },
+    {
+      title: '关联业务',
+      groupCode: 'businessRefList',
+      columns: [
+        { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center', align: 'center' },
+        { title: '单据类型', dataIndex: 'businessRefTypeName', key: 'materialName', align: 'center' },
+        { title: '单据号', dataIndex: 'businessRefCode', key: 'materialCount', align: 'center' },
+      ]
+    }
+  ],
 })
 
 const goBack = () => {

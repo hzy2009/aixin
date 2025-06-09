@@ -16,18 +16,32 @@ const props = defineProps({
   IdProp: { type: String, default: null },
 });
 
+const isManagerAdmin = computed(() => {
+  return authStore.isManagerAdmin
+});
+
 const router = useRouter();
-// // --- 表单配置 ---
+// --- 表单配置 ---
 const formConfigs = [
-  { label: '活动名称', field: 'activityName', fieldType: 'input', span: 24},
-  { label: '活动图片', field: 'imageUrl', fieldType: 'imageUpload', span: 24 },
   {
-    label: '活动类型', field: 'activityTypeCode', fieldType: 'select', dictKey: 'activity_type', span: 24,
+    label: '研发攻关方向', field: 'rdCode', fieldType: 'select', detailField: 'rdType', dictKey: 'rd_type', span: 24,
     onChange: ({ value, form, option }) => {
-      form.activityTypeName = option.label || '';
+      form.rdType = option.label || '';
     }
   },
-  { label: '活动内容', field: 'description', fieldType: 'textarea', span: 24 },
+  { label: '创建日期', field: 'createTime', fieldType: 'date', span: 24, disabled: true},
+  { label: '研发需求', field: 'sourceDesc', fieldType: 'input', span: 24 },
+  {
+    label: '需求状态', field: 'statusName', detailField: 'statusName', fieldType: 'select', dictKey: 'rd_breakthrough_status', span: 24, disabled: true
+  },
+  {
+    label: '期望匹配周期', field: 'matchPeriodCode', detailField: 'matchPeriodName', fieldType: 'select', dictKey: 'rd_breakthrough_period', span: 24,
+    onChange: ({ value, form, option }) => {
+      form.matchPeriodName = option.find(opt => opt.value === value)?.label || '';
+    }
+  },
+  // { label: '需求有效期', field: 'expireDate', fieldType: 'date', span: 24 },
+  { label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true, },
 ]
 
 const statusHistoryColumns = [
@@ -37,28 +51,23 @@ const statusHistoryColumns = [
   { title: '备注', dataIndex: 'remark', key: 'remark' },
 ]
 
+// const demandTypeDisplayName = '研发攻关';
 
-const pageTitle = '线下活动'
+const pageTitle = '研发攻关'
 
 const pageData = reactive({
   IdProp: props.IdProp,
   mode: props.mode,
   apiMap: {
-    add: 'apm/apmOfflineActivity/add',
-    edit: 'apm/apmOfflineActivity/edit',
-    detail: 'apm/apmOfflineActivity/queryById',
-    submit: 'apm/apmOfflineActivity/submit',
-    delete: 'apm/apmOfflineActivity/delete',
+    add: 'apm/apmRdBreakthrough/add',
+    edit: 'apm/apmRdBreakthrough/edit',
+    detail: 'apm/apmRdBreakthrough/queryById',
+    submit: 'apm/apmRdBreakthrough/submit',
+    delete: 'apm/apmRdBreakthrough/delete',
   },
   formConfigs,
   statusHistoryColumns,
   pageTitle,
-  handleBeforeSave: (data) => {
-    debugger
-    data.imageUrl = data.imageUrl.join(',');
-  },
-  detailPath: '/user/published/OfflineEventDetail',
-  listPath: '/user/published/OfflineEvent',
 })
 
 const goBack = () => {

@@ -70,7 +70,7 @@ const pageData = ref({
 
 
 function viewDetails({ id }) {
-    router.push(`/user/published/OEMPartsSourcing/${id}`);
+    router.push(`/user/published/OEMPartsSourcing/detail/${id}`);
 };
 function createNewSourcing() {
     router.push(`/user/published/OEMPartsSourcing/create`);

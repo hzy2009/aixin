@@ -14,7 +14,6 @@ const router = useRouter();
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
     { id: 'rdCode', label: '攻关方向', maxVisibleWithoutMore: 7, dictKey: 'rd_type' },
-    // { id: 'region', label: '区域', maxVisibleWithoutMore: 3, options: [{ value: 'all', label: '全部' }, { value: 'huadong', label: '华东' }, { value: 'huanan', label: '华南' }, { value: 'huazhong', label: '华中' }, { value: 'huabei', label: '华北' }, { value: 'xinan', label: '西南' }, { value: 'xibei', label: '西北' }] },
     { id: 'statusCode', label: '研发状态', maxVisibleWithoutMore: 7, dictKey: 'rd_breakthrough_status' }
 ]);
 
@@ -27,7 +26,7 @@ const tableColumns = reactive([
         // // 计算未完成数量
         // return <span>{reqPartsUnfinish || '-'}</span>;
         // }
-     }, // This should be 'sourcingType' from mock
+    }, 
     { title: '研发需求', dataIndex: 'sourceDesc', key: 'sourceDesc', align: 'center' }, // Corrected key
     { title: '需求状态', dataIndex: 'statusName', key: 'statusName', align: 'center' }, // Key matches display field
     { title: '创建日期', dataIndex: 'createTime', key: 'createTime', align: 'center' },
@@ -64,7 +63,7 @@ const pageData = ref({
 
 
 function viewDetails({ id }) {
-    router.push(`/user/published/PublicRelations/${id}`);
+    router.push(`/user/published/PublicRelations/detail/${id}`);
 };
 function createNewSourcing() {
     router.push(`/user/published/PublicRelations/create`);

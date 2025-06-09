@@ -14,7 +14,6 @@ const authStore = useAuthStore();
 
 const props = defineProps({
   IdProp: { type: String, default: null },
-  mode: { type: String, default: 'view' }, // 'create', 'view'
 });
 
 const isManagerAdmin = computed(() => {
@@ -24,11 +23,10 @@ const isManagerAdmin = computed(() => {
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
+	{ label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true, },
+  { label: '创建日期', field: 'createTime', fieldType: 'date', span: 24, disabled: true},
   { label: '计划完成日期', field: 'expireDate', fieldType: 'date', span: 24 },
-  { label: '创建日期', field: 'createTime', fieldType: 'date', span: 24},
   { label: '需求数量', field: 'reqPartsTotal', fieldType: 'number', span: 24, min: 0 },
-  { label: '已寻到数量', field: 'reqPartsFinish', fieldType: 'number', span: 24, disabled: true},
-  { label: '未寻到数量', field: 'reqPartsUnfinish', fieldType: 'number', span: 24, disabled: true},
 ]
 
 const statusHistoryColumns = [

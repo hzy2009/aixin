@@ -78,7 +78,7 @@ const dynamicFormRef = ref(null);
 const isSubmitting = ref(false); // 用于提交按钮的 loading 状态
 const formModel = ref({});
 
-const isCreating = ref(false);
+const isCreating = ref(true);
 const resultPageData = ref({
 
 });
