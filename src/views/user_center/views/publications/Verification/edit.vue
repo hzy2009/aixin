@@ -24,11 +24,22 @@ const isManagerAdmin = computed(() => {
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
-  { label: '计划完成日期', field: 'expireDate', fieldType: 'date', span: 24 },
-  { label: '创建日期', field: 'createTime', fieldType: 'date', span: 24},
-  { label: '需求数量', field: 'reqPartsTotal', fieldType: 'number', span: 24, min: 0 },
-  { label: '已寻到数量', field: 'reqPartsFinish', fieldType: 'number', span: 24, disabled: true},
-  { label: '未寻到数量', field: 'reqPartsUnfinish', fieldType: 'number', span: 24, disabled: true},
+  {
+    label: '验证项目', field: 'projectName', fieldType: 'input', span: 24,
+  },
+  { label: '需求有效期', field: 'expireDate', fieldType: 'date', span: 24 },
+  {
+    label: '产品类别', field: 'productType', fieldType: 'select', dictKey: 'product_type', span: 24,
+  },
+  {
+    label: '项目分类', field: 'projectType', fieldType: 'select', dictKey: 'project_type', span: 24,
+  },
+  {
+    label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true,
+  },
+  {
+    label: '需求状态', field: 'statusName', detailField: 'statusName', fieldType: 'select', span: 24, disabled: true,
+  },
 ]
 
 const statusHistoryColumns = [
@@ -39,20 +50,17 @@ const statusHistoryColumns = [
 ]
 
 
-const pageTitle = '原厂件寻源'
+const pageTitle = '检测验证'
 
 const pageData = reactive({
   IdProp: props.IdProp,
   mode: props.mode,
   apiMap: {
-    add: 'apm/apmSourcing/add',
-    edit: 'apm/apmSourcing/edit',
-    detail: 'apm/apmSourcing/queryById',
-    submit: 'apm/apmSourcing/submit',
-    delete: 'apm/apmSourcing/delete',
-  },
-  otherParams: {
-    sourcingType: '原厂件寻源',
+    add: 'apm/apmInspection/add',
+    edit: 'apm/apmInspection/edit',
+    detail: 'apm/apmInspection/queryById',
+    submit: 'apm/apmInspection/submit',
+    delete: 'apm/apmInspection/delete',
   },
   formConfigs,
   statusHistoryColumns,
@@ -60,8 +68,8 @@ const pageData = reactive({
 })
 
 const goBack = () => {
-  // router.push('/user/published/OEMPartsSourcing');
   router.go(-1);
+  // router.push('/user/published/verification');
 };
 
 </script>

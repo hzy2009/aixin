@@ -1,19 +1,18 @@
 <template>
-    <div class="talent-profile-card" @click="viewTalentDetails(talent.id)">
+    <div class="talent-profile-card" @click="viewTalentDetails(talent)">
         <div class="card-header">
-            <a-tag v-if="talent.researchArea" class="area-tag">{{ talent.researchArea }}</a-tag>
-            <!-- No other elements in the header in this specific design -->
+            <a-tag v-if="talent.skillAreaName" class="area-tag">{{ talent.skillAreaName }}</a-tag>
         </div>
         <div class="card-body">
-            <h3 class="talent-title">{{ talent.title }}</h3>
+            <h3 class="talent-title">{{ talent.realname }}</h3>
             <div class="introduction-section">
                 <span class="intro-label">主要研究方向介绍：</span>
-                <p class="talent-introduction">{{ talent.introduction }}</p>
+                <p class="talent-introduction">{{ talent.skillDesc }}</p>
             </div>
         </div>
         <div class="card-footer">
-            <span class="talent-identifier">{{ talent.identifier }}</span>
-            <a-button type="default" class="details-button" @click.stop="viewTalentDetails(talent.id)">
+            <span class="talent-identifier">{{ talent.id }}</span>
+            <a-button type="default" class="details-button" @click.stop="viewTalentDetails(talent)">
                 查看详情
             </a-button>
         </div>
@@ -40,10 +39,10 @@ const props = defineProps({
 
 const router = useRouter();
 
+const emit = defineEmits(['handleDetail']);
 const viewTalentDetails = (id) => {
     // TODO: Navigate to the actual talent detail page
-    router.push(`/talent/detail/${id}`); // Example route
-    console.log('查看人才详情:', id);
+    emit('handleDetail', id);
 };
 </script>
 

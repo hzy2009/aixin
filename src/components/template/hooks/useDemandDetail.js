@@ -74,13 +74,13 @@ export function useDemandDetail({IdProp, mode, url, otherParams, queryAfter}) { 
       response = await defHttp.post({ url: apiPath, data: payload });
       if (response && response.success) {
         message.success(response.message);
-        if (!payload.id) {
-            internalDemandId.value = response.result?.id; // 更新内部ID
-            const detailPath = route.path.replace('create', ''); // 获取详情路径
-            router.replace({ path: `${detailPath}${response.result?.id}` });
-        }
-        await fetchDemandDetail();
-        return true;
+        // if (!payload.id) {/
+            // internalDemandId.value = response.result?.id; // 更新内部ID
+            // const detailPath = route.path.replace('create', ''); // 获取详情路径
+            // router.replace({ path: `${detailPath}${response.result?.id}` });
+        // }
+        // await fetchDemandDetail();
+        return response.result;
       } else {
         throw new Error(response.message || '操作失败');
       }

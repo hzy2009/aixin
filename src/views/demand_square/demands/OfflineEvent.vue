@@ -24,13 +24,17 @@ const filterConfigForPage = reactive([
   // { id: 'region', label: '区域', maxVisibleWithoutMore: 3, options: [{ value: 'all', label: '全部' }, { value: 'huadong', label: '华东' }, { value: 'huanan', label: '华南' }, { value: 'huazhong', label: '华中' }, { value: 'huabei', label: '华北' }, { value: 'xinan', label: '西南' }, { value: 'xibei', label: '西北' }] },
   { id: 'activityTypeCode', label: '活动类型', maxVisibleWithoutMore: 7, dictKey: 'activity_type' }
 ]);
-
+const addButton = reactive({
+  text: '创建线下活动',
+  clickFn: create
+})
 const pageData = ref({
   url: {
     list: 'apm/apmOfflineActivity/list/front',
     overview: 'apm/apmOfflineActivity/overview'
   },
   filterConfigForPage,
+  addButton,
   showBanner: true
 })
 
@@ -42,8 +46,8 @@ const paginationConfig = reactive({
 function handleDetails({ id }) {
   router.push(`/demands/OfflineEventDetailPage/${id}`);
 };
-function createNewSourcing() {
-  router.push(`/user/published/DomesticSourcing/create`);
+function create() {
+  router.push(`/user/published/OfflineEvent/create`);
 };
 </script>
 

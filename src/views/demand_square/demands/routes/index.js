@@ -96,5 +96,11 @@ export default {
       component: Talent,
       meta: { title: '行业人才', breadcrumb: ['行业人才'] } // Appends to base
     },
+     {
+      path: 'TalentDetailPage/:id',
+      component: TalentDetailPage,
+      props: route => ({ IdProp: route.params.id}),
+      meta: { title: '行业人才详情', breadcrumb: ['行业人才详情'] } // Appends to base
+    },
   ]
 };

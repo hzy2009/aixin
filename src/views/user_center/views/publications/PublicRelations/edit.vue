@@ -14,21 +14,20 @@ const authStore = useAuthStore();
 
 const props = defineProps({
   IdProp: { type: String, default: null },
-  mode: { type: String, default: 'view' }, // 'create', 'view'
-});
-
-const isManagerAdmin = computed(() => {
-  return authStore.isManagerAdmin
 });
 
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
-  { label: '计划完成日期', field: 'expireDate', fieldType: 'date', span: 24 },
-  { label: '创建日期', field: 'createTime', fieldType: 'date', span: 24},
-  { label: '需求数量', field: 'reqPartsTotal', fieldType: 'number', span: 24, min: 0 },
-  { label: '已寻到数量', field: 'reqPartsFinish', fieldType: 'number', span: 24, disabled: true},
-  { label: '未寻到数量', field: 'reqPartsUnfinish', fieldType: 'number', span: 24, disabled: true},
+  { label: '活动名称', field: 'activityName', fieldType: 'input', span: 24},
+  { label: '活动图片', field: 'imageUrl', fieldType: 'imageUpload', span: 24 },
+  {
+    label: '活动类型', field: 'activityTypeCode', fieldType: 'select', dictKey: 'activity_type', span: 24,
+    onChange: ({ value, form, option }) => {
+      form.activityTypeName = option.label || '';
+    }
+  },
+  { label: '活动内容', field: 'description', fieldType: 'textarea', span: 24 },
 ]
 
 const statusHistoryColumns = [
@@ -39,29 +38,32 @@ const statusHistoryColumns = [
 ]
 
 
-const pageTitle = '原厂件寻源'
+const pageTitle = '线下活动'
 
 const pageData = reactive({
   IdProp: props.IdProp,
   mode: props.mode,
   apiMap: {
-    add: 'apm/apmSourcing/add',
-    edit: 'apm/apmSourcing/edit',
-    detail: 'apm/apmSourcing/queryById',
-    submit: 'apm/apmSourcing/submit',
-    delete: 'apm/apmSourcing/delete',
-  },
-  otherParams: {
-    sourcingType: '原厂件寻源',
+    add: 'apm/apmOfflineActivity/add',
+    edit: 'apm/apmOfflineActivity/edit',
+    detail: 'apm/apmOfflineActivity/queryById',
+    submit: 'apm/apmOfflineActivity/submit',
+    delete: 'apm/apmOfflineActivity/delete',
   },
   formConfigs,
   statusHistoryColumns,
   pageTitle,
+  handleBeforeSave: (data) => {
+    debugger
+    data.imageUrl = data.imageUrl.join(',');
+  },
+  detailPath: '/user/published/OfflineEventDetail',
+  listPath: '/user/published/OfflineEvent',
 })
 
 const goBack = () => {
-  // router.push('/user/published/OEMPartsSourcing');
   router.go(-1);
+  // router.push('/user/published/PublicRelations');
 };
 
 </script>

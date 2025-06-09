@@ -1,25 +1,30 @@
 <template>
     <div class="edit-page">
-        <!-- 1. Page Title -->
-        <h1 class="page-main-title">{{ pageTitle }}</h1>
+        <div v-if="isCreating" >
+            <!-- 1. Page Title -->
+            <h1 class="page-main-title">{{ pageTitle }}</h1>
 
-        <!-- 2. Form Section -->
-        <div class="form-section-container">
-            <div class="form-section-title-wrapper">
-                <h2 class="form-section-title">基本信息</h2>
+            <!-- 2. Form Section -->
+            <div class="form-section-container">
+                <div class="form-section-title-wrapper">
+                    <h2 class="form-section-title">基本信息</h2>
+                </div>
+                <DynamicForm ref="dynamicFormRef" :form-config="currentFormConfig" :initial-model="formModel"
+                    :is-edit-mode="isFormEditable || isManagerAdmin" :default-span="12" />
             </div>
-            <DynamicForm ref="dynamicFormRef" :form-config="currentFormConfig" :initial-model="formModel"
-                :is-edit-mode="isFormEditable || isManagerAdmin" :default-span="12" />
+            <!-- 3. Action Buttons -->
+            <div class="page-actions-footer">
+                <a-button @click="goBack" class="action-button cancel-button">取消</a-button>
+                <a-button type="primary" danger @click="save" :loading="isSubmitting"
+                    class="action-button submit-button">
+                    一键敲门
+                </a-button>
+            </div>
+            <p class="action-submit-note">“一键敲门”后，客服人员将在30分钟内与您联系</p>
         </div>
-        <!-- 3. Action Buttons -->
-        <div class="page-actions-footer">
-            <a-button @click="goBack" class="action-button cancel-button">取消</a-button>
-            <a-button type="primary" danger @click="handleSubmitForm" :loading="isSubmitting"
-                class="action-button submit-button">
-                一键敲门
-            </a-button>
+        <div v-else>
+            <operationResultPage :pageData="resultPageData" @primaryAction="handleToDetail" @secondaryAction="handleToList"/>
         </div>
-        <p class="action-submit-note">“一键敲门”后，客服人员将在30分钟内与您联系</p>
     </div>
 </template>
 
@@ -27,7 +32,11 @@
 import { ref, computed, watch, onMounted } from 'vue';
 import { Button as AButton, Spin as ASpin, Alert as AAlert, Empty as AEmpty, Table as ATable, message } from 'ant-design-vue';
 import DynamicForm from '@/components/layout/DynamicForm.vue';
+import operationResultPage from './operationResultPage.vue';
 import { useDemandDetail } from './hooks/useDemandDetail.js';
+import { useRouter, useRoute } from 'vue-router'; // 用于新建成功后跳转
+
+const router = useRouter();
 
 const props = defineProps({
     pageData: {
@@ -42,7 +51,11 @@ const {
     apiMap,
     statusHistoryColumns,
     otherParams,
-    formConfigs
+    formConfigs,
+    handleBeforeSubmit,
+    handleBeforeSave,
+    detailPath,
+    listPath,
 } = props.pageData;
 const emit = defineEmits(['goBack']);
 const {
@@ -65,6 +78,10 @@ const dynamicFormRef = ref(null);
 const isSubmitting = ref(false); // 用于提交按钮的 loading 状态
 const formModel = ref({});
 
+const isCreating = ref(false);
+const resultPageData = ref({
+
+});
 
 // 监听从 hook 获取的原始数据，用于初始化/更新表单模型
 watch(demandDetailData, (newDetail) => {
@@ -106,7 +123,12 @@ const save = async () => {
         await dynamicFormRef.value?.validate();
         const params = dynamicFormRef.value?.getAllData()
         isSubmitting.value = true;
-        await handleSave(params);
+        if (handleBeforeSave && typeof handleBeforeSave === 'function') {
+            handleBeforeSave(params)
+        }
+        const result = await handleSave(params);
+        demandDetailData.value = result;
+        isCreating.value = false;
     } catch (validationError) {
         console.log('表单校验失败:', validationError);
     } finally {
@@ -118,6 +140,9 @@ const handleSubmitForm = async () => {
     try {
         await dynamicFormRef.value?.validate();
         const params = dynamicFormRef.value?.getAllData()
+        if (handleBeforeSubmit && typeof handleBeforeSubmit === 'function') {
+            handleBeforeSubmit(params)
+        }
         isSubmitting.value = true;
         await handleSubmit(params);
     } catch (validationError) {
@@ -131,6 +156,12 @@ const goBack = () => {
     emit('goBack');
 };
 
+const handleToDetail = () => {
+    router.push({ path: `detailPath/${demandDetailData.value.id}` });
+}
+const handleToList = () => {
+    router.push({ path: listPath });
+}
 // 当路由参数（尤其是 IdProp）实际发生变化时，重新加载数据
 // 这主要用于：用户在详情页A，通过某种方式（非浏览器前进后退）直接导航到详情页B
 watch(() => props.IdProp, (newId) => {

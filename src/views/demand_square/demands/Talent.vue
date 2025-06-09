@@ -1,11 +1,14 @@
 <template>
-    <div class="industry-report-page">
+    <div class="industry-Talent-page">
         <listPage :pageData="pageData">
             <template #content="{ dataSource, paginationConfig }">
                 <div class="results-grid content-section">
-                    <TalentProfileCard v-for="item in dataSource" :key="item.id" :talent="item" />
+                    <TalentProfileCard v-for="item in dataSource" :key="item.id" :talent="item" @handleDetail="viewDetails"/>
                 </div>
-                <a-pagination v-model:current="paginationConfig.current" show-quick-jumper v-bind="paginationConfig"
+                <a-pagination 
+                    v-model:current="paginationConfig.current" 
+                    show-quick-jumper
+                    v-bind="{...paginationConfig, showSizeChanger: false, showTotal: false, showQuickJumper: true,}"
                     @change="onChange" />
             </template>
         </listPage>
@@ -36,14 +39,35 @@ const pageData = ref({
 })
 
 function viewDetails({ id }) {
-    router.push(`/demands/IndustryReportDetailPage/${id}`);
+    router.push(`/demands/TalentDetailPage/${id}`);
 };
 function createNewSourcing() {
     router.push(`/user/published/DomesticSourcing/create`);
 };
 </script>
 <style scoped lang="less">
-.industry-report-page {
+@import '@/assets/styles/_variables.less';
+.industry-Talent-page {
     min-height: 500px;
+}
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: @spacing-lg;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+
+  @media (max-width: 400px) {
+    grid-template-columns: 1fr;
+  }
+}
+.content-section {
+    margin-bottom: @spacing-lg;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
 }
 </style>

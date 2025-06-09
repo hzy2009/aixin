@@ -3,7 +3,8 @@
     <listPage :pageData="pageData">
       <template #content="{ dataSource, paginationConfig }">
         <IndustryReportItem v-for="item in dataSource" :key="item.id" :report="item" />
-        <a-pagination v-model:current="paginationConfig.current" show-quick-jumper v-bind="paginationConfig"
+        <a-pagination v-model:current="paginationConfig.current" show-quick-jumper 
+          v-bind="{...paginationConfig, showSizeChanger: false, showTotal: false , showQuickJumper: true}"
           @change="onChange" />
       </template>
     </listPage>

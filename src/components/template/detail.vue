@@ -32,7 +32,9 @@
 				</div>
 			</div>
 		</section>
-
+		<section class="info-section" v-if="$slots.content" :dataSource="formModel">
+			<slot name="content"></slot>
+		</section>
 		<!-- Section: Status Tracking (Timeline/Steps + Table) -->
 		<section v-if="statusTracking && statusTracking.steps && statusTracking.steps.length > 0" class="info-section">
 			<div class="section-title-wrapper">

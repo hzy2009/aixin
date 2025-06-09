@@ -31,8 +31,8 @@ const router = useRouter();
 const formConfigs = [
   {
     label: '研发攻关方向', field: 'rdCode', fieldType: 'select', detailField: 'rdType', dictKey: 'rd_type', span: 24,
-    onChange: ({ value, form, options }) => {
-      form.rdType = options.find(opt => opt.value === value)?.label || '';
+    onChange: ({ value, form, option }) => {
+      form.rdType = options?.label || '';
     }
   },
   { label: '创建日期', field: 'createTime', fieldType: 'date', span: 24, disabled: true, mode: 'view' },
@@ -42,8 +42,8 @@ const formConfigs = [
   },
   {
     label: '期望匹配周期', field: 'matchPeriodCode', detailField: 'matchPeriodName', fieldType: 'select', dictKey: 'rd_breakthrough_period', span: 24,
-    onChange: ({ value, form, options }) => {
-      form.matchPeriodName = options.find(opt => opt.value === value)?.label || '';
+    onChange: ({ value, form, option }) => {
+      form.matchPeriodName = option?.label || '';
     }
   },
   // { label: '需求有效期', field: 'expireDate', fieldType: 'date', span: 24 },
