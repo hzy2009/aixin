@@ -59,7 +59,9 @@ const pageData = reactive({
   formConfigs,
   statusHistoryColumns,
   pageTitle,
-  queryAfter
+  queryAfter,
+  detailPath: '/user/published/DomesticSourcing/detail',
+  listPath: '/user/published/DomesticSourcing',
 })
 
 const goBack = () => {
