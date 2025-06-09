@@ -15,6 +15,10 @@ const OfflineEventDetailPage = () => import('../OfflineEventDetailPage.vue');
 
 const IndustryReport = () => import('../IndustryReport.vue');
 const IndustryReportDetailPage = () => import('../IndustryReportDetailPage.vue');
+
+
+const Talent = () => import('../Talent.vue');
+const TalentDetailPage = () => import('../TalentDetailPage.vue');
 // ... other demand related imports
 
 export default {
@@ -87,12 +91,10 @@ export default {
       props: route => ({ IdProp: route.params.id}),
       meta: { title: '线下活动详情', breadcrumb: ['线下活动详情'] } // Appends to base
     },
-    // {
-    //   path: 'OfflineEvent',
-    //   name: 'OfflineEvent',
-    //   component: OfflineEvent,
-    //   meta: { title: '线下活动', breadcrumb: ['线下活动'] } // Appends to base
-    // },
-    
+    {
+      path: 'Talent',
+      component: Talent,
+      meta: { title: '行业人才', breadcrumb: ['行业人才'] } // Appends to base
+    },
   ]
 };
