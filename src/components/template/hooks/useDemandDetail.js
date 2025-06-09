@@ -47,6 +47,7 @@ export function useDemandDetail({demandIdProp, mode, url, otherParams, queryAfte
     error.value = null;
     try {
       const response = await defHttp.get({ url: url.detail, params: {id: internalDemandId.value} });
+      
       if (response.success) {
         const data = queryAfter && queryAfter(response.result) || response.result;
         demandDetail.value = data;

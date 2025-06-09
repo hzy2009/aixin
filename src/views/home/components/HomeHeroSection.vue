@@ -12,12 +12,12 @@
 </template>
 
 <script setup>
- defineProps({
-   height: {
-     type: Number,
-     default: 502
-   }
- })
+defineProps({
+  height: {
+    type: Number,
+    default: 502
+  }
+})
 // No specific script logic for this static section yet
 </script>
 
@@ -25,9 +25,9 @@
 @import '@/assets/styles/_variables.less';
 
 .home-hero-section {
-  background-image: url('@/assets/images/home/banner.png'); // Moved to child div
-  // background-size: cover;
-  // background-position: center;
+  background-image: url('@/assets/images/home/sm-banner.png'); // Moved to child div
+  background-size: cover;
+  background-position: center;
   color: @text-color-light;
   text-align: center;
   position: relative; // Needed for absolute positioning of bg and z-index context
@@ -67,15 +67,17 @@
       font-size: 38px;
       margin-bottom: @spacing-sm;
       font-weight: 600;
-      text-shadow: 0px 2px 4px rgba(0,0,0,0.5);
+      text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
     }
+
     h2 {
       font-size: 30px;
       margin-bottom: @spacing-md;
       font-weight: 500;
       color: #f0f0f0;
-      text-shadow: 0px 1px 3px rgba(0,0,0,0.5);
+      text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);
     }
+
     p {
       font-size: 15px;
       line-height: 1.8;

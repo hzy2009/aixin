@@ -66,11 +66,12 @@ const pageData = ref({
   addButton,
   actions,
   showBanner: true,
+  pageTitle: '国产替代寻源'
 })
 
 
 function viewDetails({ id }) {
-  router.push(`/user/published/DomesticSourcing/${id}`);
+  router.push(`/demands/DomesticDetailPage/${id}`);
 };
 function createNewSourcing() {
   router.push(`/user/published/DomesticSourcing/create`);

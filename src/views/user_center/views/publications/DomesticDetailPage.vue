@@ -21,8 +21,8 @@ const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
   { label: '计划完成日期', field: 'expireDate', fieldType: 'date', span: 24 },
-  { label: '创建日期', field: 'createTime', fieldType: 'date', span: 24  },
-  { label: '需求数量', field: 'reqPartsTotal', fieldType: 'number', span: 24},
+  { label: '创建日期', field: 'createTime', fieldType: 'date', span: 24 },
+  { label: '需求数量', field: 'reqPartsTotal', fieldType: 'number', span: 24 },
   { label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, },
   {
     label: '需求状态', field: 'statusName', fieldType: 'input', span: 24,
@@ -72,6 +72,15 @@ const pageData = reactive({
         { title: '物料名称', dataIndex: 'materialName', key: 'materialName' },
         { title: '物料数量', dataIndex: 'materialCount', key: 'materialCount' },
         { title: '物料单位', dataIndex: 'materialUnit', key: 'materialUnit' },
+      ]
+    },
+    {
+      title: '关联业务',
+      groupCode: 'businessRefList',
+      columns: [
+        { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center', align: 'center' },
+        { title: '单据类型', dataIndex: 'businessRefTypeName', key: 'materialName', align: 'center' },
+        { title: '单据号', dataIndex: 'businessRefCode', key: 'materialCount', align: 'center' },
       ]
     }
   ],

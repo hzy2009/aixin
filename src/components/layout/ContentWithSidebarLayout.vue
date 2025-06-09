@@ -2,7 +2,7 @@
   <div class="content-with-sidebar-layout">
     <div class="container layout-container">
       <div class="main-content-area">
-        <slot name="main"></slot> 
+        <slot name="main"></slot>
       </div>
       <aside class="sidebar-area">
         <slot name="sidebar"></slot>
@@ -27,7 +27,8 @@
   display: flex;
   gap: @spacing-lg; // Gap between main content and sidebar
 
-  @media (max-width: 992px) { // Tablet and below, stack them
+  @media (max-width: 992px) {
+    // Tablet and below, stack them
     flex-direction: column;
   }
 }
@@ -36,9 +37,6 @@
   flex: 1; // Takes up most of the space
   min-width: 0; // Important for flex item to prevent overflow
   background-color: @background-color-base; // White background for main content
-  padding: @spacing-xl;
-  border-radius: @border-radius-base;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
 }
 
 .sidebar-area {

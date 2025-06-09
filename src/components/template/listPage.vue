@@ -1,10 +1,15 @@
 <template>
-    <HomeHeroSection :height="200" v-if="showBanner"/>
+    <HomeHeroSection :height="160" v-if="showBanner" />
+    <div class="page-title-header container" v-if="pageTitle">
+        <span class="title-decorator-bar"></span>
+        <h2 class="page-main-heading">{{ pageTitle }}</h2>
+    </div>
     <div class="list-page container">
         <!-- <breadcrumbs/> -->
         <!-- 1. Stats Bar -->
-        <div class="stats-bar" v-if="userStatCardVisible"> 
-            <UserStatCard :label="item.label" :value="item.count || 0" v-for="item in stats.list" :key="item.label + item.count" @click="handleStatClick(item)">
+        <div class="stats-bar" v-if="userStatCardVisible">
+            <UserStatCard :label="item.label" :value="item.count || 0" v-for="item in stats.list"
+                :key="item.label + item.count" @click="handleStatClick(item)">
                 <template #icon><img src="@/assets/images/user_center/icon-pending.png" alt="未响应" /></template>
             </UserStatCard>
             <!-- <UserStatCard label="未响应" :value="stats.pendingResponse || 0">
@@ -42,8 +47,9 @@
 
         <slot name="content" :dataSource="tableData" :paginationConfig="paginationConfig">
             <div class="results-table-section">
-                <a-table :columns="tableColumns" :dataSource="tableData" :loading="isLoading" :pagination="paginationConfig"
-                    row-key="id" @change="handleTablePaginationChange" size="middle" class="user-demands-table">
+                <a-table :columns="tableColumns" :dataSource="tableData" :loading="isLoading"
+                    :pagination="paginationConfig" row-key="id" @change="handleTablePaginationChange" size="middle"
+                    class="user-demands-table">
                     <template #bodyCell="{ column, record }">
                         <template v-if="column.key === 'statusCode'">
                             <a-tag :color="getStatusTagColor(record.sourcingStatus)" class="status-tag">
@@ -76,7 +82,7 @@ import breadcrumbs from './breadcrumbs.vue';
 import { useUserDemandList } from './hooks/useUserDemandList.js'; // Adjust path
 import { useAuthStore } from '@/store/authStore';
 
-import { notification as Notification} from 'ant-design-vue'
+import { notification as Notification } from 'ant-design-vue'
 
 const authStore = useAuthStore();
 
@@ -91,7 +97,7 @@ const props = defineProps({
     }
 });
 
-const { url, filterConfigForPage, tableColumns, addButton, actions, otherParams, statusDictKey, userStatCardVisible, showBanner = false } = props.pageData;
+const { url, filterConfigForPage, tableColumns, addButton, actions, otherParams, statusDictKey, userStatCardVisible, showBanner = false, pageTitle } = props.pageData;
 const {
     selectOptions,
     stats,
