@@ -1,29 +1,29 @@
 // src/features/user_center/routes.js
 import UserCenterCommonLayout from './layouts/UserCenterCommonLayout.vue'; // 新的通用布局
 
-const DomesticSourcing = import('./views/publications/DomesticSourcing/list.vue'); 
+const DomesticSourcing = () => import('./views/publications/DomesticSourcing/list.vue'); 
 const DomesticEditPage = () => import('./views/publications/DomesticSourcing/edit.vue');
 const DomesticDetailPage = () => import('./views/publications/DomesticSourcing/detail.vue');
 
 
-const OEMPartsSourcing = import('./views/publications/OEMParts/list.vue'); 
+const OEMPartsSourcing = () =>import('./views/publications/OEMParts/list.vue'); 
 const OEMPartsEditPage = () => import('./views/publications/OEMParts/edit.vue'); 
 const OEMPartsDetailPage = () => import('./views/publications/OEMParts/detail.vue'); 
 
 
-const PublicRelations = import('./views/publications/PublicRelations/list.vue'); 
+const PublicRelations = () =>import('./views/publications/PublicRelations/list.vue'); 
 const PublicRelationsDetailPage = () => import('./views/publications/PublicRelations/detail.vue');
 const PublicRelationsEditPage = () => import('./views/publications/PublicRelations/edit.vue');
 
 
 
-const Verification = import('./views/publications/Verification/list.vue'); 
+const Verification = () =>import('./views/publications/Verification/list.vue'); 
 const VerificationDetailPage = () => import('./views/publications/Verification/detail.vue');
 const VerificationEditPage = () => import('./views/publications/Verification/edit.vue');
 
 
 
-const OfflineEvent = import('./views/publications/OfflineEvent/list.vue'); 
+const OfflineEvent = () =>import('./views/publications/OfflineEvent/list.vue'); 
 const OfflineEventDetailPage = () => import('./views/publications/OfflineEvent/detail.vue');
 const OfflineEventEditPage = () => import('./views/publications/OfflineEvent/edit.vue');
 
