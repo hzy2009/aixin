@@ -7,7 +7,7 @@
         <div class="user-actions-top">
           <template v-if="auth.isLogin">
             <router-link to="/user/published" class="top-action-link" >我发布的</router-link>
-            <router-link to="/user/member-info" class="top-action-link" >用户管理</router-link>
+            <!-- <router-link to="/user/member-info" class="top-action-link" >用户管理</router-link> -->
             <a @click="handleLogout" class="top-action-link">退出登录</a>
           </template>
           <template v-else>

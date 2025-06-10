@@ -22,10 +22,7 @@ const formConfigs = [
   { label: '需求提出方', field: 'tenantName', span: 24, },
   { label: '提出需求日期', field: 'createTime', span: 24 },
   { label: '计划完成日期', field: 'expireDate', span: 24 },
-  { label: '需求数量', field: 'reqPartsTotal', span: 24 },
   { label: '需求状态', field: 'statusName', span: 24, },
-  { label: '已寻到数量', field: 'reqPartsFinish', span: 24 },
-  { label: '未寻到数量', field: 'reqPartsUnfinish', span: 24 },
 ]
 
 const statusHistoryColumns = [

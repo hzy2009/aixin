@@ -53,7 +53,7 @@ const actions = reactive([
 
 const pageData = ref({
   url: {
-    list: 'apm/apmSourcing/list',
+    list: 'apm/apmSourcing/list/owner',
     overview: 'apm/apmSourcing/overview'
   },
   otherParams: {
@@ -64,7 +64,14 @@ const pageData = ref({
   addButton,
   actions,
   statusDictKey: 'sourcing_status',
-  userStatCardVisible: true
+  userStatCardVisible: true,
+  tableOperations: [
+    {
+      title: '创建国产替代寻源',
+      clickFn: createNewSourcing,
+      type: 'primary'
+    }
+  ]
 })
 
 

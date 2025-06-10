@@ -15,7 +15,7 @@
             <!-- 3. Action Buttons -->
             <div class="page-actions-footer">
                 <a-button @click="goBack" class="action-button cancel-button">取消</a-button>
-                <a-button type="primary" danger @click="save" :loading="isSubmitting"
+                <a-button type="primary" danger @click="handleSubmitForm" :loading="isSubmitting"
                     class="action-button submit-button">
                     一键敲门
                 </a-button>

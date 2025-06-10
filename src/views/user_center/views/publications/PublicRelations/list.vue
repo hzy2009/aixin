@@ -58,7 +58,14 @@ const pageData = ref({
     addButton,
     actions,
     statusDictKey: 'sourcing_status',
-  userStatCardVisible: true
+    userStatCardVisible: true,
+    tableOperations: [
+        {
+        title: '创建需求',
+        clickFn: createNewSourcing,
+        type: 'primary'
+        }
+    ]
 })
 
 

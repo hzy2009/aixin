@@ -45,11 +45,6 @@ const tableColumns = reactive([
     { title: '操作', key: 'actions', align: 'center', fixed: 'right' },
 ]);
 
-const addButton = reactive({
-    text: '创建检测验证',
-    clickFn: createNewSourcing
-})
-
 const actions = reactive([
     {
         text: '详情',
@@ -66,10 +61,15 @@ const pageData = ref({
     },
     filterConfigForPage,
     tableColumns,
-    addButton,
-    actions,
     statusDictKey: 'sourcing_status',
-  userStatCardVisible: true
+    userStatCardVisible: true,
+    tableOperations: [
+        {
+        title: '创建需求',
+        clickFn: createNewSourcing,
+        type: 'primary'
+        }
+    ]
 })
 
 

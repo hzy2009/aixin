@@ -23,16 +23,12 @@ const isManagerAdmin = computed(() => {
 const router = useRouter();
 // --- 表单配置 ---
 const formConfigs = [
+  { label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true, },
   {
     label: '研发攻关方向', field: 'rdCode', fieldType: 'select', detailField: 'rdType', dictKey: 'rd_type', span: 24,
     onChange: ({ value, form, option }) => {
       form.rdType = option.label || '';
     }
-  },
-  { label: '创建日期', field: 'createTime', fieldType: 'date', span: 24, disabled: true},
-  { label: '研发需求', field: 'sourceDesc', fieldType: 'input', span: 24 },
-  {
-    label: '需求状态', field: 'statusName', detailField: 'statusName', fieldType: 'select', dictKey: 'rd_breakthrough_status', span: 24, disabled: true
   },
   {
     label: '期望匹配周期', field: 'matchPeriodCode', detailField: 'matchPeriodName', fieldType: 'select', dictKey: 'rd_breakthrough_period', span: 24,
@@ -40,8 +36,6 @@ const formConfigs = [
       form.matchPeriodName = option.find(opt => opt.value === value)?.label || '';
     }
   },
-  // { label: '需求有效期', field: 'expireDate', fieldType: 'date', span: 24 },
-  { label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true, },
 ]
 
 const statusHistoryColumns = [
@@ -53,7 +47,7 @@ const statusHistoryColumns = [
 
 // const demandTypeDisplayName = '研发攻关';
 
-const pageTitle = '研发攻关'
+const pageTitle = '创建研发攻关需求'
 
 const pageData = reactive({
   IdProp: props.IdProp,

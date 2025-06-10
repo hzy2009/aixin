@@ -24,8 +24,6 @@ const formConfigs = [
   {
     label: '研发攻关方向', field: 'rdType', dictKey: 'rd_type', span: 24,
   },
-//   { label: '创建日期', field: 'createTime', span: 24},
-//   { label: '研发需求', field: 'sourceDesc', span: 24 },
   {
     label: '期望匹配周期', field: 'matchPeriodName', dictKey: 'rd_breakthrough_period', span: 24,
   },
@@ -58,13 +56,11 @@ const pageData = reactive({
   pageTitle,
   tableSections: [
     {
-      title: '物料清单',
-      groupCode: 'materialList',
+      title: '研发攻关承接方',
+      groupCode: 'tenantRefList',
       columns: [
         { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' },
-        { title: '物料名称', dataIndex: 'materialName', key: 'materialName' },
-        { title: '物料数量', dataIndex: 'materialCount', key: 'materialCount' },
-        { title: '物料单位', dataIndex: 'materialUnit', key: 'materialUnit' },
+        { title: '研发攻关承接方', dataIndex: 'refUserName', key: 'refUserName' },
       ]
     },
     {

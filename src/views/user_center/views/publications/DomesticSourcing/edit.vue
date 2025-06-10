@@ -24,9 +24,8 @@ const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
   { label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true, },
-  { label: '创建日期', field: 'createTime', fieldType: 'date', span: 24, disabled: true},
+  { label: '提出需求日期', field: 'createTime', fieldType: 'date', span: 24},
   { label: '计划完成日期', field: 'expireDate', fieldType: 'date', span: 24 },
-  { label: '需求数量', field: 'reqPartsTotal', fieldType: 'number', span: 24, min: 0 },
 ]
 
 const statusHistoryColumns = [

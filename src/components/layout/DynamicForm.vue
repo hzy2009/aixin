@@ -268,7 +268,7 @@ defineExpose({ validate, resetFields, clearValidate, getAllData, formModel: inte
   :deep(.ant-picker),
   :deep(.ant-input-textarea-show-count > .ant-input) {
     // Target the inner input for textarea with show-count
-    border-radius: @border-radius-sm; // Subtle rounding
+    border-radius: 6px; // Subtle rounding
     border-color: #D9D9D9; // Standard AntD border color
 
     &:hover {
@@ -286,12 +286,15 @@ defineExpose({ validate, resetFields, clearValidate, getAllData, formModel: inte
   }
 
   // Consistent height for input-like elements
-  :deep(.ant-input),
+  // :deep(.ant-input),
   :deep(.ant-input-number),
   // Wrapper for input number
   :deep(.ant-select-selector),
   :deep(.ant-picker) {
     height: 36px !important; // Ensure consistent height
+  }
+  :deep(.ant-input){
+    height: 26px !important;
   }
 
   :deep(.ant-input-number-input) {
