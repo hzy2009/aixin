@@ -62,7 +62,7 @@ const pageData = reactive({
       columns: [
         { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' },
         { title: '类型', dataIndex: 'registerType', key: 'registerType' },
-        { title: '编号', dataIndex: 'registerUserId', key: 'registerUserId' },
+        { title: '编号', dataIndex: 'registerUserWorkNo', key: 'registerUserWorkNo' },
       ]
     },
     {
