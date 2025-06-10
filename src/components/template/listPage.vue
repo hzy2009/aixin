@@ -12,22 +12,13 @@
                 :key="item.label + item.count" @click="handleStatClick(item)">
                 <template #icon><img src="@/assets/images/user_center/icon-pending.png" alt="未响应" /></template>
             </UserStatCard>
-            <!-- <UserStatCard label="未响应" :value="stats.pendingResponse || 0">
-                <template #icon><img src="@/assets/images/user_center/icon-pending.png" alt="未响应" /></template>
-            </UserStatCard>
-            <UserStatCard label="进行中" :value="stats.inProgress || 0">
-                <template #icon><img src="@/assets/images/user_center/icon-inprogress.png" alt="进行中" /></template>
-            </UserStatCard>
-            <UserStatCard label="已完成" :value="stats.completed || 0">
-                <template #icon><img src="@/assets/images/user_center/icon-completed.png" alt="已完成" /></template>
-            </UserStatCard> -->
             <UserStatCard label="总计" :value="stats.total || 0">
                 <template #icon><img src="@/assets/images/user_center/icon-total.png" alt="总计" /></template>
             </UserStatCard>
         </div>
 
         <!-- 2. Filter Accordion -->
-        <UserFilterAccordion :filter-groups="filterConfigForPage" :initial-filters="currentFilters.value"
+        <UserFilterAccordion :filter-groups="filterConfigForPage" :initial-filters="currentFilters"
             @filters-changed="handleFiltersChange" class="filter-accordion-section" ref="userFilterAccordionRef" />
 
         <!-- 3. Search and Action Bar -->
@@ -38,21 +29,26 @@
                         <SearchOutlined />
                     </template>
                 </a-input>
-                <a-button type="primary" @click="triggerSearch" class="search-btn">搜索</a-button>
             </div>
-            <a-button type="primary" v-if="addButton" @click="handleAdd(addButton)" class="create-new-btn">
+            <!-- <a-button type="primary" v-if="addButton" @click="handleAdd(addButton)" class="primary-btn">
                 {{ addButton?.text }}
-            </a-button>
+            </a-button> -->
         </div>
 
         <slot name="content" :dataSource="tableData" :paginationConfig="paginationConfig">
             <div class="results-table-section">
                  <div class="table-operations">
-                    <a-button @click="setAgeSort">Sort age</a-button>
-                    <a-button @click="clearFilters">Clear filters</a-button>
-                    <a-button @click="clearAll">Clear filters and sorters</a-button>
+                    <a-button
+                        v-for="(Operations, index) in tableOperations"
+                        :key="index"
+                        @click="operationsClick(Operations)" 
+                        :type="Operations.type"
+                        :class="{'primary-btn': Operations.type == 'primary'}" 
+                        class="operations-btn">
+                        {{ Operations.title }}
+                    </a-button>
                 </div>
-                <a-table :columns="tableColumns" :dataSource="tableData" :loading="isLoading"
+                <a-table :columns="tableColumns" :dataSource="tableData" :loading="isLoading" bordered
                     :pagination="paginationConfig" row-key="id" @change="handleTablePaginationChange" size="middle"
                     class="user-demands-table">
                     <template #bodyCell="{ column, record }">
@@ -102,7 +98,18 @@ const props = defineProps({
     }
 });
 
-const { url, filterConfigForPage, tableColumns, addButton, actions, otherParams, statusDictKey, userStatCardVisible, showBanner = false, pageTitle } = props.pageData;
+const { 
+    url,
+    filterConfigForPage,
+    tableColumns,
+    actions,
+    otherParams,
+    statusDictKey,
+    userStatCardVisible,
+    showBanner = false,
+    pageTitle,
+    tableOperations = [] 
+} = props.pageData;
 const {
     selectOptions,
     stats,
@@ -146,6 +153,20 @@ const handleAdd = (btn) => {
     } else {
         Notification.info({
             message: `没有权限创建`,
+            placement: 'topRight',
+            description: '请先登录',
+        });
+        setTimeout(() => {
+            router.push('/login');
+        }, 1000)
+    }
+}
+const operationsClick = (btn) => {
+    if (authStore?.token) {
+        btn.clickFn();
+    } else {
+        Notification.info({
+            message: `没有权限操作`,
             placement: 'topRight',
             description: '请先登录',
         });

@@ -36,10 +36,6 @@ const tableColumns = reactive([
     { title: '操作', key: 'actions', width: '10%', align: 'center', fixed: 'right' },
 ]);
 
-const addButton = reactive({
-    text: '创建研发攻关',
-    clickFn: createNewSourcing
-})
 
 const actions = reactive([
     {
@@ -57,11 +53,17 @@ const pageData = ref({
     },
     filterConfigForPage,
     tableColumns,
-    addButton,
     actions,
     showBanner: true,
     pageTitle: '研发攻关',
     statusDictKey: 'rd_breakthrough_status',
+    tableOperations: [
+        {
+        title: '创建研发攻关',
+        clickFn: createNewSourcing,
+        type: 'primary'
+        }
+    ]
 })
 
 

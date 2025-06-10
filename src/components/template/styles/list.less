@@ -8,7 +8,7 @@
     display: flex; // Use grid for equal width distribution
     grid-template-columns: repeat(4, 1fr); // 4 cards
     gap: @spacing-lg;
-    margin-bottom: @spacing-md;
+    // margin-bottom: @spacing-md;
 }
 
 .filter-accordion-section {
@@ -25,32 +25,35 @@
     border-radius: @border-radius-base;
 
     .search-input-wrapper {
-        display: flex;
-        align-items: center;
-        gap: @spacing-sm;
 
+        // display: flex;
+        // align-items: center;
+        // gap: @spacing-sm;
         .ant-input-affix-wrapper {
-            width: 280px; // Fixed width for search input
-            border-radius: @border-radius-base;
+            width: 520px;
+            height: 42px;
+            border-radius: 4px;
+            padding: 9px 11px;
+            gap: 13px;
+            border-width: 1px;
+            font-family: PingFang SC;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 22px;
+            letter-spacing: 0%;
+            border-radius: 4px
         }
 
         .search-btn {
             // Uses AntD primary button style
-            border-radius: @border-radius-base;
+            border-radius: 4px
         }
     }
 
-    .create-new-btn {
-        background-color: @primary-color; // Ensure it's the brand red
-        border-color: @primary-color;
-        border-radius: @border-radius-base;
 
-        &:hover {
-            background-color: darken(@primary-color, 10%);
-            border-color: darken(@primary-color, 10%);
-        }
-    }
 }
+
+
 
 .results-table-section {
     min-height: 700px;
@@ -88,11 +91,15 @@
     }
 
     :deep(.ant-table-thead > tr > th) {
-        background-color: #fafafa !important; // Lighter header background
+        background-color: #F5F5F5 !important; // Lighter header background
         color: @text-color-base;
-        font-weight: 600;
         padding: 12px @spacing-md; // Adjust header padding
         border-bottom: 1px solid @border-color-light; // Stronger line below header
+        // height: 40px;
+        font-weight: 400;
+        // font-size: 12px;
+        // line-height: 12px;
+        letter-spacing: 0px;
     }
 
     :deep(.ant-table-tbody > tr > td) {
@@ -103,7 +110,7 @@
     }
 
     :deep(.ant-table-tbody > tr:last-child > td) {
-        border-bottom: none; // No border on the very last row's cells
+        // border-bottom: none; // No border on the very last row's cells
     }
 
     :deep(.ant-table-tbody > tr.ant-table-row:hover > td) {
@@ -180,5 +187,34 @@
         letter-spacing: 0%;
         text-transform: uppercase;
 
+    }
+}
+
+.operations-btn {
+    margin-right: 10px;
+}
+
+.table-operations {
+    margin-bottom: @spacing-md;
+
+    .primary-btn {
+        background-color: @primary-color; // Ensure it's the brand red
+        border-color: @primary-color;
+        border-radius: 4px;
+
+        &:hover {
+            background-color: darken(@primary-color, 10%);
+            border-color: darken(@primary-color, 10%);
+        }
+    }
+
+    .operations-btn {
+        font-family: PingFang SC;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 22px;
+        letter-spacing: 0%;
+        height: 42px;
+        padding: 10px 28px;
     }
 }
