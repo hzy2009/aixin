@@ -51,9 +51,7 @@
     <div class="uc-content-area container">
       <router-view v-slot="{ Component }">
         <transition name="fade-fast" mode="out-in">
-          <keep-alive>
             <component :is="Component" :key="route.path" />
-          </keep-alive>
         </transition>
       </router-view>
     </div>
