@@ -159,9 +159,11 @@ const goBack = () => {
 };
 
 const handleToDetail = () => {
+    isCreating.value = true;
     router.push({ path: `detail/${demandDetailData.value.id}` });
 }
 const handleToList = () => {
+    isCreating.value = true;
     router.push({ path: listPath });
 }
 // 当路由参数（尤其是 IdProp）实际发生变化时，重新加载数据
