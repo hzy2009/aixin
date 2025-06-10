@@ -8,12 +8,13 @@
         <img :src="report.thumbnailUrl || defaultThumbnail" :alt="report.title" class="report-image" />
       </div>
       <div class="report-item__content">
-        <div class="content-header">
-          <a-tag v-if="report.reportTag" class="category-tag">{{ report.reportTag }}</a-tag>
-          <h3 class="report-title">{{ report.title }}</h3>
-        </div>
-        <p v-if="report.author" class="report-author">作者：{{ report.author }}</p>
-        <p class="report-description">{{ report.description }}</p>
+        <!-- <div class="content-header"> -->
+          <!-- <a-tag v-if="report.reportTag" class="category-tag">{{ report.reportTag }}</a-tag> -->
+        <!-- </div> -->
+        <p class="report-title">{{ report.reportName }}</p>
+        <!-- <p v-if="report.author" class="report-author">作者：{{ report.author }}</p> -->
+        <p class="report-number">报告编号：{{ report.code }}</p>
+        <p class="report-description">摘要：{{ report.description }}</p>
       </div>
       <div class="report-item__actions">
         <!-- <span class="report-views"><EyeOutlined /> {{ report.views || 0 }}</span> -->
@@ -78,7 +79,7 @@
     display: flex;
     align-items: stretch; // Make sure all parts stretch to the same height if content varies
     background-color: @background-color-base;
-    padding: @spacing-lg;
+    padding: 18px;
     border-radius: @border-radius-base;
     box-shadow: 0 2px 8px rgba(0,0,0,0.07);
     transition: box-shadow 0.3s ease;
@@ -97,32 +98,39 @@
   }
   
   .report-item__date-badge {
-    display: flex;
-    flex-direction: column;
+    // display: flex;
+    // flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding-right: @spacing-lg;
+    // padding-right: @spacing-lg;
     // border-right: 1px solid @border-color-light;
-    margin-right: @spacing-lg;
+    margin-right: 18px;
     flex-shrink: 0;
   
     .date-month-day {
-      font-size: 22px;
-      font-weight: 600;
-      color: @text-color-base;
-      line-height: 1.1;
+      color: #999999;
+      font-family: PingFang SC;
+      font-weight: 400;
+      font-size: 26px;
+      line-height: 26px;
+      letter-spacing: 0%;
+      margin-bottom: 4px;
     }
     .date-year {
-      font-size: 13px;
-      color: @text-color-secondary;
+      color: #999999;
+      font-family: PingFang SC;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 18px;
+      letter-spacing: 0%;
     }
   }
   
   .report-item__image-container {
-    width: 160px; // Fixed width for image
-    height: 110px; // Fixed height for image consistency
-    margin-right: @spacing-lg;
+    width: 290px;
+    height: 177px;
+    margin-right: 18px;
     overflow: hidden;
     border-radius: @border-radius-sm;
     flex-shrink: 0;
@@ -140,7 +148,7 @@
   
   .report-item__content {
     flex-grow: 1;
-    display: flex;
+    // display: flex;
     flex-direction: column;
     justify-content: center; // Vertically center content if not much text
     min-width: 0; // Important for flex item to allow text truncation
@@ -163,13 +171,15 @@
     }
   
     .report-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: @text-color-base;
-      margin-bottom: 0; // Handled by content-header margin
+      font-family: PingFang SC;
+      font-weight: 400;
+      font-size: 24px;
+      line-height: 24px;
+      letter-spacing: 0%;
+      margin-bottom: 10px;
+      color: #656C74;
       line-height: 1.4;
       transition: color 0.3s ease;
-      // Truncate title if too long
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; // For single line truncation
@@ -185,15 +195,24 @@
       color: @text-color-secondary;
       margin-bottom: @spacing-sm;
     }
-  
+    .report-number{
+      font-family: PingFang SC;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 14px;
+      letter-spacing: 0%;
+      text-align: justify;
+      color: #656C74;
+    }
     .report-description {
       font-size: 14px;
       color: @text-color-secondary;
+      color: #656C74;
       line-height: 1.6;
       margin-bottom: 0;
       // Multi-line ellipsis
       display: -webkit-box;
-      -webkit-line-clamp: 2; // Show 2 lines for description
+      -webkit-line-clamp: 4; // Show 2 lines for description
       -webkit-box-orient: vertical;
       overflow: hidden;
       text-overflow: ellipsis;

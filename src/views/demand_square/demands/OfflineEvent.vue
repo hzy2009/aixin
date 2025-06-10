@@ -28,15 +28,14 @@ const filterConfigForPage = reactive([
 const pageData = ref({
   url: {
     list: 'apm/apmOfflineActivity/list/front',
-    overview: 'apm/apmOfflineActivity/overview'
+    overview: 'apm/apmOfflineActivity/overview/front'
   },
   filterConfigForPage,
-  addButton,
   showBanner: true,
   tableOperations: [
       {
       title: '创建线下活动',
-      clickFn: createNewSourcing,
+      clickFn: create,
       type: 'primary'
       }
   ]

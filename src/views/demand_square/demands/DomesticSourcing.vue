@@ -13,7 +13,6 @@ const router = useRouter();
 
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
-  { id: 'reqPartsType', label: '分类', maxVisibleWithoutMore: 7, dictKey: 'req_parts_type' },
   { id: 'statusCode', label: '寻源状态', maxVisibleWithoutMore: 7, dictKey: 'sourcing_status' }
 ]);
 
@@ -51,7 +50,7 @@ const actions = reactive([
 const pageData = ref({
   url: {
     list: 'apm/apmSourcing/list/front',
-    overview: 'apm/apmSourcing/overview'
+    overview: 'apm/apmSourcing/overview/front'
   },
   otherParams: {
     sourcingType: '国产替代寻源'

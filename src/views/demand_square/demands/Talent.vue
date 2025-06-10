@@ -32,7 +32,7 @@ const filterConfigForPage = reactive([
 const pageData = ref({
     url: {
         list: 'apm/apmTalent/list/front',
-        overview: 'apm/apmTalent/overview'
+        overview: 'apm/apmTalent/overview/front'
     },
     filterConfigForPage,
     showBanner: true

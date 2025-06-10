@@ -1,10 +1,10 @@
 <template>
     <div class="talent-profile-card" @click="viewTalentDetails(talent)">
         <div class="card-header">
-            <a-tag v-if="talent.skillAreaName" class="area-tag">{{ talent.skillAreaName }}</a-tag>
+            <span>{{ talent.skillAreaName || '未知研究领域' }}</span>
+            <!-- <a-tag v-if="talent.skillAreaName" class="area-tag">{{ talent.skillAreaName }}</a-tag> -->
         </div>
         <div class="card-body">
-            <h3 class="talent-title">{{ talent.realname }}</h3>
             <div class="introduction-section">
                 <span class="intro-label">主要研究方向介绍：</span>
                 <p class="talent-introduction">{{ talent.skillDesc }}</p>
@@ -74,25 +74,31 @@ const viewTalentDetails = (id) => {
 }
 
 .card-header {
+    font-size: 18px;
+    border-bottom: 1px solid #F0F0F0; // Light gray border
     margin-bottom: @spacing-sm; // Space between tag and title
     display: flex; // In case you want to add more items here later
     justify-content: flex-start; // Align tag to the left
+    font-weight: 600;
+    padding-bottom: @spacing-sm;
 }
 
 .area-tag {
+    height: 30px;
+    gap: 10px;
+    border-radius: 4px;
+    padding: 0 9px;
     font-size: 12px;
     color: @text-color-secondary; // Gray text for tag
     background-color: #F5F5F5; // Very light gray background for tag
     border: 1px solid #E8E8E8; // Light gray border for tag
-    border-radius: @border-radius-sm;
-    padding: 2px 8px; // Padding within the tag
-    line-height: 1.5; // Ensure text is vertically centered
+    line-height: 30px; // Ensure text is vertically centered
     margin: 0; // Remove default AntD tag margin
 }
 
 .card-body {
     flex-grow: 1; // Allows this section to expand and push footer down
-    margin-bottom: @spacing-md; // Space before footer
+    // margin-bottom: @spacing-md; // Space before footer
 }
 
 .talent-title {
@@ -109,24 +115,31 @@ const viewTalentDetails = (id) => {
 
 .introduction-section {
     .intro-label {
-        font-size: 14px;
         color: @text-color-secondary; // Gray for "主要研究方向介绍："
         display: block; // Put label on its own line or inline-block if preferred
         margin-bottom: 3px; // Small space between label and text
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 22px;
+        letter-spacing: 0%;
     }
 
     .talent-introduction {
-        font-size: 14px;
         color: #666666; // Slightly darker gray for introduction text itself
-        line-height: 1.6;
         margin: 0; // Remove default paragraph margin
         // Multi-line ellipsis for introduction (e.g., 3 lines)
         display: -webkit-box;
-        -webkit-line-clamp: 3; // Show 3 lines
+        -webkit-line-clamp: 5; // Show 3 lines
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
         min-height: calc(1.6em * 3); // Ensure space for 3 lines to maintain card height
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 22px;
+        letter-spacing: 0%;
+        text-align: justify;
+
     }
 }
 
@@ -135,11 +148,16 @@ const viewTalentDetails = (id) => {
     justify-content: space-between;
     align-items: center;
     padding-top: @spacing-sm; // Space above footer content
-    border-top: 1px solid #F0F0F0; // Light gray separator line
+    // border-top: 1px solid #F0F0F0; // Light gray separator line
 }
 
 .talent-identifier {
-    font-size: 13px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 14px;
+    letter-spacing: 0%;
+    text-align: justify;
     color: @text-color-tertiary; // Lightest gray for identifier
 }
 
@@ -148,12 +166,13 @@ const viewTalentDetails = (id) => {
     color: @primary-color; // Red text
     border: 1px solid @primary-color; // Red border
     background-color: @background-color-base; // White background
-    border-radius: @border-radius-sm;
+    border-radius: 4px;
     padding: 3px 12px; // Button padding
     height: auto; // Let padding define height
     line-height: 1.5;
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-
+    width: 100px;
+    height: 42px;
     &:hover,
     &:focus {
         // Hover style is handled by parent card hover for this design
