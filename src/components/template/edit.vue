@@ -144,7 +144,9 @@ const handleSubmitForm = async () => {
             handleBeforeSubmit(params)
         }
         isSubmitting.value = true;
-        await handleSubmit(params);
+        const result = await handleSubmit(params);
+        demandDetailData.value = result;
+        isCreating.value = false;
     } catch (validationError) {
         console.log('表单校验失败:', validationError);
     } finally {
