@@ -63,6 +63,7 @@ const pageData = ref({
     tableColumns,
     statusDictKey: 'sourcing_status',
     userStatCardVisible: true,
+    actions,
     tableOperations: [
         {
         title: '创建需求',

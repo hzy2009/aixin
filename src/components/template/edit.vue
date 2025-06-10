@@ -159,7 +159,7 @@ const goBack = () => {
 };
 
 const handleToDetail = () => {
-    router.push({ path: `detailPath/${demandDetailData.value.id}` });
+    router.push({ path: `detail/${demandDetailData.value.id}` });
 }
 const handleToList = () => {
     router.push({ path: listPath });
