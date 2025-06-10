@@ -50,7 +50,7 @@ const actions = reactive([
 
 const pageData = ref({
     url: {
-        list: 'apm/apmRdBreakthrough/list',
+        list: 'apm/apmRdBreakthrough/list/owner',
         overview: 'apm/apmRdBreakthrough/overview'
     },
     filterConfigForPage,

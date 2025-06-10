@@ -40,7 +40,7 @@ const statusHistoryColumns = [
 
 // const demandTypeDisplayName = '研发攻关';
 
-const pageTitle = '研发攻关'
+const pageTitle = '研发攻关详情'
 
 const pageData = reactive({
   IdProp: props.IdProp,

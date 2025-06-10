@@ -24,7 +24,7 @@ const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
   {
-    label: '验证项目', field: 'projectName', fieldType: 'input', span: 24,
+    label: '项目编号', field: 'code', fieldType: 'input', span: 24,
   },
   { label: '需求有效期', field: 'expireDate', fieldType: 'date', span: 24 },
   {
@@ -33,11 +33,14 @@ const formConfigs = [
   {
     label: '项目分类', field: 'projectType', fieldType: 'select', dictKey: 'project_type', span: 24,
   },
+  // {
+  //   label: '验证项目', field: 'projectName', fieldType: 'input', span: 24,
+  // },
   {
     label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true,
   },
   {
-    label: '需求状态', field: 'statusName', detailField: 'statusName', fieldType: 'select', span: 24, disabled: true,
+    label: '检测验证状态', field: 'statusName', detailField: 'statusName', fieldType: 'select', span: 24, disabled: true,
   },
 ]
 
@@ -49,7 +52,7 @@ const statusHistoryColumns = [
 ]
 
 
-const pageTitle = '检测验证'
+const pageTitle = '检测验证详情'
 
 const pageData = reactive({
   IdProp: props.IdProp,

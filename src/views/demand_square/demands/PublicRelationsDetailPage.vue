@@ -29,32 +29,16 @@ const props = defineProps({
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
+   { label: '研发公关编号', field: 'code', span: 24},
   {
-    label: '研发攻关方向', field: 'rdCode', fieldType: 'select', detailField: 'rdType', dictKey: 'rd_type', span: 24,
-    onChange: ({ value, form, option }) => {
-      form.rdType = options?.label || '';
-    }
-  },
-  { label: '创建日期', field: 'createTime', fieldType: 'date', span: 24, disabled: true, mode: 'view' },
-  { label: '研发需求', field: 'sourceDesc', fieldType: 'input', span: 24 },
-  {
-    label: '需求状态', field: 'statusName', detailField: 'statusName', fieldType: 'select', dictKey: 'rd_breakthrough_status', span: 24, disabled: true
+    label: '研发攻关方向', field: 'rdType', dictKey: 'rd_type', span: 24,
   },
   {
-    label: '期望匹配周期', field: 'matchPeriodCode', detailField: 'matchPeriodName', fieldType: 'select', dictKey: 'rd_breakthrough_period', span: 24,
-    onChange: ({ value, form, option }) => {
-      form.matchPeriodName = option?.label || '';
-    }
+    label: '期望匹配周期', field: 'matchPeriodName', dictKey: 'rd_breakthrough_period', span: 24,
   },
-  // { label: '需求有效期', field: 'expireDate', fieldType: 'date', span: 24 },
-  { label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true, },
-].filter(item => {
-  if (props.mode == 'create' && item.mode == 'view') {
-    return false;
-  }
-  return true;
-}
-);
+  // { label: '需求有效期', field: 'expireDate', span: 24 },
+  { label: '需求提出方', field: 'tenantName', span: 24, },
+]
 
 const statusHistoryColumns = [
   { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' },

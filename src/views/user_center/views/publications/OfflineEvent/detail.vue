@@ -19,12 +19,12 @@ const props = defineProps({
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
+  { label: '活动编号', field: 'code', span: 24},
+  { label: '活动类型', field: 'activityTypeName', dictKey: 'activity_type', span: 24},
+  { label: '活动会议内容', field: 'activityName', span: 24},
+  { label: '活动会议结果', field: 'description', span: 24 },
   { label: '活动名称', field: 'activityName', span: 24},
   { label: '活动图片', field: 'imageUrl', fieldType: 'imageUpload', span: 24 },
-  {
-    label: '活动类型', field: 'activityTypeName', dictKey: 'activity_type', span: 24,
-  },
-  { label: '活动内容', field: 'description', span: 24 },
 ]
 
 const statusHistoryColumns = [
@@ -35,7 +35,7 @@ const statusHistoryColumns = [
 ]
 
 
-const pageTitle = '线下活动'
+const pageTitle = '线下活动详情'
 
 const pageData = reactive({
   IdProp: props.IdProp,
@@ -57,13 +57,12 @@ const pageData = reactive({
   listPath: '/user/published/OfflineEvent',
   tableSections: [
     {
-      title: '物料清单',
-      groupCode: 'materialList',
+      title: '参与者',
+      groupCode: 'registerList',
       columns: [
         { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' },
-        { title: '物料名称', dataIndex: 'materialName', key: 'materialName' },
-        { title: '物料数量', dataIndex: 'materialCount', key: 'materialCount' },
-        { title: '物料单位', dataIndex: 'materialUnit', key: 'materialUnit' },
+        { title: '类型', dataIndex: 'registerType', key: 'registerType' },
+        { title: '编号', dataIndex: 'registercode', key: 'registercode' },
       ]
     },
     {
