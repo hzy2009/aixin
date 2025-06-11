@@ -34,20 +34,20 @@
                 {{ addButton?.text }}
             </a-button> -->
         </div>
-
+        <div class="table-operations">
+            <a-button
+                v-for="(Operations, index) in tableOperations"
+                :key="index"
+                @click="operationsClick(Operations)" 
+                :type="Operations.type"
+                :class="{'primary-btn': Operations.type == 'primary'}" 
+                class="operations-btn">
+                {{ Operations.title }}
+            </a-button>
+        </div>
         <slot name="content" :dataSource="tableData" :paginationConfig="paginationConfig">
             <div class="results-table-section">
-                 <div class="table-operations">
-                    <a-button
-                        v-for="(Operations, index) in tableOperations"
-                        :key="index"
-                        @click="operationsClick(Operations)" 
-                        :type="Operations.type"
-                        :class="{'primary-btn': Operations.type == 'primary'}" 
-                        class="operations-btn">
-                        {{ Operations.title }}
-                    </a-button>
-                </div>
+                 
                 <a-table :columns="tableColumns" :dataSource="tableData" :loading="isLoading" bordered
                     :pagination="paginationConfig" row-key="id" @change="handleTablePaginationChange" size="middle"
                     class="user-demands-table">
