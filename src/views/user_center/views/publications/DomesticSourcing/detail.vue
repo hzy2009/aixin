@@ -20,8 +20,8 @@ const router = useRouter();
 const formConfigs = [
   { label: '寻源编号', field: 'code', span: 24, },
   { label: '需求提出方', field: 'tenantName', span: 24, },
-  { label: '提出需求日期', field: 'createTime', span: 24 },
-  { label: '计划完成日期', field: 'expireDate', span: 24 },
+  { label: '提出需求日期', field: 'createTime', span: 24 , fieldType: 'date'},
+  { label: '计划完成日期', field: 'expireDate', span: 24 , fieldType: 'date'},
 ]
 
 const statusHistoryColumns = [

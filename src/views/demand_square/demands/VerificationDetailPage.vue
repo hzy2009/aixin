@@ -35,7 +35,7 @@ const formConfigs = [
   {
     label: '项目编号', field: 'code', fieldType: 'input', span: 24,
   },
-  { label: '需求有效期', field: 'expireDate', fieldType: 'date', span: 24 },
+  { label: '需求有效期', field: 'expireDate', fieldType: 'date', span: 24, fieldType: 'date' },
   {
     label: '产品类别', field: 'productType', fieldType: 'select', dictKey: 'product_type', span: 24,
   },

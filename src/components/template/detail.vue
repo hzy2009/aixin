@@ -19,6 +19,10 @@
 						v-if="item.fieldType === 'select' && (item.options || selectOptions(item.dictKey))">
 						{{ getSelectDisplayValue(item, formModel[item.field]) }}
 					</span>
+					<span class="info-grid-value"
+						v-else-if="item.fieldType === 'date'">
+						{{ getDataDisplayValue(formModel[item.field]) }}
+					</span>
 					<span v-else class="info-grid-value">{{ formModel[item.field] }}</span>
 				</div>
 				<div v-for="(tableSection, index) in tableSections" :key="`table-section-${index}`"
@@ -161,6 +165,9 @@ const getSelectDisplayValue = (fieldConfig, value) => {
 	}
 };
 
+const getDataDisplayValue = (dateTimeString) => {
+	return dateTimeString.split(' ')[0];
+}
 const formatAmount = (value) => {
 	if (value === null || value === undefined || value === '') return '-';
 	const num = Number(value);
