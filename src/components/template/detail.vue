@@ -166,7 +166,7 @@ const getSelectDisplayValue = (fieldConfig, value) => {
 };
 
 const getDataDisplayValue = (dateTimeString) => {
-	return dateTimeString.split(' ')[0];
+	return dateTimeString ? dateTimeString.split(' ')[0] : '';
 }
 const formatAmount = (value) => {
 	if (value === null || value === undefined || value === '') return '-';
