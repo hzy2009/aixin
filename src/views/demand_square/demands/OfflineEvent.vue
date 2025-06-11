@@ -33,6 +33,13 @@ const pageData = ref({
   filterConfigForPage,
   showBanner: true,
   tableOperations: [
+    {
+      title: '创建线下活动',
+      clickFn: createNewSourcing,
+      type: 'primary'
+    }
+  ],
+  tableOperations: [
       {
       title: '创建线下活动',
       clickFn: create,
