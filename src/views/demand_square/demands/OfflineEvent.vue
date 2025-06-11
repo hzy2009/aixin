@@ -35,17 +35,10 @@ const pageData = ref({
   tableOperations: [
     {
       title: '创建线下活动',
-      clickFn: createNewSourcing,
+      clickFn: create,
       type: 'primary'
     }
   ],
-  tableOperations: [
-      {
-      title: '创建线下活动',
-      clickFn: create,
-      type: 'primary'
-      }
-  ]
 })
 
 const currentPage = ref(1);
