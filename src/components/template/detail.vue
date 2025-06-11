@@ -53,11 +53,11 @@
 		<div class="page-actions-footer">
 			<slot name="actions">
 				<a-button @click="handleDefaultCancel" class="action-button cancel-button">取消</a-button>
-				<a-button type="primary" danger @click="handleDefaultSubmit"
+				<a-button type="primary" danger @click="handleDefaultSubmit" v-if='canSubmit'
 					class="action-button submit-button">一键敲门</a-button>
 			</slot>
 		</div>
-		<p v-if="actionNote" class="action-submit-note">{{ actionNote }}</p>
+		<p v-if="actionNote && canSubmit" class="action-submit-note">{{ actionNote }}</p>
 	</div>
 </template>
 
@@ -93,6 +93,7 @@ const {
 	formConfigs,
 	tableSections,
 	actionNote = '一键敲门后，客服人员将在30分钟内与您联系',
+	canSubmit = true,
 } = props.pageData;
 
 const emit = defineEmits(['goBack', 'cancel', 'submit']);
