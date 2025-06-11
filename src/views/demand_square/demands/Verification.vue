@@ -67,6 +67,7 @@ const pageData = ref({
     tableColumns,
     actions,
     showBanner: true,
+    userStatCardVisible: true,
     pageTitle: '检测验证',
     statusDictKey: 'rd_breakthrough_status',
     tableOperations: [

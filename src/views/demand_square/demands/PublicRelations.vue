@@ -56,6 +56,7 @@ const pageData = ref({
     showBanner: true,
     pageTitle: '研发攻关',
     statusDictKey: 'rd_breakthrough_status',
+    userStatCardVisible: true,
     tableOperations: [
         {
         title: '创建研发攻关',
