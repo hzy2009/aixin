@@ -3,9 +3,9 @@
     <listPage :pageData="pageData">
       <template #content="{ dataSource, paginationConfig }">
         <IndustryReportItem v-for="item in dataSource" :key="item.id" :report="item" />
-        <a-pagination v-model:current="paginationConfig.current" show-quick-jumper 
-          v-bind="{...paginationConfig, showSizeChanger: false, showTotal: false , showQuickJumper: true}"
-          @change="onChange" />
+          <div class="pagination-wrapper">
+            <a-pagination size="small" v-model:current="paginationConfig.current" v-bind="paginationConfig" show-quick-jumper :total="dataSource.length" @change="onChange" />
+          </div>
       </template>
     </listPage>
   </div>
@@ -47,7 +47,12 @@ function createNewSourcing() {
 };
 </script>
 <style scoped lang="less">
+@import '@/assets/styles/_variables.less';
 .industry-report-page {
   min-height: 500px;
+}
+.pagination-wrapper{
+  text-align: right;
+  margin-bottom: @spacing-lg;
 }
 </style>

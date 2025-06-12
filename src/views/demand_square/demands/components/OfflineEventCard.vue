@@ -11,7 +11,7 @@
         <h3 class="event-title">{{ event.activityName }}</h3>
         <div class="event-meta">
           <a-tag v-if="event.activityTypeName" class="event-type-tag">{{ event.activityTypeName }}</a-tag>
-          <div class="event-date"><CalendarOutlined /> {{ event.activityDate }}</div>
+          <div class="event-date"><CalendarOutlined /> {{ event.activityDate.split(' ')[0] }}</div>
         </div>
       </div>
       <div class="event-card-action">
@@ -164,6 +164,11 @@ const viewEventDetails = (payLoad) => {
     margin-bottom: @spacing-sm; // 与下方（或卡片底部，如果没actions）的间距
   }
   .event-date {
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: 0%;
     align-items: center;
     .anticon-calendar {
       margin-right: 5px;

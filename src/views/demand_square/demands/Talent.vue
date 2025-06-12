@@ -5,11 +5,14 @@
                 <div class="results-grid content-section">
                     <TalentProfileCard v-for="item in dataSource" :key="item.id" :talent="item" @handleDetail="viewDetails"/>
                 </div>
-                <a-pagination 
+                <!-- <a-pagination 
                     v-model:current="paginationConfig.current" 
                     show-quick-jumper
                     v-bind="{...paginationConfig, showSizeChanger: false, showTotal: false, showQuickJumper: true,}"
-                    @change="onChange" />
+                    @change="onChange" /> -->
+            <div class="pagination-wrapper">
+                <a-pagination size="small" v-model:current="paginationConfig.current" v-bind="paginationConfig" show-quick-jumper :total="dataSource.length" @change="onChange" />
+          </div>
             </template>
         </listPage>
     </div>
@@ -69,5 +72,9 @@ function createNewSourcing() {
     &:last-child {
         margin-bottom: 0;
     }
+}
+.pagination-wrapper{
+  text-align: right;
+  margin-bottom: @spacing-lg;
 }
 </style>

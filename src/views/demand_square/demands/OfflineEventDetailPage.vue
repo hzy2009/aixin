@@ -43,8 +43,8 @@
           </div>
 
           <!-- 5. Event Main Content / Description -->
-          <section class="event-section-block">
-            <h3 class="section-block-title">会议主要内容：</h3>
+          <section class="meta-item-row">
+            <h3 class="meta-label">会议主要内容：</h3>
             <div class="section-block-content rich-text" v-html="eventDetail.description"></div>
           </section>
 
@@ -179,6 +179,7 @@ watch(() => route.params.id, (newId, oldId) => {
 @import '@/assets/styles/_variables.less'; // Your global LESS variables
 
 .event-detail-content-main {
+  padding: @spacing-md;
   // This is the main white content block from ContentWithSidebarLayout
 }
 
@@ -215,11 +216,14 @@ watch(() => route.params.id, (newId, oldId) => {
 }
 
 .event-display-title {
-  font-size: 28px; // Large title for the event
-  font-weight: 600; // Bold
-  color: @text-color-base;
+  font-family: PingFang SC;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 22px;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+  color: #656C74;
   margin-bottom: @spacing-sm;
-  line-height: 1.3;
   text-align: left; // Default, but explicit
 }
 
@@ -235,13 +239,24 @@ watch(() => route.params.id, (newId, oldId) => {
     margin-bottom: @spacing-xs / 2; // Small space between meta rows
 
     .meta-label {
-      color: @text-color-secondary; // Gray label
+      font-family: PingFang SC;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 22px;
+      letter-spacing: 0%;
+      text-align: justify;
+      color: #656C74; // Gray label
       margin-right: @spacing-xs;
       white-space: nowrap; // Prevent label from wrapping
     }
     .meta-value {
-      color: @text-color-base; // Darker value
-      font-weight: 400; // Normal weight for value
+      font-family: PingFang SC;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 22px;
+      letter-spacing: 0%;
+      text-align: justify;
+      color: #000000; // Darker value
     }
     .status-text {
       // Add classes like .status-preparing, .status-ongoing if you want to color code

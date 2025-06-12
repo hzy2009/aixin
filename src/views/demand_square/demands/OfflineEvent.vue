@@ -5,7 +5,9 @@
           <div class="results-grid">
             <OfflineEventCard v-for="event in dataSource" :key="event.id" :event="event" @handleDetails="handleDetails(event)"/>
           </div>
-          <a-pagination v-model:current="paginationConfig.current" v-bind="paginationConfig" show-quick-jumper :total="dataSource.length" @change="onChange" />
+          <div class="pagination-wrapper">
+            <a-pagination size="small" v-model:current="paginationConfig.current" v-bind="paginationConfig" show-quick-jumper :total="dataSource.length" @change="onChange" />
+          </div>
         </template>
     </listPage>
   </div>
@@ -75,5 +77,10 @@ function create() {
    &:last-child {
       margin-bottom: 0;
    }
+  }
+  .pagination-wrapper{
+    // 定位到右边
+    text-align: right;
+    margin-bottom: @spacing-lg;
   }
 </style>
