@@ -72,13 +72,13 @@ export default {
     {
       path: 'IndustryReport',
       component: IndustryReport,
-      meta: { title: '行业报告', breadcrumb: ['行业报告'] } // Appends to base
+      meta: { title: '行研报告', breadcrumb: ['行研报告'] } // Appends to base
     },
     {
       path: 'IndustryReportDetailPage/:id',
       component: IndustryReportDetailPage,
       props: route => ({ IdProp: route.params.id}),
-      meta: { title: '行业报告详情', breadcrumb: ['行业报告详情'] } // Appends to base
+      meta: { title: '行研报告详情', breadcrumb: ['行研报告详情'] } // Appends to base
     },
     {
       path: 'OfflineEvent',

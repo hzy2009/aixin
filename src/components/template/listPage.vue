@@ -18,7 +18,7 @@
         </div>
 
         <!-- 2. Filter Accordion -->
-        <UserFilterAccordion :filter-groups="filterConfigForPage" :initial-filters="currentFilters"
+        <UserFilterAccordion :filter-groups="filterConfigForPage" :initial-filters="currentFilters" v-if="filterConfigForPage && filterConfigForPage.length > 0"
             @filters-changed="handleFiltersChange" class="filter-accordion-section" ref="userFilterAccordionRef" />
 
         <!-- 3. Date Range Picker -->
@@ -144,7 +144,7 @@ const {
     statusDictKey,
     userStatCardVisible
 });
-filterConfigForPage.forEach(item => {
+filterConfigForPage && filterConfigForPage.forEach(item => {
     if (!item.options && item.dictKey) {
         item.options = selectOptions(item.dictKey);
     }

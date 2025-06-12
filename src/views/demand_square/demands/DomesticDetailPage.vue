@@ -43,7 +43,7 @@ const statusHistoryColumns = [
 
 // const demandTypeDisplayName = '国产替代寻源需求';
 
-const pageTitle = '国产替代寻源'
+const pageTitle = '国产替代寻源详情'
 const queryAfter = (data) => {
   data.reqPartsUnfinish = data.reqPartsTotal - data.reqPartsFinish;
   return data;

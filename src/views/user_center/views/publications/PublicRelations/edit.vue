@@ -25,7 +25,7 @@ const router = useRouter();
 const formConfigs = [
   { label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true, },
   {
-    label: '研发攻关方向', field: 'rdCode', fieldType: 'select', detailField: 'rdType', dictKey: 'rd_type', span: 24,
+    label: '研发攻关类型', field: 'rdCode', fieldType: 'select', detailField: 'rdType', dictKey: 'rd_type', span: 24,
     onChange: ({ value, form, option }) => {
       form.rdType = option.label || '';
     }

@@ -31,7 +31,7 @@ const formConfigs = [
     label: '产品类别', field: 'productType', fieldType: 'select', dictKey: 'product_type', span: 24,
   },
   {
-    label: '项目分类', field: 'projectType', fieldType: 'select', dictKey: 'project_type', span: 24,
+    label: '检测验证类型', field: 'projectType', fieldType: 'select', dictKey: 'project_type', span: 24,
   },
   // {
   //   label: '验证项目', field: 'projectName', fieldType: 'input', span: 24,
@@ -50,7 +50,7 @@ const statusHistoryColumns = [
 ]
 
 
-const pageTitle = '创建检测验证'
+const pageTitle = '创建检测验证需求'
 
 const pageData = reactive({
   IdProp: props.IdProp,

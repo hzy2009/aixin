@@ -17,7 +17,7 @@ export function useNavigation() {
     { key: 'rndCollaboration', label: '研发攻关', path: '/demands/PublicRelations', queryParams: { type: 'PublicRelations'}, basePath: '/demand' },
     { key: 'testingValidation', label: '检测验证', path: '/demands/Verification', queryParams: { type: 'Verification'}, basePath: '/demand' },
     { key: 'offlineEvents', label: '线下活动', path: '/demands/OfflineEvent', queryParams: { type: 'offlineEvents'}, basePath: '/demand' },
-    { key: 'industryReport', label: '行业报告', path: '/demands/IndustryReport', queryParams: { type: 'industryReport'}, basePath: '/demand' },
+    { key: 'industryReport', label: '行研报告', path: '/demands/IndustryReport', queryParams: { type: 'industryReport'}, basePath: '/demand' },
     { key: 'industryTalent', label: '行业人才', path: '/demands/Talent', queryParams: { type: 'industryTalent'}, basePath: '/demand' },
     { key: 'techForum', label: '技术论坛', path: '/tech-forum', matchPaths: ['/tech-forum'] },
     // Add more items as needed

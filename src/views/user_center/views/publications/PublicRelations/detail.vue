@@ -22,7 +22,7 @@ const router = useRouter();
 const formConfigs = [
   { label: '研发公关编号', field: 'code', span: 24},
   {
-    label: '研发攻关方向', field: 'rdType', dictKey: 'rd_type', span: 24,
+    label: '研发攻关类型', field: 'rdType', dictKey: 'rd_type', span: 24,
   },
   {
     label: '期望匹配周期', field: 'matchPeriodName', dictKey: 'rd_breakthrough_period', span: 24,

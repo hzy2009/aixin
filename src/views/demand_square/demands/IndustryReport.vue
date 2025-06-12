@@ -30,9 +30,10 @@ const pageData = ref({
     list: 'apm/apmResearchReport/list/front',
     overview: 'apm/apmResearchReport/overview/front'
   },
-  filterConfigForPage,
+  // filterConfigForPage,
   showBanner: true,
-  searchTitle: '行业报告'
+  searchTitle: '行研报告',
+  pageTitle: '行研报告',
 })
 // const currentPage = ref(1);
 // const paginationConfig = reactive({
