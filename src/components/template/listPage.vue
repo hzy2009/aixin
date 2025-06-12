@@ -21,7 +21,15 @@
         <UserFilterAccordion :filter-groups="filterConfigForPage" :initial-filters="currentFilters"
             @filters-changed="handleFiltersChange" class="filter-accordion-section" ref="userFilterAccordionRef" />
 
-        <!-- 3. Search and Action Bar -->
+        <!-- 3. Date Range Picker -->
+        <MultiDateRangePickerGroup
+            v-if="dateRangeConfig.length > 0"
+            :config="dateRangeConfig"
+            @values-changed="handleDateValuesUpdate"
+            ref="multiDateRangePickerRef"
+        />
+
+        <!-- 4. Search and Action Bar -->
         <div class="search-action-bar">
             <div class="search-input-wrapper">
                 <a-input v-model:value="search" placeholder="请输入关键字" allow-clear @pressEnter="triggerSearch">
@@ -29,6 +37,11 @@
                         <SearchOutlined />
                     </template>
                 </a-input>
+            </div>
+            <div class="results-count-wrapper">
+                <span>为你找到</span>
+                <span class="results-count">&nbsp;{{ paginationConfig.total }}&nbsp;</span>
+                <span>个{{ pageTitle }}</span>
             </div>
             <!-- <a-button type="primary" v-if="addButton" @click="handleAdd(addButton)" class="primary-btn">
                 {{ addButton?.text }}
@@ -78,6 +91,7 @@ import { useRouter } from 'vue-router';
 import HomeHeroSection from '@/views/home/components/HomeHeroSection.vue';
 import UserStatCard from '@/components/layout/UserStatCard.vue';
 import UserFilterAccordion from '@/components/layout/UserFilterAccordion.vue';
+import MultiDateRangePickerGroup from '@/components/layout/MultiDateRangePickerGroup.vue';
 import breadcrumbs from './breadcrumbs.vue';
 
 import { useUserDemandList } from './hooks/useUserDemandList.js'; // Adjust path
@@ -90,7 +104,6 @@ const authStore = useAuthStore();
 const router = useRouter();
 
 const userFilterAccordionRef = ref(null);
-
 const props = defineProps({
     pageData: {
         type: Object,
@@ -108,7 +121,8 @@ const {
     userStatCardVisible,
     showBanner = false,
     pageTitle,
-    tableOperations = [] 
+    tableOperations = [],
+    dateRangeConfig = [] 
 } = props.pageData;
 const {
     selectOptions,
@@ -176,6 +190,9 @@ const operationsClick = (btn) => {
     }
 }
 
+const handleDateValuesUpdate = (values) => {
+    triggerSearch(values)
+}
 </script>
 
 <style scoped lang="less">

@@ -67,7 +67,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     stats.value = await fetchStatsAPI();
   }
 
-  async function loadTableData() {
+  async function loadTableData(propsParans = {}) {
     isLoading.value = true;
     try {
       const params = {
@@ -77,6 +77,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
         search: search.value,
         ...statusFilter.value,
         ...otherParams,
+        ...propsParans,
       };
       const response = await defHttp.get({url: url.list, params});
       tableData.value = response.result.records || [];
@@ -112,9 +113,9 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     // For now, let's assume it triggers on button click or Enter
   };
 
-  const triggerSearch = () => {
+  const triggerSearch = (params = {}) => {
     pagination.current = 1;
-    loadTableData();
+    loadTableData(params);
   };
 
   const handleTablePaginationChange = (pageInfo) => {
