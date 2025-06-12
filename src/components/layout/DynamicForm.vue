@@ -47,7 +47,10 @@
               <a-upload v-model:file-list="internalFormModel[field.field]" :name="field.uploadName || 'file'"
                 list-type="picture-card" class="custom-image-uploader"
                 :show-upload-list="field.showUploadList !== undefined ? field.showUploadList : true"
-                :action="uploadUrl" :before-upload="field.beforeUpload || (() => true)"
+                :action="uploadUrl" :before-upload="field.beforeUpload || beforeUpload"
+                accept="image/*"
+                :headers="getHeaders()"
+                :data="{ biz: 'temp' }"
                 @change="(info) => handleImageUploadChange(info, field)" @preview="handleImagePreview"
                 :max-count="field.maxCount || 1" :disabled="field.disabled">
                 <div
@@ -81,7 +84,8 @@ import {
   RangePicker as ARangePicker, Upload as AUpload, Modal as AModal, message
 } from 'ant-design-vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
-const uploadUrl = import.meta.env.VITE_GLOB_UPLOAD_URL + '/api';
+const uploadUrl = `${import.meta.env.VITE_GLOB_UPLOAD_URL}sys/common/upload` || '/api';
+console.log('uploadUrl', uploadUrl)
 const auth = useAuthStore(); // For dictionary options
 
 const selectOptions = (dictKey) => {
@@ -111,8 +115,20 @@ watch(() => props.initialModel, (newModel) => {
   // Ensure fileList for imageUpload is initialized correctly
   props.formConfig.forEach(field => {
     if (field.fieldType === 'imageUpload') {
-      if (!modelToAssign[field.field] || !Array.isArray(modelToAssign[field.field])) {
+      if (!modelToAssign[field.field]) {
         modelToAssign[field.field] = []; // Initialize as empty array for AntD Upload
+      } else {
+        modelToAssign[field.field] = [{
+          uid: getRandom(10),
+          name: getFileName(value),
+          status: 'done',
+          url: getFileAccessHttpUrl(modelToAssign[field.field]),
+          response: {
+            status: 'history',
+            message: modelToAssign[field.field],
+          },
+        }]
+        getFileName
       }
     }
   });
@@ -194,20 +210,23 @@ const handleImageUploadChange = (info, fieldConfig) => {
     return;
   }
   if (info.file.status === 'done') {
+    if ( info.file.response.success === false) {
+      message.error(info.file.response.message);
+      const failIndex = internalFormModel[fieldConfig.field].findIndex((item) => item.uid === file.uid);
+      if (failIndex != -1) {
+        internalFormModel[fieldConfig.field].splice(failIndex, 1);
+      }
+    }
     // fieldConfig.loading = false;
     message.success(`${info.file.name} 上传成功`);
-    // The file object in fileList will be updated by AntD.
-    // The response from server (e.g., image URL) should be in info.file.response
-    // If you need to map response to a specific structure in your formModel, do it here.
-    // For example, if your formModel expects just a URL string:
-    // if ((fieldConfig.maxCount || 1) === 1 && info.file.response?.url) {
-    //   internalFormModel[fieldConfig.field] = info.file.response.url;
+    // if ((fieldConfig.maxCount || 1) === 1 && info.file.response?.message) {
+    //   internalFormModel[fieldConfig.field] = [info.file.response.message];
     // }
   } else if (info.file.status === 'error') {
     // fieldConfig.loading = false;
     message.error(`${info.file.name} 上传失败.`);
   }
-  emit('fieldChange', { field: fieldConfig.field, value: info.fileList, formModel: internalFormModel });
+  // emit('fieldChange', { field: fieldConfig.field, value: info.fileList, formModel: internalFormModel });
 };
 // --- End Image Upload Logic ---
 
@@ -228,7 +247,61 @@ const resetFields = () => {
   Object.assign(internalFormModel, modelToAssign);
 };
 const clearValidate = () => formRef.value?.clearValidate();
-const getAllData = () => ({ ...internalFormModel });
+const getAllData = () => {
+  const paranms = JSON.parse(JSON.stringify(internalFormModel || {}));
+  props.formConfig.forEach(fielditem => {
+    if (fielditem.fieldType === 'imageUpload') {
+      if (paranms[fielditem.field]) {
+        paranms[fielditem.field] = getFileAccessHttpUrl(paranms[fielditem.field][0].response.message)
+      }
+    }
+  });
+  return paranms
+}
+
+const beforeUpload = (file) =>{
+  let fileType = file.type;
+  if (fileType.indexOf('image') < 0) {
+    createMessage.info('请上传图片');
+    return false;
+  }
+};
+const getHeaders = () =>{
+  return reactive({
+    'X-Access-Token': auth.token,
+    'X-Tenant-Id': auth.userInfo.id || '0',
+  });
+}
+
+const getFileName = (path) => {
+  if (path.lastIndexOf('\\') >= 0) {
+    let reg = new RegExp('\\\\', 'g');
+    path = path.replace(reg, '/');
+  }
+  return path.substring(path.lastIndexOf('/') + 1);
+};
+const getRandom = (length = 1) => {
+  return '-' + parseInt(String(Math.random() * 10000 + 1), length);
+};
+
+const getFileAccessHttpUrl = (fileUrl, prefix = 'http') => {
+  let result = fileUrl;
+  try {
+    if (fileUrl && fileUrl.length > 0 && !fileUrl.startsWith(prefix)) {
+      //判断是否是数组格式
+      let isArray = fileUrl.indexOf('[') != -1;
+      if (!isArray) {
+        // let prefix = `${import.meta.env.VITE_GLOB_UPLOAD_URL}/sys/common/static/`;
+        let prefix = `${import.meta.env.VITE_GLOB_UPLOAD_URL}`;
+        // 判断是否已包含前缀
+        if (!fileUrl.startsWith(prefix)) {
+          result = `${prefix}${fileUrl}`;
+        }
+      }
+    }
+  } catch (err) {}
+  return result;
+};
 
 defineExpose({ validate, resetFields, clearValidate, getAllData, formModel: internalFormModel });
 </script>

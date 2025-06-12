@@ -127,8 +127,10 @@ const save = async () => {
             handleBeforeSave(params)
         }
         const result = await handleSave(params);
-        demandDetailData.value = result;
-        isCreating.value = false;
+         if (result) {
+            demandDetailData.value = result;
+            isCreating.value = false;
+        }
     } catch (validationError) {
         console.log('表单校验失败:', validationError);
     } finally {
@@ -145,8 +147,10 @@ const handleSubmitForm = async () => {
         }
         isSubmitting.value = true;
         const result = await handleSubmit(params);
-        demandDetailData.value = result;
-        isCreating.value = false;
+        if (result) {
+            demandDetailData.value = result;
+            isCreating.value = false;
+        }
     } catch (validationError) {
         console.log('表单校验失败:', validationError);
     } finally {
