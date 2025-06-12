@@ -31,9 +31,9 @@ const formConfigs = [
     }
   },
   {
-    label: '期望匹配周期', field: 'matchPeriodCode', detailField: 'matchPeriodName', fieldType: 'select', dictKey: 'rd_breakthrough_period', span: 24,
+    label: '期望匹配周期', field: 'matchPeriodCode', fieldType: 'select', dictKey: 'rd_breakthrough_period', span: 24,
     onChange: ({ value, form, option }) => {
-      form.matchPeriodName = option.find(opt => opt.value === value)?.label || '';
+      form.matchPeriodName = option.label || '';
     }
   },
 ]
