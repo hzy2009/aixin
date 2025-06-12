@@ -79,7 +79,8 @@ const pageData = ref({
       field: 'expireDate',
       label: '计划完成日期',
     }
-  ]
+  ],
+  searchTitle: '国产替代寻源'
 })
 
 

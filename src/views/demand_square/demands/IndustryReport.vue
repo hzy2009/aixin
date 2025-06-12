@@ -31,7 +31,8 @@ const pageData = ref({
     overview: 'apm/apmResearchReport/overview/front'
   },
   filterConfigForPage,
-  showBanner: true
+  showBanner: true,
+  searchTitle: '行业报告'
 })
 // const currentPage = ref(1);
 // const paginationConfig = reactive({

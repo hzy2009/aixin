@@ -61,12 +61,23 @@ const pageData = ref({
     pageTitle: '原厂件寻源',
     statusDictKey: 'sourcing_status',
     tableOperations: [
-    {
-      title: '创建原厂件寻源',
-      clickFn: createNewSourcing,
-      type: 'primary'
-    }
-  ]
+        {
+        title: '创建原厂件寻源',
+        clickFn: createNewSourcing,
+        type: 'primary'
+        }
+    ],
+    dateRangeConfig: [
+        {
+            field: 'createDate', // Unique key for this date range
+            label: '提出需求日期',
+        },
+        {
+            field: 'expireDate',
+            label: '计划完成日期',
+        }
+    ],
+    searchTitle: '原厂件寻源'
 })
 
 

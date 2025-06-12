@@ -5,7 +5,7 @@
           <div class="results-grid">
             <OfflineEventCard v-for="event in dataSource" :key="event.id" :event="event" @handleDetails="handleDetails(event)"/>
           </div>
-          <a-pagination v-model:current="paginationConfig.current" show-quick-jumper :total="dataSource.length" @change="onChange" />
+          <a-pagination v-model:current="paginationConfig.current" v-bind="paginationConfig" show-quick-jumper :total="dataSource.length" @change="onChange" />
         </template>
     </listPage>
   </div>
@@ -39,6 +39,7 @@ const pageData = ref({
       type: 'primary'
     }
   ],
+  searchTitle: '线下活动'
 })
 
 const currentPage = ref(1);

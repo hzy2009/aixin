@@ -1,28 +1,24 @@
 <template>
-  <a-card :bordered="true" hoverable class="event-card" @click="viewEventDetails(event)">
-    <template #cover>
-      <div class="event-cover-image-wrapper">
-        <img :alt="event.activityName" :src="event.bannerUrl || defaultEventBanner" class="event-cover-image" />
-        <div v-if="event.organizerName" class="organizer-badge">
-          <span class="organizer-decorator"></span> {{ event.organizerName }}
-        </div>
-      </div>
-    </template>
-
-    <div class="event-card-content">
-      <h3 class="event-title">{{ event.activityName }}</h3>
-      <div class="event-meta">
-        <a-tag v-if="event.activityTypeName" class="event-type-tag">{{ event.activityTypeName }}</a-tag>
-        <div class="event-date"><CalendarOutlined /> {{ event.activityDate }}</div>
+  <div class="event-card">
+    <div class="event-cover-image-wrapper">
+      <img :alt="event.activityName" :src="event.bannerUrl || defaultEventBanner" class="event-cover-image" />
+      <div v-if="event.organizerName" class="organizer-badge">
+        <span class="organizer-decorator"></span> {{ event.organizerName }}
       </div>
     </div>
-
-    <template #actions>
+    <div class="event-card-body">
+      <div class="event-card-content">
+        <h3 class="event-title">{{ event.activityName }}</h3>
+        <div class="event-meta">
+          <a-tag v-if="event.activityTypeName" class="event-type-tag">{{ event.activityTypeName }}</a-tag>
+          <div class="event-date"><CalendarOutlined /> {{ event.activityDate }}</div>
+        </div>
+      </div>
       <div class="event-card-action">
         <span @click.stop="viewEventDetails(event)">查看详情</span>
       </div>
-    </template>
-  </a-card>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -66,8 +62,7 @@ const viewEventDetails = (payLoad) => {
 .event-card {
   border-radius: @border-radius-sm; // 图片中卡片边角非常柔和
   overflow: hidden;
-  border: 1px solid @border-color-light; // 卡片有一个细边框
-  box-shadow: none; // 图片中没有明显阴影，或者非常非常淡
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06); // 图片中没有明显阴影，或者非常非常淡
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
@@ -77,7 +72,8 @@ const viewEventDetails = (payLoad) => {
         transform: scale(1.03); // 图片轻微放大
     }
     .event-card-action span {
-        color: @primary-color-dark; // 详情按钮文字颜色加深
+        color: #fff; // 详情按钮文字颜色加深
+        background-color: @primary-color;
         border-color: @primary-color-dark;
     }
   }
@@ -89,8 +85,8 @@ const viewEventDetails = (payLoad) => {
     position: relative;
   }
   .event-cover-image-wrapper {
-      width: 100%;
-      height: 100%;
+      width: 588;
+      height: 180px;
       position: relative; // 为了主办方徽标定位
   }
   .event-cover-image {
@@ -126,22 +122,27 @@ const viewEventDetails = (payLoad) => {
   }
 }
 
+.event-card-body{
+  padding: @spacing-md;
+}
 .event-card-content {
   // 此区域用于放置标题、标签和日期
   // 如果需要固定高度，可以在这里设置，并处理内容溢出
 }
 
 .event-title {
-  font-size: 16px; // 标题字体大小
-  font-weight: 500; // 标题字重
-  color: @text-color-base;
+  font-family: PingFang SC;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 24px;
+  letter-spacing: 0%;
+  color: #656C74;
   margin-bottom: @spacing-xs; // 标题与下方元素的间距
-  line-height: 1.4;
   // 单行省略号
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  margin-bottom: @spacing-sm; // 与下方（或卡片底部，如果没actions）的间距
+  margin-bottom: 10px; // 与下方（或卡片底部，如果没actions）的间距
 }
 
 .event-meta {

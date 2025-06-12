@@ -77,9 +77,8 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
         search: search.value,
         ...statusFilter.value,
         ...otherParams,
-        ...propsParans,
       };
-      const response = await defHttp.get({url: url.list, params});
+      const response = await defHttp.get({url: url.list, params, data: propsParans});
       tableData.value = response.result.records || [];
       pagination.total = response.result.total || 0;
     } catch (error) {

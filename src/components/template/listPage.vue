@@ -41,7 +41,7 @@
             <div class="results-count-wrapper">
                 <span>为你找到</span>
                 <span class="results-count">&nbsp;{{ paginationConfig.total }}&nbsp;</span>
-                <span>个{{ pageTitle }}</span>
+                <span>个{{ searchTitle }}</span>
             </div>
             <!-- <a-button type="primary" v-if="addButton" @click="handleAdd(addButton)" class="primary-btn">
                 {{ addButton?.text }}
@@ -60,7 +60,6 @@
         </div>
         <slot name="content" :dataSource="tableData" :paginationConfig="paginationConfig">
             <div class="results-table-section">
-                 
                 <a-table :columns="tableColumns" :dataSource="tableData" :loading="isLoading" bordered
                     :pagination="paginationConfig" row-key="id" @change="handleTablePaginationChange" size="middle"
                     class="user-demands-table">
@@ -122,7 +121,8 @@ const {
     showBanner = false,
     pageTitle,
     tableOperations = [],
-    dateRangeConfig = [] 
+    dateRangeConfig = [],
+    searchTitle 
 } = props.pageData;
 const {
     selectOptions,
@@ -197,4 +197,48 @@ const handleDateValuesUpdate = (values) => {
 
 <style scoped lang="less">
 @import './styles/list.less';
+:deep(.ant-pagination) {
+        margin-top: @spacing-lg;
+        justify-content: flex-end; // Align pagination to the right
+}
+
+:deep(.ant-pagination-item-active) {
+    background-color: @primary-color;
+    border-color: @primary-color;
+
+    a {
+        color: white;
+    }
+
+    &:hover {
+        background-color: darken(@primary-color, 10%);
+        border-color: darken(@primary-color, 10%);
+
+        a {
+            color: white;
+        }
+    }
+}
+
+:deep(.ant-pagination-item-link) {
+
+    // Prev/Next buttons
+    &:not(.ant-pagination-disabled):hover {
+        // color: @primary-color;
+        // border-color: @primary-color;
+    }
+}
+
+:deep(.ant-pagination-options-quick-jumper input) {
+    border-radius: @border-radius-sm;
+
+    &:hover {
+        border-color: @primary-color;
+    }
+
+    &:focus {
+        border-color: @primary-color;
+        box-shadow: 0 0 0 2px fade(@primary-color, 20%);
+    }
+}
 </style>
