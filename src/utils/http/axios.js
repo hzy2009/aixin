@@ -78,6 +78,57 @@ class AxiosHttpClient {
       }
     );
   }
+   /**
+   * 文件上传
+   */
+  uploadFile(config, params, callback) {
+    const formData = new window.FormData();
+    const customFilename = params.name || 'file';
+
+    if (params.filename) {
+      formData.append(customFilename, params.file, params.filename);
+    } else {
+      formData.append(customFilename, params.file);
+    }
+    config.baseURL = import.meta.env.VITE_GLOB_UPLOAD_URL || '/api';
+    if (params.data) {
+      Object.keys(params.data).forEach((key) => {
+        const value = params.data[key];
+        if (Array.isArray(value)) {
+          value.forEach((item) => {
+            formData.append(`${key}[]`, item);
+          });
+          return;
+        }
+
+        formData.append(key, params.data[key]);
+      });
+    }
+
+    return this.axiosInstance
+      .request<T>({
+        ...config,
+        method: 'POST',
+        data: formData,
+        headers: {
+          'Content-type': ContentTypeEnum.FORM_DATA,
+          ignoreCancelToken: true,
+        },
+      })
+      .then((res) => {
+        if (callback?.success && isFunction(callback?.success)) {
+          callback?.success(res?.data);
+        } else if (callback?.isReturnResponse) {
+          return Promise.resolve(res?.data);
+        } else {
+          if (res.data.success == true && res.data.code == 200) {
+            AntMessage.success(res.data.message);
+          } else {
+            AntMessage.error(res.data.message);
+          }
+        }
+      });
+  }
 
   handleUnauthorized() {
     const authStore = useAuthStore();

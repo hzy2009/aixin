@@ -47,7 +47,7 @@
               <a-upload v-model:file-list="internalFormModel[field.field]" :name="field.uploadName || 'file'"
                 list-type="picture-card" class="custom-image-uploader"
                 :show-upload-list="field.showUploadList !== undefined ? field.showUploadList : true"
-                :action="field.uploadAction || '/api/upload/image'" :before-upload="field.beforeUpload || (() => true)"
+                :action="uploadUrl" :before-upload="field.beforeUpload || (() => true)"
                 @change="(info) => handleImageUploadChange(info, field)" @preview="handleImagePreview"
                 :max-count="field.maxCount || 1" :disabled="field.disabled">
                 <div
@@ -81,7 +81,7 @@ import {
   RangePicker as ARangePicker, Upload as AUpload, Modal as AModal, message
 } from 'ant-design-vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
-
+const uploadUrl = import.meta.env.VITE_GLOB_UPLOAD_URL + '/api';
 const auth = useAuthStore(); // For dictionary options
 
 const selectOptions = (dictKey) => {

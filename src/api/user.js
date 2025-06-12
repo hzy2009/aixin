@@ -62,3 +62,17 @@ export function getUserRoleApi(userId) {
 export function getAllDictApi() {
   return defHttp.get({url:Api.queryAllDictItems});
 }
+
+/**
+ * @description: Upload interface
+ */
+export function uploadImg(params, onUploadProgress) {
+  return defHttp.uploadFile<UploadApiResult>(
+    {
+      url: `${import.meta.env.VITE_GLOB_UPLOAD_URL}/sys/common/upload`,
+      onUploadProgress,
+    },
+    params,
+    { isReturnResponse: true }
+  );
+}
