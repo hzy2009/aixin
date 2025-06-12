@@ -43,8 +43,8 @@
           </div>
 
           <!-- 5. Event Main Content / Description -->
-          <section class="meta-item-row">
-            <h3 class="meta-label">会议主要内容：</h3>
+          <section class="event-section-block">
+            <div class="section-block-title">会议主要内容：</div>
             <div class="section-block-content rich-text" v-html="eventDetail.description"></div>
           </section>
 
@@ -62,7 +62,7 @@
             <a-button type="primary" danger size="large" class="main-action-cta-button" @click="handleActionClick">
               {{ eventDetail.actionButtonText || '一键敲门' }}
             </a-button>
-            <p v-if="eventDetail.actionNote" class="action-cta-note">{{ eventDetail.actionNote }}</p>
+            <p  class="action-cta-note">一键敲门后，客服人员将在30分钟内与您联系</p>
           </div>
 
         </div>
@@ -228,15 +228,15 @@ watch(() => route.params.id, (newId, oldId) => {
 }
 
 .event-meta-stacked {
-  margin-bottom: @spacing-xl; // Space below meta info
-  padding-bottom: @spacing-lg;
-  border-bottom: 1px solid @border-color-light; // Separator line
+  // margin-bottom: @spacing-xl; // Space below meta info
+  // padding-bottom: @spacing-lg;
+  // border-bottom: 1px solid @border-color-light; // Separator line
 
   .meta-item-row {
     display: flex; // Label and value on the same line
     font-size: 14px;
     line-height: 1.8; // More line height for readability
-    margin-bottom: @spacing-xs / 2; // Small space between meta rows
+    margin-bottom: @spacing-xs; // Small space between meta rows
 
     .meta-label {
       font-family: PingFang SC;
@@ -269,9 +269,13 @@ watch(() => route.params.id, (newId, oldId) => {
   margin-bottom: @spacing-xl;
 
   .section-block-title {
-    font-size: 16px; // "会议主要内容：", "参与者："
-    font-weight: 500; // Semi-bold
-    color: @text-color-base;
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0%;
+    text-align: justify;
+    color: #656C74; // Gray label
     margin-bottom: @spacing-sm; // Space between title and content
   }
 
@@ -303,7 +307,7 @@ watch(() => route.params.id, (newId, oldId) => {
 }
 
 .event-action-center {
-  text-align: center; // Center the button and note
+  text-align: right; // Center the button and note
   margin-top: @spacing-xxl; // More space above the button
   padding-top: @spacing-lg; // Padding above button if there was a border
   // No border-top as per the image
