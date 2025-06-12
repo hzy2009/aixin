@@ -34,6 +34,8 @@ const pageData = ref({
   },
   filterConfigForPage,
   showBanner: true,
+  statusDictKey: 'activity_status',
+  userStatCardVisible: true,
   tableOperations: [
     {
       title: '创建线下活动',
@@ -41,6 +43,7 @@ const pageData = ref({
       type: 'primary'
     }
   ],
+  pageTitle: '线下活动',
   searchTitle: '线下活动'
 })
 

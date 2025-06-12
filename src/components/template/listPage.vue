@@ -12,9 +12,9 @@
                 :key="item.label + item.count" @click="handleStatClick(item)">
                 <template #icon><img src="@/assets/images/user_center/icon-pending.png" alt="未响应" /></template>
             </UserStatCard>
-            <UserStatCard label="总计" :value="stats.total || 0">
+            <!-- <UserStatCard label="总计" :value="stats.total || 0">
                 <template #icon><img src="@/assets/images/user_center/icon-total.png" alt="总计" /></template>
-            </UserStatCard>
+            </UserStatCard> -->
         </div>
 
         <!-- 2. Filter Accordion -->
