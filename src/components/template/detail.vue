@@ -45,8 +45,8 @@
 				<h3 class="section-title-text">{{ statusTracking.title || '状态跟踪' }}</h3>
 			</div>
 			<a-steps :current="currentStepIndex" class="status-steps" progress-dot size="small">
-				<a-step v-for="(step, stepIdx) in statusTracking.steps" :key="`step-${stepIdx}`" :title="step.label"
-					:description="step.date" :status="step.status" />
+				<a-step v-for="(step, stepIdx) in statusTracking.steps" :key="`step-${stepIdx}`" :title="step.operateName"
+					:description="step.createTime" :status="step.status" />
 			</a-steps>
 			<a-table v-if="formModel.logList && formModel.logList.length > 0" :columns="statusHistoryColumns"
 				:data-source="formModel.logList" :pagination="false" :row-key="'id'" bordered size="middle"
@@ -118,7 +118,13 @@ const formModel = ref({});
 
 
 const statusTracking = computed(() => {
-	const steps = selectOptions(statusDictKey);
+	const stepData = formModel.value.progressList || [];
+	const steps = stepData.map(step => {
+		return {
+			...step,
+			status: step.businessId  ? 'finish': 'wait'
+		}
+	})
 	return {
 		title: '状态跟踪',
 		steps
