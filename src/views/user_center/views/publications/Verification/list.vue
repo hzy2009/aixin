@@ -70,7 +70,13 @@ const pageData = ref({
         clickFn: createNewSourcing,
         type: 'primary'
         }
-    ]
+    ],
+    dateRangeConfig: [
+        {
+            field: 'createTime', // Unique key for this date range
+            label: '提出需求日期',
+        }
+    ],
 })
 
 

@@ -71,7 +71,18 @@ const pageData = ref({
       clickFn: createNewSourcing,
       type: 'primary'
     }
-  ]
+  ],
+  dateRangeConfig: [
+    {
+      field: 'createTime', // Unique key for this date range
+      label: '提出需求日期',
+      // placeholder: ['需求开始', '需求结束'] // Optional: custom placeholder
+    },
+    {
+      field: 'expireDate',
+      label: '计划完成日期',
+    }
+  ],
 })
 
 
