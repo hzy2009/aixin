@@ -83,7 +83,7 @@ const pageData = reactive({
       groupCode: 'tenantRefList',
       columns: [
         { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
-        { title: '寻源承接方', dataIndex: 'businessRefTypeName', key: 'materialName', align: 'center' },
+        { title: '寻源承接方', dataIndex: 'refUserName', key: 'materialName', align: 'center' },
       ]
     },
     {
