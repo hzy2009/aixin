@@ -63,7 +63,10 @@
                 <a-table :columns="tableColumns" :dataSource="tableData" :loading="isLoading" bordered
                     :pagination="paginationConfig" row-key="id" @change="handleTablePaginationChange" size="middle" :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
                     class="user-demands-table">
-                    <template #bodyCell="{ column, record }">
+                    <template #bodyCell="{ column, record, index }">
+                         <span v-if="column.dataIndex === 'index'">
+                            {{ (paginationConfig.current - 1) * paginationConfig.pageSize + index + 1 }}
+                        </span>
                         <template v-if="column.key === 'statusCode'">
                             <a-tag :color="getStatusTagColor(record.sourcingStatus)" class="status-tag">
                                 {{ record.statusCode }}

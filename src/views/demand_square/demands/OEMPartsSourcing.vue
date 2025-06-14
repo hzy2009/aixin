@@ -18,6 +18,7 @@ const filterConfigForPage = reactive([
 
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = reactive([
+    { title: '序号', dataIndex: 'index', key: 'index', textAlign: 'center', width: '60px' },
     { title: '单号', dataIndex: 'code', key: 'code', ellipsis: true, width: '120px' },
     { title: '需求方', dataIndex: 'tenantName', key: 'tenantName', ellipsis: true, },
     { title: '创建日期', dataIndex: 'createTime', key: 'createTime', ellipsis: true, },
