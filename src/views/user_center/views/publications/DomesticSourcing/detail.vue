@@ -67,6 +67,14 @@ const pageData = reactive({
       ]
     },
     {
+      title: '已寻到厂商',
+      groupCode: 'tenantRefList',
+      columns: [
+        { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center', align: 'center' },
+        { title: '寻源承接方', dataIndex: 'businessRefTypeName', key: 'materialName', align: 'center' },
+      ]
+    },
+    {
       title: '关联业务',
       groupCode: 'businessRefList',
       columns: [
