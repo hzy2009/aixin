@@ -12,7 +12,7 @@
 				<h3 class="section-title-text">基本信息</h3>
 			</div>
 			<div class="basic-info-grid">
-				<div v-for="item in formConfigs" :key="item.label" class="info-grid-item"
+				<div v-for="item in baseFormConfigs" :key="item.label" class="info-grid-item"
 					:style="{ gridColumn: item.span ? `span ${item.span}` : 'span 1' }">
 					<span class="info-grid-label">{{ item.label }}：</span>
 					<span class="info-grid-value"
@@ -108,8 +108,15 @@ const {
 	showLogList = true
 } = props.pageData;
 
+const baseFormConfigs = ref(formConfigs);
 const emit = defineEmits(['goBack', 'cancel', 'submit']);
-
+const handleformConfigsAfter = (data) => {
+	if (auth.userInfo.loginTenantId == data.tenantId) {
+		baseFormConfigs.value = formConfigs.filter(item => {
+			return item.field !== 'tenantName'
+		})
+	}
+};
 const {
 	demandDetail: demandDetailData,
 	isLoading,
@@ -120,7 +127,8 @@ const {
 	IdProp,
 	mode,
 	url: apiMap,
-	otherParams
+	otherParams,
+	handleformConfigsAfter
 });
 const formModel = ref({});
 

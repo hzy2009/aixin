@@ -5,7 +5,7 @@ import { message } from 'ant-design-vue';
 import { useAuthStore } from '@/store/authStore';
 import { useRouter, useRoute } from 'vue-router'; // 用于新建成功后跳转
 
-export function useDemandDetail({IdProp, mode, url, otherParams, queryAfter}) { // 接收 props
+export function useDemandDetail({IdProp, mode, url, otherParams, queryAfter, handleformConfigsAfter}) { // 接收 props
   const demandDetail = ref(null);
   const isLoading = ref(false);
   const error = ref(null);
@@ -38,7 +38,7 @@ export function useDemandDetail({IdProp, mode, url, otherParams, queryAfter}) { 
       demandDetail.value = {
         ...otherParams,
         tenantName: authStore.userInfo.realname,
-        tenantId: authStore.userInfo.relTenantIds,
+        tenantId: authStore.userInfo.loginTenantId,
         // ... 其他类型可能需要的默认字段 ...
       };
       isLoading.value = false;
@@ -53,6 +53,7 @@ export function useDemandDetail({IdProp, mode, url, otherParams, queryAfter}) { 
       if (response.success) {
         const data = queryAfter && queryAfter(response.result) || response.result;
         demandDetail.value = data;
+        handleformConfigsAfter && handleformConfigsAfter(demandDetail.value);
       } else {
         throw new Error(response.data.message || '获取需求详情失败');
       }
