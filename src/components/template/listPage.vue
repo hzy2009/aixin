@@ -73,7 +73,7 @@
                             </a-tag>
                         </template>
                         <template v-else-if="column.key === 'actions'">
-                            <a-button type="link" @click="action?.clickFn(record)" class="action-link"
+                            <a-button type="link" @click="handleActionClick(record, action)" class="action-link"
                                 v-for="(action, i) in actions" :key="i">
                                 {{ action.text }}
                             </a-button>
@@ -98,10 +98,11 @@ import breadcrumbs from './breadcrumbs.vue';
 
 import { useUserDemandList } from './hooks/useUserDemandList.js'; // Adjust path
 import { useAuthStore } from '@/store/authStore';
-
+import { useModalStore } from '@/store/modalStore';
 import { notification as Notification } from 'ant-design-vue'
 
 const authStore = useAuthStore();
+const modalStore = useModalStore();
 
 const router = useRouter();
 
@@ -173,17 +174,19 @@ const operationsClick = (btn) => {
                 selections: selectedRowKeys.value.join(','),
                 ...otherParams,
             });
+        } else {
+            btn.clickFn();
         }
-        btn.clickFn();
     } else {
-        Notification.info({
-            message: `没有权限操作`,
-            placement: 'topRight',
-            description: '请先登录',
-        });
-        setTimeout(() => {
-            router.push('/login');
-        }, 1000)
+        modalStore.showLogin();
+        // Notification.info({
+        //     message: `没有权限操作`,
+        //     placement: 'topRight',
+        //     description: '请先登录',
+        // });
+        // setTimeout(() => {
+        //     router.push('/login');
+        // }, 1000)
     }
 }
 
@@ -196,6 +199,14 @@ const onSelectChange = (rowKeys) => {
 
 const handleDateValuesUpdate = (values) => {
     triggerSearch(values)
+}
+
+const handleActionClick = (record, action) => {
+    if (authStore?.token) {
+        action?.clickFn(record)
+    } else {
+        modalStore.showLogin();
+    }
 }
 </script>
 

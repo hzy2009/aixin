@@ -1,6 +1,7 @@
 <template>
   <a-modal
     :open="isVisible"
+    v-if="isVisible"
     :closable="false"
     :mask-closable="true"
     :footer="null"
@@ -21,10 +22,10 @@
 
       <a-form :model="formState" @finish="handleLogin" class="login-form">
         <a-form-item
-          name="email"
-          :rules="[{ required: true, message: '请输入邮箱!' }, { type: 'email', message: '请输入有效的邮箱地址!' }]"
+          name="username"
+          :rules="[{ required: true, message: '请输入账号' }]"
         >
-          <a-input v-model:value="formState.email" placeholder="请输入邮箱" size="large" class="custom-input">
+          <a-input v-model:value="formState.username" placeholder="请输入账号" size="large" class="custom-input">
             <template #prefix><UserOutlined style="color: #BFBFBF;" /></template>
           </a-input>
         </a-form-item>
@@ -36,6 +37,19 @@
           <a-input-password v-model:value="formState.password" placeholder="请输入密码" size="large" class="custom-input">
             <template #prefix><LockOutlined style="color: #BFBFBF;" /></template>
           </a-input-password>
+        </a-form-item>
+        <a-form-item name="captcha">
+          <a-input v-model:value="formState.captcha" placeholder="请输入验证码"  size="large" class="custom-input">
+            <template #prefix>
+              <UserOutlined class="site-form-item-icon" />
+            </template>
+          </a-input>
+          <div class="captcha-code">
+            <img v-if="randCodeData.requestCodeSuccess" style="margin-top: 2px; max-width: initial"
+              :src="randCodeData.randCodeImage" @click="handleChangeCheckCode" />
+            <img v-else style="margin-top: 2px; max-width: initial" src="@/assets/images/checkcode.png"
+              @click="handleChangeCheckCode" />
+          </div>
         </a-form-item>
 
         <a-form-item class="extra-actions-row">
@@ -60,7 +74,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue';
+import { reactive, ref, onMounted  } from 'vue';
 import {
   Modal as AModal, Form as AForm, FormItem as AFormItem, Input as AInput,
   InputPassword as AInputPassword, Checkbox as ACheckbox, Button as AButton, message
@@ -68,6 +82,7 @@ import {
 import { UserOutlined, LockOutlined, CloseOutlined } from '@ant-design/icons-vue';
 import { useAuthStore } from '@/store/authStore'; // Assuming you have this
 import { useRouter } from 'vue-router'; // If needed for navigation
+import { getCodeInfo } from '@/api/user.js';
 
 const props = defineProps({
   isVisible: {
@@ -83,25 +98,26 @@ const router = useRouter(); // If you navigate after login directly from here
 const isLoading = ref(false);
 
 const formState = reactive({
-  email: '',
+  username: '',
   password: '',
   rememberMe: true,
 });
 
-const handleLogin = async () => {
+const handleLogin = async values => {
   isLoading.value = true;
   try {
-    // TODO: Replace with your actual login API call
-    // Example: await authStore.login({ email: formState.email, password: formState.password });
-    console.log('Login attempt:', { ...formState });
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-    // Assume login is successful for mock
-    const mockUser = { id: 'user123', name: formState.email.split('@')[0], email: formState.email, role: 'member' };
-    const mockToken = 'mock_jwt_token_string_here';
-    authStore.login(mockUser, mockToken); // Update Pinia store
-
+    let data = {
+      username: values.username,
+      password: values.password,
+      checkKey: randCodeData.checkKey,
+      captcha: values.captcha
+    };
+    // 登录
+    let res = await authStore.login(data);
+    // 获取用户角色
+    await authStore.getUserRole(res?.result?.userInfo?.id);
     message.success('登录成功!');
-    emit('loginSuccess', mockUser);
+    emit('loginSuccess', res);
     emit('close'); // Close modal on success
   } catch (error) {
     console.error('Login failed:', error);
@@ -124,6 +140,30 @@ const handleRegister = () => {
   emit('navigateToRegister');
   emit('close'); // Close this modal before navigating
 };
+
+const randCodeData = reactive({
+  requestCodeSuccess: false,
+  randCodeImage: ''
+});
+const getCaptchaCode = async () => {
+  try {
+    randCodeData.checkKey = new Date().getTime() + Math.random().toString(36).slice(-4); // 1629428467008;
+    getCodeInfo(randCodeData.checkKey).then((res) => {
+      randCodeData.randCodeImage = res.result;
+      randCodeData.requestCodeSuccess = true;
+    });
+  } catch (error) {
+    message.error('验证码获取失败，请重试。');
+  }
+};
+const handleChangeCheckCode = () => {
+  randCodeData.requestCodeSuccess = false;
+  getCaptchaCode();
+};
+
+onMounted(() => {
+  getCaptchaCode()
+});
 
 </script>
 
@@ -277,5 +317,13 @@ const handleRegister = () => {
       text-decoration: underline;
     }
   }
+}
+
+.captcha-code {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  cursor: pointer;
+  z-index: 1;
 }
 </style>
