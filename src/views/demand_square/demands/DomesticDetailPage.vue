@@ -32,14 +32,16 @@ const formConfigs = [
   { label: '需求提出方', field: 'tenantName', span: 24, },
   { label: '提出需求日期', field: 'createTime', span: 24, fieldType: 'date' },
   { label: '计划完成日期', field: 'expireDate', span: 24, fieldType: 'date' },
+  { label: '寻源结果', field: 'statusName', span: 24},
+  { label: '贸易商/晶链慧采：', field: 'xxx', span: 24},
 ]
 
-const statusHistoryColumns = [
-  { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' },
-  { title: '状态', dataIndex: 'operateName', key: 'operateName' },
-  { title: '完成日期', dataIndex: 'createTime', key: 'createTime' },
-  { title: '备注', dataIndex: 'remark', key: 'remark' },
-]
+// const statusHistoryColumns = [
+//   { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' },
+//   { title: '状态', dataIndex: 'operateName', key: 'operateName' },
+//   { title: '完成日期', dataIndex: 'createTime', key: 'createTime' },
+//   { title: '备注', dataIndex: 'remark', key: 'remark' },
+// ]
 
 // const demandTypeDisplayName = '国产替代寻源需求';
 
@@ -63,30 +65,37 @@ const pageData = reactive({
     sourcingType: '国产替代寻源',
   },
   formConfigs,
-  statusHistoryColumns,
+  // statusHistoryColumns,
   pageTitle,
   queryAfter,
-  // tableSections: [
-  //   {
-  //     title: '物料清单',
-  //     groupCode: 'materialList',
-  //     columns: [
-  //       { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' },
-  //       { title: '物料名称', dataIndex: 'materialName', key: 'materialName', align: 'center' },
-  //       { title: '物料数量', dataIndex: 'materialCount', key: 'materialCount', align: 'center' },
-  //       { title: '物料单位', dataIndex: 'materialUnit', key: 'materialUnit', align: 'center' },
-  //     ]
-  //   },
-  //   {
-  //     title: '关联业务',
-  //     groupCode: 'businessRefList',
-  //     columns: [
-  //       { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center', align: 'center' },
-  //       { title: '单据类型', dataIndex: 'businessRefTypeName', key: 'materialName', align: 'center' },
-  //       { title: '单据号', dataIndex: 'businessRefCode', key: 'materialCount', align: 'center' },
-  //     ]
-  //   }
-  // ],
+  showLogList: false,
+  tableSections: [
+    {
+      title: '物料清单',
+      groupCode: 'materialList',
+      columns: [
+        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
+        { title: '爱芯享单据号', dataIndex: 'businessCode', key: 'businessCode' },
+      ]
+    },
+    {
+      title: '已寻到厂商',
+      groupCode: 'tenantRefList',
+      columns: [
+        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
+        { title: '寻源承接方', dataIndex: 'businessRefTypeName', key: 'materialName', align: 'center' },
+      ]
+    },
+    {
+      title: '关联业务',
+      groupCode: 'businessRefList',
+      columns: [
+        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
+        { title: '单据类型', dataIndex: 'refBusinessTypeName', key: 'materialName', align: 'center' },
+        { title: '单据号', dataIndex: 'refBusinessCode', key: 'materialCount', align: 'center' },
+      ]
+    }
+  ],
 })
 
 const goBack = () => {

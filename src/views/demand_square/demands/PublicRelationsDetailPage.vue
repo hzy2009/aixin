@@ -40,12 +40,12 @@ const formConfigs = [
   { label: '需求提出方', field: 'tenantName', span: 24, },
 ]
 
-const statusHistoryColumns = [
-  { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' },
-  { title: '状态', dataIndex: 'operateName', key: 'operateName' },
-  { title: '完成日期', dataIndex: 'createTime', key: 'createTime' },
-  { title: '备注', dataIndex: 'remark', key: 'remark' },
-]
+// const statusHistoryColumns = [
+//   { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' },
+//   { title: '状态', dataIndex: 'operateName', key: 'operateName' },
+//   { title: '完成日期', dataIndex: 'createTime', key: 'createTime' },
+//   { title: '备注', dataIndex: 'remark', key: 'remark' },
+// ]
 
 // const demandTypeDisplayName = '研发攻关';
 
@@ -62,29 +62,28 @@ const pageData = reactive({
     delete: 'apm/apmRdBreakthrough/delete',
   },
   formConfigs,
-  statusHistoryColumns,
+  // statusHistoryColumns,
+  showLogList: false,
   pageTitle,
-  // tableSections: [
-  //   {
-  //     title: '研发攻关承接方',
-  //     groupCode: 'materialList',
-  //     columns: [
-  //       { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' },
-  //       { title: '物料名称', dataIndex: 'materialName', key: 'materialName', align: 'center' },
-  //       { title: '物料数量', dataIndex: 'materialCount', key: 'materialCount', align: 'center' },
-  //       { title: '物料单位', dataIndex: 'materialUnit', key: 'materialUnit', align: 'center' },
-  //     ]
-  //   },
-  //   {
-  //     title: '关联业务',
-  //     groupCode: 'businessRefList',
-  //     columns: [
-  //       { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center', align: 'center' },
-  //       { title: '单据类型', dataIndex: 'businessRefTypeName', key: 'materialName', align: 'center' },
-  //       { title: '单据号', dataIndex: 'businessRefCode', key: 'materialCount', align: 'center' },
-  //     ]
-  //   }
-  // ],
+  tableSections: [
+    {
+      title: '研发攻关承接方',
+      groupCode: 'tenantRefList',
+      columns: [
+        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
+        { title: '研发攻关承接方', dataIndex: 'refUserName', key: 'refUserName', align: 'center' },
+      ]
+    },
+    {
+      title: '关联业务',
+      groupCode: 'businessRefList',
+      columns: [
+        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
+        { title: '单据类型', dataIndex: 'refBusinessTypeName', key: 'refBusinessTypeName', align: 'center' },
+        { title: '单据号', dataIndex: 'refBusinessCode', key: 'refBusinessCode', align: 'center' },
+      ]
+    }
+  ],
 })
 
 const goBack = () => {

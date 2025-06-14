@@ -53,12 +53,12 @@ const formConfigs = [
   },
 ]
 
-const statusHistoryColumns = [
-  { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' },
-  { title: '状态', dataIndex: 'operateName', key: 'operateName' },
-  { title: '完成日期', dataIndex: 'createTime', key: 'createTime' },
-  { title: '备注', dataIndex: 'remark', key: 'remark' },
-]
+// const statusHistoryColumns = [
+//   { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' },
+//   { title: '状态', dataIndex: 'operateName', key: 'operateName' },
+//   { title: '完成日期', dataIndex: 'createTime', key: 'createTime' },
+//   { title: '备注', dataIndex: 'remark', key: 'remark' },
+// ]
 
 
 const pageTitle = '检测验证详情'
@@ -74,29 +74,28 @@ const pageData = reactive({
     delete: 'apm/apmInspection/delete',
   },
   formConfigs,
-  statusHistoryColumns,
+  // statusHistoryColumns,
+  showLogList: false,
   pageTitle,
-  // tableSections: [
-  //   {
-  //     title: '研发攻关承接方',
-  //     groupCode: 'materialList',
-  //     columns: [
-  //       { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' },
-  //       { title: '物料名称', dataIndex: 'materialName', key: 'materialName', align: 'center' },
-  //       { title: '物料数量', dataIndex: 'materialCount', key: 'materialCount', align: 'center' },
-  //       { title: '物料单位', dataIndex: 'materialUnit', key: 'materialUnit', align: 'center' },
-  //     ]
-  //   },
-  //   {
-  //     title: '关联业务',
-  //     groupCode: 'businessRefList',
-  //     columns: [
-  //       { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center', align: 'center' },
-  //       { title: '单据类型', dataIndex: 'businessRefTypeName', key: 'materialName', align: 'center' },
-  //       { title: '单据号', dataIndex: 'businessRefCode', key: 'materialCount', align: 'center' },
-  //     ]
-  //   }
-  // ],
+  tableSections: [
+    {
+      title: '检查验证承接方',
+      groupCode: 'tenantRefList',
+      columns: [
+        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
+        { title: '检查验证承接方', dataIndex: 'refUserName', key: 'refUserName', align: 'center' },
+      ]
+    },
+    {
+      title: '关联业务',
+      groupCode: 'businessRefList',
+      columns: [
+        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
+        { title: '单据类型', dataIndex: 'businessRefTypeName', key: 'materialName', align: 'center' },
+        { title: '单据号', dataIndex: 'businessRefCode', key: 'materialCount', align: 'center' },
+      ]
+    }
+  ],
 })
 
 const goBack = () => {
