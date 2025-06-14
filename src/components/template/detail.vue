@@ -50,7 +50,14 @@
 			</a-steps>
 			<a-table v-if="formModel.logList && formModel.logList.length > 0" :columns="statusHistoryColumns"
 				:data-source="formModel.logList" :pagination="false" :row-key="'id'" bordered size="middle"
-				class="custom-detail-table status-history-table" />
+				class="custom-detail-table status-history-table" >
+
+				<template #bodyCell="{ column, record, index }">
+					 <span v-if="column.dataIndex === 'index'">
+                            {{index + 1}}
+                        </span>
+				</template>
+			</a-table>
 		</section>
 
 		<!-- Action Buttons -->
