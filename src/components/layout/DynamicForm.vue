@@ -251,8 +251,10 @@ const getAllData = () => {
   const paranms = JSON.parse(JSON.stringify(internalFormModel || {}));
   props.formConfig.forEach(fielditem => {
     if (fielditem.fieldType === 'imageUpload') {
-      if (paranms[fielditem.field]) {
+      if (paranms[fielditem.field] && paranms[fielditem.field][0] && paranms[fielditem.field][0].response.message) {
         paranms[fielditem.field] = getFileAccessHttpUrl(paranms[fielditem.field][0].response.message)
+      } else {
+        paranms[fielditem.field] = null
       }
     }
   });

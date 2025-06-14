@@ -61,7 +61,7 @@ const statusHistoryColumns = [
 ]
 
 
-const pageTitle = '检测验证'
+const pageTitle = '检测验证详情'
 
 const pageData = reactive({
   IdProp: props.IdProp,
