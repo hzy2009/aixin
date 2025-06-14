@@ -61,7 +61,7 @@
         <slot name="content" :dataSource="tableData" :paginationConfig="paginationConfig">
             <div class="results-table-section">
                 <a-table :columns="tableColumns" :dataSource="tableData" :loading="isLoading" bordered
-                    :pagination="paginationConfig" row-key="id" @change="handleTablePaginationChange" size="middle"
+                    :pagination="paginationConfig" row-key="id" @change="handleTablePaginationChange" size="middle" :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
                     class="user-demands-table">
                     <template #bodyCell="{ column, record }">
                         <template v-if="column.key === 'statusCode'">
@@ -137,6 +137,7 @@ const {
     handleTablePaginationChange, // Method from hook
     getStatusTagColor,
     handleStatClick,
+    handleExportXls,
     isVIP, // Ref from hook
 } = useUserDemandList({
     otherParams,
@@ -161,22 +162,15 @@ const paginationConfig = computed(() => ({
         return null; // Should not happen for other types
     },
 }));
-const handleAdd = (btn) => {
-    if (authStore?.token) {
-        btn.clickFn();
-    } else {
-        Notification.info({
-            message: `没有权限创建`,
-            placement: 'topRight',
-            description: '请先登录',
-        });
-        setTimeout(() => {
-            router.push('/login');
-        }, 1000)
-    }
-}
+
 const operationsClick = (btn) => {
     if (authStore?.token) {
+        if (btn.btnType == 'exportXls') {
+            handleExportXls(btn.fileName, btn.url, {
+                selections: selectedRowKeys.value.join(','),
+                ...otherParams,
+            });
+        }
         btn.clickFn();
     } else {
         Notification.info({
@@ -188,6 +182,13 @@ const operationsClick = (btn) => {
             router.push('/login');
         }, 1000)
     }
+}
+
+const selectedRowKeys = ref([]);
+
+const onSelectChange = (rowKeys) => {
+    console.log('selectedRowKeys changed: ', rowKeys);
+    selectedRowKeys.value = rowKeys;
 }
 
 const handleDateValuesUpdate = (values) => {

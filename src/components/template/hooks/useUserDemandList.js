@@ -131,6 +131,73 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     return authStore.isVip || false;
   });
 
+
+    /**
+   * 导出文件xlsx的mime-type
+   */
+  const XLSX_MIME_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+  /**
+   * 导出文件xlsx的文件后缀
+   */
+  const XLSX_FILE_SUFFIX = '.xlsx';
+
+  const handleExportXls = async (name, url, params, isXlsx = false) => {
+    const data = await defHttp.get({ url: url, params: params, responseType: 'blob', timeout: 60000 }, { isTransformResponse: false });
+    if (!data) {
+      createMessage.warning('文件下载失败');
+      return;
+    }
+    //update-begin---author:wangshuai---date:2024-04-18---for: 导出excel失败提示，不进行导出---
+    let reader = new FileReader()
+    reader.readAsText(data, 'utf-8')
+    reader.onload = async () => {
+      if(reader.result){
+        if(reader.result.toString().indexOf("success") !=-1){
+          // update-begin---author:liaozhiyang---date:2025-02-11---for:【issues/7738】文件中带"success"导出报错 ---
+          try {
+            const { success, message } = JSON.parse(reader.result.toString());
+            if (!success) {
+              createMessage.warning('导出失败，失败原因：' + message);
+            } else {
+              exportExcel(name, isXlsx, data);
+            }
+            return;
+          } catch (error) {
+            exportExcel(name, isXlsx, data);
+          }
+          // update-end---author:liaozhiyang---date:2025-02-11---for:【issues/7738】文件中带"success"导出报错 ---
+        }
+      }
+      exportExcel(name, isXlsx, data);
+      //update-end---author:wangshuai---date:2024-04-18---for: 导出excel失败提示，不进行导出---
+    }
+  }
+
+  const exportExcel = (name, isXlsx, data) => {
+    if (!name || typeof name != 'string') {
+      name = '导出文件';
+    }
+    let blobOptions = { type: 'application/vnd.ms-excel' };
+    let fileSuffix = '.xls';
+    if (isXlsx) {
+      blobOptions['type'] = XLSX_MIME_TYPE;
+      fileSuffix = XLSX_FILE_SUFFIX;
+    }
+    if (typeof window.navigator.msSaveBlob !== 'undefined') {
+      window.navigator.msSaveBlob(new Blob([data], blobOptions), name + fileSuffix);
+    } else {
+      let url = window.URL.createObjectURL(new Blob([data], blobOptions));
+      let link = document.createElement('a');
+      link.style.display = 'none';
+      link.href = url;
+      link.setAttribute('download', name + fileSuffix);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link); //下载完成移除元素
+      window.URL.revokeObjectURL(url); //释放掉blob对象
+    }
+  }
+
   onMounted(() => {
     if (userStatCardVisible) loadStats();
     loadTableData();
@@ -154,5 +221,6 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     getStatusTagColor,
     selectOptions,
     isVIP,
+    handleExportXls,
   };
 }

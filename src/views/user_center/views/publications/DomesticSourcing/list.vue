@@ -54,7 +54,7 @@ const actions = reactive([
 const pageData = ref({
   url: {
     list: 'apm/apmSourcing/list/owner',
-    overview: 'apm/apmSourcing/overview'
+    overview: 'apm/apmSourcing/overview',
   },
   otherParams: {
     sourcingType: '国产替代寻源'
@@ -70,6 +70,16 @@ const pageData = ref({
       title: '创建国产替代寻源',
       clickFn: createNewSourcing,
       type: 'primary'
+    },
+    {
+      title: '下载',
+      type: 'primary',
+      btnType: 'exportXls',
+      fileName: '国产替代寻源',
+      url: 'apm/apmSourcing/exportXls',
+      otherParams: {
+        sourcingType: '国产替代寻源'
+      }
     }
   ],
   dateRangeConfig: [

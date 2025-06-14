@@ -30,31 +30,12 @@ const tableColumns = reactive([
     { title: '活动区域', dataIndex: 'activityArea', key: 'activityArea', align: 'center' }, // This should be 'sourcingType' from mock
     { title: '活动地址', dataIndex: 'activityAddress', key: 'activityAddress', align: 'center' }, // This should be 'sourcingType' from mock
     { title: '内容', dataIndex: 'description', key: 'description', align: 'center' }, // This should be 'sourcingType' from mock
-    // { title: '产品类别', dataIndex: 'productType', key: 'productType', align: 'center',
-    //     customRender: ({record}) => {
-    //         const dictMap = authStore.sysAllDictItems['product_type'];
-    //         const str = dictMap.find(item => item.value == record.productType);
-    //         return <span>{str?.label || '-'}</span>;
-    //     }
-    //  }, // Key matches display field
-    // { title: '项目分类', dataIndex: 'projectType', key: 'projectType', align: 'center',
-    //     customRender: ({record}) => {
-    //         const dictMap = authStore.sysAllDictItems['project_type'];
-    //         const str = dictMap.find(item => item.value == record.productType);
-    //         return <span>{str?.label || '-'}</span>;
-    //     }
-    //  },
     { title: '需求状态', dataIndex: 'statusName', key: 'statusName', align: 'center' }, // Corrected key
     { title: '需求提出方', dataIndex: 'tenantName', key: 'tenantName', align: 'center' },
     { title: '创建时间', dataIndex: 'createTime', key: 'publishDate', align: 'center' },
     { title: '更新时间', dataIndex: 'updateTime', key: 'updateTime', ellipsis: true },
     { title: '操作', key: 'actions', align: 'center', fixed: 'right' },
 ]);
-
-const addButton = reactive({
-    text: '创建检测验证',
-    clickFn: createNewSourcing
-})
 
 const actions = reactive([
     {
@@ -72,15 +53,21 @@ const pageData = ref({
     },
     filterConfigForPage,
     tableColumns,
-    addButton,
     actions,
     statusDictKey: 'sourcing_status',
     userStatCardVisible: true,
     tableOperations: [
         {
-        title: '创建需求',
-        clickFn: createNewSourcing,
-        type: 'primary'
+            title: '创建需求',
+            clickFn: createNewSourcing,
+            type: 'primary'
+        },
+        {
+            title: '下载',
+            type: 'primary',
+            btnType: 'exportXls',
+            fileName: '线下活动',
+            url: 'apm/apmOfflineActivity/exportXls',
         }
     ]
 })

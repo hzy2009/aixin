@@ -64,11 +64,19 @@ const pageData = ref({
     statusDictKey: 'sourcing_status',
     userStatCardVisible: true,
     actions,
+    pageTitle: '检测验证',
     tableOperations: [
         {
-        title: '创建需求',
-        clickFn: createNewSourcing,
-        type: 'primary'
+            title: '创建需求',
+            clickFn: createNewSourcing,
+            type: 'primary'
+        },
+        {
+            title: '下载',
+            type: 'primary',
+            btnType: 'exportXls',
+            fileName: '检测验证',
+            url: 'apm/apmInspection/exportXls',
         }
     ],
     dateRangeConfig: [

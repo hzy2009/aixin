@@ -61,9 +61,16 @@ const pageData = ref({
     userStatCardVisible: true,
     tableOperations: [
         {
-        title: '创建需求',
-        clickFn: createNewSourcing,
-        type: 'primary'
+            title: '创建需求',
+            clickFn: createNewSourcing,
+            type: 'primary'
+        },
+        {
+            title: '下载',
+            type: 'primary',
+            btnType: 'exportXls',
+            fileName: '研发攻关',
+            url: 'apm/apmRdBreakthrough/exportXls',
         }
     ],
     dateRangeConfig: [
