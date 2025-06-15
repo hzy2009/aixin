@@ -138,7 +138,7 @@ const handleActionClick = async () => {
     registerUserId: user.loginTenantId,
     activityId: eventDetail.value.id,
   }
-  const response = await defHttp.post({ url: 'apm/apmOfflineActivity/register', data });
+  const response = await defHttp.post({ url: '/apm/apmOfflineActivity/register', data });
   if (response && response.success) {
     isRegisterSuccess.value = true;
   }

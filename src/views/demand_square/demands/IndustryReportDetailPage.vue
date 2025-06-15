@@ -1,4 +1,8 @@
 <template>
+  <div class="page-section-title-bar container">
+    <span class="decorator"></span>
+    <h2 class="title-text">行研报告</h2>
+  </div>
   <ContentWithSidebarLayout>
     <template #main>
       <IndustryReportDetailContent :report="reportData" />
@@ -28,13 +32,15 @@ const reportData = ref({});
 const isLoading = ref(false);
 const error = ref(null);
 
+const internalDemandId = ref(props.IdProp);
+
 async function fetchReportDetail() {
   if (!props.IdProp) return;
   isLoading.value = true;
   error.value = null;
   try {
     // TODO: API 调用 - 获取报告详情
-    const response = await defHttp.get({ url: 'apm/apmResearchReport/queryById/front', params: { id: props.IdProp } });
+    const response = await defHttp.get({ url: 'apm/apmResearchReport/queryById/front', params: { id: internalDemandId.value } });
     reportData.value = response.result;
 
   } catch (err) {
@@ -46,14 +52,18 @@ async function fetchReportDetail() {
   }
 }
 
-const goBack = () => {
-  router.push('/reports'); // 或者 router.go(-1)
-};
-
 onMounted(() => {
   fetchReportDetail();
 });
 
+watch(() => route.params.id, (newId, oldId) => {
+  if (newId && newId !== oldId) {
+    internalDemandId.value = newId;
+    fetchReportDetail();
+    // Hot news usually doesn't need to refresh based on current article, but can if logic requires
+    // fetchHotNews();
+  }
+}, { immediate: false }); // onMounted handles initial load
 // 如果路由ID变化（例如用户直接修改URL或从推荐报告点击），重新加载数据
 watch(() => route.params.id, (newId) => {
   if (newId && newId !== props.IdProp) {
@@ -107,6 +117,26 @@ watch(() => route.params.id, (newId) => {
 
   .ant-skeleton {
     margin-bottom: @spacing-xl;
+  }
+}
+
+.page-section-title-bar {
+  margin-top: @spacing-md;
+  display: flex;
+  align-items: center;
+
+  .decorator {
+    width: 4px;
+    height: 20px;
+    background-color: @primary-color;
+    margin-right: @spacing-sm;
+  }
+
+  .title-text {
+    font-size: 20px; // "行研报告" title size
+    font-weight: 600;
+    color: @text-color-base;
+    margin: 0;
   }
 }
 </style>

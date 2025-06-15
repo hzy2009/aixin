@@ -1,11 +1,5 @@
 <template>
-  <div class="report-detail-content-wrapper">
-    <!-- Section Title: "行研报告" with red bar -->
-    <div class="page-section-title-bar">
-      <span class="decorator"></span>
-      <h2 class="title-text">行研报告</h2>
-    </div>
-
+  <div class="report-detail-content-wrapper" v-if="!isRegisterSuccess">
     <!-- Main Report Info Block (Image Left, Details Right) -->
     <div class="report-header-block">
       <div class="report-header__image-wrapper">
@@ -19,7 +13,7 @@
         </div>
         <div class="report-meta-info-header">
           <span>领域：{{ report.reportTypeName }}</span>
-          <span>报告编号：{{ report.reportNumber || '未知字段' }}</span>
+          <span>报告编号：{{ report.code || '未知字段' }}</span>
         </div>
         <div class="report-action-block">
           <span class="report-price-header">¥ {{ report.unitPrice }}</span>
@@ -34,23 +28,20 @@
     <!-- Outline Section Below -->
     <div class="report-outline-section">
       <h3 class="outline-title">大纲/目录</h3>
-      <!-- <ul class="outline-list">
-        <li v-for="(item, index) in report.outline" :key="index">{{ item }}</li>
-      </ul> -->
-      <div v-html="report.outline" class="outline-list">
+      <div class="outline-list">
+        {{ outline }}
       </div>
-
     </div>
 
     <!-- Full Content (If applicable and different from summary) -->
-    <div v-if="report.fullContentHtml && showFullContent" class="report-body-content">
+    <!-- <div v-if="report.fullContentHtml && showFullContent" class="report-body-content">
       <h3 class="body-title">报告正文</h3>
       <div v-html="report.fullContentHtml" class="report-text-full"></div>
-    </div>
+    </div> -->
 
 
     <!-- Previous/Next Navigation Below -->
-    <div class="report-navigation-footer">
+    <!-- <div class="report-navigation-footer">
       <p v-if="report.previousReport">
         上一篇：<router-link :to="`/reports/detail/${report.previousReport.id}`">{{ report.previousReport.title
         }}</router-link>
@@ -58,38 +49,26 @@
       <p v-if="report.nextReport">
         下一篇：<router-link :to="`/reports/detail/${report.nextReport.id}`">{{ report.nextReport.title }}</router-link>
       </p>
-    </div>
+    </div> -->
   </div>
+  <operationResultPage v-else @primaryAction="handleToDetail" @secondaryAction="handleToList" />
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { Breadcrumb as ABreadcrumb, BreadcrumbItem as ABreadcrumbItem, Button as AButton } from 'ant-design-vue';
-import { message } from 'ant-design-vue';
+import { ref, watch } from 'vue';
+import operationResultPage from '@/components/template/OperationResultPage.vue';
 import defaultThumbnailPlaceholder from '@/assets/images/home/banner.png'; // Reusing placeholder
+import defHttp from '@/utils/http/axios'
+import { useAuthStore } from '@/store/authStore';
+import { useModalStore } from '@/store/modalStore';
+const authStore = useAuthStore();
+const modalStore = useModalStore();
 
 const props = defineProps({
   report: {
     type: Object,
     required: true,
     default: () => ({
-      title: '一维/二维MOO2-ZNIN2S4异质结的构筑与光催化活性研究',
-      summary: '直接利用太阳能实现光催化还原制取氢气，是解决能源危机的有效策略之一。过渡金属硫化物具有优异的可见光谱利用率和适宜的能级带结构，使其成为研究热点，然而，过高的充电速率极大地制约了它的应用。',
-      domain: '光催化分解水;异质结;过渡金属硫化物;领域名称;',
-      reportNumber: 'A00000-0000',
-      price: 198,
-      thumbnailUrl: null, // Will use placeholder from import
-      outline: [
-        '一、锂离子电池行业定义',
-        '二、锂离子电池行业发展背景',
-        '三、上游产业介绍-原材料',
-        '四、中游产业介绍-锂离子电池生产',
-        '五、下游产业介绍-锂离子电池应用',
-        '六、未来趋势'
-      ],
-      previousReport: { id: 'prev-001', title: '2023年中国集成电路产业运行情况' },
-      nextReport: { id: 'next-002', title: '抢滩新能源赛道：六国化工加码投资电池级精制磷酸' },
-      fullContentHtml: "<p>这里是报告的<strong>完整HTML</strong>内容...</p>", // Optional full content
     })
   },
   showFullContent: { // Prop to control if full HTML content is shown below outline
@@ -100,15 +79,31 @@ const props = defineProps({
 
 const isPurchasing = ref(false);
 const defaultThumbnail = defaultThumbnailPlaceholder;
+const isRegisterSuccess = ref(false);
 
-const handlePurchase = () => {
-  isPurchasing.value = true;
-  console.log("联系管理员购买报告:", props.report.id);
-  message.info('已通知管理员，请等待联系，或直接致电客服。');
-  setTimeout(() => {
-    isPurchasing.value = false;
-  }, 1500);
+const handlePurchase = async () => {
+  if (authStore?.token) {
+    const user = authStore.userInfo;
+    const data = {
+      buyerName: user.realname,
+      buyerId: user.loginTenantId,
+      reportId: props.report.id,
+    }
+    const response = await defHttp.post({ url: '/apm/apmResearchReport/register', data });
+    if (response && response.success) {
+      isRegisterSuccess.value = true;
+    }
+  } else {
+    modalStore.showLogin();
+  }
 };
+
+const handleToDetail = () => {
+  isRegisterSuccess.value = false;
+}
+const handleToList = () => {
+  router.push({ path: '/demands/IndustryReport' });
+}
 </script>
 
 <style scoped lang="less">
@@ -137,25 +132,7 @@ const handlePurchase = () => {
   }
 }
 
-.page-section-title-bar {
-  display: flex;
-  align-items: center;
-  margin-bottom: @spacing-lg; // Space after "行研报告" title
 
-  .decorator {
-    width: 4px;
-    height: 20px;
-    background-color: @primary-color;
-    margin-right: @spacing-sm;
-  }
-
-  .title-text {
-    font-size: 20px; // "行研报告" title size
-    font-weight: 600;
-    color: @text-color-base;
-    margin: 0;
-  }
-}
 
 .report-header-block {
   display: flex;
@@ -168,7 +145,7 @@ const handlePurchase = () => {
 
 .report-header__image-wrapper {
   width: 280px; // Width of the image in the design
-  height: 185px; // Height of the image in the design
+  //height: 185px;
   flex-shrink: 0;
   overflow: hidden;
   // border-radius: @border-radius-sm; // If image has rounded corners
@@ -193,11 +170,11 @@ const handlePurchase = () => {
     margin-bottom: @spacing-sm;
     line-height: 1.4;
     // For 2-line ellipsis if needed
-    // display: -webkit-box;
-    // -webkit-line-clamp: 2;
-    // -webkit-box-orient: vertical;
-    // overflow: hidden;
-    // text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .report-summary-header {
