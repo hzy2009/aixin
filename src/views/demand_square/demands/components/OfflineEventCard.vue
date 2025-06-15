@@ -11,7 +11,9 @@
         <h3 class="event-title">{{ event.activityName }}</h3>
         <div class="event-meta">
           <a-tag v-if="event.activityTypeName" class="event-type-tag">{{ event.activityTypeName }}</a-tag>
-          <div class="event-date"><CalendarOutlined /> {{ event.activityDate ? event.activityDate.split(' ')[0] : ''}}</div>
+          <div class="event-date">
+            <CalendarOutlined /> {{ event.createTime ? event.createTime.split(' ')[0] : '' }}
+          </div>
         </div>
       </div>
       <div class="event-card-action">
@@ -32,12 +34,6 @@ const props = defineProps({
     type: Object,
     required: true,
     default: () => ({
-      id: 'evt-001',
-      title: '会议主题会议主题会议主题会议主题',
-      bannerUrl: null, // 将使用占位图
-      activityTypeCode: 'Future', // 主办方，例如图片中的 "Future"
-      activityTypeName: '活动类型', // 例如 "技术研讨会"
-      eventDate: '2024/6/18',
     })
   }
 });
@@ -62,19 +58,21 @@ const viewEventDetails = (payLoad) => {
 .event-card {
   border-radius: @border-radius-sm; // 图片中卡片边角非常柔和
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06); // 图片中没有明显阴影，或者非常非常淡
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); // 图片中没有明显阴影，或者非常非常淡
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
     border-color: @primary-color;
+
     // box-shadow: 0 4px 12px rgba(0,0,0,0.08); // 可选：悬停时轻微阴影
     .event-cover-image {
-        transform: scale(1.03); // 图片轻微放大
+      transform: scale(1.03); // 图片轻微放大
     }
+
     .event-card-action span {
-        color: #fff; // 详情按钮文字颜色加深
-        background-color: @primary-color;
-        border-color: @primary-color-dark;
+      color: #fff; // 详情按钮文字颜色加深
+      background-color: @primary-color;
+      border-color: @primary-color-dark;
     }
   }
 
@@ -84,22 +82,25 @@ const viewEventDetails = (payLoad) => {
     overflow: hidden;
     position: relative;
   }
+
   .event-cover-image-wrapper {
-      width: 588;
-      height: 180px;
-      position: relative; // 为了主办方徽标定位
+    width: 588;
+    height: 180px;
+    position: relative; // 为了主办方徽标定位
   }
+
   .event-cover-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease-in-out;
   }
+
   .organizer-badge {
     position: absolute;
     top: @spacing-sm + 2px; // 距离顶部
-    left: @spacing-sm + 2px;  // 距离左侧
-    background-color: rgba(0,0,0,0.4); // 半透明黑色背景
+    left: @spacing-sm + 2px; // 距离左侧
+    background-color: rgba(0, 0, 0, 0.4); // 半透明黑色背景
     color: @text-color-light;
     font-size: 12px;
     padding: 3px 8px 3px 6px; // 细微调整padding
@@ -122,9 +123,10 @@ const viewEventDetails = (payLoad) => {
   }
 }
 
-.event-card-body{
+.event-card-body {
   padding: @spacing-md;
 }
+
 .event-card-content {
   // 此区域用于放置标题、标签和日期
   // 如果需要固定高度，可以在这里设置，并处理内容溢出
@@ -163,6 +165,7 @@ const viewEventDetails = (payLoad) => {
     margin: 0; // 清除AntD Tag的默认外边距
     margin-bottom: @spacing-sm; // 与下方（或卡片底部，如果没actions）的间距
   }
+
   .event-date {
     font-family: PingFang SC;
     font-weight: 400;
@@ -170,6 +173,7 @@ const viewEventDetails = (payLoad) => {
     line-height: 18px;
     letter-spacing: 0%;
     align-items: center;
+
     .anticon-calendar {
       margin-right: 5px;
       color: @text-color-tertiary; // 日期图标颜色
@@ -182,14 +186,16 @@ const viewEventDetails = (payLoad) => {
   padding: 0; // 清除AntD actions的默认padding
   border-top: 1px solid @border-color-light; // 分割线
   background-color: @background-color-base; // 确保背景色
-  > li {
+
+  >li {
     margin: 0; // 清除AntD li的默认外边距
     text-align: right; // 使内容靠右
     padding: @spacing-sm @spacing-md; // 给操作项内边距
 
-    > span { // 直接针对span，因为只有一个操作项
-        width: auto; // 允许内容自适应宽度
-        display: inline-block; // 使其像按钮一样
+    >span {
+      // 直接针对span，因为只有一个操作项
+      width: auto; // 允许内容自适应宽度
+      display: inline-block; // 使其像按钮一样
     }
   }
 }
@@ -199,7 +205,8 @@ const viewEventDetails = (payLoad) => {
   justify-content: flex-end; // 按钮靠右
   width: 100%; // 确保填满actions的li
 
-  span { // “查看详情” 文本按钮样式
+  span {
+    // “查看详情” 文本按钮样式
     font-size: 13px;
     color: @primary-color;
     border: 1px solid @primary-color;
