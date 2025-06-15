@@ -1,7 +1,12 @@
 <template>
+  <!-- 1. Page Title: "线下活动" -->
+  <div class="page-title-header container">
+    <span class="title-decorator-bar"></span>
+    <h2 class="page-main-heading">线下活动</h2>
+  </div>
   <ContentWithSidebarLayout>
     <template #main>
-      <div class="event-detail-content-main">
+      <div class="event-detail-content-main" v-if="!isRegisterSuccess">
         <div v-if="isLoadingEvent && !eventDetail" class="loading-placeholder">
           <a-spin size="large" tip="活动详情加载中..." />
         </div>
@@ -10,15 +15,10 @@
         </div>
         <div v-else class="event-details-loaded">
 
-          <!-- 1. Page Title: "线下活动" -->
-          <div class="page-title-header">
-            <span class="title-decorator-bar"></span>
-            <h2 class="page-main-heading">线下活动</h2>
-          </div>
-
           <!-- 2. Event Banner -->
           <div class="event-banner-full-width">
-            <img :src="eventDetail.bannerUrl || defaultBanner" :alt="eventDetail.title" class="event-banner-image-actual"/>
+            <img :src="eventDetail.bannerUrl || defaultBanner" :alt="eventDetail.title"
+              class="event-banner-image-actual" />
           </div>
 
           <!-- 3. Event Main Title -->
@@ -62,21 +62,17 @@
             <a-button type="primary" danger size="large" class="main-action-cta-button" @click="handleActionClick">
               {{ eventDetail.actionButtonText || '一键敲门' }}
             </a-button>
-            <p  class="action-cta-note">一键敲门后，客服人员将在30分钟内与您联系</p>
+            <p class="action-cta-note">一键敲门后，客服人员将在30分钟内与您联系</p>
           </div>
 
         </div>
       </div>
+      <operationResultPage v-else @primaryAction="handleToDetail" @secondaryAction="handleToList" />
     </template>
 
     <template #sidebar>
-      <RelatedItemsSidebar
-        title="其他线下活动"
-        :items="relatedEvents"
-        :is-loading="isLoadingRelated"
-        empty-description="暂无其他活动推荐"
-        @item-click="navigateToRelatedEvent"
-      />
+      <RelatedItemsSidebar title="其他线下活动" :items="relatedEvents" :is-loading="isLoadingRelated"
+        empty-description="暂无其他活动推荐" @item-click="navigateToRelatedEvent" />
     </template>
   </ContentWithSidebarLayout>
 </template>
@@ -88,7 +84,10 @@ import { Button as AButton, Spin as ASpin, Empty as AEmpty, message } from 'ant-
 import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue'; // Adjust path if needed
 import RelatedItemsSidebar from '@/components/common/RelatedItemsSidebar.vue'; // Adjust path if needed
 import defaultEventBannerPlaceholder from '@/assets/images/home/banner.png'; // Ensure this placeholder exists
+import operationResultPage from '@/components/template/OperationResultPage.vue';
 import defHttp from '@/utils/http/axios'
+import { useAuthStore } from '@/store/authStore';
+const authStore = useAuthStore();
 
 const route = useRoute();
 const router = useRouter();
@@ -98,38 +97,20 @@ const eventDetail = ref(null);
 const isLoadingEvent = ref(true);
 const relatedEvents = ref([]);
 const isLoadingRelated = ref(false);
-
+const isRegisterSuccess = ref(false);
 const eventId = computed(() => route.params.id || 'mock-event-1'); // Get ID from route params
 
 // --- Mock API Calls (Replace with actual API calls) ---
 async function fetchEventDetail(id) {
   isLoadingEvent.value = true;
   eventDetail.value = null;
-  const res = await defHttp.get({ url: `/apm/apmOfflineActivity/queryById/front`, params: {id}});
+  const res = await defHttp.get({ url: `/apm/apmOfflineActivity/queryById/front`, params: { id } });
   isLoadingEvent.value = false;
   if (res.success) {
     eventDetail.value = res.result
   } else {
     message.error(res.message)
   }
-  // TODO: Replace with actual API call: apiClient.get(`/api/events/${id}`)
-//   if (id === 'mock-event-1') { // Simulate data for a specific ID
-//     eventDetail.value = {
-//       id: 'mock-event-1',
-//       title: '2025第九届国际碳材料大会暨产业展览会会议主题会议主题',
-//       bannerUrl: null, // Will use defaultBanner
-//       eventDate: '2025年12月9-11日',
-//       eventType: '会议类型相关关键字',
-//       status: { key: 'preparing', label: '会议状态相关关键字' },
-//       description: `<p>Carbontech，通过“展览+主题论坛+特色活动”的形式，推动科技创新和产业创新融合，助力碳材料行业高质量发展和新质生产力培育。</p><p>Carbontech2025第九届国际碳材料大会暨产业展览会，将于2025年12月9-11日，在上海新国际博览中心 (N1-N3) 举办！展览将围绕半导体、新能源、高端装备等战略新兴和未来产业，展示宽禁带半导体、超精密加工工具、汽车/无人机零部件、碳陶制动盘、光伏热场、电极、硅碳、硬碳、电容炭、碳纤维及其复合材料、碳/碳复合材料、石墨烯粉体材料、金刚石、石墨烯及碳纳米材料、石墨基材料、活性炭、碳纳米管、碳纤维、石墨、石墨烯薄膜、金刚石培育钻石等产品、制造设备和仪器，预计吸引50000+专业观众，1000+行业CEO，2000+终端用户参与！同期活动将设置10+主题论坛，以及行业评选、产业地图发布、采购节、英才招聘、新品发布、项目路演等10+特色活动。</p>`,
-//       participantsInfo: '用户编号A9215188；用户编号A9215188；用户编号A9215188；用户编号A9215188；用户编号A9215188；用户编号A9215188；用户编号A9215188',
-//       actionButtonText: '一键敲门',
-//       actionNote: '一键敲门后，客服人员将在30分钟内与您联系'
-//     };
-//   } else {
-//     console.error("Event not found for ID:", id);
-//     // Optionally set an error state to show a message
-//   }
 }
 
 async function fetchRelatedEvents() {
@@ -137,7 +118,7 @@ async function fetchRelatedEvents() {
   // ... (fetch logic as before) ...
   console.log('[MOCK API] Fetching related events...');
   await new Promise(resolve => setTimeout(resolve, 500));
-  relatedEvents.value = [ { id: 'related-evt-1', title: '线下活动标题线下活动标题...', summary: '会议主要内容：直接利用太阳能实现光催化还原制取氢气，是解决能源危机的有效策略之一...', date: '2025/6/28' }, { id: 'related-evt-2', title: '另一相关活动标题示例', summary: '探讨行业最新动态与未来趋势，汇聚顶尖专家学者，分享前沿研究成果，促进产学研深度合作。', date: '2025/7/15' }, { id: 'related-evt-3', title: '第三个活动标题也很吸引人', summary: '聚焦关键技术突破，展示创新应用案例。本活动旨在为参与者提供一个交流思想、拓展人脉的平台。', date: '2025/8/02' }, { id: 'related-evt-4', title: '更多精彩活动敬请期待', summary: '探索未来科技，把握发展机遇。我们诚邀您参与，共同见证行业的辉煌未来，携手共创美好明天。', date: '2025/9/10' }, ];
+  relatedEvents.value = [{ id: 'related-evt-1', title: '线下活动标题线下活动标题...', summary: '会议主要内容：直接利用太阳能实现光催化还原制取氢气，是解决能源危机的有效策略之一...', date: '2025/6/28' }, { id: 'related-evt-2', title: '另一相关活动标题示例', summary: '探讨行业最新动态与未来趋势，汇聚顶尖专家学者，分享前沿研究成果，促进产学研深度合作。', date: '2025/7/15' }, { id: 'related-evt-3', title: '第三个活动标题也很吸引人', summary: '聚焦关键技术突破，展示创新应用案例。本活动旨在为参与者提供一个交流思想、拓展人脉的平台。', date: '2025/8/02' }, { id: 'related-evt-4', title: '更多精彩活动敬请期待', summary: '探索未来科技，把握发展机遇。我们诚邀您参与，共同见证行业的辉煌未来，携手共创美好明天。', date: '2025/9/10' },];
   isLoadingRelated.value = false;
 }
 // --- End Mock API Calls ---
@@ -150,9 +131,17 @@ const formattedParticipants = computed(() => {
   return [];
 });
 
-const handleActionClick = () => {
-  console.log('Action button clicked for event:', eventDetail.value?.id);
-  message.info(`“${eventDetail.value?.actionButtonText || '操作'}”功能模拟触发`);
+const handleActionClick = async () => {
+  const user = authStore.userInfo;
+  const data = {
+    registerUserName: user.realname,
+    registerUserId: user.loginTenantId,
+    activityId: eventDetail.value.id,
+  }
+  const response = await defHttp.post({ url: 'apm/apmOfflineActivity/register', data });
+  if (response && response.success) {
+    isRegisterSuccess.value = true;
+  }
 };
 
 const navigateToRelatedEvent = (relatedItem) => {
@@ -160,6 +149,12 @@ const navigateToRelatedEvent = (relatedItem) => {
     router.push({ name: 'EventDetail', params: { id: relatedItem.id } });
   }
 };
+const handleToDetail = () => {
+  isRegisterSuccess.value = false;
+}
+const handleToList = () => {
+  router.push({ path: '/demands/OfflineEvent' });
+}
 
 onMounted(() => {
   fetchEventDetail(eventId.value);
@@ -180,19 +175,22 @@ watch(() => route.params.id, (newId, oldId) => {
 
 .event-detail-content-main {
   padding: @spacing-md;
+  background-color: #fff;
   // This is the main white content block from ContentWithSidebarLayout
 }
 
 .page-title-header {
+  margin-top: @spacing-md;
   display: flex;
   align-items: center;
-  margin-bottom: @spacing-lg; // Space below "线下活动" title
+
   .title-decorator-bar {
     width: 4px;
     height: 20px; // Height of the decorator bar
     background-color: @primary-color; // Red decorator
     margin-right: @spacing-sm;
   }
+
   .page-main-heading {
     font-size: 18px; // "线下活动" title size
     font-weight: 500;
@@ -249,6 +247,7 @@ watch(() => route.params.id, (newId, oldId) => {
       margin-right: @spacing-xs;
       white-space: nowrap; // Prevent label from wrapping
     }
+
     .meta-value {
       font-family: PingFang SC;
       font-weight: 400;
@@ -258,6 +257,7 @@ watch(() => route.params.id, (newId, oldId) => {
       text-align: justify;
       color: #000000; // Darker value
     }
+
     .status-text {
       // Add classes like .status-preparing, .status-ongoing if you want to color code
       // e.g. &.status-ongoing { color: green; }
@@ -284,23 +284,29 @@ watch(() => route.params.id, (newId, oldId) => {
     line-height: 1.7;
     color: @text-color-secondary; // Default content text color
 
-    &.rich-text { // For v-html content like description
+    &.rich-text {
+      // For v-html content like description
       color: #333333; // Match image's slightly darker paragraph text
+
       :deep(p) {
         margin-bottom: 0.8em; // Space between paragraphs
+
         &:last-child {
           margin-bottom: 0;
         }
       }
     }
+
     &.participants-text {
       color: #666666; // Match image's participant text color
+
       // Styles for <p> tags generated by v-for="line in formattedParticipants"
       p {
-          margin-bottom: 3px; // Small space between participant lines
-          &:last-child {
-              margin-bottom: 0;
-          }
+        margin-bottom: 3px; // Small space between participant lines
+
+        &:last-child {
+          margin-bottom: 0;
+        }
       }
     }
   }
@@ -318,15 +324,17 @@ watch(() => route.params.id, (newId, oldId) => {
     min-width: 150px; // Button width
     height: 40px;
     font-size: 16px;
+
     // AntD primary danger button should give red color
     // If not, explicitly set:
     // background-color: #D9001B; (a common antd red)
     // border-color: #D9001B;
     &:hover {
-        // background-color: darken(#D9001B, 5%);
-        // border-color: darken(#D9001B, 5%);
+      // background-color: darken(#D9001B, 5%);
+      // border-color: darken(#D9001B, 5%);
     }
   }
+
   .action-cta-note {
     font-size: 12px; // Smaller note text
     color: @text-color-tertiary; // Light gray for note
@@ -334,7 +342,8 @@ watch(() => route.params.id, (newId, oldId) => {
   }
 }
 
-.loading-placeholder, .error-placeholder {
+.loading-placeholder,
+.error-placeholder {
   display: flex;
   flex-direction: column;
   justify-content: center;

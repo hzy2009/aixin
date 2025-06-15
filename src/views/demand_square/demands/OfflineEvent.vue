@@ -1,14 +1,16 @@
 <template>
   <div>
-    <listPage :pageData="pageData" >
-        <template #content="{ dataSource, paginationConfig }">
-          <div class="results-grid">
-            <OfflineEventCard v-for="event in dataSource" :key="event.id" :event="event" @handleDetails="handleDetails(event)"/>
-          </div>
-          <div class="pagination-wrapper">
-            <a-pagination size="small" v-model:current="paginationConfig.current" v-bind="paginationConfig" show-quick-jumper :total="dataSource.length" @change="onChange" />
-          </div>
-        </template>
+    <listPage :pageData="pageData">
+      <template #content="{ dataSource, paginationConfig }">
+        <div class="results-grid">
+          <OfflineEventCard v-for="event in dataSource" :key="event.id" :event="event"
+            @handleDetails="handleDetails(event)" />
+        </div>
+        <div class="pagination-wrapper">
+          <a-pagination size="small" v-model:current="paginationConfig.current" v-bind="paginationConfig"
+            show-quick-jumper :total="dataSource.length" @change="onChange" />
+        </div>
+      </template>
     </listPage>
   </div>
 </template>
@@ -18,6 +20,12 @@ import { ref, reactive } from 'vue'; // onMounted removed as hook handles it
 import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import OfflineEventCard from './components/OfflineEventCard.vue';
+import { useAuthStore } from '@/store/authStore';
+import { useModalStore } from '@/store/modalStore';
+
+const authStore = useAuthStore();
+const modalStore = useModalStore();
+
 const router = useRouter();
 
 // --- Filter Configuration (remains in component as it's UI specific) ---
@@ -53,7 +61,11 @@ const paginationConfig = reactive({
   pageSize: 10
 })
 function handleDetails({ id }) {
-  router.push(`/demands/OfflineEventDetailPage/${id}`);
+  if (authStore?.token) {
+    router.push(`/demands/OfflineEventDetailPage/${id}`);
+  } else {
+    modalStore.showLogin();
+  }
 };
 function create() {
   router.push(`/user/published/OfflineEvent/create`);
@@ -62,28 +74,32 @@ function create() {
 
 <style scoped lang="less">
 @import '@/assets/styles/_variables.less';
-   .results-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(580px, 1fr));
-    gap: @spacing-lg;
 
-    @media (max-width: 768px) {
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    }
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(580px, 1fr));
+  gap: @spacing-lg;
 
-    @media (max-width: 400px) {
-      grid-template-columns: 1fr;
-    }
-  } 
-  .content-section {
-    margin-bottom: @spacing-lg;
-   &:last-child {
-      margin-bottom: 0;
-   }
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
-  .pagination-wrapper{
-    // 定位到右边
-    text-align: right;
-    margin-bottom: @spacing-lg;
+
+  @media (max-width: 400px) {
+    grid-template-columns: 1fr;
   }
+}
+
+.content-section {
+  margin-bottom: @spacing-lg;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.pagination-wrapper {
+  // 定位到右边
+  text-align: right;
+  margin-bottom: @spacing-lg;
+}
 </style>
