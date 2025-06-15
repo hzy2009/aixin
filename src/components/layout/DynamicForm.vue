@@ -105,7 +105,16 @@ const emit = defineEmits(['submit', 'validationFailed', 'fieldChange']);
 
 const formRef = ref(null);
 const internalFormModel = reactive({});
-
+const getRandom = (length = 1) => {
+  return '-' + parseInt(String(Math.random() * 10000 + 1), length);
+};
+const getFileName = (path) => {
+  if (path.lastIndexOf('\\') >= 0) {
+    let reg = new RegExp('\\\\', 'g');
+    path = path.replace(reg, '/');
+  }
+  return path.substring(path.lastIndexOf('/') + 1);
+};
 watch(() => props.initialModel, (newModel) => {
   Object.keys(internalFormModel).forEach(key => delete internalFormModel[key]);
   const modelToAssign = JSON.parse(JSON.stringify(newModel || {}));
@@ -118,7 +127,7 @@ watch(() => props.initialModel, (newModel) => {
       } else {
         modelToAssign[field.field] = [{
           uid: getRandom(10),
-          name: getFileName(value),
+          name: "图片",
           status: 'done',
           url: getFileAccessHttpUrl(modelToAssign[field.field]),
           response: {
@@ -126,7 +135,6 @@ watch(() => props.initialModel, (newModel) => {
             message: modelToAssign[field.field],
           },
         }]
-        getFileName
       }
     }
   });
@@ -249,8 +257,8 @@ const getAllData = () => {
   const paranms = JSON.parse(JSON.stringify(internalFormModel || {}));
   props.formConfig.forEach(fielditem => {
     if (fielditem.fieldType === 'imageUpload') {
-      if (paranms[fielditem.field] && paranms[fielditem.field][0] && paranms[fielditem.field][0].response.message) {
-        paranms[fielditem.field] = getFileAccessHttpUrl(paranms[fielditem.field][0].response.message)
+      if (paranms[fielditem.field] && paranms[fielditem.field][0] && paranms[fielditem.field][0].response.result[0]) {
+        paranms[fielditem.field] = getFileAccessHttpUrl(paranms[fielditem.field][0].response.result[0])
       } else {
         paranms[fielditem.field] = null
       }
@@ -272,19 +280,7 @@ const getHeaders = () => {
     'X-Tenant-Id': auth.userInfo.id || '0',
   });
 }
-
-const getFileName = (path) => {
-  if (path.lastIndexOf('\\') >= 0) {
-    let reg = new RegExp('\\\\', 'g');
-    path = path.replace(reg, '/');
-  }
-  return path.substring(path.lastIndexOf('/') + 1);
-};
-const getRandom = (length = 1) => {
-  return '-' + parseInt(String(Math.random() * 10000 + 1), length);
-};
-
-const getFileAccessHttpUrl = (fileUrl, prefix = 'http') => {
+function getFileAccessHttpUrl(fileUrl, prefix = 'http') {
   let result = fileUrl;
   try {
     if (fileUrl && fileUrl.length > 0 && !fileUrl.startsWith(prefix)) {

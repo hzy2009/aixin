@@ -19,9 +19,12 @@
 						v-if="item.fieldType === 'select' && (item.options || selectOptions(item.dictKey))">
 						{{ getSelectDisplayValue(item, formModel[item.field]) }}
 					</span>
-					<span class="info-grid-value"
-						v-else-if="item.fieldType === 'date'">
+					<span class="info-grid-value" v-else-if="item.fieldType === 'date'">
 						{{ getDataDisplayValue(formModel[item.field]) }}
+					</span>
+					<span class="info-grid-value" v-else-if="item.fieldType === 'imageUpload'">
+						<img :src="formModel[item.field]" alt="" class="info-grid-image">
+						<!-- {{ formModel[item.field] }} -->
 					</span>
 					<span v-else class="info-grid-value">{{ formModel[item.field] }}</span>
 				</div>
@@ -45,17 +48,17 @@
 				<h3 class="section-title-text">{{ statusTracking.title || '状态跟踪' }}</h3>
 			</div>
 			<a-steps :current="currentStepIndex" class="status-steps" progress-dot size="small">
-				<a-step v-for="(step, stepIdx) in statusTracking.steps" :key="`step-${stepIdx}`" :title="step.operateName"
-					:description="step.createTime" :status="step.status" />
+				<a-step v-for="(step, stepIdx) in statusTracking.steps" :key="`step-${stepIdx}`"
+					:title="step.operateName" :description="step.createTime" :status="step.status" />
 			</a-steps>
 			<a-table v-if="formModel.logList && formModel.logList.length > 0" :columns="statusHistoryColumns"
 				:data-source="formModel.logList" :pagination="false" :row-key="'id'" bordered size="middle"
-				class="custom-detail-table status-history-table" >
+				class="custom-detail-table status-history-table">
 
 				<template #bodyCell="{ column, record, index }">
-					 <span v-if="column.dataIndex === 'index'">
-                            {{index + 1}}
-                        </span>
+					<span v-if="column.dataIndex === 'index'">
+						{{ index + 1 }}
+					</span>
 				</template>
 			</a-table>
 		</section>
@@ -85,6 +88,7 @@ const selectOptions = (dictKey) => {
 	return auth.sysAllDictItems[dictKey].map(({ label, value }) => ({ label, value })) || [];
 };
 
+const baseImgUrl = import.meta.env.VITE_GLOB_DOMAIN_URL
 
 const props = defineProps({
 	pageData: {
@@ -138,7 +142,7 @@ const statusTracking = computed(() => {
 	const steps = stepData.map(step => {
 		return {
 			...step,
-			status: step.businessId  ? 'finish': 'wait'
+			status: step.businessId ? 'finish' : 'wait'
 		}
 	})
 	return {
@@ -419,5 +423,10 @@ const handleDefaultSubmit = () => {
 	margin-top: @spacing-xs;
 	font-size: 12px;
 	color: @text-color-tertiary;
+}
+
+.info-grid-image {
+	max-width: 300px;
+	max-height: 300px;
 }
 </style>

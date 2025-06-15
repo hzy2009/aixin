@@ -19,11 +19,11 @@ const props = defineProps({
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
-  { label: '活动编号', field: 'code', span: 24},
-  { label: '活动类型', field: 'activityTypeName', dictKey: 'activity_type', span: 24},
-  { label: '活动会议内容', field: 'activityName', span: 24},
+  { label: '活动编号', field: 'code', span: 24 },
+  { label: '活动类型', field: 'activityTypeName', dictKey: 'activity_type', span: 24 },
+  { label: '活动会议内容', field: 'activityName', span: 24 },
   { label: '活动会议结果', field: 'description', span: 24 },
-  { label: '活动名称', field: 'activityName', span: 24},
+  { label: '活动名称', field: 'activityName', span: 24 },
   { label: '活动图片', field: 'imageUrl', fieldType: 'imageUpload', span: 24 },
 ]
 
@@ -50,7 +50,6 @@ const pageData = reactive({
   statusHistoryColumns,
   pageTitle,
   handleBeforeSave: (data) => {
-    debugger
     data.imageUrl = data.imageUrl.join(',');
   },
   detailPath: '/user/published/OfflineEventDetail',
@@ -78,8 +77,7 @@ const pageData = reactive({
 })
 
 const goBack = () => {
-  router.go(-1);
-  // router.push('/user/published/PublicRelations');
+  router.push({ path: '/user/published/OfflineEvent' });
 };
 
 </script>
