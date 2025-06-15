@@ -11,7 +11,7 @@
         <h3 class="event-title">{{ event.activityName }}</h3>
         <div class="event-meta">
           <a-tag v-if="event.activityTypeName" class="event-type-tag">{{ event.activityTypeName }}</a-tag>
-          <div class="event-date"><CalendarOutlined /> {{ event.activityDate.split(' ')[0] }}</div>
+          <div class="event-date"><CalendarOutlined /> {{ event.activityDate ? event.activityDate.split(' ')[0] : ''}}</div>
         </div>
       </div>
       <div class="event-card-action">
