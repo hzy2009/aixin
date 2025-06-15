@@ -36,7 +36,7 @@
 .main-content-area {
   flex: 1; // Takes up most of the space
   min-width: 0; // Important for flex item to prevent overflow
-  background-color: @background-color-base; // White background for main content
+  background-color: #f8f9fa; // White background for main content
 }
 
 .sidebar-area {

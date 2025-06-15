@@ -5,11 +5,6 @@
                 <div class="results-grid content-section">
                     <TalentProfileCard v-for="item in dataSource" :key="item.id" :talent="item" @handleDetail="viewDetails"/>
                 </div>
-                <!-- <a-pagination 
-                    v-model:current="paginationConfig.current" 
-                    show-quick-jumper
-                    v-bind="{...paginationConfig, showSizeChanger: false, showTotal: false, showQuickJumper: true,}"
-                    @change="onChange" /> -->
             <div class="pagination-wrapper">
                 <a-pagination size="small" v-model:current="paginationConfig.current" v-bind="paginationConfig" show-quick-jumper :total="dataSource.length" @change="onChange" />
           </div>
@@ -28,8 +23,6 @@ const router = useRouter();
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
     { id: 'skillAreaCode', label: '研究领域', maxVisibleWithoutMore: 7, dictKey: 'skill_area' },
-    // { id: 'region', label: '区域', maxVisibleWithoutMore: 3, options: [{ value: 'all', label: '全部' }, { value: 'huadong', label: '华东' }, { value: 'huanan', label: '华南' }, { value: 'huazhong', label: '华中' }, { value: 'huabei', label: '华北' }, { value: 'xinan', label: '西南' }, { value: 'xibei', label: '西北' }] },
-    { id: 'statusCode', label: '状态', maxVisibleWithoutMore: 7, dictKey: 'report_status' }
 ]);
 
 const pageData = ref({
@@ -38,6 +31,7 @@ const pageData = ref({
         overview: 'apm/apmTalent/overview/front'
     },
     filterConfigForPage,
+    pageTitle: '行业人才',
     showBanner: true
 })
 
