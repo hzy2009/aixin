@@ -49,7 +49,7 @@
           </router-link>
 
           <!-- Pure CSS Hover Submenu -->
-          <ul v-if="item.subItems && item.subItems.length > 0" class="css-submenu">
+          <ul v-if="auth.isLogin && item.subItems && item.subItems.length > 0" class="css-submenu">
             <li v-for="subItem in item.subItems" :key="subItem.key" class="css-submenu-item">
               <router-link :to="subItem.path" class="css-submenu-link">{{ subItem.label }}</router-link>
             </li>
