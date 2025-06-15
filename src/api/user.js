@@ -69,7 +69,7 @@ export function getAllDictApi() {
 export function uploadImg(params, onUploadProgress) {
   return defHttp.uploadFile<UploadApiResult>(
     {
-      url: `${import.meta.env.VITE_GLOB_UPLOAD_URL}/sys/common/upload`,
+      url: `${import.meta.env.VITE_API_BASE_URL}/apm/sys/file/upload/A`,
       onUploadProgress,
     },
     params,

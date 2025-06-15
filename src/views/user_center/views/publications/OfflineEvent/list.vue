@@ -24,16 +24,16 @@ const filterConfigForPage = reactive([
 const tableColumns = reactive([
     { title: '序号', dataIndex: 'index', key: 'index', textAlign: 'center', width: '60px' },
     { title: '单号', dataIndex: 'code', key: 'code', ellipsis: true, width: '120px' },
-    { title: '活动名称', dataIndex: 'activityName', key: 'activityName', align: 'center' }, // This should be 'sourcingType' from mock
-    { title: '类型名称', dataIndex: 'activityTypeName', key: 'activityTypeName', align: 'center' }, // This should be 'sourcingType' from mock
-    { title: '规模', dataIndex: 'registerLimit', key: 'registerLimit', align: 'center' }, // This should be 'sourcingType' from mock
-    { title: '活动日期', dataIndex: 'activityDate', key: 'activityDate', align: 'center' }, // This should be 'sourcingType' from mock
-    { title: '活动区域', dataIndex: 'activityArea', key: 'activityArea', align: 'center' }, // This should be 'sourcingType' from mock
-    { title: '活动地址', dataIndex: 'activityAddress', key: 'activityAddress', align: 'center' }, // This should be 'sourcingType' from mock
-    { title: '内容', dataIndex: 'description', key: 'description', align: 'center' }, // This should be 'sourcingType' from mock
-    { title: '需求状态', dataIndex: 'statusName', key: 'statusName', align: 'center' }, // Corrected key
-    { title: '需求提出方', dataIndex: 'tenantName', key: 'tenantName', align: 'center' },
-    { title: '创建时间', dataIndex: 'createTime', key: 'publishDate', align: 'center' },
+    { title: '活动名称', dataIndex: 'activityName', key: 'activityName', align: 'center', ellipsis: true }, // This should be 'sourcingType' from mock
+    { title: '类型名称', dataIndex: 'activityTypeName', key: 'activityTypeName', align: 'center', ellipsis: true }, // This should be 'sourcingType' from mock
+    { title: '规模', dataIndex: 'registerLimit', key: 'registerLimit', align: 'center', ellipsis: true }, // This should be 'sourcingType' from mock
+    { title: '活动日期', dataIndex: 'activityDate', key: 'activityDate', align: 'center', ellipsis: true }, // This should be 'sourcingType' from mock
+    { title: '活动区域', dataIndex: 'activityArea', key: 'activityArea', align: 'center', ellipsis: true }, // This should be 'sourcingType' from mock
+    { title: '活动地址', dataIndex: 'activityAddress', key: 'activityAddress', align: 'center', ellipsis: true }, // This should be 'sourcingType' from mock
+    { title: '内容', dataIndex: 'description', key: 'description', align: 'center', ellipsis: true }, // This should be 'sourcingType' from mock
+    { title: '需求状态', dataIndex: 'statusName', key: 'statusName', align: 'center', ellipsis: true }, // Corrected key
+    { title: '需求提出方', dataIndex: 'tenantName', key: 'tenantName', align: 'center', ellipsis: true },
+    { title: '创建时间', dataIndex: 'createTime', key: 'publishDate', align: 'center', ellipsis: true },
     { title: '更新时间', dataIndex: 'updateTime', key: 'updateTime', ellipsis: true },
     { title: '操作', key: 'actions', align: 'center', fixed: 'right' },
 ]);

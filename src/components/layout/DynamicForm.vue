@@ -46,13 +46,10 @@
             <div v-else-if="field.fieldType === 'imageUpload'" class="image-upload-container">
               <a-upload v-model:file-list="internalFormModel[field.field]" :name="field.uploadName || 'file'"
                 list-type="picture-card" class="custom-image-uploader"
-                :show-upload-list="field.showUploadList !== undefined ? field.showUploadList : true"
-                :action="uploadUrl" :before-upload="field.beforeUpload || beforeUpload"
-                accept="image/*"
-                :headers="getHeaders()"
-                :data="{ biz: 'temp' }"
-                @change="(info) => handleImageUploadChange(info, field)" @preview="handleImagePreview"
-                :max-count="field.maxCount || 1" :disabled="field.disabled">
+                :show-upload-list="field.showUploadList !== undefined ? field.showUploadList : true" :action="uploadUrl"
+                :before-upload="field.beforeUpload || beforeUpload" accept="image/*" :headers="getHeaders()"
+                :data="{ biz: 'temp' }" @change="(info) => handleImageUploadChange(info, field)"
+                @preview="handleImagePreview" :max-count="field.maxCount || 1" :disabled="field.disabled">
                 <div
                   v-if="(!internalFormModel[field.field] || internalFormModel[field.field].length < (field.maxCount || 1))">
                   <PlusOutlined />
@@ -84,7 +81,8 @@ import {
   RangePicker as ARangePicker, Upload as AUpload, Modal as AModal, message
 } from 'ant-design-vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
-const uploadUrl = `${import.meta.env.VITE_GLOB_UPLOAD_URL}sys/common/upload` || '/api';
+const uploadUrl = `${import.meta.env.VITE_API_BASE_URL}/apm/sys/file/upload/A` || '/api';
+// const uploadUrl = `/apm/sys/file/upload/A` || '/api';
 console.log('uploadUrl', uploadUrl)
 const auth = useAuthStore(); // For dictionary options
 
@@ -210,7 +208,7 @@ const handleImageUploadChange = (info, fieldConfig) => {
     return;
   }
   if (info.file.status === 'done') {
-    if ( info.file.response.success === false) {
+    if (info.file.response.success === false) {
       message.error(info.file.response.message);
       const failIndex = internalFormModel[fieldConfig.field].findIndex((item) => item.uid === file.uid);
       if (failIndex != -1) {
@@ -261,14 +259,14 @@ const getAllData = () => {
   return paranms
 }
 
-const beforeUpload = (file) =>{
+const beforeUpload = (file) => {
   let fileType = file.type;
   if (fileType.indexOf('image') < 0) {
     createMessage.info('请上传图片');
     return false;
   }
 };
-const getHeaders = () =>{
+const getHeaders = () => {
   return reactive({
     'X-Access-Token': auth.token,
     'X-Tenant-Id': auth.userInfo.id || '0',
@@ -301,7 +299,7 @@ const getFileAccessHttpUrl = (fileUrl, prefix = 'http') => {
         }
       }
     }
-  } catch (err) {}
+  } catch (err) { }
   return result;
 };
 
@@ -368,7 +366,8 @@ defineExpose({ validate, resetFields, clearValidate, getAllData, formModel: inte
   :deep(.ant-picker) {
     height: 36px !important; // Ensure consistent height
   }
-  :deep(.ant-input){
+
+  :deep(.ant-input) {
     height: 26px !important;
   }
 
