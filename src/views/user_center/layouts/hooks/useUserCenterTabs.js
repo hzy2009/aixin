@@ -17,13 +17,16 @@ const defaultTabsConfig = {
       // ... 更多 "我发布的" 子页签
     ],
   },
-  participated: {
-    key: 'participated',
+  join: {
+    key: 'join',
     label: '我参与的',
-    defaultSubTabKey: 'participatedDemands',
+    defaultSubTabKey: 'joindDemands',
     subTabs: [
-      { key: 'participatedDemands', label: '我参与的需求', path: '/user/participated/demands' },
-      { key: 'participatedEvents', label: '我参与的活动', path: '/user/participated/events' },
+      { key: 'joinAlternativeSourcing', label: '国产替代寻源', path: '/user/join/DomesticSourcing' },
+      { key: 'joinOriginalSourcing', label: '原厂件寻源', path: '/user/join/OEMPartsSourcing' },
+      { key: 'joinRndCollaboration', label: '研发攻关', path: '/user/join/PublicRelations' },
+      { key: 'joinTestingValidation', label: '检测验证', path: '/user/join/Verification' },
+      { key: 'joinOfflineEvents', label: '线下活动', path: '/user/join/OfflineEvent' },
       // ... 更多 "我参与的" 子页签
     ],
   },

@@ -28,6 +28,26 @@ const OfflineEventDetailPage = () => import('./views/publications/OfflineEvent/d
 const OfflineEventEditPage = () => import('./views/publications/OfflineEvent/edit.vue');
 
 
+
+
+
+const joinDomesticSourcing = () => import('./views/join/DomesticSourcing/list.vue'); 
+
+
+const joinOEMPartsSourcing = () =>import('./views/join/OEMParts/list.vue'); 
+
+
+const joinPublicRelations = () =>import('./views/join/PublicRelations/list.vue'); 
+
+
+
+const joinVerification = () =>import('./views/join/Verification/list.vue'); 
+
+
+
+const joinOfflineEvent = () =>import('./views/join/OfflineEvent/list.vue'); 
+
+
 const userCenterRoutes = [
   {
     path: '/user/published', // “我发布的” 的父路由
@@ -120,21 +140,69 @@ const userCenterRoutes = [
       },
     ]
   },
-  // {
-  //   path: '/user/participated', // “我参与的” 的父路由
-  //   component: UserCenterCommonLayout,
-  //   meta: { requiresAuth: true },
-  //   redirect: '/user/participated/demands',
-  //   children: [
-  //     {
-  //       path: 'demands',
-  //       name: 'ParticipatedDemands',
-  //       component: () => import('./views/MyParticipatedDemandsPage.vue'), // 需要创建
-  //       meta: { title: '我参与的需求' }
-  //     },
-  //     // ... 其他 "我参与的" 子路由
-  //   ]
-  // },
+  {
+    path: '/user/join', // “我参与的” 的父路由
+    component: UserCenterCommonLayout, // 使用新的通用顶部布局
+    meta: { requiresAuth: true },
+    redirect: '/user/published/DomesticSourcing', // 默认跳转到第一个子页签
+    children: [
+     {
+        path: 'DomesticSourcing', // 相对路径
+        component: joinDomesticSourcing, // 这个页面现在是子路由
+        meta: { title: '我参与的 - 国产替代寻源' }
+      },
+      {
+        path: 'DomesticSourcing/detail/:id', 
+        component: DomesticDetailPage, 
+        props: route => ({ IdProp: route.params.id }), // 通过 props 传递 mode 和 id
+        meta: { title: '国产替代寻源详情', breadcrumb: ['国产替代寻源'] }
+      },
+      {
+        path: 'OEMPartsSourcing',
+        component: joinOEMPartsSourcing, 
+        meta: { title: '我参与的 - 原厂件寻源' }
+      },
+      {
+        path: 'OEMPartsSourcing/detail/:id', 
+        component: OEMPartsDetailPage, 
+        props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
+        meta: { title: '原厂件寻源详情', breadcrumb: ['原厂件寻源详情'] }
+      },
+      {
+        path: 'PublicRelations',
+        component: joinPublicRelations,
+        meta: { title: '我参与的 - 研发攻关' }
+      },
+      {
+        path: 'PublicRelations/detail/:id', 
+        component: PublicRelationsDetailPage, 
+        props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
+        meta: { title: '研发攻关需求详情', breadcrumb: [ '研发攻关需求详情'] }
+      },
+      {
+        path: 'Verification',
+        component: joinVerification,
+        meta: { title: '我参与的 - 检测验证' }
+      },
+      {
+        path: 'Verification/detail/:id', 
+        component: VerificationDetailPage, 
+        props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
+        meta: { title: '检测验证需求详情', breadcrumb: [ '检测验证需求详情'] }
+      },
+      {
+        path: 'OfflineEvent',
+        component: joinOfflineEvent,
+        meta: { title: '我参与的 - 线下活动' }
+      },
+      {
+        path: 'OfflineEvent/detail/:id',
+        props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
+        component: OfflineEventDetailPage,
+        meta: { title: '线下活动详情' }
+      },
+    ]
+  },
   // ... 其他顶层用户中心路由 ...
 ];
 

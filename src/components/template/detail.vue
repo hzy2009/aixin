@@ -40,7 +40,7 @@
 			<slot name="content"></slot>
 		</section>
 		<!-- Section: Status Tracking (Timeline/Steps + Table) -->
-		<section v-if="showLogList && statusTracking && statusTracking.steps && statusTracking.steps.length > 0" class="info-section">
+		<section v-if="showLogList && statusTracking" class="info-section">
 			<div class="section-title-wrapper">
 				<h3 class="section-title-text">{{ statusTracking.title || '状态跟踪' }}</h3>
 			</div>
