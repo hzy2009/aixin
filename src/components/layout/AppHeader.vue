@@ -6,8 +6,7 @@
         <span class="welcome-text">欢迎来到爱芯享信息共享平台!</span>
         <div class="user-actions-top">
           <template v-if="auth.isLogin">
-            <router-link to="/user/published" class="top-action-link" >我发布的</router-link>
-            <!-- <router-link to="/user/member-info" class="top-action-link" >用户管理</router-link> -->
+            <router-link to="/user/published" class="top-action-link">我发布的</router-link>
             <a @click="handleLogout" class="top-action-link">退出登录</a>
           </template>
           <template v-else>
@@ -35,15 +34,27 @@
     <!-- Unified Navigation Bar (Red Bar, only if NOT in user center) - Full Width -->
     <nav class="unified-navigation-bar">
       <div class="unified-navigation-bar__content container">
-        <router-link
-          v-for="item in navigationItems"
-          :key="item.key"
-          :to="item.path"
-          class="unified-nav-link"
+        <div
+          v-for="(item, i) in navigationItems"
+          :key="item.key + i"
+          class="unified-nav-item-wrapper"
+          :class="{ 'has-submenu': item.subItems && item.subItems.length > 0 }"
         >
-          {{ item.label }}
-          <!-- :class="{ 'unified-nav-link--active': isActiveNavItem(item) }" -->
-        </router-link>
+          <router-link
+            :key="item.key"
+            :to="item.path"
+            class="unified-nav-link"
+          >
+            {{ item.label }}
+          </router-link>
+
+          <!-- Pure CSS Hover Submenu -->
+          <ul v-if="item.subItems && item.subItems.length > 0" class="css-submenu">
+            <li v-for="subItem in item.subItems" :key="subItem.key" class="css-submenu-item">
+              <router-link :to="subItem.path" class="css-submenu-link">{{ subItem.label }}</router-link>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
   </header>
@@ -53,14 +64,14 @@
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/store/authStore';
-import { useNavigation } from './hooks/useNavigation'; // Adjust path if needed
+import { useNavigation } from './hooks/useNavigation';
 
 const route = useRoute();
 const router = useRouter();
 const auth = useAuthStore();
 const { navigationItems, isActiveNavItem } = useNavigation();
 
-const showTopWelcomeBar = computed(() => true); // Always shown
+const showTopWelcomeBar = computed(() => true);
 
 const navigateToLogin = () => router.push('/login');
 const navigateToRegister = () => router.push('/register');
@@ -82,7 +93,6 @@ const handleLogout = () => {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06); // Subtle shadow for the whole block
 }
 
-// 1. Top Welcome Bar (remains similar)
 .top-welcome-bar {
   background-color: #f8f8f8;
   height: 36px;
@@ -91,7 +101,6 @@ const handleLogout = () => {
   font-size: 13px;
   color: @text-color-secondary;
   // border-bottom: 1px solid @border-color-light; // Optional border
-
   &__content {
     display: flex;
     justify-content: space-between;
@@ -114,7 +123,6 @@ const handleLogout = () => {
   }
 }
 
-// 2. Main Header Logo Area
 .main-header-logo-area {
   height: @layout-header-height; // e.g., 70px
   display: flex;
@@ -130,7 +138,7 @@ const handleLogout = () => {
   }
 }
 
-.logo-section { /* remains similar */
+.logo-section {
   flex-shrink: 0;
   .logo-link { display: flex; align-items: center; text-decoration: none; }
   .logo-image { height: 36px; margin-right: @spacing-sm; } // Slightly larger logo
@@ -140,31 +148,38 @@ const handleLogout = () => {
     flex-grow: 1; // For user center view, if logo is alone and you want it left-aligned
 }
 
-
-// 3. Unified Navigation Bar (Red Bar)
 .unified-navigation-bar {
   background-color: @primary-color;
   height: 50px; // Adjust height
   display: flex;
   align-items: center;
 
-  &__content { // This is the .container
+  &__content {
     display: flex;
-    align-items: center;
+    align-items: center; // Make wrappers take full height
     width: 100%;
-    gap: 0; // No gap, links will manage their own padding/margin for "flat" look
-    overflow-x: auto; // Allow horizontal scrolling on small screens if many items
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-    &::-webkit-scrollbar { /* Chrome, Safari, Opera */
-        display: none;
-    }
+    height: 100%;
+    gap: 0;
   }
+}
 
+.unified-nav-item-wrapper {
+  position: relative; // Crucial for positioning the submenu
+  height: 50px; // Make link take full height of the bar
+  line-height: 50px;// To align link within wrapper (if link itself isn't full height)
+  align-items: stretch; // Make router-link take full height of wrapper
+
+  // &:last-child {
+  //   border-right: none;
+  // }
+    flex: 1;
+    text-align: center;
   .unified-nav-link {
     color: fade(@text-color-light, 90%);
     font-size: 15px; // Consistent font size
     font-weight: 500;
+    display: inline-block;
+    width: 100%;
     text-decoration: none;
     padding: 0 @spacing-md; // Horizontal padding for each link
     height: 50px; // Make link take full height of the bar
@@ -172,25 +187,80 @@ const handleLogout = () => {
     // display: inline-flex;
     align-items: center;
     white-space: nowrap; // Prevent wrapping
+
+    // justify-content: center;
+    // white-space: nowrap;
     transition: background-color 0.2s, color 0.2s;
-    // border-right: 1px solid darken(@primary-color, 5%); 
-    flex: 1;
-    text-align: center;
-    &:first-child {
-        // border-left: 1px solid darken(@primary-color, 5%); // Optional left border for first
-    }
-    &:last-child {
-        border-right: none; // No separator for the last item
+    cursor: pointer; // Make it look clickable
+    
+
+    .nav-arrow-icon {
+      margin-left: @spacing-xs;
+      font-size: 10px;
+      transition: transform 0.2s ease-in-out;
     }
 
     &:hover {
       color: @text-color-light;
-      background-color: darken(@primary-color, 8%);
+      background-color: darken(@primary-color, 5%);
     }
-    &--active {
+    &.--active,
+    &.router-link-exact-active {
       color: @text-color-light;
-      background-color: darken(@primary-color, 12%);
-      font-weight: 600;
+      background-color: darken(@primary-color, 10%);
+      font-weight: 500;
+    }
+  }
+
+  // Pure CSS Submenu (initially hidden)
+  .css-submenu {
+    display: none; // Hidden by default
+    position: absolute;
+    top: 100%; // Position below the parent nav item
+    left: 0;
+    min-width: 100%; // At least as wide as the parent
+    background-color: #fff; // Background for submenu
+    list-style: none;
+    margin: 0;
+    padding: 0; // Padding top/bottom for the ul
+    z-index: @zindex-header + 10; // Ensure it's above other content
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 0 0 @border-radius-sm @border-radius-sm; // Rounded bottom corners
+    border-top: 1px solid darken(@primary-color, 10%); // Separator from main nav
+
+    .css-submenu-item {
+      // No specific styling needed if link takes full space
+    }
+
+    .css-submenu-link {
+      display: block;
+      font-size: 14px;
+      color: #656C74;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background-color 0.2s, color 0.2s;
+      height: 47px;
+      line-height: 47px;
+      padding: 0 12px;
+      font-family: PingFang SC;
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: 0%;
+
+      &:hover {
+        background-color: darken(@primary-color, 12%);
+        color: @text-color-light;
+      }
+    }
+  }
+
+  // Show submenu on hover of the wrapper
+  &:hover {
+    .css-submenu {
+      display: block;
+    }
+    .unified-nav-link .nav-arrow-icon { // Rotate arrow on hover
+        transform: rotate(180deg);
     }
   }
 }

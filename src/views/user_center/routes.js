@@ -144,7 +144,7 @@ const userCenterRoutes = [
     path: '/user/join', // “我参与的” 的父路由
     component: UserCenterCommonLayout, // 使用新的通用顶部布局
     meta: { requiresAuth: true },
-    redirect: '/user/published/DomesticSourcing', // 默认跳转到第一个子页签
+    redirect: '/user/join/DomesticSourcing', // 默认跳转到第一个子页签
     children: [
      {
         path: 'DomesticSourcing', // 相对路径
