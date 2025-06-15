@@ -32,7 +32,6 @@ export function useDemandDetail({IdProp, mode, url, otherParams, queryAfter, han
   // --- 权限计算结束 ---
 
   async function fetchDemandDetail() {
-    console.log('authStore.userInfo', authStore.userInfo);
     if (!internalDemandId.value) {
       // 新建模式或没有ID，初始化空/默认表单数据
       demandDetail.value = {

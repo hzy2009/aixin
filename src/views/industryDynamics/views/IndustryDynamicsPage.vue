@@ -10,9 +10,6 @@
           <div v-if="isLoading && tableData.length === 0" class="list-loading-placeholder">
             <a-spin size="large" />
           </div>
-          <div v-else-if="tableData && tableData.length === 0" class="list-error-placeholder">
-            <a-alert type="error" :message="mainNews.error.value" show-icon />
-          </div>
           <div v-else-if="tableData.length > 0" class="news-list-container">
             <IndustryNewsItem
               v-for="newsItem in tableData"
@@ -35,7 +32,6 @@
           :items="tableData"
           :is-loading="isLoading"
           empty-description="暂无热门动态"
-          @item-click="navigateToHotNewsDetail"
         />
       </template>
     </ContentWithSidebarLayout>
@@ -49,14 +45,12 @@ import { Spin as ASpin, Alert as AAlert, Empty as AEmpty, Pagination as APaginat
 import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue'; // Adjust path if needed
 import RelatedItemsSidebar from '@/components/common/RelatedItemsSidebar.vue'; // Adjust path if needed
 import IndustryNewsItem from '../components/IndustryNewsItem.vue'; // Adjust path
-import { useIndustryNews } from '../hooks/useIndustryNews'; // Adjust path
 import defHttp from '@/utils/http/axios'
 import { useUserDemandList } from '@/components/template/hooks/useUserDemandList.js'; // Adjust path
 
 const url = {
     list: '/apm/apmNews/list/front',
 }
-
 
 const {
     isLoading,
@@ -66,36 +60,14 @@ const {
 } = useUserDemandList({
     url: url,
 });
-console.log('tableData', tableData);
-console.log('isLoading', isLoading);
-console.log('pagination', pagination);
 
-// const router = useRouter();
+const router = useRouter();
 
-// Hook for main news list
-const mainNews = useIndustryNews('main');
-
-// Hook for hot news sidebar (could be a separate hook or same with different params)
-const hotNews = useIndustryNews('hot'); // Using same hook with different type
-
-// const navigateToHotNewsDetail = (newsItem) => {
-//   // TODO: Define your news detail route
-//   router.push({ name: 'IndustryNewsDetail', params: { id: newsItem.id } });
-// };
-const getMainNews = async () => {
-  try {
-    const response = await defHttp.get('/apm/apmNews/list/front', { params: { page: 1, limit: 6, type: 'industry' } });
-    mainNews.newsItems.value = response.data.items;
-    mainNews.totalItems.value = response.data.total;
-  } catch (error) {
-    console.error('Error fetching main news:', error);
-  }
+const navigateToHotNewsDetail = (newsItem) => {
+  // TODO: Define your news detail route
+  console.log(newsItem)
+  // router.push({ name: 'IndustryDynamicDetail', params: { id: newsItem.id } });
 };
-
-onMounted(() => {
-  mainNews.fetchNews(); // Fetch initial page for main list
-  hotNews.fetchNews(1, 4);  // Fetch first 4 items for hot news
-});
 </script>
 
 <style scoped lang="less">

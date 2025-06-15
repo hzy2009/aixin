@@ -1,5 +1,5 @@
 <template>
-  <div class="industry-news-item" @click="navigateToDetail(news.id)">
+  <div class="industry-news-item" @click="navigateToDetail(news)">
     <div class="news-item-date-block">
       <span class="date-day-month">{{ formatDate(news.createTime, 'MM/DD') }}</span>
       <span class="date-year">{{ formatDate(news.createTime, 'YYYY') }}</span>
@@ -45,9 +45,8 @@ const formatDate = (dateString, format) => {
   }
 };
 
-const navigateToDetail = (id) => {
-  // TODO: Define your news detail route
-  router.push({ name: 'IndustryNewsDetail', params: { id } }); // Example route name
+const navigateToDetail = ({id}) => {
+  router.push({ name: 'IndustryDynamicDetail', params: { id } }); 
 };
 </script>
 
