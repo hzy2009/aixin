@@ -133,6 +133,6 @@ export function useDemandDetail({IdProp, mode, url, otherParams, queryAfter, han
     fetchDemandDetail, // 允许外部刷新
     handleSave,
     handleSubmit,
-    // internalDemandId, // 可以暴露供父组件在某些情况下使用
+    internalDemandId, // 可以暴露供父组件在某些情况下使用
   };
 }

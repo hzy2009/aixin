@@ -64,6 +64,7 @@ import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayo
 import RelatedItemsSidebar from '@/components/common/RelatedItemsSidebar.vue'; // Adjust path if needed
 import defaultNewsBannerPlaceholder from '@/assets/images/home/banner.png'; // Create placeholder
 import { useDemandDetail } from '@/components/template/hooks/useDemandDetail.js';
+import { useUserDemandList } from '@/components/template/hooks/useUserDemandList.js'; // Adjust path
 
 const props = defineProps({
   id: {
@@ -72,21 +73,20 @@ const props = defineProps({
   },
 });
 const apiMap = {
-  detail: '/apm/apmNews/queryById',
+  detail: '/apm/apmNews/queryById/front',
 };
 const {
 	demandDetail: demandDetailData,
 	isLoading,
 	error,
 	fetchDemandDetail,
+  internalDemandId,
 } = useDemandDetail({
 	IdProp: props.id,
 	url: apiMap,
 });
 const formModel = ref({});
 
-console.log('props.id', demandDetailData);
-console.log('props.id', formModel);
 
 
 const baseImgUrl = import.meta.env.VITE_GLOB_DOMAIN_URL;
@@ -96,80 +96,36 @@ const router = useRouter();
 const defaultNewsBanner = defaultNewsBannerPlaceholder;
 
 const newsArticle = ref(null);
-const hotNewsItems = ref([]);
-const isLoadingHotNews = ref(false);
 
 const articleId = computed(() => route.params.id || 'mock-news-1');
 
-async function fetchNewsDetail(id) {
-  isLoading.value = true;
-  newsArticle.value = null;
-  console.log(`[MOCK API] Fetching news detail for ID: ${id}`);
-  await new Promise(resolve => setTimeout(resolve, 600));
-  // TODO: Replace with actual API call: apiClient.get(`/api/news/${id}`)
-  if (id === 'mock-news-1') {
-    newsArticle.value = {
-      id: 'mock-news-1',
-      title: '英诺赛科专利诉讼管辖权胜诉 中国半导体企业加速技术突围',
-      category: '战略政策',
-      publishDateTime: '2025-06-03 14:02',
-      source: 'www.xinsaohf.com',
-      bannerUrl: null, // Uses defaultNewsBanner, or set a specific URL
-      showDefaultBanner: true, // To explicitly show banner even if bannerUrl is null
-      contentHtml: `
-        <p>人民财讯5月11日电，近日，中国第三代半导体领军企业英诺赛科（02577.HK）在与国际芯片巨头英飞凌的专利诉讼管辖权争议中取得关键胜利，最高人民法院终审裁定，驳回英飞凌中国公司及无锡公司提出的管辖权异议上诉，确认苏州市中级人民法院对案件的管辖权。</p>
-        <p>此次胜诉标志着英诺赛科在捍卫自主知识产权的法律战中迈出重要一步，随着国内半导体产业链自主化进程加速，以英诺赛科为代表的科技企业正通过技术创新与法律手段双轮驱动，推动中国在全球半导体竞争格局中占据更主动地位。这是继英诺赛科此前在与美国EPC公司的专利纠纷案取得终极胜利之后，再一次赢得与国际半导体巨头之间的对抗的阶段性胜利。人民财讯5月11日电，近日，中国第三代半导体领军企业英诺赛科（02577.HK）在与国际芯片巨头英飞凌的专利诉讼管辖权争议中取得关键胜利，最高人民法院终审裁定，驳回英飞凌中国公司及无锡公司提出的管辖权异议上诉，确认苏州市中级人民法院对案件的管辖权。</p>
-        <p>此次胜诉标志着英诺赛科在捍卫自主知识产权的法律战中迈出重要一步，随着国内半导体产业链自主化进程加速，以英诺赛科为代表的科技企业正通过技术创新与法律手段双轮驱动，推动中国在全球半导体竞争格局中占据更主动地位。这是继英诺赛科此前在与美国EPC公司的专利纠纷案取得终极胜利之后，再一次赢得与国际半导体巨头之间的对抗的阶段性胜利。</p>
-        <p>这是继英诺赛科此前在与美国EPC公司的专利纠纷案取得终极胜利之后，再一次赢得与国际半导体巨头之间的对抗的阶段性胜利。</p>
-      `,
-      previousArticle: { id: 'mock-news-prev', title: '2019年中国集成电路产业运行情况' },
-      nextArticle: { id: 'mock-news-next', title: '抢滩新储能赛道 六国化工加码投资电池级精致磷酸' }
-    };
-  } else {
-    console.error("News article not found for ID:", id);
-  }
-  isLoading.value = false;
-}
 
-async function fetchHotNews() {
-  isLoadingHotNews.value = true;
-  // Using the same mock data structure as RelatedItemsSidebar expects
-  // TODO: Replace with actual API: apiClient.get('/api/news/hot', { params: { limit: 4 }})
-  await new Promise(resolve => setTimeout(resolve, 400));
-  hotNewsItems.value = [
-    { id: 'hot-1', title: '中国半导体行业协会2025年环境、安全和健康国际研讨会2025年环境...', date: '2025-04-22' },
-    { id: 'hot-2', title: '中国半导体行业协会2025年环境、安全和健康国际研讨会2025年环境...', date: '2025-04-22' },
-    { id: 'hot-3', title: '中国半导体行业协会2025年环境、安全和健康国际研讨会2025年环境...', date: '2025-04-22' },
-    { id: 'hot-4', title: '中国半导体行业协会2025年环境、安全和健康国际研讨会2025年环境...', date: '2025-04-22' },
-  ];
-  isLoadingHotNews.value = false;
-}
-
-const navigateToHotNews = (newsItem) => {
-  if (newsItem.id && newsItem.id !== articleId.value) {
-    router.push({ name: 'IndustryNewsDetail', params: { id: newsItem.id } });
-  }
-};
-
-onMounted(() => {
-  fetchNewsDetail(articleId.value);
-  fetchHotNews();
+const {
+    isLoading: isLoadingHotNews,
+    tableData: hotNewsItems,          
+} = useUserDemandList({
+    url: {
+      list: '/apm/apmNews/list/front',
+  },
 });
 
-// Watch for route param changes to reload data if user navigates between detail pages
-watch(() => route.params.id, (newId, oldId) => {
-  if (newId && newId !== oldId) {
-    fetchNewsDetail(newId);
-    // Hot news usually doesn't need to refresh based on current article, but can if logic requires
-    // fetchHotNews();
-  }
-}, { immediate: false }); // onMounted handles initial load
+const navigateToHotNews = (newsItem) => {
+  router.push({ name: 'IndustryDynamicDetail', params: { id: newsItem.id } });
+};
 
 // 监听从 hook 获取的原始数据，用于初始化/更新表单模型
 watch(demandDetailData, (newDetail) => {
 	formModel.value = newDetail ? JSON.parse(JSON.stringify(newDetail)) : {};
 }, { deep: true, immediate: true });
 
+watch(() => route.params.id, (newId, oldId) => {
+  if (newId && newId !== oldId) {
+    internalDemandId.value = newId;
+    fetchDemandDetail(newId);
+    // Hot news usually doesn't need to refresh based on current article, but can if logic requires
+    // fetchHotNews();
+  }
+}, { immediate: false }); // onMounted handles initial load
 </script>
 
 <style scoped lang="less">

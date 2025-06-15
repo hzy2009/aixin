@@ -31,6 +31,7 @@
           title="热门动态"
           :items="tableData"
           :is-loading="isLoading"
+          @itemClick="navigateToHotNewsDetail"
           empty-description="暂无热门动态"
         />
       </template>
@@ -65,8 +66,7 @@ const router = useRouter();
 
 const navigateToHotNewsDetail = (newsItem) => {
   // TODO: Define your news detail route
-  console.log(newsItem)
-  // router.push({ name: 'IndustryDynamicDetail', params: { id: newsItem.id } });
+  router.push({ name: 'IndustryDynamicDetail', params: { id: newsItem.id } });
 };
 </script>
 

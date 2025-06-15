@@ -14,7 +14,7 @@
         <h4 class="item-title">{{ item.title }}</h4>
         <p v-if="item.summary" class="item-summary">{{ item.summary }}</p>
         <div class="item-meta">
-          <span v-if="item.date" class="item-date"><CalendarOutlined /> {{ item.date }}</span>
+          <span v-if="item.createTime" class="item-date"><CalendarOutlined /> {{ item.createTime }}</span>
           <RightOutlined class="item-arrow" />
         </div>
       </div>
