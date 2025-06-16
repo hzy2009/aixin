@@ -58,7 +58,7 @@ const actions = reactive([
 const pageData = ref({
     url: {
         list: 'apm/apmInspection/list/owner',
-        overview: 'apm/apmInspection/overview'
+        overview: 'apm/apmInspection/overview?referer=owner'
     },
     filterConfigForPage,
     tableColumns,

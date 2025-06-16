@@ -53,7 +53,7 @@ const actions = reactive([
 const pageData = ref({
     url: {
         list: 'apm/apmRdBreakthrough/list/join',
-        overview: 'apm/apmRdBreakthrough/overview'
+        overview: 'apm/apmRdBreakthrough/overview?referer=join'
     },
     filterConfigForPage,
     tableColumns,

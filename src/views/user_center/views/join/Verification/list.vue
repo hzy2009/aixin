@@ -59,7 +59,7 @@ const actions = reactive([
 const pageData = ref({
     url: {
         list: 'apm/apmInspection/list/join',
-        overview: 'apm/apmInspection/overview'
+        overview: 'apm/apmInspection/overview?referer=join'
     },
     filterConfigForPage,
     tableColumns,

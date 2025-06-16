@@ -51,7 +51,7 @@ const actions = reactive([
 const pageData = ref({
     url: {
         list: 'apm/apmOfflineActivity/join',
-        overview: 'apm/apmOfflineActivity/overview'
+        overview: 'apm/apmOfflineActivity/overview?referer=join'
     },
     filterConfigForPage,
     tableColumns,
