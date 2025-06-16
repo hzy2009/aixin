@@ -1,4 +1,8 @@
 <template>
+  <div class="page-section-title-bar container">
+    <span class="decorator"></span>
+    <h2 class="title-text">检测验证</h2>
+  </div>
   <ContentWithSidebarLayout>
     <template #main>
       <detail :pageData="pageData" @goBack="goBack"></detail>
@@ -32,7 +36,7 @@ const isManagerAdmin = computed(() => {
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
-   {
+  {
     label: '检测验证编号', field: 'code', fieldType: 'input', span: 24,
   },
   { label: '期望完成日期', field: 'expireDate', fieldType: 'date', span: 24, fieldType: 'date' },

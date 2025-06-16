@@ -1,4 +1,8 @@
 <template>
+  <div class="page-section-title-bar container">
+    <span class="decorator"></span>
+    <h2 class="title-text">研发攻关</h2>
+  </div>
   <ContentWithSidebarLayout>
     <template #main>
       <detail :pageData="pageData" @goBack="goBack"></detail>
@@ -29,7 +33,7 @@ const props = defineProps({
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
-  { label: '研发攻关编号', field: 'code', span: 24},
+  { label: '研发攻关编号', field: 'code', span: 24 },
   {
     label: '研发攻关方类型', field: 'rdType', dictKey: 'rd_type', span: 24,
   },

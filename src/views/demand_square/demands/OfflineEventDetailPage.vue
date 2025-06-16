@@ -173,26 +173,6 @@ watch(() => route.params.id, (newId, oldId) => {
   // This is the main white content block from ContentWithSidebarLayout
 }
 
-.page-title-header {
-  margin-top: @spacing-md;
-  display: flex;
-  align-items: center;
-
-  .title-decorator-bar {
-    width: 4px;
-    height: 20px; // Height of the decorator bar
-    background-color: @primary-color; // Red decorator
-    margin-right: @spacing-sm;
-  }
-
-  .page-main-heading {
-    font-size: 18px; // "线下活动" title size
-    font-weight: 500;
-    color: @text-color-base;
-    margin: 0;
-  }
-}
-
 .event-banner-full-width {
   width: 100%;
   height: 300px; // Adjust banner height to match image ratio if possible

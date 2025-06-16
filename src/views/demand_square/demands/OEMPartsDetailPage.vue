@@ -1,4 +1,8 @@
 <template>
+  <div class="page-section-title-bar container">
+    <span class="decorator"></span>
+    <h2 class="title-text">原厂件寻源</h2>
+  </div>
   <ContentWithSidebarLayout>
     <template #main>
       <detail :pageData="pageData" @goBack="goBack"></detail>
@@ -31,9 +35,9 @@ const formConfigs = [
   { label: '寻源编号', field: 'code', span: 24, },
   { label: '需求提出方', field: 'tenantName', span: 24, },
   { label: '提出需求日期', field: 'createTime', span: 24, fieldType: 'date' },
-  { label: '计划完成日期', field: 'expireDate', span: 24 , fieldType: 'date'},
-  { label: '寻源结果', field: 'statusName', span: 24},
-  { label: '贸易商/晶链慧采：', field: 'xxx', span: 24},
+  { label: '计划完成日期', field: 'expireDate', span: 24, fieldType: 'date' },
+  { label: '寻源结果', field: 'statusName', span: 24 },
+  { label: '贸易商/晶链慧采：', field: 'xxx', span: 24 },
 ]
 
 // const statusHistoryColumns = [
@@ -70,7 +74,7 @@ const pageData = reactive({
   pageTitle,
   queryAfter,
   tableSections: [
-     {
+    {
       title: '物料清单',
       groupCode: 'materialList',
       columns: [
