@@ -1,31 +1,33 @@
 <template>
     <div class="edit-page">
-        <div v-if="isCreating">
-            <!-- 1. Page Title -->
-            <h1 class="page-main-title">{{ pageTitle }}</h1>
+		<a-spin :spinning="isLoading">
+            <div v-if="isCreating">
+                <!-- 1. Page Title -->
+                <h1 class="page-main-title">{{ pageTitle }}</h1>
 
-            <!-- 2. Form Section -->
-            <div class="form-section-container">
-                <div class="form-section-title-wrapper">
-                    <h2 class="form-section-title">基本信息</h2>
+                <!-- 2. Form Section -->
+                <div class="form-section-container">
+                    <div class="form-section-title-wrapper">
+                        <h2 class="form-section-title">基本信息</h2>
+                    </div>
+                    <DynamicForm ref="dynamicFormRef" :form-config="currentFormConfig" :initial-model="formModel"
+                        :is-edit-mode="isFormEditable || isManagerAdmin" :default-span="12" />
                 </div>
-                <DynamicForm ref="dynamicFormRef" :form-config="currentFormConfig" :initial-model="formModel"
-                    :is-edit-mode="isFormEditable || isManagerAdmin" :default-span="12" />
+                <!-- 3. Action Buttons -->
+                <div class="page-actions-footer">
+                    <a-button @click="goBack" class="action-button cancel-button">取消</a-button>
+                    <a-button type="primary" danger @click="handleSubmitForm" :loading="isSubmitting"
+                        class="action-button submit-button">
+                        一键敲门
+                    </a-button>
+                </div>
+                <p class="action-submit-note">一键敲门后，客服人员将在<span class="text">30分钟内</span>与您联系</p>
             </div>
-            <!-- 3. Action Buttons -->
-            <div class="page-actions-footer">
-                <a-button @click="goBack" class="action-button cancel-button">取消</a-button>
-                <a-button type="primary" danger @click="handleSubmitForm" :loading="isSubmitting"
-                    class="action-button submit-button">
-                    一键敲门
-                </a-button>
+            <div v-else>
+                <operationResultPage :pageData="resultPageData" @primaryAction="handleToDetail"
+                    @secondaryAction="handleToList" />
             </div>
-            <p class="action-submit-note">一键敲门后，客服人员将在<span class="text">30分钟内</span>与您联系</p>
-        </div>
-        <div v-else>
-            <operationResultPage :pageData="resultPageData" @primaryAction="handleToDetail"
-                @secondaryAction="handleToList" />
-        </div>
+		</a-spin>
     </div>
 </template>
 

@@ -64,13 +64,6 @@ watch(() => route.params.id, (newId, oldId) => {
     // fetchHotNews();
   }
 }, { immediate: false }); // onMounted handles initial load
-// 如果路由ID变化（例如用户直接修改URL或从推荐报告点击），重新加载数据
-watch(() => route.params.id, (newId) => {
-  if (newId && newId !== props.IdProp) {
-    props.IdProp = newId;
-    fetchReportDetail();
-  }
-});
 </script>
 
 <style scoped lang="less">
