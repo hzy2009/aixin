@@ -54,7 +54,7 @@ const formConfigs = [
 ]
 
 // const statusHistoryColumns = [
-//   { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' },
+//   { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center' },
 //   { title: '状态', dataIndex: 'operateName', key: 'operateName' },
 //   { title: '完成日期', dataIndex: 'createTime', key: 'createTime' },
 //   { title: '备注', dataIndex: 'remark', key: 'remark' },
@@ -91,8 +91,8 @@ const pageData = reactive({
       groupCode: 'businessRefList',
       columns: [
         { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
-        { title: '单据类型', dataIndex: 'businessRefTypeName', key: 'materialName', align: 'center' },
-        { title: '单据号', dataIndex: 'businessRefCode', key: 'materialCount', align: 'center' },
+        { title: '单据类型', dataIndex: 'refBusinessTypeName', key: 'refBusinessTypeName', align: 'center' },
+        { title: '单据号', dataIndex: 'refBusinessCode', key: 'refBusinessCode', align: 'center' },
       ]
     }
   ],

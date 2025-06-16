@@ -34,7 +34,13 @@
 					<div class=" flex1">
 						<a-table :columns="tableSection.columns"
 							:data-source="formModel[`${tableSection.groupCode}`] || []" :pagination="false"
-							:row-key="tableSection.rowKey || 'id'" bordered size="middle" class="custom-detail-table" />
+							:row-key="tableSection.rowKey || 'id'" bordered size="middle" class="custom-detail-table" >
+							<template #bodyCell="{ column, record, index }">
+									<span v-if="column.dataIndex === 'index'">
+										{{ index + 1 }}
+									</span>
+							</template>
+						</a-table>
 					</div>
 				</div>
 			</div>

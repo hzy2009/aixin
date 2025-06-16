@@ -59,7 +59,7 @@ const pageData = reactive({
       title: '研发攻关承接方',
       groupCode: 'tenantRefList',
       columns: [
-        { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' },
+        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center' },
         { title: '研发攻关承接方', dataIndex: 'refUserName', key: 'refUserName' },
       ]
     },
@@ -67,7 +67,7 @@ const pageData = reactive({
       title: '关联业务',
       groupCode: 'businessRefList',
       columns: [
-        { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center', align: 'center' },
+        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
         { title: '单据类型', dataIndex: 'businessRefTypeName', key: 'materialName', align: 'center' },
         { title: '单据号', dataIndex: 'businessRefCode', key: 'materialCount', align: 'center' },
       ]

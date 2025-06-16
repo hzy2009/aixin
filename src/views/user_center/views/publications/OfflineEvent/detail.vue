@@ -59,7 +59,7 @@ const pageData = reactive({
       title: '参与者',
       groupCode: 'registerList',
       columns: [
-        { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center' },
+        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center' },
         { title: '类型', dataIndex: 'registerType', key: 'registerType' },
         { title: '编号', dataIndex: 'registerUserWorkNo', key: 'registerUserWorkNo' },
       ]
@@ -68,7 +68,7 @@ const pageData = reactive({
       title: '关联业务',
       groupCode: 'businessRefList',
       columns: [
-        { title: '序号', dataIndex: 'seq', key: 'seq', width: 60, align: 'center', align: 'center' },
+        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
         { title: '单据类型', dataIndex: 'businessRefTypeName', key: 'materialName', align: 'center' },
         { title: '单据号', dataIndex: 'businessRefCode', key: 'materialCount', align: 'center' },
       ]
