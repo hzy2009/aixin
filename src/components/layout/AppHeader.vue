@@ -6,12 +6,12 @@
         <span class="welcome-text">欢迎来到爱芯享信息共享平台!</span>
         <div class="user-actions-top">
           <template v-if="auth.isLogin">
-            <router-link to="/user/published" class="top-action-link">我发布的</router-link>
+            <!-- <router-link to="/user/published" class="top-action-link">我发布的</router-link> -->
             <a @click="handleLogout" class="top-action-link">退出登录</a>
           </template>
           <template v-else>
+            <a @click="navigateToRegister" class="top-action-link register-link-top">入会指南</a>
             <a @click="navigateToLogin" class="top-action-link">会员登录</a>
-            <a @click="navigateToRegister" class="top-action-link register-link-top">会员注册</a>
           </template>
         </div>
       </div>
@@ -74,7 +74,9 @@ const { navigationItems, isActiveNavItem } = useNavigation();
 const showTopWelcomeBar = computed(() => true);
 
 const navigateToLogin = () => router.push('/login');
-const navigateToRegister = () => router.push('/register');
+const navigateToRegister = () => {
+  // router.push('/register')
+};
 
 const handleLogout = () => {
   auth.logout();
