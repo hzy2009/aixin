@@ -16,7 +16,7 @@ const router = useRouter();
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
     { id: 'productType', label: '产品类别', maxVisibleWithoutMore: 7, dictKey: 'product_type' },
-    { id: 'projectType', label: '项目分类', maxVisibleWithoutMore: 7, dictKey: 'project_type' },
+    { id: 'projectType', label: '验证类型', maxVisibleWithoutMore: 7, dictKey: 'project_type' },
     { id: 'statusCode', label: '需求状态', maxVisibleWithoutMore: 7, dictKey: 'inspection_status' }
 ]);
 
@@ -32,7 +32,7 @@ const tableColumns = reactive([
             return <span>{str?.label || '-'}</span>;
         }
      }, // Key matches display field
-    { title: '项目分类', dataIndex: 'projectType', key: 'projectType', align: 'center',
+    { title: '检测验证类型', dataIndex: 'projectType', key: 'projectType', align: 'center',
         customRender: ({record}) => {
             const dictMap = authStore.sysAllDictItems['project_type'];
             const str = dictMap.find(item => item.value == record.productType);
