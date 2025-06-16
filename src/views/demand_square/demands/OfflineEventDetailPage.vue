@@ -27,15 +27,15 @@
           <!-- 4. Meta Info (Stacked) -->
           <div class="event-meta-stacked">
             <div class="meta-item-row">
-              <span class="meta-label">会议时间：</span>
+              <span class="meta-label">活动时间：</span>
               <span class="meta-value">{{ eventDetail.activityDate }}</span>
             </div>
             <div class="meta-item-row">
-              <span class="meta-label">会议类型：</span>
+              <span class="meta-label">活动类型：</span>
               <span class="meta-value">{{ eventDetail.activityTypeName }}</span>
             </div>
             <div class="meta-item-row">
-              <span class="meta-label">会议状态：</span>
+              <span class="meta-label">活动状态：</span>
               <span class="meta-value status-text" :class="`status-${eventDetail.statusName}`">
                 {{ eventDetail.statusName }}
               </span>
@@ -44,7 +44,7 @@
 
           <!-- 5. Event Main Content / Description -->
           <section class="event-section-block">
-            <div class="section-block-title">会议主要内容：</div>
+            <div class="section-block-title">活动主要内容：</div>
             <div class="section-block-content rich-text" v-html="eventDetail.description"></div>
           </section>
 
@@ -118,7 +118,7 @@ async function fetchRelatedEvents() {
   // ... (fetch logic as before) ...
   console.log('[MOCK API] Fetching related events...');
   await new Promise(resolve => setTimeout(resolve, 500));
-  relatedEvents.value = [{ id: 'related-evt-1', title: '线下活动标题线下活动标题...', summary: '会议主要内容：直接利用太阳能实现光催化还原制取氢气，是解决能源危机的有效策略之一...', date: '2025/6/28' }, { id: 'related-evt-2', title: '另一相关活动标题示例', summary: '探讨行业最新动态与未来趋势，汇聚顶尖专家学者，分享前沿研究成果，促进产学研深度合作。', date: '2025/7/15' }, { id: 'related-evt-3', title: '第三个活动标题也很吸引人', summary: '聚焦关键技术突破，展示创新应用案例。本活动旨在为参与者提供一个交流思想、拓展人脉的平台。', date: '2025/8/02' }, { id: 'related-evt-4', title: '更多精彩活动敬请期待', summary: '探索未来科技，把握发展机遇。我们诚邀您参与，共同见证行业的辉煌未来，携手共创美好明天。', date: '2025/9/10' },];
+  relatedEvents.value = [{ id: 'related-evt-1', title: '线下活动标题线下活动标题...', summary: '活动主要内容：直接利用太阳能实现光催化还原制取氢气，是解决能源危机的有效策略之一...', date: '2025/6/28' }, { id: 'related-evt-2', title: '另一相关活动标题示例', summary: '探讨行业最新动态与未来趋势，汇聚顶尖专家学者，分享前沿研究成果，促进产学研深度合作。', date: '2025/7/15' }, { id: 'related-evt-3', title: '第三个活动标题也很吸引人', summary: '聚焦关键技术突破，展示创新应用案例。本活动旨在为参与者提供一个交流思想、拓展人脉的平台。', date: '2025/8/02' }, { id: 'related-evt-4', title: '更多精彩活动敬请期待', summary: '探索未来科技，把握发展机遇。我们诚邀您参与，共同见证行业的辉煌未来，携手共创美好明天。', date: '2025/9/10' },];
   isLoadingRelated.value = false;
 }
 // --- End Mock API Calls ---
