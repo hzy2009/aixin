@@ -59,11 +59,11 @@
               </a-button>
             </a-form-item>
 
-            <a-form-item>
+            <!-- <a-form-item>
               <a-button class="secondary-action-button" @click="navigateToRegister">
                 会员入会申请
               </a-button>
-            </a-form-item>
+            </a-form-item> -->
           </a-form>
         </div>
 

@@ -14,60 +14,83 @@
       <button class="close-button" @click="handleCancel" aria-label="关闭">
         <CloseOutlined />
       </button>
+      <div class="form-view-pane" v-show="currentView === 'login'">
+        <div class="header-text">此为会员功能，请登录</div>
+        <div class="form-title-section">
+          <h2 class="form-title">用户</h2>
+        </div>
 
-      <div class="header-text">此为会员功能，请登录</div>
-      <div class="form-title-section">
-        <h2 class="form-title">用户</h2>
+        <a-form :model="formState" @finish="handleLogin" class="login-form">
+          <a-form-item
+            name="username"
+            :rules="[{ required: true, message: '请输入账号' }]"
+          >
+            <a-input v-model:value="formState.username" placeholder="请输入账号" size="large" class="custom-input">
+              <template #prefix><UserOutlined style="color: #BFBFBF;" /></template>
+            </a-input>
+          </a-form-item>
+
+          <a-form-item
+            name="password"
+            :rules="[{ required: true, message: '请输入密码!' }]"
+          >
+            <a-input-password v-model:value="formState.password" placeholder="请输入密码" size="large" class="custom-input">
+              <template #prefix><LockOutlined style="color: #BFBFBF;" /></template>
+            </a-input-password>
+          </a-form-item>
+          <a-form-item name="captcha">
+            <a-input v-model:value="formState.captcha" placeholder="请输入验证码"  size="large" class="custom-input">
+              <template #prefix>
+                <UserOutlined class="site-form-item-icon" />
+              </template>
+            </a-input>
+            <div class="captcha-code">
+              <img v-if="randCodeData.requestCodeSuccess" style="margin-top: 2px; max-width: initial"
+                :src="randCodeData.randCodeImage" @click="handleChangeCheckCode" />
+              <img v-else style="margin-top: 2px; max-width: initial" src="@/assets/images/checkcode.png"
+                @click="handleChangeCheckCode" />
+            </div>
+          </a-form-item>
+
+          <a-form-item class="extra-actions-row">
+            <a-checkbox v-model:checked="formState.rememberMe" class="remember-me-checkbox">
+              自动登录
+            </a-checkbox>
+            <a href="#" @click.prevent="switchToForgotPassword" class="forgot-password-link">忘记密码?</a>
+          </a-form-item>
+
+          <a-form-item>
+            <a-button type="primary" html-type="submit" class="login-button" :loading="isLoading" block size="large">
+              立即登录
+            </a-button>
+          </a-form-item>
+        </a-form>
+
+        <div class="register-prompt">
+          没有账号? <a href="#" @click.prevent="handleRegister" class="register-link">注册一键敲门</a>
+        </div>
       </div>
-
-      <a-form :model="formState" @finish="handleLogin" class="login-form">
-        <a-form-item
-          name="username"
-          :rules="[{ required: true, message: '请输入账号' }]"
-        >
-          <a-input v-model:value="formState.username" placeholder="请输入账号" size="large" class="custom-input">
-            <template #prefix><UserOutlined style="color: #BFBFBF;" /></template>
-          </a-input>
-        </a-form-item>
-
-        <a-form-item
-          name="password"
-          :rules="[{ required: true, message: '请输入密码!' }]"
-        >
-          <a-input-password v-model:value="formState.password" placeholder="请输入密码" size="large" class="custom-input">
-            <template #prefix><LockOutlined style="color: #BFBFBF;" /></template>
-          </a-input-password>
-        </a-form-item>
-        <a-form-item name="captcha">
-          <a-input v-model:value="formState.captcha" placeholder="请输入验证码"  size="large" class="custom-input">
-            <template #prefix>
-              <UserOutlined class="site-form-item-icon" />
-            </template>
-          </a-input>
-          <div class="captcha-code">
-            <img v-if="randCodeData.requestCodeSuccess" style="margin-top: 2px; max-width: initial"
-              :src="randCodeData.randCodeImage" @click="handleChangeCheckCode" />
-            <img v-else style="margin-top: 2px; max-width: initial" src="@/assets/images/checkcode.png"
-              @click="handleChangeCheckCode" />
+      <div class="form-view-pane" v-show="currentView === 'forgotPassword'">
+        <div class="form-title-section">
+          <h2 class="form-title">请联系管理员</h2>
+        </div>
+        <div style="margin-top: 40px;">
+            <p class="form-instructions">
+              管理员
+            </p>
+            <p class="form-instructions-value">
+              张三
+            </p>
+            <p class="form-instructions">
+              联系电话
+            </p>
+            <p class="form-instructions-value">
+              180 000 0000
+            </p>
           </div>
-        </a-form-item>
-
-        <a-form-item class="extra-actions-row">
-          <a-checkbox v-model:checked="formState.rememberMe" class="remember-me-checkbox">
-            自动登录
-          </a-checkbox>
-          <a href="#" @click.prevent="handleForgotPassword" class="forgot-password-link">忘记密码?</a>
-        </a-form-item>
-
-        <a-form-item>
-          <a-button type="primary" html-type="submit" class="login-button" :loading="isLoading" block size="large">
-            立即登录
+          <a-button html-type="submit" @click="switchToLogin" class="back-button">
+            返回
           </a-button>
-        </a-form-item>
-      </a-form>
-
-      <div class="register-prompt">
-        没有账号? <a href="#" @click.prevent="handleRegister" class="register-link">注册一键敲门</a>
       </div>
     </div>
   </a-modal>
@@ -96,7 +119,9 @@ const emit = defineEmits(['close', 'loginSuccess', 'navigateToRegister', 'naviga
 const authStore = useAuthStore();
 const router = useRouter(); // If you navigate after login directly from here
 const isLoading = ref(false);
-
+const currentView = ref('login');
+const switchToForgotPassword = () => { currentView.value = 'forgotPassword'; };
+const switchToLogin = () => { currentView.value = 'login'; };
 const formState = reactive({
   username: '',
   password: '',
@@ -325,5 +350,36 @@ onMounted(() => {
   top: 0;
   cursor: pointer;
   z-index: 1;
+}
+.form-instructions {
+  // font-size: 14px;
+  color: #9AA0A3;
+  margin-bottom: @spacing-md; // Adjusted from lg
+  text-align: left;
+  font-family: PingFang SC;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+
+}
+.form-instructions-value {
+  color: #1C1F23;
+  margin-bottom: @spacing-md; // Adjusted from lg
+  text-align: left;
+  font-family: PingFang SC;
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 22px;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+}
+.back-button{
+  margin-top: @spacing-xl;
+  width: 360px;
+  height: 50px;
+  border-radius: 4px;
+  gap: 10px;
 }
 </style>
