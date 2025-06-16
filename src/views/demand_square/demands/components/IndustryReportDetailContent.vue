@@ -16,8 +16,13 @@
           <span>报告编号：{{ report.code || '未知字段' }}</span>
         </div>
         <div class="report-action-block">
-          <span class="report-price-header">¥ {{ report.unitPrice }}</span>
-          <a-button type="primary" danger size="large" @click="handlePurchase" :loading="isPurchasing"
+
+          <div class="report-price-header">
+            <p class="original-price">原价: {{ report.unitPrice }}元</p>
+            <p class="member-price">会员价: {{ report.memberUnitPrice || 198 }}元</p>
+            <p class="vip-price">VIP价: <span class="vip-price-value">{{ report.vipUnitPrice || 198 }}</span>元</p>
+          </div>
+          <a-button type="primary" danger @click="handlePurchase" :loading="isPurchasing"
             class="purchase-button-header">
             联系管理员购买
           </a-button>
@@ -62,7 +67,8 @@ import defHttp from '@/utils/http/axios'
 import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore';
 import { getFileAccessHttpUrl } from '@/utils/index';
-
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const authStore = useAuthStore();
 const modalStore = useModalStore();
 
@@ -85,13 +91,13 @@ const isRegisterSuccess = ref(false);
 
 const handlePurchase = async () => {
   if (authStore?.token) {
-    const user = authStore.userInfo;
-    const data = {
-      buyerName: user.realname,
-      buyerId: user.loginTenantId,
-      reportId: props.report.id,
-    }
-    const response = await defHttp.post({ url: '/apm/apmResearchReport/register', data });
+    // const user = authStore.userInfo;
+    // const data = {
+    //   buyerName: user.realname,
+    //   buyerId: user.loginTenantId,
+    //   reportId: props.report.id,
+    // }
+    const response = await defHttp.post({ url: `/apm/apmResearchReport/registerByMember/${props.report.id}` });
     if (response && response.success) {
       isRegisterSuccess.value = true;
     }
@@ -220,25 +226,61 @@ const getImgUrl = (url) => {
 
   .report-action-block {
     margin-top: auto; // Pushes this block to the bottom of the flex column
-    padding-top: @spacing-md; // Space above it
+    // padding-top: @spacing-md; // Space above it
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px dashed @border-color-light; // Dashed line above price/button
+    // border-top: 1px dashed @border-color-light; // Dashed line above price/button
 
     .report-price-header {
-      font-size: 28px;
-      font-weight: bold;
-      color: @primary-color;
-      line-height: 1; // Ensure it aligns well with button
+      font-family: PingFang SC;
+      text-transform: uppercase;
+      font-weight: 400;
+
+      .original-price {
+        font-size: 12px;
+        line-height: 12px;
+        letter-spacing: 0%;
+        text-align: justify;
+        text-decoration: line-through;
+        color: #272A30;
+      }
+
+      .member-price {
+        font-size: 16px;
+        line-height: 16px;
+        letter-spacing: 0%;
+        color: @primary-color;
+      }
+
+      .vip-price {
+        font-size: 16px;
+        line-height: 16px;
+        letter-spacing: 0%;
+        color: @primary-color;
+
+        .vip-price-value {
+          font-weight: 600;
+          font-size: 38px;
+          line-height: 30px;
+          letter-spacing: 0%;
+          text-transform: uppercase;
+        }
+      }
     }
 
     .purchase-button-header {
-      font-size: 15px; // Button text size
-      font-weight: 500;
+      margin-top: 40px;
+      background-color: @primary-color;
+      font-family: PingFang SC;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 22px;
+      letter-spacing: 0%;
+      text-transform: uppercase;
       padding: 0 28px; // Button padding
-      height: 40px; // Button height
-      // AntD primary danger button already has red background
+      height: 50px; // Button height
+      width: 170px;
     }
   }
 }
