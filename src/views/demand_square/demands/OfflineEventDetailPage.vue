@@ -84,7 +84,7 @@ import { Button as AButton, Spin as ASpin, Empty as AEmpty, message } from 'ant-
 import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue'; // Adjust path if needed
 import RelatedItemsSidebar from '@/components/common/RelatedItemsSidebar.vue'; // Adjust path if needed
 import defaultEventBannerPlaceholder from '@/assets/images/home/banner.png'; // Ensure this placeholder exists
-import operationResultPage from '@/components/template/OperationResultPage.vue';
+import operationResultPage from '@/components/template/operationResultPage.vue';
 import defHttp from '@/utils/http/axios'
 import { useAuthStore } from '@/store/authStore';
 const authStore = useAuthStore();
