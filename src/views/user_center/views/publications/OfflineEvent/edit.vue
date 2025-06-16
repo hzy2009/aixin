@@ -19,7 +19,7 @@ const props = defineProps({
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
-  { label: '活动名称', field: 'activityName', fieldType: 'input', span: 24},
+  { label: '活动名称', field: 'activityName', fieldType: 'input', span: 24 },
   { label: '封面图片', field: 'imageUrl', fieldType: 'imageUpload', span: 24 },
   {
     label: '活动类型', field: 'activityTypeCode', fieldType: 'select', dictKey: 'activity_type', span: 24,
@@ -28,7 +28,7 @@ const formConfigs = [
     }
   },
   { label: '活动内容', field: 'description', fieldType: 'textarea', span: 24 },
-  { label: '期望完成日期', field: 'expireDate', fieldType: 'date', span: 24 },
+  { label: '活动日期', field: 'activityDate', fieldType: 'date', span: 24 },
 ]
 
 const statusHistoryColumns = [

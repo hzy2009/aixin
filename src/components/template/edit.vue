@@ -1,6 +1,6 @@
 <template>
     <div class="edit-page">
-        <div v-if="isCreating" >
+        <div v-if="isCreating">
             <!-- 1. Page Title -->
             <h1 class="page-main-title">{{ pageTitle }}</h1>
 
@@ -20,10 +20,11 @@
                     一键敲门
                 </a-button>
             </div>
-            <p class="action-submit-note">“一键敲门”后，客服人员将在30分钟内与您联系</p>
+            <p class="action-submit-note">一键敲门后，客服人员将在<span class="text">30分钟内</span>与您联系</p>
         </div>
         <div v-else>
-            <operationResultPage :pageData="resultPageData" @primaryAction="handleToDetail" @secondaryAction="handleToList"/>
+            <operationResultPage :pageData="resultPageData" @primaryAction="handleToDetail"
+                @secondaryAction="handleToList" />
         </div>
     </div>
 </template>
@@ -127,7 +128,7 @@ const save = async () => {
             handleBeforeSave(params)
         }
         const result = await handleSave(params);
-         if (result) {
+        if (result) {
             demandDetailData.value = result;
             isCreating.value = false;
         }
