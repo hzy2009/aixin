@@ -132,7 +132,7 @@ defineExpose({ resetAllFilters });
   padding: @spacing-md 0; // Vertical padding for the main row of options
 
   &__label {
-    width: 80px; // Slightly wider label for "寻源状态:"
+    width: 100px; // Slightly wider label for "寻源状态:"
     font-size: 14px;
     color: @text-color-base; // Darker label text
     font-weight: 500;

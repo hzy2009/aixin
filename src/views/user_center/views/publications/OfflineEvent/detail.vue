@@ -24,7 +24,7 @@ const formConfigs = [
   { label: '活动会议内容', field: 'activityName', span: 24 },
   { label: '活动会议结果', field: 'description', span: 24 },
   { label: '活动名称', field: 'activityName', span: 24 },
-  { label: '活动图片', field: 'imageUrl', fieldType: 'imageUpload', span: 24 },
+  { label: '封面图片', field: 'imageUrl', fieldType: 'imageUpload', span: 24 },
 ]
 
 const statusHistoryColumns = [

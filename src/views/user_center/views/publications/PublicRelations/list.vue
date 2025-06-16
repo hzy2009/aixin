@@ -13,7 +13,7 @@ const router = useRouter();
 
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
-    { id: 'rdCode', label: '攻关方向', maxVisibleWithoutMore: 7, dictKey: 'rd_type' },
+    { id: 'rdCode', label: '研发攻关类型', maxVisibleWithoutMore: 7, dictKey: 'rd_type' },
     { id: 'statusCode', label: '需求状态', maxVisibleWithoutMore: 7, dictKey: 'rd_breakthrough_status' }
 ]);
 
@@ -21,7 +21,7 @@ const filterConfigForPage = reactive([
 const tableColumns = reactive([
     { title: '序号', dataIndex: 'index', key: 'index', textAlign: 'center', width: '60px' },
     { title: '单号', dataIndex: 'code', key: 'code', ellipsis: true, },
-    { title: '攻关方向名称', dataIndex: 'rdType', key: 'rdType', align: 'center',
+    { title: '研发攻关类型', dataIndex: 'rdType', key: 'rdType', align: 'center',
         // customRender: ({record}) => {
         // const { reqPartsTotal, reqPartsFinish } = record;
         // // 计算未完成数量
