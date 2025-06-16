@@ -71,13 +71,30 @@
         <div v-show="currentView === 'forgotPassword'" class="form-view-pane">
           <h2 class="form-greeting-title">找回密码</h2>
           <div class="form-section-title-container">
-            <h3 class="form-section-title">验证账户</h3>
+            <h3 class="form-section-title">请联系管理员</h3>
           </div>
-          <p class="form-instructions">
+          <div style="margin-top: 40px;">
+            <p class="form-instructions">
+              管理员
+            </p>
+            <p class="form-instructions-value">
+              张三
+            </p>
+            <p class="form-instructions">
+              联系电话
+            </p>
+            <p class="form-instructions-value">
+              180 000 0000
+            </p>
+          </div>
+          <a-button html-type="submit" @click="switchToLogin" class="back-button">
+            返回
+          </a-button>
+          <!-- <p class="form-instructions">
             请输入您要找回的账号，境外用户请输入手机号
-          </p>
+          </p> -->
 
-          <a-form :model="forgotPasswordFormState" name="forgotPassword" class="auth-form"
+          <!-- <a-form :model="forgotPasswordFormState" name="forgotPassword" class="auth-form"
             @finish="onForgotPasswordFinish" @finishFailed="onFormFinishFailed" layout="vertical">
             <a-form-item name="account" :rules="[{ required: true, message: '请输入账号或手机号!' }]">
               <a-input v-model:value="forgotPasswordFormState.account" placeholder="请输入账号或手机号">
@@ -99,7 +116,7 @@
           <div class="back-to-login-container">
             <a @click="switchToLogin" class="interactive-link">
               < 返回登录</a>
-          </div>
+          </div> -->
         </div>
       </div>
     </main>
@@ -342,13 +359,36 @@ onMounted(() => {
 }
 
 .form-instructions {
-  font-size: 14px;
-  color: @text-color-secondary;
+  // font-size: 14px;
+  color: #9AA0A3;
   margin-bottom: @spacing-md; // Adjusted from lg
   text-align: left;
-  line-height: 1.6;
-}
+  font-family: PingFang SC;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: 0%;
+  text-transform: uppercase;
 
+}
+.form-instructions-value {
+  color: #1C1F23;
+  margin-bottom: @spacing-md; // Adjusted from lg
+  text-align: left;
+  font-family: PingFang SC;
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 22px;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+}
+.back-button{
+  margin-top: @spacing-xxl;
+  width: 360px;
+  height: 50px;
+  border-radius: 4px;
+  gap: 10px;
+}
 .auth-form {
   .ant-form-item {
     margin-bottom: 18px; // Slightly reduced spacing
