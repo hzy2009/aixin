@@ -49,7 +49,7 @@
 			</div>
 			<a-steps :current="currentStepIndex" class="status-steps" progress-dot size="small">
 				<a-step v-for="(step, stepIdx) in statusTracking.steps" :key="`step-${stepIdx}`"
-					:title="step.operateName" :description="step.createTime" :status="step.status" />
+					:title="step.operateName" :description="step.createTime"/>
 			</a-steps>
 			<a-table v-if="formModel.logList && formModel.logList.length > 0" :columns="statusHistoryColumns"
 				:data-source="formModel.logList" :pagination="false" :row-key="'id'" bordered size="middle"
@@ -158,20 +158,16 @@ watch(demandDetailData, (newDetail) => {
 
 
 const currentStepIndex = computed(() => {
-	if (!statusTracking || !statusTracking.steps || statusTracking.steps.length === 0) return -1;
-
-	const processIndex = statusTracking.steps.findIndex(step => step.status === 'process');
-	if (processIndex !== -1) return processIndex;
-
+	if (!statusTracking.value || !statusTracking.value.steps || statusTracking.value.steps.length === 0) return -1;
 	let lastFinishIndex = -1;
-	for (let i = statusTracking.steps.length - 1; i >= 0; i--) {
-		if (statusTracking.steps[i].status === 'finish') {
-			lastFinishIndex = i;
+	for (let i = statusTracking.value.steps.length - 1; i >= 0; i--) {
+		if (statusTracking.value.steps[i].status === 'finish') {
+			lastFinishIndex = i - 1;
 			break;
 		}
 	}
-	if (lastFinishIndex === statusTracking.steps.length - 1) {
-		return statusTracking.steps.length; // All finished
+	if (lastFinishIndex === statusTracking.value.steps.length - 1) {
+		return statusTracking.value.steps.length; // All finished
 	}
 	return lastFinishIndex >= 0 ? lastFinishIndex : 0; // Default to first step or last finished
 });
