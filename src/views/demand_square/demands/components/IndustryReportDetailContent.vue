@@ -3,7 +3,7 @@
     <!-- Main Report Info Block (Image Left, Details Right) -->
     <div class="report-header-block">
       <div class="report-header__image-wrapper">
-        <img :src="report.thumbnailUrl || defaultThumbnail" :alt="report.title" class="report-header-image" />
+        <img :src="getImgUrl(report.imageUrl)" :alt="report.title" class="report-header-image" />
       </div>
       <div class="report-header__details">
         <h1 class="report-main-title-header">{{ report.reportName }}</h1>
@@ -61,6 +61,8 @@ import defaultThumbnailPlaceholder from '@/assets/images/home/banner.png'; // Re
 import defHttp from '@/utils/http/axios'
 import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore';
+import { getFileAccessHttpUrl } from '@/utils/index';
+
 const authStore = useAuthStore();
 const modalStore = useModalStore();
 
@@ -103,6 +105,14 @@ const handleToDetail = () => {
 }
 const handleToList = () => {
   router.push({ path: '/demands/IndustryReport' });
+}
+const getImgUrl = (url) => {
+  if (url) {
+    console.log('2', getFileAccessHttpUrl(url));
+    return getFileAccessHttpUrl(url);
+  } else {
+    return defaultThumbnail;
+  }
 }
 </script>
 

@@ -81,6 +81,7 @@ import {
   RangePicker as ARangePicker, Upload as AUpload, Modal as AModal, message
 } from 'ant-design-vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
+import { getFileAccessHttpUrl } from "@/utils/index";
 const uploadUrl = `${import.meta.env.VITE_API_BASE_URL}/apm/sys/file/upload/A` || '/api';
 // const uploadUrl = `/apm/sys/file/upload/A` || '/api';
 console.log('uploadUrl', uploadUrl)
@@ -280,24 +281,6 @@ const getHeaders = () => {
     'X-Tenant-Id': auth.userInfo.id || '0',
   });
 }
-function getFileAccessHttpUrl(fileUrl, prefix = 'http') {
-  let result = fileUrl;
-  try {
-    if (fileUrl && fileUrl.length > 0 && !fileUrl.startsWith(prefix)) {
-      //判断是否是数组格式
-      let isArray = fileUrl.indexOf('[') != -1;
-      if (!isArray) {
-        // let prefix = `${import.meta.env.VITE_GLOB_UPLOAD_URL}/sys/common/static/`;
-        let prefix = `${import.meta.env.VITE_GLOB_UPLOAD_URL}`;
-        // 判断是否已包含前缀
-        if (!fileUrl.startsWith(prefix)) {
-          result = `${prefix}${fileUrl}`;
-        }
-      }
-    }
-  } catch (err) { }
-  return result;
-};
 
 defineExpose({ validate, resetFields, clearValidate, getAllData, formModel: internalFormModel });
 </script>

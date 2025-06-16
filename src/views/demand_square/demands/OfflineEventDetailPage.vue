@@ -132,8 +132,7 @@ const formattedParticipants = computed(() => {
 });
 
 const handleActionClick = async () => {
-  const user = authStore.userInfo;
-  const response = await defHttp.post({ url: `/apm/apmOfflineActivity/registerByMemeber/${activityId}` });
+  const response = await defHttp.post({ url: `/apm/apmOfflineActivity/registerByMemeber/${eventDetail.value?.id}` });
   if (response && response.success) {
     isRegisterSuccess.value = true;
   }
