@@ -1,10 +1,11 @@
 <template>
   <div class="industry-report-page">
-    <listPage :pageData="pageData">
+    <listPage :pageData="pageData" ref="refListPage">
       <template #content="{ dataSource, paginationConfig }">
         <IndustryReportItem v-for="item in dataSource" :key="item.id" :report="item" />
           <div class="pagination-wrapper">
-            <a-pagination size="small" v-model:current="paginationConfig.current" v-bind="paginationConfig" show-quick-jumper :total="dataSource.length" @change="onChange" />
+            <a-pagination size="small" v-model:current="paginationConfig.current" v-bind="{...paginationConfig, showSizeChanger: false}"
+            show-quick-jumper :total="paginationConfig.total" @change="onChange" />
           </div>
       </template>
     </listPage>
@@ -18,6 +19,7 @@ import listPage from '@/components/template/listPage.vue';
 import IndustryReportItem from './components/IndustryReportItem.vue';
 const router = useRouter();
 
+const refListPage = ref();
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
   { id: 'reqPartsType', label: '报告类型', maxVisibleWithoutMore: 7, dictKey: 'report_type' },
@@ -35,11 +37,12 @@ const pageData = ref({
   searchTitle: '行研报告',
   pageTitle: '行研报告',
 })
-// const currentPage = ref(1);
-// const paginationConfig = reactive({
-//   current: 1,
-//   pageSize: 10
-// })
+const onChange = (page, pageSize) => {
+  refListPage.value.handleTablePaginationChange({
+    current: page,
+    pageSize
+  });
+}
 function viewDetails({ id }) {
   router.push(`/demands/IndustryReportDetailPage/${id}`);
 };

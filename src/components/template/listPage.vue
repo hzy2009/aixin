@@ -208,6 +208,9 @@ const handleActionClick = (record, action) => {
         modalStore.showLogin();
     }
 }
+defineExpose({
+    handleTablePaginationChange
+})
 </script>
 
 <style scoped lang="less">

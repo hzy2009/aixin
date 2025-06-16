@@ -1,14 +1,14 @@
 <template>
   <div>
-    <listPage :pageData="pageData">
+    <listPage :pageData="pageData" ref="refListPage">
       <template #content="{ dataSource, paginationConfig }">
         <div class="results-grid">
           <OfflineEventCard v-for="event in dataSource" :key="event.id" :event="event"
             @handleDetails="handleDetails(event)" />
         </div>
         <div class="pagination-wrapper">
-          <a-pagination size="small" v-model:current="paginationConfig.current" v-bind="paginationConfig"
-            show-quick-jumper :total="dataSource.length" @change="onChange" />
+          <a-pagination size="small" v-model:current="paginationConfig.current" v-bind="{...paginationConfig, showSizeChanger: false}"
+            show-quick-jumper :total="paginationConfig.total" @change="onChange" />
         </div>
       </template>
     </listPage>
@@ -34,7 +34,7 @@ const filterConfigForPage = reactive([
   // { id: 'region', label: '区域', maxVisibleWithoutMore: 3, options: [{ value: 'all', label: '全部' }, { value: 'huadong', label: '华东' }, { value: 'huanan', label: '华南' }, { value: 'huazhong', label: '华中' }, { value: 'huabei', label: '华北' }, { value: 'xinan', label: '西南' }, { value: 'xibei', label: '西北' }] },
   { id: 'activityTypeCode', label: '活动类型', maxVisibleWithoutMore: 7, dictKey: 'activity_type' }
 ]);
-
+const refListPage = ref();
 const pageData = ref({
   url: {
     list: 'apm/apmOfflineActivity/list/front',
@@ -70,6 +70,12 @@ function handleDetails({ id }) {
 function create() {
   router.push(`/user/published/OfflineEvent/create`);
 };
+const onChange = (page, pageSize) => {
+  refListPage.value.handleTablePaginationChange({
+    current: page,
+    pageSize
+  });
+}
 </script>
 
 <style scoped lang="less">
