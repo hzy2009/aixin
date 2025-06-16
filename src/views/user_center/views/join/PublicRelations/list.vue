@@ -21,6 +21,7 @@ const filterConfigForPage = reactive([
 const tableColumns = reactive([
     { title: '序号', dataIndex: 'index', key: 'index', textAlign: 'center', width: '60px' },
     { title: '单号', dataIndex: 'code', key: 'code', ellipsis: true, },
+    { title: '发起人', dataIndex: 'tenantName', key: 'tenantName', ellipsis: true, width: '120px' },
     { title: '研发攻关类型', dataIndex: 'rdType', key: 'rdType', align: 'center',
         // customRender: ({record}) => {
         // const { reqPartsTotal, reqPartsFinish } = record;

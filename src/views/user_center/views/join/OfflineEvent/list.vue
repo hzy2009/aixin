@@ -24,6 +24,7 @@ const filterConfigForPage = reactive([
 const tableColumns = reactive([
     { title: '序号', dataIndex: 'index', key: 'index', textAlign: 'center', width: '60px' },
     { title: '单号', dataIndex: 'code', key: 'code', ellipsis: true, width: '120px' },
+    { title: '发起人', dataIndex: 'tenantName', key: 'tenantName', ellipsis: true, width: '120px' },
     { title: '活动名称', dataIndex: 'activityName', key: 'activityName', align: 'center' }, // This should be 'sourcingType' from mock
     { title: '类型名称', dataIndex: 'activityTypeName', key: 'activityTypeName', align: 'center' }, // This should be 'sourcingType' from mock
     { title: '规模', dataIndex: 'registerLimit', key: 'registerLimit', align: 'center' }, // This should be 'sourcingType' from mock
