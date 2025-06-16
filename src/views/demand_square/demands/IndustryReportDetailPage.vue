@@ -119,24 +119,4 @@ watch(() => route.params.id, (newId) => {
     margin-bottom: @spacing-xl;
   }
 }
-
-.page-section-title-bar {
-  margin-top: @spacing-md;
-  display: flex;
-  align-items: center;
-
-  .decorator {
-    width: 4px;
-    height: 20px;
-    background-color: @primary-color;
-    margin-right: @spacing-sm;
-  }
-
-  .title-text {
-    font-size: 20px; // "行研报告" title size
-    font-weight: 600;
-    color: @text-color-base;
-    margin: 0;
-  }
-}
 </style>

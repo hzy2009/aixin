@@ -21,6 +21,7 @@ import AppFooter from './AppFooter.vue';
 }
 
 .main-content {
+  background-color: #FAFAFA;
   flex-grow: 1; // Allows main content to expand and push footer down
   // Optional: add some default padding if all pages need it
   // padding-top: @spacing-lg;

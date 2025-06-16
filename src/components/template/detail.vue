@@ -2,7 +2,7 @@
 	<div class="detail-view-page">
 		<!-- 1. Page Title -->
 		<div class="page-title-header">
-			<span class="title-decorator-bar"></span>
+			<!-- <span class="title-decorator-bar"></span> -->
 			<h2 class="page-main-heading">{{ pageTitle }}</h2>
 		</div>
 
@@ -34,11 +34,11 @@
 					<div class=" flex1">
 						<a-table :columns="tableSection.columns"
 							:data-source="formModel[`${tableSection.groupCode}`] || []" :pagination="false"
-							:row-key="tableSection.rowKey || 'id'" bordered size="middle" class="custom-detail-table" >
+							:row-key="tableSection.rowKey || 'id'" bordered size="middle" class="custom-detail-table">
 							<template #bodyCell="{ column, record, index }">
-									<span v-if="column.dataIndex === 'index'">
-										{{ index + 1 }}
-									</span>
+								<span v-if="column.dataIndex === 'index'">
+									{{ index + 1 }}
+								</span>
 							</template>
 						</a-table>
 					</div>
@@ -55,7 +55,7 @@
 			</div>
 			<a-steps :current="currentStepIndex" class="status-steps" progress-dot size="small">
 				<a-step v-for="(step, stepIdx) in statusTracking.steps" :key="`step-${stepIdx}`"
-					:title="step.operateName" :description="step.createTime"/>
+					:title="step.operateName" :description="step.createTime" />
 			</a-steps>
 			<a-table v-if="formModel.logList && formModel.logList.length > 0" :columns="statusHistoryColumns"
 				:data-source="formModel.logList" :pagination="false" :row-key="'id'" bordered size="middle"
@@ -235,7 +235,7 @@ const handleDefaultSubmit = () => {
 .page-title-header {
 	display: flex;
 	align-items: center;
-	margin-bottom: @spacing-xl;
+	margin-bottom: @spacing-md;
 
 	.title-decorator-bar {
 		width: 4px;
