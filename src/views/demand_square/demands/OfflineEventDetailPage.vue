@@ -1,8 +1,8 @@
 <template>
   <!-- 1. Page Title: "线下活动" -->
-  <div class="page-title-header container">
-    <span class="title-decorator-bar"></span>
-    <h2 class="page-main-heading">线下活动</h2>
+  <div class="page-section-title-bar container">
+    <span class="decorator"></span>
+    <h2 class="title-text">线下活动</h2>
   </div>
   <ContentWithSidebarLayout>
     <template #main>

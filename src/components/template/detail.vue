@@ -88,14 +88,14 @@ import { Button as AButton, Table as ATable, Steps as ASteps, Step as AStep } fr
 import { useDemandDetail } from './hooks/useDemandDetail.js';
 import { useAuthStore } from '@/store/authStore';
 import { useRouter, useRoute } from 'vue-router'; // 用于新建成功后跳转
-
+import {selectOptions} from '@/utils/index';
 const route = useRoute();
 const auth = useAuthStore();
-const selectOptions = (dictKey) => {
-	if (!dictKey) return [];
-	if (!auth.sysAllDictItems[dictKey]) return []
-	return auth.sysAllDictItems[dictKey].map(({ label, value }) => ({ label, value })) || [];
-};
+// const selectOptions = (dictKey) => {
+// 	if (!dictKey) return [];
+// 	if (!auth.sysAllDictItems[dictKey]) return []
+// 	return auth.sysAllDictItems[dictKey].map(({ label, value }) => ({ label, value })) || [];
+// };
 
 const baseImgUrl = import.meta.env.VITE_GLOB_DOMAIN_URL
 

@@ -8,8 +8,7 @@
       <detail :pageData="pageData" @goBack="goBack"></detail>
     </template>
     <template #sidebar>
-      <RelatedItemsSidebar title="其他" :items="relatedEvents" :is-loading="isLoadingRelated" empty-description="暂无其他推荐"
-        @item-click="navigateToRelatedEvent" />
+      <VerificationSidebar />
     </template>
   </ContentWithSidebarLayout>
 </template>
@@ -19,7 +18,7 @@ import { ref, computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import detail from '@/components/template/detail.vue';
 import { useAuthStore } from '@/store/authStore';
-import RelatedItemsSidebar from '@/components/common/RelatedItemsSidebar.vue'; // Adjust path if needed
+import VerificationSidebar from './components/VerificationSidebar.vue'; // Adjust path if needed
 import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue'; // Adjust path if needed
 
 const authStore = useAuthStore();

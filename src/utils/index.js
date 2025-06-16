@@ -1,3 +1,5 @@
+import { useAuthStore } from '@/store/authStore';
+const auth = useAuthStore();
 export function getFileAccessHttpUrl(fileUrl, prefix = 'http') {
   let result = fileUrl;
   try {
@@ -15,4 +17,9 @@ export function getFileAccessHttpUrl(fileUrl, prefix = 'http') {
     }
   } catch (err) { }
   return result;
+};
+export function selectOptions  (dictKey) {
+	if (!dictKey) return [];
+	if (!auth.sysAllDictItems[dictKey]) return []
+	return auth.sysAllDictItems[dictKey].map(({ label, value }) => ({ label, value })) || [];
 };
