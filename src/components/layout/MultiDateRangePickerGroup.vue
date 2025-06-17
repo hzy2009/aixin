@@ -122,6 +122,7 @@ defineExpose({ resetAllDates, getCurrentValues: () => {
   align-items: center;
   gap: @spacing-xl;
   border-bottom: 1px dotted #e0e0e0;
+  background-color: #fff;
 }
 
 .date-picker-item {
