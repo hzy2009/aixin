@@ -82,7 +82,7 @@ import {
 } from 'ant-design-vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
 import { getFileAccessHttpUrl } from "@/utils/index";
-const uploadUrl = `${import.meta.env.VITE_API_BASE_URL}/sys/common/upload` || '/api';
+const uploadUrl = `${import.meta.env.VITE_API_BASE_URL}sys/common/upload` || '/api';
 const auth = useAuthStore(); // For dictionary options
 
 const selectOptions = (dictKey) => {
