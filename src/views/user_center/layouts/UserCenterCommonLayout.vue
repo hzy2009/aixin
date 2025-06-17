@@ -1,8 +1,8 @@
 <template>
   <div class="user-center-common-layout">
     <!-- Banner Section -->
-    <section class="uc-banner">
-      <div class="container uc-banner__content">
+    <section class="uc-banner container">
+      <div class=" uc-banner__content">
         <div class="uc-banner__avatar">
           <a-avatar :size="80" :src="userInfo?.avatar">
             <template #icon><UserOutlined /></template>
@@ -103,10 +103,8 @@ const handleSubTabClick = (key) => {
   background-color: @background-color-light-gray; // 整个页面区域的背景色
   padding-bottom: @spacing-xxl; // 给底部留出一些空间
 }
-
 .uc-banner {
-  background: linear-gradient(to right, #2d070a 0%, #3c0a0e 30%, @primary-color 100%),
-              url('@/assets/images/home/banner.png'); // 假设你有这个图案
+  background: url('@/assets/images/user_center/Rectangle 221.png'); // 假设你有这个图案
   background-blend-mode: multiply, normal; // 将颜色与图案混合
   background-size: auto, auto 150px; // 图案大小
   background-position: center, right 20px center;
@@ -118,6 +116,7 @@ const handleSubTabClick = (key) => {
   &__content {
     display: flex;
     align-items: center;
+    margin-left: 33px;
   }
 
   &__avatar {
@@ -166,7 +165,7 @@ const handleSubTabClick = (key) => {
     min-width: 160px; // 给主页签一个最小宽度
 
     &--active {
-      background-color: @primary-color;
+      background-color: #BC1A2C;
       color: @text-color-light;
     }
     &:not(&--active):hover {

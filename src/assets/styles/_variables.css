@@ -10,17 +10,17 @@
   color: #C3CBCF;
 }
 .action-button.cancel-button:hover {
-  color: #c92027;
-  border-color: #c92027;
+  color: #BC1A2C;
+  border-color: #BC1A2C;
 }
 .action-button.submit-button {
-  background-color: #c92027;
-  border-color: #c92027;
+  background-color: #BC1A2C;
+  border-color: #BC1A2C;
   color: #ffffff;
 }
 .action-button.submit-button:hover {
-  background-color: #9d191e;
-  border-color: #9d191e;
+  background-color: #8f1422;
+  border-color: #8f1422;
 }
 .action-submit-note {
   font-family: PingFang SC;
@@ -35,7 +35,7 @@
 }
 .action-submit-note .text {
   font-size: 18px;
-  color: #c92027;
+  color: #BC1A2C;
 }
 .page-section-title-bar {
   margin-top: 16px;
@@ -46,12 +46,12 @@
 .page-section-title-bar .decorator {
   width: 4px;
   height: 30px;
-  background-color: #c92027;
+  background-color: #BC1A2C;
   margin-right: 8px;
 }
 .page-section-title-bar .title-text {
   font-weight: 600;
-  color: #c92027;
+  color: #BC1A2C;
   margin: 0;
   font-family: PingFang SC;
   font-weight: 400;
