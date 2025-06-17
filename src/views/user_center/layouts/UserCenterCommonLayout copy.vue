@@ -10,18 +10,14 @@
         </div>
         <div class="uc-banner__info">
           <h2 class="user-name">{{ userInfo?.realname || '会员用户' }}</h2>
-          <div class="user-membership-info">
-            <span class="membership-level">{{ userInfo?.memberLevel || '普通会员' }}</span>
-            <a-button type="link" class="upgrade-link" v-if="!isHighestLevel(userInfo?.memberLevel)">升级会员</a-button>
-          </div>
           <p class="user-id">ID: {{ userInfo?.loginTenantId || '加载中...' }}</p>
         </div>
       </div>
     </section>
     {{  }}
     <!-- Main Tabs Section -->
-    <section class="uc-main-tabs-wrapper container">
-      <div class="">
+    <section class="uc-main-tabs-wrapper">
+      <div class="container">
         <div class="uc-main-tabs">
           <div
             v-for="tab in mainTabs"
@@ -36,9 +32,9 @@
     </section>
 
     <!-- Sub Tabs Section -->
-    <section class="uc-sub-tabs-wrapper container">
-      <div class="">
-        <!-- <div class="uc-sub-tabs">
+    <section class="uc-sub-tabs-wrapper">
+      <div class="container">
+        <div class="uc-sub-tabs">
           <div
             v-for="subTab in currentSubTabs"
             :key="subTab.key"
@@ -47,20 +43,7 @@
           >
             {{ subTab.label }}
           </div>
-        </div> -->
-        <a-tabs
-          :active-key="activeSubTabKey.value"
-          @tabClick="handleSubTabClick"
-          class="custom-sub-tabs"
-          type="card"
-        >
-          <a-tab-pane
-            v-for="subTab in currentSubTabs"
-            :key="subTab.key"
-            :tab="subTab.label"
-          >
-          </a-tab-pane>
-        </a-tabs>
+        </div>
       </div>
     </section>
 
@@ -86,10 +69,6 @@ import { useAuthStore } from '@/store/authStore'; // 用于获取用户信息
 const route = useRoute();
 const authStore = useAuthStore();
 const userInfo = computed(() => authStore.userInfo);
-const isHighestLevel = (level) => {
-    // TODO: 实现判断是否为最高等级会员的逻辑
-    return level === '高级会员'; // 示例
-};
 // TODO: 从 authStore 或特定用户 profile hook 获取更详细的用户信息
 // const userInfo = computed(() => ({
 //   name: authStore.userInfo?.name || '爱芯享信息共享平台', // 示例名称
@@ -154,35 +133,6 @@ const handleSubTabClick = (key) => {
       margin-bottom: @spacing-xs;
       color: @text-color-light;
     }
-    .user-membership-info {
-      display: flex;
-      align-items: center;
-      margin-bottom: 6px;
-      .membership-level {
-        display: inline-block;
-        background-color: @primary-color;
-        color: #fff;
-        padding: 0 8px;
-        height: 22px;
-        width: 72px;
-        border-radius: 4px;
-        font-size: 12px;
-        text-align: center;
-        font-weight: 350;
-        line-height: 22px;
-        letter-spacing: 0%;
-        margin-right: @spacing-sm;
-      }
-      .upgrade-link {
-        color: @text-color-light; // 白色文字
-        font-size: 12px;
-        padding: 0;
-        height: auto;
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-    }
     .user-id {
       font-size: 13px;
       color: darken(@text-color-light, 20%);
@@ -227,79 +177,9 @@ const handleSubTabClick = (key) => {
 .uc-sub-tabs-wrapper {
   background-color: @background-color-base; // 白色背景
   padding: @spacing-md 0; // 上下 padding
-  // margin-bottom: @spacing-md; // 与下方内容的间距
-  .custom-sub-tabs {
-    :deep(.ant-tabs-nav) {
-      margin-bottom: 0; // 移除 AntD Tabs 导航下方的默认 margin
-      &::before {
-        // border-bottom: none; // 移除 AntD Tabs 导航下方的默认边框线
-      }
-    }
-
-    :deep(.ant-tabs-nav-wrap) {
-      // 如果需要，可以对包裹层进行样式调整，比如去除默认的渐变阴影（如果存在）
-      // overflow: visible; // 如果有内容溢出问题
-    }
-    :deep(.ant-tabs-nav-list) {
-      // 这里是实际的页签列表
-    }
-
-    :deep(.ant-tabs-tab) {
-      padding: 18px 36px; // 页签的内边距，调整以匹配图片
-      margin: 0; // 移除 AntD 页签之间的默认 margin
-      border: none; // 移除 AntD 默认边框
-      font-weight: 400;
-      font-size: 18px;
-      line-height: 15px;
-      letter-spacing: 0px;
-      transition: all 0s;
-      color: @text-color-secondary; // 非激活状态文字颜色
-      background-color: transparent; // 非激活状态背景透明
-      // transition: color 0.3s, background-color 0.3s, border-color 0.3s;
-      min-width: 100px; // 给子页签一个最小宽度，使其不至于太挤
-      text-align: center;
-      border-radius: 0;
-      .ant-tabs-tab-btn {
-        color: inherit; // 让按钮文字继承页签的颜色
-        // &:hover {
-        //   color: @primary-color;
-        // }
-      }
-      &:first-child {
-        margin-left: 20px;
-      }
-      &:hover {
-        // color: @primary-color;
-        border-top: 1px solid #EAEAEA;
-        border-left: 1px solid #EAEAEA;
-        border-right: 1px solid #EAEAEA;
-        border-bottom: 1px solid #fff;
-        // background-color: #f7f7f7; // 轻微的悬停背景色
-      }
-    }
-
-    :deep(.ant-tabs-tab-active) {
-      // color: @primary-color; // 激活状态文字颜色
-      font-weight: 500;
-      border-top: 1px solid #EAEAEA;
-      border-left: 1px solid #EAEAEA;
-      border-right: 1px solid #EAEAEA;
-      border-bottom: 1px solid #fff;
-      // background-color: fade(@primary-color, 10%); // 图片中激活的子页签没有明显背景色，主要靠文字颜色和下划线
-      // border-color: fade(@primary-color, 30%); // 激活状态边框颜色（如果需要）
-
-      // .ant-tabs-tab-btn {
-      //   color: @primary-color;
-      // }
-    }
-    :deep(.ant-tabs-nav::before) {
-      // border-bottom: none;
-    }
-    // :deep(.ant-tabs-ink-bar) { 
-    //   background-color: @primary-color; // 红色下划线
-    //   height: 2px; // 下划线高度
-    // }
-  }
+  border-bottom: 1px solid @border-color-light; // 底部分割线
+  box-shadow: 0 2px 4px rgba(0,0,0,0.03); // 轻微阴影
+  margin-bottom: @spacing-lg; // 与下方内容的间距
 }
 
 .uc-sub-tabs {
@@ -333,7 +213,6 @@ const handleSubTabClick = (key) => {
 }
 
 .uc-content-area {
-  background-color: @background-color-base;
   // .container 类已处理了最大宽度和居中
   // 子路由的内容将在这里渲染
 }

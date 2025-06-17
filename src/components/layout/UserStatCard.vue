@@ -31,7 +31,7 @@ defineProps({
   padding: @spacing-md @spacing-sm;
   border-radius: @border-radius-base;
   // box-shadow: 0 1px 3px rgba(0,0,0,0.04); // Very subtle shadow
-  border: 1px solid @border-color-light;
+  // border: 1px solid @border-color-light;
   gap: @spacing-sm;
   flex: 1; // To make cards distribute space in a flex container
   min-width: 140px; // Minimum width for a stat card

@@ -65,7 +65,6 @@ const pageData = ref({
     statusDictKey: 'sourcing_status',
     userStatCardVisible: true,
     actions,
-    pageTitle: '检测验证',
     tableOperations: [
         {
             title: '创建需求',
