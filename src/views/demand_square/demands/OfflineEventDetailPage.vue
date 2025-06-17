@@ -17,7 +17,7 @@
 
           <!-- 2. Event Banner -->
           <div class="event-banner-full-width">
-            <img :src="eventDetail.bannerUrl || defaultBanner" :alt="eventDetail.title"
+            <img :src="getImgUrl(eventDetail.imageUrl)" :alt="eventDetail.title"
               class="event-banner-image-actual" />
           </div>
 
@@ -82,10 +82,12 @@ import { useRoute, useRouter } from 'vue-router';
 import { Button as AButton, Spin as ASpin, Empty as AEmpty, message } from 'ant-design-vue';
 import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue'; // Adjust path if needed
 import OfflineEventSidebar from './components/OfflineEventSidebar.vue'; // Adjust path if needed
-import defaultEventBannerPlaceholder from '@/assets/images/home/banner.png'; // Ensure this placeholder exists
+import defaultEventBannerPlaceholder from '@/assets/images/home/offline.png'; // Ensure this placeholder exists
 import operationResultPage from '@/components/template/operationResultPage.vue';
 import defHttp from '@/utils/http/axios'
 import { useAuthStore } from '@/store/authStore';
+import { getFileAccessHttpUrl } from '@/utils/index';
+
 const authStore = useAuthStore();
 
 const route = useRoute();
@@ -148,7 +150,13 @@ const handleToDetail = () => {
 const handleToList = () => {
   router.push({ path: '/demands/OfflineEvent' });
 }
-
+const getImgUrl = (url) => {
+  if (url) {
+    return getFileAccessHttpUrl(url);
+  } else {
+    return defaultBanner;
+  }
+}
 onMounted(() => {
   fetchEventDetail(eventId.value);
   fetchRelatedEvents();
