@@ -47,7 +47,8 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
   // TODO: Replace with actual API calls
   async function fetchStatsAPI() {
     const statusMapp = authStore.sysAllDictItems[statusDictKey] || []
-    const {result} = await defHttp.get({url: url.overview, params: {...otherParams}});
+    const res = await defHttp.get({url: url.overview, params: {...otherParams}});
+    const result = res.result || [];
     const countMap = {}
     let total = 0
     result.forEach(item => {
