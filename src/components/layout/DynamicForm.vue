@@ -82,9 +82,7 @@ import {
 } from 'ant-design-vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
 import { getFileAccessHttpUrl } from "@/utils/index";
-const uploadUrl = `${import.meta.env.VITE_API_BASE_URL}/apm/sys/file/upload/A` || '/api';
-// const uploadUrl = `/apm/sys/file/upload/A` || '/api';
-console.log('uploadUrl', uploadUrl)
+const uploadUrl = `${import.meta.env.VITE_API_BASE_URL}/sys/common/upload` || '/api';
 const auth = useAuthStore(); // For dictionary options
 
 const selectOptions = (dictKey) => {
@@ -258,8 +256,8 @@ const getAllData = () => {
   const paranms = JSON.parse(JSON.stringify(internalFormModel || {}));
   props.formConfig.forEach(fielditem => {
     if (fielditem.fieldType === 'imageUpload') {
-      if (paranms[fielditem.field] && paranms[fielditem.field][0] && paranms[fielditem.field][0].response.result[0]) {
-        paranms[fielditem.field] = getFileAccessHttpUrl(paranms[fielditem.field][0].response.result[0])
+      if (paranms[fielditem.field] && paranms[fielditem.field][0] && paranms[fielditem.field][0].message) {
+        paranms[fielditem.field] = getFileAccessHttpUrl(paranms[fielditem.field][0].response.message)
       } else {
         paranms[fielditem.field] = null
       }
