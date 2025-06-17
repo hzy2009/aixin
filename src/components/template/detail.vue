@@ -56,10 +56,11 @@
 				<div class="section-title-wrapper">
 					<h3 class="section-title-text">{{ statusTracking.title || '状态跟踪' }}</h3>
 				</div>
-				<a-steps :current="currentStepIndex" class="status-steps" progress-dot size="small">
-					<a-step v-for="(step, stepIdx) in statusTracking.steps" :key="`step-${stepIdx}`"
-						:title="step.operateName" :description="step.createTime" />
-				</a-steps>
+				<!-- <a-steps :current="currentStepIndex" class="status-steps" progress-dot size="small" :items="statusTracking.steps"> -->
+					<!-- <a-step v-for="(step, stepIdx) in statusTracking.steps" :key="`step-${stepIdx}`"
+						:title="step.operateName" :description="step.createTime" /> -->
+				<!-- </a-steps> -->
+				<a-steps progress-dot :current="currentStepIndex" :items="statusTracking.steps" class="status-steps"/>
 				<a-table v-if="formModel.logList && formModel.logList.length > 0" :columns="statusHistoryColumns"
 					:data-source="formModel.logList" :pagination="false" :row-key="'id'" bordered size="middle"
 					class="custom-detail-table status-history-table">
@@ -156,7 +157,9 @@ const statusTracking = computed(() => {
 	const steps = stepData.map(step => {
 		return {
 			...step,
-			status: step.businessId ? 'finish' : 'wait'
+			title: step.operateName,
+			description: step.createTime,
+			statusCode: step.businessId ? 'finish' : 'wait'
 		}
 	})
 	return {
@@ -175,8 +178,8 @@ const currentStepIndex = computed(() => {
 	if (!statusTracking.value || !statusTracking.value.steps || statusTracking.value.steps.length === 0) return -1;
 	let lastFinishIndex = -1;
 	for (let i = statusTracking.value.steps.length - 1; i >= 0; i--) {
-		if (statusTracking.value.steps[i].status === 'finish') {
-			lastFinishIndex = i - 1;
+		if (statusTracking.value.steps[i].statusCode === 'finish') {
+			lastFinishIndex = i ;
 			break;
 		}
 	}
@@ -393,9 +396,12 @@ watch(() => route.params.id, (newId, oldId) => {
 		background: #D9D9D9;
 	}
 
-	:deep(.ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-tail::after),
-	:deep(.ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-tail::after) {
-		// Also color tail for current process
+	// :deep(.ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-tail::after),
+	// :deep(.ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-tail::after) {
+	// 	// Also color tail for current process
+	// 	background-color: @primary-color;
+	// }
+	:deep(.ant-steps-item-finish>.ant-steps-item-container>.ant-steps-item-tail::after) {
 		background-color: @primary-color;
 	}
 }
