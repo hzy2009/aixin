@@ -1,7 +1,7 @@
 <template>
   <div class="event-card">
     <div class="event-cover-image-wrapper">
-      <img :alt="event.activityName" :src="event.bannerUrl || defaultEventBanner" class="event-cover-image" />
+      <img :alt="event.activityName" :src="event.imgUrl || defaultEventBanner" class="event-cover-image" />
       <div v-if="event.organizerName" class="organizer-badge">
         <span class="organizer-decorator"></span> {{ event.organizerName }}
       </div>
