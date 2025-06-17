@@ -8,7 +8,8 @@
       <detail :pageData="pageData" @goBack="goBack">
         <template #title="{ dataSource = {} }">
           <div class="avatar-wrapper">
-            <img src="@/assets/images/auth/avatar.png" alt="" class="avatar-image">
+            <img src="@/assets/images/auth/avatar.png" alt="" class="avatar-image" v-if="!dataSource.gender">
+            <img :src="dataSource.gender === '男' ? ManImg : WomanImg" alt="" class="avatar-image" v-else>
           </div>
         </template>
         <template #content="{ dataSource = {}}">
@@ -42,7 +43,8 @@ import { useRoute, useRouter } from 'vue-router';
 import detail from '@/components/template/detail.vue';
 import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue'; // Adjust path if needed
 import TalentSidebar from './components/TalentSidebar.vue';
-
+import ManImg from '@/assets/images/auth/m.png';
+import WomanImg from '@/assets/images/auth/w.png';
 const route = useRoute();
 const router = useRouter();
 
