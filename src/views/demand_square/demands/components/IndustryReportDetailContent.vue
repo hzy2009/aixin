@@ -34,7 +34,7 @@
     <div class="report-outline-section">
       <h3 class="outline-title">大纲/目录</h3>
       <div class="outline-list">
-        {{ outline }}
+        {{ report.outline }}
       </div>
     </div>
 
