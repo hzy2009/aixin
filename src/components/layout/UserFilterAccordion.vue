@@ -102,9 +102,9 @@ defineExpose({ resetAllFilters });
 .filter-group {
   border-bottom: 1px dotted @border-color-light;
 
-  // &:last-child {
-  //   border-bottom: none;
-  // }
+  &:last-child {
+    border-bottom: none;
+  }
 }
 
 .filter-tag {
