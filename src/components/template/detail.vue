@@ -7,8 +7,8 @@
 		</div>
 		<a-spin :spinning="isLoading">
 			<!-- Section: Basic Information -->
-			<section  v-if="$slots.title" :dataSource="formModel">
-				<slot name="title"></slot>
+			<section  v-if="$slots.title" >
+				<slot name="title" :dataSource="formModel"></slot>
 			</section>
 			<section class="info-section">
 				<div class="section-title-wrapper">
@@ -48,8 +48,8 @@
 					</div>
 				</div>
 			</section>
-			<section class="info-section" v-if="$slots.content" :dataSource="formModel">
-				<slot name="content"></slot>
+			<section class="info-section" v-if="$slots.content" >
+				<slot name="content" :dataSource="formModel"></slot>
 			</section>
 			<!-- Section: Status Tracking (Timeline/Steps + Table) -->
 			<section v-if="showLogList && statusTracking" class="info-section">

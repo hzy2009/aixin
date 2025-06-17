@@ -11,7 +11,7 @@
             <img src="@/assets/images/auth/avatar.png" alt="" class="avatar-image">
           </div>
         </template>
-        <template #content="{ dataSource = {} }">
+        <template #content="{ dataSource = {}}">
 					<div class="section-title-wrapper">
 						<h3 class="section-title-text">获得省市国家级荣誉</h3>
 					</div>
@@ -19,7 +19,13 @@
 							<a-table 
 									:columns="columns"
 									:data-source="dataSource.achievementList || []" :pagination="false"
-									:row-key="'id'" bordered size="middle" class="custom-detail-table" />
+									:row-key="'id'" bordered size="middle" class="custom-detail-table" >
+                <template #bodyCell="{ column, record, index }">
+                    <span v-if="column.dataIndex === 'index'">
+                        {{ index + 1 }}   
+                    </span>
+                </template>
+            </a-table >
 					</div>
         </template>
       </detail>
@@ -54,8 +60,8 @@ const formConfigs = [
 const columns = [
 	{
 		title: '序号',
-		dataIndex: 'eq',
-		key: 'eq',
+		dataIndex: 'index',
+		key: 'index',
 	},
   {
     title: '荣誉',
