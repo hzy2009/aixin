@@ -275,11 +275,12 @@ const handleSubTabClick = (key) => {
         border-right: 1px solid #EAEAEA;
         border-bottom: 1px solid #fff;
         // background-color: #f7f7f7; // 轻微的悬停背景色
+        color: @primary-color; // 激活状态文字颜色
       }
     }
 
     :deep(.ant-tabs-tab-active) {
-      // color: @primary-color; // 激活状态文字颜色
+      color: @primary-color; // 激活状态文字颜色
       font-weight: 500;
       border-top: 1px solid #EAEAEA;
       border-left: 1px solid #EAEAEA;
