@@ -49,11 +49,11 @@
           </section>
 
           <!-- 6. Participants -->
-          <section class="event-section-block" v-if="eventDetail.participantsInfo">
+          <section class="event-section-block" v-if="eventDetail.registerList">
             <h3 class="section-block-title">参与者：</h3>
             <div class="section-block-content participants-text">
-              <!-- Assuming participantsInfo is a string that might need pre-formatting or just display as is -->
-              <p v-for="(line, index) in formattedParticipants" :key="index">{{ line }}</p>
+              <!-- Assuming registerList is a string that might need pre-formatting or just display as is -->
+              {{ formattedParticipants }}
             </div>
           </section>
 
@@ -123,9 +123,9 @@ async function fetchRelatedEvents() {
 // --- End Mock API Calls ---
 
 const formattedParticipants = computed(() => {
-  if (eventDetail.value?.participantsInfo) {
+  if (eventDetail.value?.registerList) {
     // Split by semicolon and trim whitespace from each part
-    return eventDetail.value.participantsInfo.split('；').map(line => line.trim()).filter(line => line);
+    return eventDetail.value.registerList.map(line => line.registerUserName).join('；');
   }
   return [];
 });
