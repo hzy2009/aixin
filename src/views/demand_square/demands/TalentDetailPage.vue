@@ -1,7 +1,16 @@
 <template>
+  <div class="page-section-title-bar container">
+    <span class="decorator"></span>
+    <h2 class="title-text">行业人才</h2>
+  </div>
   <ContentWithSidebarLayout>
     <template #main>
       <detail :pageData="pageData" @goBack="goBack">
+        <template #title="{ dataSource = {} }">
+          <div class="avatar-wrapper">
+            <img src="@/assets/images/auth/avatar.png" alt="" class="avatar-image">
+          </div>
+        </template>
         <template #content="{ dataSource = {} }">
 					<div class="section-title-wrapper">
 						<h3 class="section-title-text">获得省市国家级荣誉</h3>
@@ -16,7 +25,7 @@
       </detail>
     </template>
     <template #sidebar>
-      <RecommendedSidebar :current-report-id="IdProp" :category="reportData?.category" :count="3" />
+      <TalentSidebar />
     </template>
   </ContentWithSidebarLayout>
 </template>
@@ -26,7 +35,7 @@ import { ref, onMounted, watch, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import detail from '@/components/template/detail.vue';
 import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue'; // Adjust path if needed
-import RecommendedSidebar from './components/RecommendedSidebar.vue';
+import TalentSidebar from './components/TalentSidebar.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -37,7 +46,7 @@ const props = defineProps({
 const reportData = ref({});
 
 const formConfigs = [
-  { label: '人才编号', field: 'id', span: 24 },
+  { label: '人才编号', field: 'code', span: 24 },
   { label: '性别', field: 'gender', span: 24 },
   { label: '研究领域', field: 'skillAreaName', span: 24 },
   { label: '主要研究方向', field: 'skillDesc', span: 24, },
@@ -71,10 +80,12 @@ const pageData = reactive({
   },
   formConfigs,
   pageTitle: '行业人才',
+  showLogList: false,
+  showPageTitle: false
 })
 
 const goBack = () => {
-  router.go(-1); 
+  router.push({ path: '/demands/Talent' });
 };
 </script>
 
@@ -112,4 +123,13 @@ const goBack = () => {
 		}
 	}
 }
+.avatar-wrapper{
+  margin-bottom: 20px;
+  .avatar-image{
+    width: 64px;
+    height: 64px;
+    border-width: 1px;
+  }
+}
+
 </style>

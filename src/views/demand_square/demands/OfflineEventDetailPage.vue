@@ -71,8 +71,7 @@
     </template>
 
     <template #sidebar>
-      <RelatedItemsSidebar title="其他线下活动" :items="relatedEvents" :is-loading="isLoadingRelated"
-        empty-description="暂无其他活动推荐" @item-click="navigateToRelatedEvent" />
+      <OfflineEventSidebar></OfflineEventSidebar>
     </template>
   </ContentWithSidebarLayout>
 </template>
@@ -82,7 +81,7 @@ import { ref, onMounted, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Button as AButton, Spin as ASpin, Empty as AEmpty, message } from 'ant-design-vue';
 import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue'; // Adjust path if needed
-import RelatedItemsSidebar from '@/components/common/RelatedItemsSidebar.vue'; // Adjust path if needed
+import OfflineEventSidebar from './components/OfflineEventSidebar.vue'; // Adjust path if needed
 import defaultEventBannerPlaceholder from '@/assets/images/home/banner.png'; // Ensure this placeholder exists
 import operationResultPage from '@/components/template/operationResultPage.vue';
 import defHttp from '@/utils/http/axios'

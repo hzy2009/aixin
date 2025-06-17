@@ -1,12 +1,15 @@
 <template>
 	<div class="detail-view-page">
 		<!-- 1. Page Title -->
-		<div class="page-title-header">
+		<div class="page-title-header" v-if="showPageTitle">
 			<!-- <span class="title-decorator-bar"></span> -->
 			<h2 class="page-main-heading">{{ pageTitle }}</h2>
 		</div>
 		<a-spin :spinning="isLoading">
 			<!-- Section: Basic Information -->
+			<section  v-if="$slots.title" :dataSource="formModel">
+				<slot name="title"></slot>
+			</section>
 			<section class="info-section">
 				<div class="section-title-wrapper">
 					<h3 class="section-title-text">基本信息</h3>
@@ -118,7 +121,8 @@ const {
 	tableSections,
 	actionNote = '一键敲门后，客服人员将在30分钟内与您联系',
 	canSubmit = true,
-	showLogList = true
+	showLogList = true,
+	showPageTitle = true,
 } = props.pageData;
 
 const baseFormConfigs = ref(formConfigs);
