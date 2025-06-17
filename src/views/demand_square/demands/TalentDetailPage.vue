@@ -18,7 +18,7 @@
 					<div>
 							<a-table 
 									:columns="columns"
-									:data-source="dataSource.xx || []" :pagination="false"
+									:data-source="dataSource.achievementList || []" :pagination="false"
 									:row-key="'id'" bordered size="middle" class="custom-detail-table" />
 					</div>
         </template>
@@ -59,13 +59,13 @@ const columns = [
 	},
   {
     title: '荣誉',
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'achievement',
+    key: 'achievement',
   },
   {
     title: '取得荣誉年份',
-    dataIndex: 'time',
-    key: 'time',
+    dataIndex: 'year',
+    key: 'year',
   },
 ]
 const pageData = reactive({
