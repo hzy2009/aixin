@@ -5,7 +5,7 @@
       <div class="date-year">{{ formatDate(report.updateTime, 'YYYY') }}</div>
     </div>
     <div class="report-item__image-container">
-      <img :src="report.imageUrl ? `${baseImgUrl}/${report.imageUrl}` : defaultThumbnail" :alt="report.title"
+      <img :src="getImgUrl(report.imageUrl)" :alt="report.title"
         class="report-image" />
     </div>
     <div class="report-item__content">
@@ -25,10 +25,10 @@
 </template>
 
 <script setup>
-import { Tag as ATag } from 'ant-design-vue';
 import { EyeOutlined, RightOutlined } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
 import defaultThumbnailPlaceholder from './defaultThumbnail.png'; // Create a placeholder
+import { getFileAccessHttpUrl } from '@/utils/index';
 
 const props = defineProps({
   report: {
@@ -66,6 +66,14 @@ const formatDate = (dateString, format) => {
   }
 };
 const baseImgUrl = import.meta.env.VITE_GLOB_DOMAIN_URL;
+const getImgUrl = (url) => {
+  if (url) {
+    return getFileAccessHttpUrl(url);
+  } else {
+    return defaultThumbnail;
+  }
+}
+
 
 const viewReportDetails = (id) => {
   // TODO: Navigate to the actual report detail page

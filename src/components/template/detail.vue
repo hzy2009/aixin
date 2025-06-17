@@ -101,7 +101,6 @@ const auth = useAuthStore();
 // 	return auth.sysAllDictItems[dictKey].map(({ label, value }) => ({ label, value })) || [];
 // };
 
-const baseImgUrl = import.meta.env.VITE_GLOB_DOMAIN_URL
 
 const props = defineProps({
 	pageData: {

@@ -20,7 +20,7 @@
             </div>
 
             <div v-if="formModel.imageUrl" class="article-banner-image-container">
-              <img :src="`${baseImgUrl}/${formModel.imageUrl}` || defaultNewsBanner" :alt="formModel.title" class="article-banner-img"/>
+              <img :src="getImgUrl(formModel.imageUrl)" :alt="formModel.title" class="article-banner-img"/>
             </div>
 
             <div class="article-body-content rich-text-format" >
@@ -65,6 +65,7 @@ import RelatedItemsSidebar from '@/components/common/RelatedItemsSidebar.vue'; /
 import defaultNewsBannerPlaceholder from '@/assets/images/home/banner.png'; // Create placeholder
 import { useDemandDetail } from '@/components/template/hooks/useDemandDetail.js';
 import { useUserDemandList } from '@/components/template/hooks/useUserDemandList.js'; // Adjust path
+import { getFileAccessHttpUrl } from '@/utils/index';
 
 const props = defineProps({
   id: {
@@ -87,7 +88,13 @@ const {
 });
 const formModel = ref({});
 
-
+const getImgUrl = (url) => {
+  if (url) {
+    return getFileAccessHttpUrl(url);
+  } else {
+    return defaultNewsBanner;
+  }
+}
 
 const baseImgUrl = import.meta.env.VITE_GLOB_DOMAIN_URL;
 
