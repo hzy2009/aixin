@@ -1,7 +1,7 @@
 <template>
   <div class="event-card">
     <div class="event-cover-image-wrapper">
-      <img :alt="event.activityName" :src="event.imageUrl || defaultEventBanner" class="event-cover-image" />
+      <img :alt="event.activityName" :src="event.imageUrl ? getImgUrl(event.imageUrl): defaultEventBanner" class="event-cover-image" />
       <div v-if="event.organizerName" class="organizer-badge">
         <span class="organizer-decorator"></span> {{ event.organizerName }}
       </div>
@@ -28,6 +28,7 @@ import { Card as ACard, Tag as ATag } from 'ant-design-vue';
 import { CalendarOutlined } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
 import defaultEventBannerPlaceholder from '@/assets/images/home/offline.png'; // 确保你有一个占位图
+import { getFileAccessHttpUrl } from '@/utils/index';
 
 const props = defineProps({
   event: {
@@ -50,6 +51,13 @@ const viewEventDetails = (payLoad) => {
   emit('handleDetails', payLoad);
 
 };
+const getImgUrl = (url) => {
+  if (url) {
+    return getFileAccessHttpUrl(url);
+  } else {
+    return defaultThumbnail;
+  }
+}
 </script>
 
 <style scoped lang="less">
