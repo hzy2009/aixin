@@ -57,6 +57,7 @@ const pageData = ref({
     actions,
     statusDictKey: 'sourcing_status',
     userStatCardVisible: true,
+    searchTitle: '线下活动',
     tableOperations: [
         {
             title: '创建需求',

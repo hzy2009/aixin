@@ -65,6 +65,7 @@ const pageData = ref({
     tableColumns,
     addButton,
     actions,
+    searchTitle: '原厂件寻源',
     statusDictKey: 'sourcing_status',
     userStatCardVisible: true,
     tableOperations: [

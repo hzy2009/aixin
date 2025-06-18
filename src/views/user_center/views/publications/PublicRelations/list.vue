@@ -60,6 +60,7 @@ const pageData = ref({
     actions,
     statusDictKey: 'sourcing_status',
     userStatCardVisible: true,
+    searchTitle: '研发攻关',
     tableOperations: [
         {
             title: '创建需求',
