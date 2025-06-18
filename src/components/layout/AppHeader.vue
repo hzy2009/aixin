@@ -174,8 +174,8 @@ const handleLogout = () => {
 
 .unified-nav-item-wrapper {
   position: relative; // Crucial for positioning the submenu
-  height: 50px; // Make link take full height of the bar
-  line-height: 50px;// To align link within wrapper (if link itself isn't full height)
+  height: 54px; // Make link take full height of the bar
+  line-height: 54px;// To align link within wrapper (if link itself isn't full height)
   align-items: stretch; // Make router-link take full height of wrapper
 
   // &:last-child {
@@ -191,8 +191,8 @@ const handleLogout = () => {
     width: 100%;
     text-decoration: none;
     padding: 0 @spacing-md; // Horizontal padding for each link
-    height: 50px; // Make link take full height of the bar
-    line-height: 50px;
+    height: 54px; // Make link take full height of the bar
+    line-height: 54px;
     // display: inline-flex;
     align-items: center;
     white-space: nowrap; // Prevent wrapping
