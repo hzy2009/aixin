@@ -1,5 +1,6 @@
 <template>
   <div>
+    <HomeHeroSection :height="160"/>
     <div class="page-title-header container" >
         <span class="title-decorator-bar"></span>
         <h2 class="page-main-heading">行业动态</h2>
@@ -66,6 +67,7 @@ import defaultNewsBannerPlaceholder from '@/assets/images/home/banner.png'; // C
 import { useDemandDetail } from '@/components/template/hooks/useDemandDetail.js';
 import { useUserDemandList } from '@/components/template/hooks/useUserDemandList.js'; // Adjust path
 import { getFileAccessHttpUrl } from '@/utils/index';
+import HomeHeroSection from '@/views/home/components/HomeHeroSection.vue';
 
 const props = defineProps({
   id: {
