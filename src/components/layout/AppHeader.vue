@@ -21,10 +21,10 @@
     <div class="main-header-logo-area">
       <div class="main-header-logo-area__content container">
         <div class="logo-section">
-          <router-link to="/" class="logo-link">
+          <div class="logo-link">
             <img src="@/assets/images/home/banner.png" alt="LOGO" class="logo-image" />
             <span class="logo-text">爱芯享信息共享平台</span>
-          </router-link>
+          </div>
         </div>
         <!-- Spacer or actions for UserCenter view if needed, but top bar mostly handles it -->
         <div class="header-spacer-for-logo-area" ></div>
@@ -97,7 +97,7 @@ const handleLogout = () => {
 
 .top-welcome-bar {
   background-color: #f8f8f8;
-  height: 36px;
+  height: 38px;
   display: flex;
   align-items: center;
   font-size: 13px;
@@ -144,7 +144,14 @@ const handleLogout = () => {
   flex-shrink: 0;
   .logo-link { display: flex; align-items: center; text-decoration: none; }
   .logo-image { height: 36px; margin-right: @spacing-sm; } // Slightly larger logo
-  .logo-text { font-size: 24px; font-weight: 600; color: @text-color-base; }
+  .logo-text { 
+    color: @primary-color;
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 30px;
+    letter-spacing: 0%;
+ }
 }
 .header-spacer-for-logo-area {
     flex-grow: 1; // For user center view, if logo is alone and you want it left-aligned
@@ -152,7 +159,7 @@ const handleLogout = () => {
 
 .unified-navigation-bar {
   background-color: @primary-color;
-  height: 50px; // Adjust height
+  height: 54px; // Adjust height
   display: flex;
   align-items: center;
 
@@ -250,7 +257,7 @@ const handleLogout = () => {
       letter-spacing: 0%;
 
       &:hover {
-        background-color: darken(@primary-color, 12%);
+        background-color: @primary-color;
         color: @text-color-light;
       }
     }
