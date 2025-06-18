@@ -127,7 +127,7 @@ async function fetchRelatedEvents() {
 const formattedParticipants = computed(() => {
   if (eventDetail.value?.registerList) {
     // Split by semicolon and trim whitespace from each part
-    return eventDetail.value.registerList.map(line => line.registerUserName).join('；');
+    return eventDetail.value.registerList.map(line => line.registerUserWorkNo).join('；');
   }
   return [];
 });
