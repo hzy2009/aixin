@@ -26,9 +26,6 @@ export function useDemandDetail({IdProp, mode, url, otherParams, queryAfter, han
     return authStore.isVip && authStore.userInfo?.username === demandDetail.value?.createUserName
   });
 
-  const isManagerAdmin = computed(() => {
-    return authStore.isManagerAdmin
-  });
   // --- 权限计算结束 ---
 
   async function fetchDemandDetail() {
@@ -129,7 +126,6 @@ export function useDemandDetail({IdProp, mode, url, otherParams, queryAfter, han
     error,
     operationMode, // 'create' or 'view'
     canEditThisDemand,
-    isManagerAdmin,
     fetchDemandDetail, // 允许外部刷新
     handleSave,
     handleSubmit,

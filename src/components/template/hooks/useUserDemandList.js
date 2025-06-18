@@ -37,11 +37,11 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     // itemRender can be customized directly in component if needed, or passed as prop to hook
   });
   const selectOptions = (dictKey) => {
-    // const all = { value: '', label: '全部' }
+    const all = { value: '', label: '全部' }
     if (!dictKey) return [];
     if (!authStore.sysAllDictItems[dictKey]) return []
     const options = authStore.sysAllDictItems[dictKey].map(({ label, value }) => ({ label, value })) || [];
-    return [...options];
+    return [all,...options];
   }
   // --- API Call Placeholders ---
   // TODO: Replace with actual API calls

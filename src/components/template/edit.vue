@@ -11,7 +11,7 @@
                         <h2 class="form-section-title">基本信息</h2>
                     </div>
                     <DynamicForm ref="dynamicFormRef" :form-config="currentFormConfig" :initial-model="formModel"
-                        :is-edit-mode="isFormEditable || isManagerAdmin" :default-span="12" />
+                        :default-span="12" />
                 </div>
                 <!-- 3. Action Buttons -->
                 <div class="page-actions-footer">
@@ -67,7 +67,6 @@ const {
     error,
     operationMode, // 现在从 hook 中获取
     canEditThisDemand,
-    isManagerAdmin,
     fetchDemandDetail,
     handleSave,
     handleSubmit,
@@ -101,22 +100,13 @@ watch(demandDetailData, (newDetail) => {
     }
 }, { deep: true, immediate: true });
 
-
-// 表单是否真的可编辑：取决于操作模式和权限
-const isFormEditable = computed(() => {
-    if (operationMode.value === 'create') return true; // 新建模式下表单总是可编辑
-    return canEditThisDemand.value; // 查看模式下，取决于权限
-});
-
 const currentFormConfig = computed(() => {
     const baseConfig = formConfigs || [];
-    // 根据 isFormEditable 动态调整规则的 required 状态
     return baseConfig.map(field => ({
         ...field,
         rules: field.rules ? field.rules.map(rule => ({
             ...rule,
-            // 只有在表单可编辑时，required 才真正生效
-            required: isFormEditable.value ? rule.required : false
+            required: rule.required
         })) : []
     }));
 });
