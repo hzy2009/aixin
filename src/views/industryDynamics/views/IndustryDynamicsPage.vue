@@ -1,5 +1,6 @@
 <template>
   <div class="industry-dynamics-page">
+    <HomeHeroSection :height="160"/>
     <div class="page-title-header container" >
         <span class="title-decorator-bar"></span>
         <h2 class="page-main-heading">行业动态</h2>
@@ -48,6 +49,7 @@ import RelatedItemsSidebar from '@/components/common/RelatedItemsSidebar.vue'; /
 import IndustryNewsItem from '../components/IndustryNewsItem.vue'; // Adjust path
 import defHttp from '@/utils/http/axios'
 import { useUserDemandList } from '@/components/template/hooks/useUserDemandList.js'; // Adjust path
+import HomeHeroSection from '@/views/home/components/HomeHeroSection.vue';
 
 const url = {
     list: '/apm/apmNews/list/front',
