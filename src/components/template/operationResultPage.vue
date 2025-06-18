@@ -6,7 +6,9 @@
       </div>
       <h2 class="result-title">{{ title }}</h2>
       <p v-if="subtitle" class="result-subtitle">{{ subtitle }}</p>
-      <p v-if="contactInfo" class="result-contact-info">{{ contactInfo }}</p>
+      <p v-if="contactInfo" class="result-subtitle">{{ contactInfo }}</p>
+      <p v-if="emilt" class="result-subtitle">{{ emilt }}</p>
+      <!-- <p v-if="contactInfo" class="result-contact-info">{{ contactInfo }}</p> -->
 
       <div class="result-actions">
         <a-button
@@ -77,8 +79,10 @@ const props = defineProps({
 const {
   status,
   title = '一键敲门成功',
-  subtitle = '一键敲门后后，客服人员将在30分钟内与您联系',
-  contactInfo = '联系电话：180 0000 0000',
+  subtitle = '客服人员将在30分钟内与您联系',
+    // E-MAIL: chenjingwei@icshare.com
+  contactInfo = '联系人：陈靖玮 座机：021-55698507',
+  emilt = 'E-MAIL: chenjingwei@icshare.com',
   primaryActionText = '查看详情',
   primaryActionPayload,
   secondaryActionText = '返回列表',
@@ -121,9 +125,9 @@ const handleSecondaryAction = () => {
 }
 
 .result-icon-wrapper {
-  margin-bottom: @spacing-xl; // 24px space below icon
+  margin-bottom: 32px; // 24px space below icon
   .result-icon {
-    font-size: 72px; // Large icon size
+    font-size: 112px; // Large icon size
     color: @primary-color; // Red color for success checkmark
   }
   // TODO: Add styles for other status icons if needed
@@ -131,17 +135,26 @@ const handleSecondaryAction = () => {
 }
 
 .result-title {
-  font-size: 24px; // "需求创建成功"
-  font-weight: 500; // Semi-bold
-  color: @text-color-base; // Dark gray / black
-  margin-bottom: @spacing-xs; // 8px space to subtitle
+  margin-bottom: 10px; // 8px space to subtitle
+  font-family: PingFang SC;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 22px;
+  letter-spacing: 0%;
+  color: #272A30;
 }
 
 .result-subtitle {
-  font-size: 14px;
-  color: @text-color-secondary; // Gray
+  color: #656C74; // Gray
   margin-bottom: 2px; // Very small space to contact info
-  line-height: 1.6;
+  // line-height: 1.6;
+  font-family: PingFang SC;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0%;
+  text-align: center;
+
 }
 .result-contact-info {
   font-size: 14px;
@@ -154,7 +167,7 @@ const handleSecondaryAction = () => {
   display: flex;
   justify-content: center;
   gap: @spacing-sm; // 8px gap between buttons
-
+  margin-top: 10px;
   .action-button {
     min-width: 100px; // Standard width for these buttons
     height: 36px; // Standard height
@@ -163,20 +176,17 @@ const handleSecondaryAction = () => {
   }
 
   .primary-action { // "查看详情"
-    // type="primary" danger should handle red background
-    // If not, uncomment and adjust:
-    // background-color: @primary-color;
-    // border-color: @primary-color;
-    // color: white;
-    // &:hover {
-    //   background-color: darken(@primary-color, 8%);
-    //   border-color: darken(@primary-color, 8%);
-    // }
+    background-color: @primary-color;
+    border-color: @primary-color;
+    &:hover {
+      background-color: darken(@primary-color, 8%);
+      border-color: darken(@primary-color, 8%);
+    }
   }
 
   .secondary-action { // "返回列表"
-    border-color: #D9D9D9; // Standard AntD default button border
-    color: @text-color-base; // Black/dark gray text
+    border-color: #9AA0A3; // Standard AntD default button border
+    color: #C3CBCF; // Black/dark gray text
     &:hover {
       color: @primary-color;
       border-color: @primary-color;
