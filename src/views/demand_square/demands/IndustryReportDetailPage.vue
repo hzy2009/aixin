@@ -5,10 +5,10 @@
   </div>
   <ContentWithSidebarLayout>
     <template #main>
-      <IndustryReportDetailContent :report="reportData" />
+      <IndustryReportDetailContent :report="reportData" ref="reportDetail"/>
     </template>
     <template #sidebar>
-      <RecommendedSidebar :current-report-id="IdProp" :category="reportData?.category" :count="3" />
+      <RecommendedSidebar :category="reportData?.category" :count="3" @reportClick="handleReportClick"/>
     </template>
   </ContentWithSidebarLayout>
 </template>
@@ -24,7 +24,7 @@ import defHttp from '@/utils/http/axios'
 
 const route = useRoute();
 const router = useRouter();
-
+const reportDetail = ref();
 const props = defineProps({
   IdProp: { type: String, default: null },
 });
@@ -52,6 +52,10 @@ async function fetchReportDetail() {
   }
 }
 
+const handleReportClick = () => {
+  reportDetail.value.handleToDetail()
+}
+
 onMounted(() => {
   fetchReportDetail();
 });
@@ -60,10 +64,9 @@ watch(() => route.params.id, (newId, oldId) => {
   if (newId && newId !== oldId) {
     internalDemandId.value = newId;
     fetchReportDetail();
-    // Hot news usually doesn't need to refresh based on current article, but can if logic requires
-    // fetchHotNews();
   }
 }, { immediate: false }); // onMounted handles initial load
+
 </script>
 
 <style scoped lang="less">

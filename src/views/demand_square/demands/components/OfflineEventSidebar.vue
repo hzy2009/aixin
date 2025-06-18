@@ -4,7 +4,7 @@
       <a-skeleton active :paragraph="{ rows: 4 }" v-for="i in skeletonCount" :key="`ske-${i}`" class="skeleton-item" />
     </div>
     <div v-else-if="tableData.length > 0" class="reports-list-items">
-      <router-link v-for="item in tableData.slice(0, props.count)" :key="item.id"
+      <router-link v-for="item in tableData.slice(0, props.count)" :key="item.id" @click="handleReportClick"
         :to="`/demands/OfflineEventDetailPage/${item.id}`" class="report-item-link">
         <div class="report-item-content">
           <h2 class="report-item-title">{{ item.activityName }}</h2>
@@ -25,13 +25,15 @@ import { ref, onMounted, watch, computed } from 'vue';
 import { Skeleton as ASkeleton, Empty as AEmpty } from 'ant-design-vue';
 import { RightOutlined } from '@ant-design/icons-vue';
 import { useUserDemandList } from '@/components/template/hooks/useUserDemandList.js'; // Adjust path
-// import apiClient from '@/api';
 
 const props = defineProps({
   currentReportId: { type: [String, Number], default: null },
   category: { type: String, default: null },
   count: { type: Number, default: 4 }
 });
+
+const emit = defineEmits(['reportClick']);
+const handleReportClick = () => emit('reportClick');
 
 const skeletonCount = computed(() => props.count); // For skeleton loader
 

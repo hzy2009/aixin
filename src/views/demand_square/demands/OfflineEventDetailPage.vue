@@ -71,7 +71,7 @@
     </template>
 
     <template #sidebar>
-      <OfflineEventSidebar></OfflineEventSidebar>
+      <OfflineEventSidebar @reportClick="handleToDetail"></OfflineEventSidebar>
     </template>
   </ContentWithSidebarLayout>
 </template>

@@ -3,8 +3,8 @@
     <div v-if="isLoading" class="loading-placeholder">
       <a-skeleton active :paragraph="{ rows: 4 }" v-for="i in skeletonCount" :key="`ske-${i}`" class="skeleton-item" />
     </div>
-    <div v-else-if="recommendedReports.length > 0" class="reports-list-items">
-      <router-link v-for="report in recommendedReports.slice(0, props.count)" :key="report.id"
+    <div v-else-if="recommendedReports.length > 0" class="reports-list-items" >
+      <router-link v-for="report in recommendedReports.slice(0, props.count)" :key="report.id" @click="handleReportClick"
         :to="`/demands/IndustryReportDetailPage/${report.id}`" class="report-item-link">
         <div class="report-item-content">
           <h4 class="report-item-title">{{ report.reportName }}</h4>
@@ -26,10 +26,10 @@ import { ref, onMounted, watch, computed } from 'vue';
 import { Skeleton as ASkeleton, Empty as AEmpty } from 'ant-design-vue';
 import { RightOutlined } from '@ant-design/icons-vue';
 import { useUserDemandList } from '@/components/template/hooks/useUserDemandList.js'; // Adjust path
-// import apiClient from '@/api';
+
+const emit = defineEmits(['reportClick']);
 
 const props = defineProps({
-  currentReportId: { type: [String, Number], default: null },
   category: { type: String, default: null },
   count: { type: Number, default: 4 }
 });
@@ -44,37 +44,10 @@ const {
     list: '/apm/apmResearchReport/list/front',
   },
 });
+const handleReportClick = () => {
+  emit('reportClick');
+}
 
-// async function fetchRecommendedReports() {
-//   isLoading.value = true;
-//   try {
-//     // TODO: API Call
-//     // const response = await apiClient.get('/api/reports/recommended', { params: { /* ... */ } });
-//     // recommendedReports.value = response.data.items;
-
-//     // --- Mock Data ---
-//     await new Promise(resolve => setTimeout(resolve, 500 + Math.random() * 500));
-//     const mockItems = [
-//       { id: `rec-${props.currentReportId || ''}-001`, title: '报告标题报告标题报告标题报告标题报告标题...', domain: '光催化分解水;异质结;过渡金属硫', summary: '直接利用太阳能实现光催化还原制取氢气，是解决能源危机的有效策略之一。过渡金属硫化物具有优异的可见', price: 198 },
-//       { id: `rec-${props.currentReportId || ''}-002`, title: '另一份相关行业分析报告标题示例长一点看看效果', domain: 'AI芯片;市场分析', summary: '这份报告深入探讨了人工智能芯片市场的最新发展和未来趋势，为投资者提供决策依据。', price: 288 },
-//       { id: `rec-${props.currentReportId || ''}-003`, title: '第三代半导体材料与应用前景展望', domain: '新材料;半导体器件', summary: '探索碳化硅（SiC）和氮化镓（GaN）等第三代半导体材料的特性及其在电力电子、射频通信等领域的应用。', price: 198 },
-//       { id: `rec-${props.currentReportId || ''}-004`, title: '测试报告第四条，用于测试数量', domain: '测试领域', summary: '这是一个测试摘要，看看多条数据时的样子。', price: 99 },
-//     ];
-//     recommendedReports.value = mockItems.filter(item => item.id !== props.currentReportId).slice(0, props.count);
-//     // --- End Mock Data ---
-//   } catch (error) {
-//     console.error("获取推荐报告失败:", error);
-//     recommendedReports.value = [];
-//   } finally {
-//     isLoading.value = false;
-//   }
-// }
-
-// onMounted(fetchRecommendedReports);
-
-// watch([() => props.currentReportId, () => props.category, () => props.count], () => {
-//     fetchRecommendedReports();
-// }, { deep: true }); // Use deep watch if props could be objects, though not strictly needed for primitives
 </script>
 
 <style scoped lang="less">

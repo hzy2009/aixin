@@ -91,12 +91,6 @@ const isRegisterSuccess = ref(false);
 
 const handlePurchase = async () => {
   if (authStore?.token) {
-    // const user = authStore.userInfo;
-    // const data = {
-    //   buyerName: user.realname,
-    //   buyerId: user.loginTenantId,
-    //   reportId: props.report.id,
-    // }
     const response = await defHttp.post({ url: `/apm/apmResearchReport/registerByMember/${props.report.id}` });
     if (response && response.success) {
       isRegisterSuccess.value = true;
@@ -120,6 +114,9 @@ const getImgUrl = (url) => {
     return defaultThumbnail;
   }
 }
+defineExpose({
+  handleToDetail
+});
 </script>
 
 <style scoped lang="less">
