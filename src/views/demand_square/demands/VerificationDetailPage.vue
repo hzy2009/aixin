@@ -20,6 +20,7 @@ import detail from '@/components/template/detail.vue';
 import { useAuthStore } from '@/store/authStore';
 import VerificationSidebar from './components/VerificationSidebar.vue'; // Adjust path if needed
 import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue'; // Adjust path if needed
+import { BUSINESS_REF_LIST, TENANT_REF_LIST} from '@/utils/const';
 
 const authStore = useAuthStore();
 
@@ -83,20 +84,10 @@ const pageData = reactive({
   tableSections: [
     {
       title: '检查验证承接方',
-      groupCode: 'tenantRefList',
-      columns: [
-        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
-        { title: '检查验证承接方', dataIndex: 'refUserName', key: 'refUserName', align: 'center' },
-      ]
+      ...TENANT_REF_LIST,
     },
     {
-      title: '关联业务',
-      groupCode: 'businessRefList',
-      columns: [
-        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
-        { title: '单据类型', dataIndex: 'refBusinessTypeName', key: 'refBusinessTypeName', align: 'center' },
-        { title: '单据号', dataIndex: 'refBusinessCode', key: 'refBusinessCode', align: 'center' },
-      ]
+      ...BUSINESS_REF_LIST,
     }
   ],
 })

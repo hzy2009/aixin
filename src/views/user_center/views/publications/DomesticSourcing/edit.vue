@@ -56,7 +56,7 @@ const pageData = reactive({
     sourcingType: '国产替代寻源',
   },
   formConfigs,
-  statusHistoryColumns,
+  // statusHistoryColumns,
   pageTitle,
   queryAfter,
   detailPath: '/user/published/DomesticSourcing/detail',

@@ -10,6 +10,8 @@ import { useRouter } from 'vue-router';
 import detail from '@/components/template/detail.vue';
 import { useAuthStore } from '@/store/authStore';
 
+import { BUSINESS_REF_LIST, TENANT_REF_LIST, STATUS_HISTORY_COLUMNS} from '@/utils/const';
+
 
 const props = defineProps({
   IdProp: { type: String, default: null },
@@ -24,12 +26,6 @@ const formConfigs = [
   { label: '计划完成日期', field: 'expireDate', span: 24 , fieldType: 'date'},
 ]
 
-const statusHistoryColumns = [
-  { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center' },
-  { title: '状态', dataIndex: 'operateName', key: 'operateName' },
-  { title: '完成日期', dataIndex: 'createTime', key: 'createTime' },
-  { title: '备注', dataIndex: 'remark', key: 'remark' },
-]
 
 // const demandTypeDisplayName = '国产替代寻源需求';
 
@@ -52,7 +48,7 @@ const pageData = reactive({
     sourcingType: '国产替代寻源',
   },
   formConfigs,
-  statusHistoryColumns,
+  statusHistoryColumns: STATUS_HISTORY_COLUMNS,
   pageTitle,
   queryAfter,
   tableSections: [
@@ -68,20 +64,10 @@ const pageData = reactive({
     },
     {
       title: '已寻到厂商',
-      groupCode: 'tenantRefList',
-      columns: [
-        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
-        { title: '寻源承接方', dataIndex: 'refUserName', key: 'materialName', align: 'center' },
-      ]
+      ...TENANT_REF_LIST,
     },
     {
-      title: '关联业务',
-      groupCode: 'businessRefList',
-      columns: [
-        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
-        { title: '单据类型', dataIndex: 'businessRefTypeName', key: 'materialName', align: 'center' },
-        { title: '单据号', dataIndex: 'businessRefCode', key: 'materialCount', align: 'center' },
-      ]
+      ...BUSINESS_REF_LIST
     }
   ],
   statusDictKey: 'sourcing_status',

@@ -10,6 +10,8 @@ import { useRouter } from 'vue-router';
 import detail from '@/components/template/detail.vue';
 import { useAuthStore } from '@/store/authStore';
 
+import { BUSINESS_REF_LIST, TENANT_REF_LIST, STATUS_HISTORY_COLUMNS} from '@/utils/const';
+
 const authStore = useAuthStore();
 
 const props = defineProps({
@@ -31,12 +33,6 @@ const formConfigs = [
   { label: '需求提出方', field: 'tenantName', span: 24, },
 ]
 
-const statusHistoryColumns = [
-  { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center' },
-  { title: '状态', dataIndex: 'operateName', key: 'operateName' },
-  { title: '完成日期', dataIndex: 'createTime', key: 'createTime' },
-  { title: '备注', dataIndex: 'remark', key: 'remark' },
-]
 
 // const demandTypeDisplayName = '研发攻关';
 
@@ -52,25 +48,15 @@ const pageData = reactive({
     delete: 'apm/apmRdBreakthrough/delete',
   },
   formConfigs,
-  statusHistoryColumns,
+  statusHistoryColumns: STATUS_HISTORY_COLUMNS,
   pageTitle,
   tableSections: [
     {
       title: '研发攻关承接方',
-      groupCode: 'tenantRefList',
-      columns: [
-        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center' },
-        { title: '研发攻关承接方', dataIndex: 'refUserName', key: 'refUserName' },
-      ]
+      ...TENANT_REF_LIST
     },
     {
-      title: '关联业务',
-      groupCode: 'businessRefList',
-      columns: [
-        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
-        { title: '单据类型', dataIndex: 'businessRefTypeName', key: 'materialName', align: 'center' },
-        { title: '单据号', dataIndex: 'businessRefCode', key: 'materialCount', align: 'center' },
-      ]
+      ...BUSINESS_REF_LIST
     }
   ],
 })

@@ -9,8 +9,7 @@ import { ref, computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import detail from '@/components/template/detail.vue';
 import { useAuthStore } from '@/store/authStore';
-
-
+import { BUSINESS_REF_LIST, REGISTER_LIST, STATUS_HISTORY_COLUMNS} from '@/utils/const';
 
 const props = defineProps({
   IdProp: { type: String, default: null },
@@ -28,14 +27,6 @@ const formConfigs = [
   { label: '封面图片', field: 'imageUrl', fieldType: 'imageUpload', span: 24 },
 ]
 
-const statusHistoryColumns = [
-  { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center' },
-  { title: '状态', dataIndex: 'operateName', key: 'operateName' },
-  { title: '完成日期', dataIndex: 'createTime', key: 'createTime' },
-  { title: '备注', dataIndex: 'remark', key: 'remark' },
-]
-
-
 const pageTitle = '线下活动详情'
 
 const pageData = reactive({
@@ -48,7 +39,7 @@ const pageData = reactive({
     delete: 'apm/apmOfflineActivity/delete',
   },
   formConfigs,
-  statusHistoryColumns,
+  statusHistoryColumns:STATUS_HISTORY_COLUMNS,
   pageTitle,
   handleBeforeSave: (data) => {
     data.imageUrl = data.imageUrl.join(',');
@@ -57,22 +48,10 @@ const pageData = reactive({
   listPath: '/user/published/OfflineEvent',
   tableSections: [
     {
-      title: '参与者',
-      groupCode: 'registerList',
-      columns: [
-        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center' },
-        { title: '类型', dataIndex: 'registerType', key: 'registerType' },
-        { title: '编号', dataIndex: 'registerUserWorkNo', key: 'registerUserWorkNo' },
-      ]
+      ...REGISTER_LIST
     },
     {
-      title: '关联业务',
-      groupCode: 'businessRefList',
-      columns: [
-        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
-        { title: '单据类型', dataIndex: 'refBusinessType', key: 'materialName', align: 'center' },
-        { title: '单据号', dataIndex: 'refBusinessCode', key: 'materialCount', align: 'center' },
-      ]
+      ...BUSINESS_REF_LIST,
     }
   ],
 })

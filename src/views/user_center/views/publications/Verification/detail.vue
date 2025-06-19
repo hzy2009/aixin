@@ -9,6 +9,7 @@ import { ref, computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import detail from '@/components/template/detail.vue';
 import { useAuthStore } from '@/store/authStore';
+import { BUSINESS_REF_LIST, STATUS_HISTORY_COLUMNS} from '@/utils/const';
 
 
 
@@ -44,13 +45,6 @@ const formConfigs = [
   // },
 ]
 
-const statusHistoryColumns = [
-  { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center' },
-  { title: '状态', dataIndex: 'operateName', key: 'operateName' },
-  { title: '完成日期', dataIndex: 'createTime', key: 'createTime' },
-  { title: '备注', dataIndex: 'remark', key: 'remark' },
-]
-
 
 const pageTitle = '检测验证详情'
 
@@ -64,25 +58,15 @@ const pageData = reactive({
     delete: 'apm/apmInspection/delete',
   },
   formConfigs,
-  statusHistoryColumns,
+  statusHistoryColumns: STATUS_HISTORY_COLUMNS,
   pageTitle,
   tableSections: [
     {
       title: '检查验证方',
-      groupCode: 'tenantRefList',
-      columns: [
-        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center' },
-        { title: '检查验证承接方', dataIndex: 'refUserName', key: 'refUserName' },
-      ]
+      ...TENANT_REF_LIST
     },
     {
-      title: '关联业务',
-      groupCode: 'businessRefList',
-      columns: [
-        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
-        { title: '单据类型', dataIndex: 'refBusinessTypeName', key: 'refBusinessTypeName', align: 'center' },
-        { title: '单据号', dataIndex: 'refBusinessCode', key: 'refBusinessCode', align: 'center' },
-      ]
+      ...BUSINESS_REF_LIST
     }
   ]
 })
