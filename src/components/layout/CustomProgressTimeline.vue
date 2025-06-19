@@ -93,12 +93,11 @@ const formattedSteps = computed(() => {
 // Variables for precise styling
 @dot-size-final: 26px;
 @line-thickness-final: 2px;
-@active-color-final: #D42E2A; // The red from this image
 @inactive-color-final: #E8E8E8;
 
-@title-active-final: @active-color-final;
+@title-active-final: @primary-color;
 @title-inactive-final: #666666; // Darker gray for inactive titles
-@date-active-final: @active-color-final;
+@date-active-final: @primary-color;
 @date-inactive-final: #999999; // Lighter gray for inactive dates
 
 .status-timeline-container-wrapper {
@@ -125,7 +124,7 @@ const formattedSteps = computed(() => {
       bottom: 0;
       width: 100%;
       height: 2px;
-      background-color: @active-color-final;
+      background-color: @primary-color;
     }
   }
 }
@@ -225,7 +224,7 @@ const formattedSteps = computed(() => {
   // Styling for completed/active states
   &.is-completed {
     .milestone-dot {
-      background-color: @active-color-final;
+      background-color: @primary-color;
     }
     .milestone-title {
       color: @title-active-final;
@@ -237,7 +236,7 @@ const formattedSteps = computed(() => {
     // should be red IF the next step is also completed OR this is the active step.
     // This means the .milestone-connector-line of a completed step is red.
     .milestone-connector-line {
-      background-color: @active-color-final;
+      background-color: @primary-color;
     }
   }
 
