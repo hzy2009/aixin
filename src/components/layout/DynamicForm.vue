@@ -11,7 +11,7 @@
 
             <a-input-number v-else-if="field.fieldType === 'number'" v-model:value="internalFormModel[field.field]"
               :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" style="width: 100%;"
-              :min="field.min" :max="field.max" />
+              :min="field.min" :max="field.max" />  
 
             <a-select v-else-if="field.fieldType === 'select'" v-model:value="internalFormModel[field.field]"
               :placeholder="field.placeholder || `请选择${field.label}`"
@@ -24,6 +24,7 @@
 
             <a-date-picker v-else-if="field.fieldType === 'date'" v-model:value="internalFormModel[field.field]"
               :placeholder="field.placeholder || `请选择${field.label}`"
+              :disabled-date="disabledDate"
               :value-format="field.valueFormat || 'YYYY-MM-DD HH:mm:ss'" :show-time="field.showTime"
               style="width: 100%;" :disabled="field.disabled" />
 
@@ -82,6 +83,7 @@ import {
 } from 'ant-design-vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
 import { getFileAccessHttpUrl } from "@/utils/index";
+import dayjs from 'dayjs';
 const uploadUrl = `${import.meta.env.VITE_API_BASE_URL}sys/common/upload` || '/api';
 const auth = useAuthStore(); // For dictionary options
 
@@ -278,6 +280,10 @@ const getHeaders = () => {
     'X-Access-Token': auth.token,
     'X-Tenant-Id': auth.userInfo.id || '0',
   });
+}
+const disabledDate = (current) => {
+  // 不能选择上个月的日期
+  return current && current < dayjs().subtract(1, 'month');
 }
 
 defineExpose({ validate, resetFields, clearValidate, getAllData, formModel: internalFormModel });
