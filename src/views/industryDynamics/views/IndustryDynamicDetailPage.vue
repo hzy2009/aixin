@@ -28,18 +28,18 @@
               {{ formModel.content }}
             </div>
 
-            <!-- <div class="article-navigation-links">
-              <div v-if="formModel.previousArticle" class="nav-link-item prev-link">
-                <router-link :to="{ name: 'IndustryNewsDetail', params: { id: formModel.previousArticle.id } }">
-                  上一篇：{{ formModel.previousArticle.title }}
+            <div class="article-navigation-links">
+              <div v-if="formModel.previous" class="nav-link-item prev-link">
+                <router-link :to="`/industry-dynamics/${formModel.previous.id}`">
+                  <span class="link-text">上一篇：</span>{{ formModel.previous.title }}
                 </router-link>
               </div>
-              <div v-if="formModel.nextArticle" class="nav-link-item next-link">
-                <router-link :to="{ name: 'IndustryNewsDetail', params: { id: formModel.nextArticle.id } }">
-                  下一篇：{{ formModel.nextArticle.title }}
+              <div v-if="formModel.next" class="nav-link-item next-link">
+                <router-link :to="`/industry-dynamics/${formModel.next.id}`">
+                  <span class="link-text">下一篇：</span>{{ formModel.next.title }}
                 </router-link>
               </div>
-            </div> -->
+            </div>
           </div>
         </div>
       </template>
@@ -252,13 +252,21 @@ watch(() => route.params.id, (newId, oldId) => {
 .article-navigation-links {
   margin-top: @spacing-xl;
   padding-top: @spacing-lg;
-  border-top: 1px solid @border-color-light;
   font-size: 14px;
 
   .nav-link-item {
+    .link-text{
+      color: @primary-color;
+    }
     margin-bottom: @spacing-sm;
     a {
-      color: @text-color-secondary;
+      color: #656C74;
+      font-family: PingFang SC;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 28px;
+      letter-spacing: 0%;
+
       &:hover {
         color: @primary-color;
         text-decoration: underline;

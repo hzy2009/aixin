@@ -46,15 +46,15 @@
 
 
     <!-- Previous/Next Navigation Below -->
-    <!-- <div class="report-navigation-footer">
-      <p v-if="report.previousReport">
-        上一篇：<router-link :to="`/reports/detail/${report.previousReport.id}`">{{ report.previousReport.title
+    <div class="report-navigation-footer">
+      <p v-if="report.previous">
+        <span class="link-text">上一篇：</span><router-link :to="`/demands/IndustryReportDetailPage/${report.previous.id}`">{{ report.previous.title
         }}</router-link>
       </p>
-      <p v-if="report.nextReport">
-        下一篇：<router-link :to="`/reports/detail/${report.nextReport.id}`">{{ report.nextReport.title }}</router-link>
+      <p v-if="report.next">
+       <span class="link-text">下一篇：</span><router-link :to="`/demands/IndustryReportDetailPage/${report.next.id}`">{{ report.next.title }}</router-link>
       </p>
-    </div> -->
+    </div>
   </div>
   <operationResultPage v-else @primaryAction="handleToDetail" @secondaryAction="handleToList" />
 </template>
@@ -178,8 +178,14 @@ defineExpose({
 
   .report-main-title-header {
     font-size: 22px; // Title size in the right column
-    font-weight: 600;
-    color: @text-color-base;
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 30px;
+    letter-spacing: 0%;
+    text-transform: uppercase;
+
+    color: #656C74;
     margin-bottom: @spacing-sm;
     line-height: 1.4;
     // For 2-line ellipsis if needed
@@ -283,7 +289,7 @@ defineExpose({
 }
 
 .report-outline-section {
-  margin-bottom: @spacing-xxl;
+  padding-bottom: @spacing-xl;
   background-color: @background-color-base;
   padding: @spacing-lg;
   // border: 1px solid @border-color-light;
@@ -360,11 +366,18 @@ defineExpose({
 
 
 .report-navigation-footer {
-  font-size: 14px;
-  color: @text-color-secondary;
-  line-height: 1.6;
-  padding: @spacing-md;
-  background-color: @background-color-base;
+  .link-text{
+      color: @primary-color;
+    }
+    color: #656C74;
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 28px;
+    letter-spacing: 0%;
+    line-height: 1.6;
+    padding: @spacing-md;
+    background-color: @background-color-base;
   // border: 1px solid @border-color-light;
 
   p {
@@ -376,7 +389,6 @@ defineExpose({
   }
 
   a {
-    color: @text-color-base; // Links are darker in this section
 
     &:hover {
       color: @primary-color;
