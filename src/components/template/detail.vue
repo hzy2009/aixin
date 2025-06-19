@@ -6,82 +6,84 @@
 			<h2 class="page-main-heading">{{ pageTitle }}</h2>
 		</div>
 		<a-spin :spinning="isLoading">
+            <div v-if="isCreating">
 			<!-- Section: Basic Information -->
-			<section  v-if="$slots.title" >
-				<slot name="title" :dataSource="formModel"></slot>
-			</section>
-			<section class="info-section">
-				<div class="section-title-wrapper">
-					<h3 class="section-title-text">基本信息</h3>
-				</div>
-				<div class="basic-info-grid">
-					<div v-for="item in baseFormConfigs" :key="item.label" class="info-grid-item"
-						:style="{ gridColumn: item.span ? `span ${item.span}` : 'span 1' }">
-						<span class="info-grid-label">{{ item.label }}：</span>
-						<span class="info-grid-value"
-							v-if="item.fieldType === 'select' && (item.options || selectOptions(item.dictKey))">
-							{{ getSelectDisplayValue(item, formModel[item.field]) }}
-						</span>
-						<span class="info-grid-value" v-else-if="item.fieldType === 'date'">
-							{{ getDataDisplayValue(formModel[item.field]) }}
-						</span>
-						<span class="info-grid-value" v-else-if="item.fieldType === 'imageUpload'">
-							<img :src="formModel[item.field]" alt="" class="info-grid-image">
-							<!-- {{ formModel[item.field] }} -->
-						</span>
-						<span v-else class="info-grid-value">{{ formModel[item.field] }}</span>
+				<section  v-if="$slots.title" >
+					<slot name="title" :dataSource="formModel"></slot>
+				</section>
+				<section class="info-section">
+					<div class="section-title-wrapper">
+						<h3 class="section-title-text">基本信息</h3>
 					</div>
-					<div v-for="(tableSection, index) in tableSections" :key="`table-section-${index}`"
-						class="info-grid-item">
-						<span class="info-grid-label">{{ tableSection.title }}：</span>
-						<div class=" flex1">
-							<a-table :columns="tableSection.columns"
-								:data-source="formModel[`${tableSection.groupCode}`] || []" :pagination="false"
-								:row-key="tableSection.rowKey || 'id'" bordered size="middle" class="custom-detail-table">
-								<template #bodyCell="{ column, record, index }">
-									<span v-if="column.dataIndex === 'index'">
-										{{ index + 1 }}
-									</span>
-								</template>
-							</a-table>
+					<div class="basic-info-grid">
+						<div v-for="item in baseFormConfigs" :key="item.label" class="info-grid-item"
+							:style="{ gridColumn: item.span ? `span ${item.span}` : 'span 1' }">
+							<span class="info-grid-label">{{ item.label }}：</span>
+							<span class="info-grid-value"
+								v-if="item.fieldType === 'select' && (item.options || selectOptions(item.dictKey))">
+								{{ getSelectDisplayValue(item, formModel[item.field]) }}
+							</span>
+							<span class="info-grid-value" v-else-if="item.fieldType === 'date'">
+								{{ getDataDisplayValue(formModel[item.field]) }}
+							</span>
+							<span class="info-grid-value" v-else-if="item.fieldType === 'imageUpload'">
+								<img :src="formModel[item.field]" alt="" class="info-grid-image">
+								<!-- {{ formModel[item.field] }} -->
+							</span>
+							<span v-else class="info-grid-value">{{ formModel[item.field] }}</span>
+						</div>
+						<div v-for="(tableSection, index) in tableSections" :key="`table-section-${index}`"
+							class="info-grid-item">
+							<span class="info-grid-label">{{ tableSection.title }}：</span>
+							<div class=" flex1">
+								<a-table :columns="tableSection.columns"
+									:data-source="formModel[`${tableSection.groupCode}`] || []" :pagination="false"
+									:row-key="tableSection.rowKey || 'id'" bordered size="middle" class="custom-detail-table">
+									<template #bodyCell="{ column, record, index }">
+										<span v-if="column.dataIndex === 'index'">
+											{{ index + 1 }}
+										</span>
+									</template>
+								</a-table>
+							</div>
 						</div>
 					</div>
-				</div>
-			</section>
-			<section class="info-section" v-if="$slots.content" >
-				<slot name="content" :dataSource="formModel"></slot>
-			</section>
-			<!-- Section: Status Tracking (Timeline/Steps + Table) -->
-			<section v-if="showLogList && statusTracking" class="info-section">
-				<div class="section-title-wrapper">
-					<h3 class="section-title-text">{{ statusTracking.title || '状态跟踪' }}</h3>
-				</div>
-				<!-- <a-steps :current="currentStepIndex" class="status-steps" progress-dot size="small" :items="statusTracking.steps"> -->
-					<!-- <a-step v-for="(step, stepIdx) in statusTracking.steps" :key="`step-${stepIdx}`"
-						:title="step.operateName" :description="step.createTime" /> -->
-				<!-- </a-steps> -->
-				<a-steps progress-dot :current="currentStepIndex" :items="statusTracking.steps" class="status-steps"/>
-				<a-table v-if="formModel.logList && formModel.logList.length > 0" :columns="statusHistoryColumns"
-					:data-source="formModel.logList" :pagination="false" :row-key="'id'" bordered size="middle"
-					class="custom-detail-table status-history-table">
+				</section>
+				<section class="info-section" v-if="$slots.content" >
+					<slot name="content" :dataSource="formModel"></slot>
+				</section>
+				<section v-if="showLogList && statusTracking" class="info-section">
+					<div class="section-title-wrapper">
+						<h3 class="section-title-text">{{ statusTracking.title || '状态跟踪' }}</h3>
+					</div>
+					<CustomProgressTimeline :progressList="formModel.progressList" />
+					<!-- <a-steps progress-dot :current="currentStepIndex" :items="statusTracking.steps" class="status-steps"/> -->
+					<a-table v-if="formModel.logList && formModel.logList.length > 0" :columns="statusHistoryColumns"
+						:data-source="formModel.logList" :pagination="false" :row-key="'id'" bordered size="middle"
+						class="custom-detail-table status-history-table">
 
-					<template #bodyCell="{ column, record, index }">
-						<span v-if="column.dataIndex === 'index'">
-							{{ index + 1 }}
-						</span>
-					</template>
-				</a-table>
-			</section>
+						<template #bodyCell="{ column, record, index }">
+							<span v-if="column.dataIndex === 'index'">
+								{{ index + 1 }}
+							</span>
+						</template>
+					</a-table>
+				</section>
 
-			<!-- Action Buttons -->
-			<div class="page-actions-footer">
-				<slot name="actions">
-					<a-button @click="handleDefaultCancel" class="action-button cancel-button">返回</a-button>
-					<!-- <a-button type="primary" danger @click="handleDefaultSubmit" v-if='canSubmit'
-						class="action-button submit-button">一键敲门</a-button> -->
-				</slot>
-			</div>
+				<!-- Action Buttons -->
+				<div class="page-actions-footer">
+					<slot name="actions">
+						<a-button @click="handleDefaultCancel" class="action-button cancel-button">返回</a-button>
+						<a-button type="primary" danger @click="handleDefaultSubmit" v-if='canSubmit'
+							class="action-button submit-button">一键敲门</a-button>
+					</slot>
+				</div>
 		<!-- <p v-if="actionNote && canSubmit" class="action-submit-note">{{ actionNote }}</p> -->
+            </div>
+			<div v-else>
+                <operationResultPage  @primaryAction="handleToDetail"
+                    @secondaryAction="handleToList" />
+            </div>
 		</a-spin>
 	</div>
 </template>
@@ -93,14 +95,10 @@ import { useDemandDetail } from './hooks/useDemandDetail.js';
 import { useAuthStore } from '@/store/authStore';
 import { useRouter, useRoute } from 'vue-router'; // 用于新建成功后跳转
 import {selectOptions} from '@/utils/index';
+import operationResultPage from './operationResultPage.vue';
+import CustomProgressTimeline from '@/components/layout/CustomProgressTimeline.vue';
 const route = useRoute();
 const auth = useAuthStore();
-// const selectOptions = (dictKey) => {
-// 	if (!dictKey) return [];
-// 	if (!auth.sysAllDictItems[dictKey]) return []
-// 	return auth.sysAllDictItems[dictKey].map(({ label, value }) => ({ label, value })) || [];
-// };
-
 
 const props = defineProps({
 	pageData: {
@@ -119,10 +117,10 @@ const {
 	otherParams,
 	formConfigs,
 	tableSections,
-	actionNote = '一键敲门后，客服人员将在30分钟内与您联系',
-	canSubmit = true,
+	canSubmit = false,
 	showLogList = true,
 	showPageTitle = true,
+    listPath,
 } = props.pageData;
 
 const baseFormConfigs = ref(formConfigs);
@@ -149,7 +147,7 @@ const {
 	handleformConfigsAfter
 });
 const formModel = ref({});
-
+const isCreating = ref(true);
 
 const statusTracking = computed(() => {
 	const stepData = formModel.value.progressList || [];
@@ -227,6 +225,15 @@ const handleDefaultSubmit = () => {
 	emit('submit');
 };
 
+const handleToDetail = () => {
+	isCreating.value = true;
+}
+
+const handleToList = () => {
+    isCreating.value = true;
+    router.push({ path: listPath });
+}
+
 watch(() => route.params.id, (newId, oldId) => {
   if (newId && newId !== oldId) {
     internalDemandId.value = newId;
@@ -234,6 +241,9 @@ watch(() => route.params.id, (newId, oldId) => {
   }
 }, { immediate: false });
 
+defineExpose({
+	isCreating
+})
 </script>
 
 <style scoped lang="less">

@@ -59,7 +59,9 @@
 
           <!-- 7. Action Button -->
           <div class="event-action-center">
-            <a-button type="primary" danger size="large" class="main-action-cta-button" @click="handleActionClick">
+						<a-button @click="handleToList" class="action-button cancel-button">返回</a-button>
+
+            <a-button type="primary"  size="large" class="main-action-cta-button" @click="handleActionClick">
               {{ eventDetail.actionButtonText || '一键敲门' }}
             </a-button>
             <p class="action-cta-note">一键敲门后，客服人员将在<span class="text">30分钟内</span>与您联系</p>
@@ -299,20 +301,48 @@ watch(() => route.params.id, (newId, oldId) => {
   padding-top: @spacing-lg; // Padding above button if there was a border
   // No border-top as per the image
 
+  .action-button {
+	min-width: 88px;
+	height: 36px;
+	font-size: 14px;
+	border-radius: @border-radius-sm;
+
+	&.cancel-button {
+		margin-right: @spacing-md;
+		background-color: @background-color-base;
+		border: 1px solid #D9D9D9;
+		color: @text-color-base;
+    height: 42px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0%;
+		&:hover {
+			color: @primary-color;
+			border-color: @primary-color;
+		}
+	}
+
+	&.submit-button {
+		// type="primary" danger for red
+	}
+}
   .main-action-cta-button {
+	  border-radius: @border-radius-sm;
     background-color: @primary-color; // Red button
     border-color: @primary-color;
     min-width: 150px; // Button width
     height: 40px;
     font-size: 16px;
-
-    // AntD primary danger button should give red color
-    // If not, explicitly set:
-    // background-color: #D9001B; (a common antd red)
-    // border-color: #D9001B;
+    height: 42px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0%;
+    border-radius: ;
     &:hover {
-      // background-color: darken(#D9001B, 5%);
-      // border-color: darken(#D9001B, 5%);
     }
   }
 
