@@ -199,6 +199,15 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     }
   }
 
+  const clearfilters = () => {
+    currentFilters.value = {};
+    currentFilters.value = {};
+    search.value = '';
+    pagination.current = 1; // Reset to first page
+    loadTableData();
+  }
+
+
   onMounted(() => {
     if (userStatCardVisible) loadStats();
     loadTableData();
@@ -223,5 +232,6 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     selectOptions,
     isVIP,
     handleExportXls,
+    clearfilters,
   };
 }

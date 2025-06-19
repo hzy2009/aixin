@@ -37,6 +37,12 @@
                         <SearchOutlined />
                     </template>
                 </a-input>
+                
+                <!-- <a-button type="primary" :icon="h(DeleteOutlined)">清空筛选条件</a-button> -->
+                <div class='rest' @click="handleReset">
+                    <DeleteOutlined />&nbsp;
+                    <span>清空筛选条件</span>
+                </div>
             </div>
             <div class="results-count-wrapper">
                 <span>为你找到</span>
@@ -86,9 +92,9 @@
 </template>
 
 <script setup lang="jsx">// jsx for custom pagination render if kept
-import { ref, computed, toRefs } from 'vue'; // onMounted removed as hook handles it
+import { ref, computed, toRefs, h } from 'vue'; // onMounted removed as hook handles it
 import { Table as ATable, Tag as ATag, Button as AButton, Input as AInput } from 'ant-design-vue';
-import { SearchOutlined } from '@ant-design/icons-vue';
+import { SearchOutlined, DeleteOutlined } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
 import HomeHeroSection from '@/views/home/components/HomeHeroSection.vue';
 import UserStatCard from '@/components/layout/UserStatCard.vue';
@@ -142,6 +148,7 @@ const {
     getStatusTagColor,
     handleStatClick,
     handleExportXls,
+    clearfilters,
     isVIP, // Ref from hook
 } = useUserDemandList({
     otherParams,
@@ -154,7 +161,7 @@ filterConfigForPage && filterConfigForPage.forEach(item => {
         item.options = selectOptions(item.dictKey);
     }
 });
-
+const multiDateRangePickerRef = ref()
 // --- Pagination Config (computed property using hook's pagination) ---
 const paginationConfig = computed(() => ({
     ...pagination, // Spread all properties from the hook's pagination object
@@ -207,6 +214,10 @@ const handleActionClick = (record, action) => {
     } else {
         modalStore.showLogin();
     }
+}
+const handleReset = () => {
+    clearfilters()
+    multiDateRangePickerRef.value?.resetAllDates()
 }
 defineExpose({
     handleTablePaginationChange
