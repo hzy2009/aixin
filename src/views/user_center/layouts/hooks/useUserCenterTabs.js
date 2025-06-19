@@ -91,7 +91,7 @@ export function useUserCenterTabs(tabsConfig = defaultTabsConfig) {
       if (mainTabData.subTabs) {
         for (const subTab of mainTabData.subTabs) {
           // 如果当前路径以子页签路径开头，则认为匹配 (更精确的匹配可能需要基于路由名称)
-          if (currentPath.startsWith(subTab.path)) {
+          if (currentPath.startsWith(subTab.path) || currentPath.startsWith(`${subTab.path}/create`)) {
             activeMainTabKey.value = mainKey;
             activeSubTabKey.value = subTab.key;
             return; // 找到匹配项后即返回
@@ -105,6 +105,7 @@ export function useUserCenterTabs(tabsConfig = defaultTabsConfig) {
       //   return;
       // }
     }
+    console.log('没有匹配的子页签');
     // 如果没有子页签匹配，但路径可能属于某个主页签的根 (例如 /user/published/)
     // 则激活主页签，并尝试激活其默认子页签
     const pathSegments = currentPath.split('/').filter(Boolean);

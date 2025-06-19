@@ -49,7 +49,7 @@
           </div>
         </div> -->
         <a-tabs
-          :active-key="activeSubTabKey.value"
+          :active-key="activeSubTabKey"
           @tabClick="handleSubTabClick"
           class="custom-sub-tabs"
           type="card"
