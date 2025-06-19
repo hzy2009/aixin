@@ -70,8 +70,8 @@ const pageData = reactive({
       groupCode: 'businessRefList',
       columns: [
         { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
-        { title: '单据类型', dataIndex: 'businessRefTypeName', key: 'materialName', align: 'center' },
-        { title: '单据号', dataIndex: 'businessRefCode', key: 'materialCount', align: 'center' },
+        { title: '单据类型', dataIndex: 'refBusinessType', key: 'materialName', align: 'center' },
+        { title: '单据号', dataIndex: 'refBusinessCode', key: 'materialCount', align: 'center' },
       ]
     }
   ],
