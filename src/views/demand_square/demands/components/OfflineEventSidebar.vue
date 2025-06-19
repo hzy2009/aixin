@@ -11,7 +11,7 @@
           <p class="report-item-meta">活动内容：{{ item.description }}</p>
           <div class="report-item-footer report-item-summary">
             <span>活动时间：{{ item.activityDate }}</span>
-            <RightOutlined class="arrow-icon" />
+            <ArrowRightOutlined class="arrow-icon" />
           </div>
         </div>
       </router-link>
@@ -23,7 +23,7 @@
 <script setup>
 import { ref, onMounted, watch, computed } from 'vue';
 import { Skeleton as ASkeleton, Empty as AEmpty } from 'ant-design-vue';
-import { RightOutlined } from '@ant-design/icons-vue';
+import { ArrowRightOutlined } from '@ant-design/icons-vue';
 import { useUserDemandList } from '@/components/template/hooks/useUserDemandList.js'; // Adjust path
 
 const props = defineProps({
@@ -70,7 +70,6 @@ const {
   background-color: @background-color-base; // Each item has a white background
   padding: @spacing-lg;
   margin-bottom: @spacing-lg; // Space between items
-  border: 1px solid @border-color-light; // Border for each item
   border-radius: @border-radius-sm; // Slight rounding for each item
   transition: box-shadow 0.3s ease, border-color 0.3s ease;
 
@@ -88,7 +87,7 @@ const {
 
     .arrow-icon {
       color: @primary-color;
-      transform: translateX(4px);
+      transform: translateX(-4px);
     }
   }
 }

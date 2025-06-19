@@ -19,13 +19,13 @@
     </div>
     <div class="report-item__actions">
       <!-- <span class="report-views"><EyeOutlined /> {{ report.views || 0 }}</span> -->
-      <RightOutlined class="details-arrow" />
+      <ArrowRightOutlined class="details-arrow" />
     </div>
   </div>
 </template>
 
 <script setup>
-import { EyeOutlined, RightOutlined } from '@ant-design/icons-vue';
+import { EyeOutlined, ArrowRightOutlined } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
 import defaultThumbnailPlaceholder from './defaultThumbnail.png'; // Create a placeholder
 import { getFileAccessHttpUrl } from '@/utils/index';

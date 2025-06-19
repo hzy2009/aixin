@@ -15,7 +15,7 @@
         <p v-if="item.summary" class="item-summary">{{ item.summary }}</p>
         <div class="item-meta">
           <span v-if="item.createTime" class="item-date"><CalendarOutlined /> {{ item.createTime }}</span>
-          <RightOutlined class="item-arrow" />
+          <ArrowRightOutlined class="item-arrow" />
         </div>
       </div>
     </div>
@@ -27,7 +27,7 @@
 
 <script setup>
 import { Spin as ASpin, Empty as AEmpty } from 'ant-design-vue';
-import { CalendarOutlined, RightOutlined } from '@ant-design/icons-vue';
+import { CalendarOutlined, ArrowRightOutlined } from '@ant-design/icons-vue';
 
 const props = defineProps({
   title: {
