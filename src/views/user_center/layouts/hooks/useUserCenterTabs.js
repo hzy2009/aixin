@@ -20,7 +20,7 @@ const defaultTabsConfig = {
   join: {
     key: 'join',
     label: '我参与的',
-    defaultSubTabKey: 'joindDemands',
+    defaultSubTabKey: 'joinAlternativeSourcing',
     subTabs: [
       { key: 'joinAlternativeSourcing', label: '国产替代寻源', path: '/user/join/DomesticSourcing' },
       { key: 'joinOriginalSourcing', label: '原厂件寻源', path: '/user/join/OEMPartsSourcing' },
