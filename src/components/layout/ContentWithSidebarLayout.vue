@@ -40,7 +40,7 @@
 }
 
 .sidebar-area {
-  width: 300px; // Fixed width for sidebar
+  // width: 300px; // Fixed width for sidebar
   flex-shrink: 0;
 
   @media (max-width: 992px) {

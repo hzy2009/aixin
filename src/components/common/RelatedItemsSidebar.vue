@@ -12,7 +12,7 @@
         @click="() => onItemClick(item)"
       >
         <h4 class="item-title">{{ item.title }}</h4>
-        <p v-if="item.summary" class="item-summary">{{ item.summary }}</p>
+        <!-- <p v-if="item.summary" class="item-summary">{{ item.summary }}</p> -->
         <div class="item-meta">
           <span v-if="item.createTime" class="item-date"><CalendarOutlined /> {{ item.createTime }}</span>
           <ArrowRightOutlined class="item-arrow" />
@@ -69,10 +69,16 @@ const onItemClick = (item) => {
 .sidebar-title {
   font-size: 17px;
   font-weight: 600;
-  color: @text-color-base;
+  color: #000000;
   margin-bottom: @spacing-md;
   padding-bottom: @spacing-sm;
-  border-bottom: 1px solid @border-color-light;
+  font-family: PingFang SC;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 30px;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+
 }
 
 .sidebar-loading, .sidebar-empty {
@@ -114,9 +120,14 @@ const onItemClick = (item) => {
   }
 
   .item-title {
-    font-size: 15px;
-    font-weight: 500;
-    color: @text-color-base;
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0%;
+    text-align: justify;
+
+    color: #656C74;
     margin-bottom: @spacing-xs;
     line-height: 1.4;
     // Ellipsis for 2 lines

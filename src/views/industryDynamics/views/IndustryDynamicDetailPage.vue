@@ -15,7 +15,7 @@
             <h1 class="article-main-title">{{ formModel.title }}</h1>
 
             <div class="article-meta-info-bar">
-              <span v-if="formModel.category" class="meta-category">{{ formModel.category }}</span>
+              <span v-if="formModel.categoryName" class="meta-category">{{ formModel.categoryName }}</span>
               <span class="meta-publish-time">发布时间：{{ formModel.createTime }}</span>
               <span v-if="formModel.source" class="meta-source">新闻来源：{{ formModel.source }}</span>
             </div>
@@ -141,6 +141,7 @@ watch(() => route.params.id, (newId, oldId) => {
 @import '@/assets/styles/_variables.less';
 
 .news-detail-main-content {
+  width: 794px;
   padding: @spacing-md;
   background-color: #fff;
   // This is the white block from ContentWithSidebarLayout's #main slot

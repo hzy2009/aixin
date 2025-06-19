@@ -5,7 +5,7 @@
   </div>
   <ContentWithSidebarLayout>
     <template #main>
-      <detail :pageData="pageData" @goBack="goBack">
+      <detail :pageData="pageData" @goBack="goBack" @submit="submit" ref="detailRef">
         <template #title="{ dataSource = {} }">
           <div class="avatar-wrapper">
             <img src="@/assets/images/auth/avatar.png" alt="" class="avatar-image" v-if="!dataSource.gender">
@@ -47,7 +47,7 @@ import ManImg from '@/assets/images/auth/m.png';
 import WomanImg from '@/assets/images/auth/w.png';
 const route = useRoute();
 const router = useRouter();
-
+const detailRef = ref();
 const props = defineProps({
   IdProp: { type: String, default: null },
 });
@@ -80,17 +80,22 @@ const pageData = reactive({
   IdProp: props.IdProp,
   mode: props.mode,
   apiMap: {
-    add: 'apm/apmTalent/add',
-    edit: 'apm/apmTalent/edit',
     detail: 'apm/apmTalent/queryById/front',
-    submit: 'apm/apmTalent/submit',
-    delete: 'apm/apmTalent/delete',
   },
   formConfigs,
   pageTitle: '行业人才',
   showLogList: false,
+  canSubmit: true,
   showPageTitle: false
 })
+
+const submit = () => {
+  console.log('submit');
+  setTimeout(() => {
+    detailRef.value.isCreating = false
+  }, 1000)
+  // router.push({ path: '/demands/Talent' });
+};
 
 const goBack = () => {
   router.push({ path: '/demands/Talent' });
