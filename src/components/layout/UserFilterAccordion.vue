@@ -196,7 +196,7 @@ defineExpose({ resetAllFilters });
   }
 
   :deep(.ant-collapse-content-box) {
-    padding: @spacing-sm 0 @spacing-md (@spacing-sm + 80px); // Top/Bottom padding, Indent by label width + margin
+    padding: @spacing-sm 0 @spacing-md (@spacing-sm + 175px); // Top/Bottom padding, Indent by label width + margin
   }
 }
 
