@@ -61,7 +61,7 @@ const pageData = reactive({
   actionNotes: [
     {
       title: '取消报名',
-      fn: () => {
+      fn: async () => {
         const response = await defHttp.get({ url: `/apm/apmOfflineActivityRegister/cancel/${props.IdProp}` });
         if (response && response.success) {
           message.success(response.message);
