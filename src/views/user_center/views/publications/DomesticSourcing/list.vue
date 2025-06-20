@@ -81,7 +81,12 @@ const pageData = ref({
       otherParams: {
         sourcingType: '国产替代寻源'
       }
-    }
+    },
+    {
+        title: '已删除',
+        type: 'delete',
+        btnType: 'delete',
+    },
   ],
   dateRangeConfig: [
     {

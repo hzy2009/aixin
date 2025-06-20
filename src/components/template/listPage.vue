@@ -49,9 +49,6 @@
                 <span class="results-count">&nbsp;{{ paginationConfig.total }}&nbsp;</span>
                 <span>个{{ searchTitle }}</span>
             </div>
-            <!-- <a-button type="primary" v-if="addButton" @click="handleAdd(addButton)" class="primary-btn">
-                {{ addButton?.text }}
-            </a-button> -->
         </div>
         <div class="table-operations">
             <a-button
@@ -59,7 +56,7 @@
                 :key="index"
                 @click="operationsClick(Operations)" 
                 :type="Operations.type"
-                :class="{'primary-btn': Operations.type == 'primary'}" 
+                :class="{'primary-btn': Operations.type == 'primary', 'delecte-btn': Operations.type == 'delete'}" 
                 class="operations-btn">
                 {{ Operations.title }}
             </a-button>
@@ -181,7 +178,11 @@ const operationsClick = (btn) => {
                 selections: selectedRowKeys.value.join(','),
                 ...otherParams,
             });
-        } else {
+        } else if (btn.btnType == 'delete') {
+            triggerSearch({
+                deleteFlag: 1
+            })
+        }  else {
             btn.clickFn();
         }
     } else {

@@ -35,10 +35,6 @@ const tableColumns = reactive([
     { title: '操作', key: 'actions', width: '10%', align: 'center', fixed: 'right' },
 ]);
 
-const addButton = reactive({
-    text: '创建研发攻关',
-    clickFn: createNewSourcing
-})
 
 const actions = reactive([
     {
@@ -56,7 +52,6 @@ const pageData = ref({
     },
     filterConfigForPage,
     tableColumns,
-    addButton,
     actions,
     statusDictKey: 'sourcing_status',
     userStatCardVisible: true,
@@ -73,7 +68,12 @@ const pageData = ref({
             btnType: 'exportXls',
             fileName: '研发攻关',
             url: 'apm/apmRdBreakthrough/exportXls',
-        }
+        },
+        {
+            title: '已删除',
+            type: 'delete',
+            btnType: 'delete',
+        },
     ],
     dateRangeConfig: [
         {

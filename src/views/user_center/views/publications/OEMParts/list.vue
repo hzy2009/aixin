@@ -80,7 +80,12 @@ const pageData = ref({
             btnType: 'exportXls',
             fileName: '原厂件寻源',
             url: 'apm/apmSourcing/exportXls',
-        }
+        },
+        {
+            title: '已删除',
+            type: 'delete',
+            btnType: 'delete',
+        },
     ],
     dateRangeConfig: [
         {

@@ -70,7 +70,12 @@ const pageData = ref({
             btnType: 'exportXls',
             fileName: '线下活动',
             url: 'apm/apmOfflineActivity/exportXls',
-        }
+        },
+        {
+            title: '已删除',
+            type: 'delete',
+            btnType: 'delete',
+        },
     ]
 })
 
