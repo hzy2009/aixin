@@ -46,6 +46,7 @@ const joinVerification = () =>import('./views/join/Verification/list.vue');
 
 
 const joinOfflineEvent = () =>import('./views/join/OfflineEvent/list.vue'); 
+const JoinOfflineEventDetailPage = () => import('./views/join/OfflineEvent/detail.vue');
 
 
 const userCenterRoutes = [
@@ -136,7 +137,7 @@ const userCenterRoutes = [
         path: 'OfflineEvent/detail/:id',
         props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
         component: OfflineEventDetailPage,
-        meta: { title: '创建线下活动' }
+        meta: { title: '线下活动详情' }
       },
     ]
   },
@@ -198,7 +199,7 @@ const userCenterRoutes = [
       {
         path: 'OfflineEvent/detail/:id',
         props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
-        component: OfflineEventDetailPage,
+        component: JoinOfflineEventDetailPage,
         meta: { title: '线下活动详情' }
       },
     ]

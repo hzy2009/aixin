@@ -31,7 +31,7 @@ const tableColumns = reactive([
     { title: '活动日期', dataIndex: 'activityDate', key: 'activityDate', align: 'center' }, // This should be 'sourcingType' from mock
     { title: '活动区域', dataIndex: 'activityArea', key: 'activityArea', align: 'center' }, // This should be 'sourcingType' from mock
     { title: '活动地址', dataIndex: 'activityAddress', key: 'activityAddress', align: 'center' }, // This should be 'sourcingType' from mock
-    { title: '内容', dataIndex: 'description', key: 'description', align: 'center' }, // This should be 'sourcingType' from mock
+    { title: '内容', dataIndex: 'description', key: 'description', align: 'center', ellipsis: true }, // This should be 'sourcingType' from mock
     { title: '需求状态', dataIndex: 'statusName', key: 'statusName', align: 'center' }, // Corrected key
     { title: '需求提出方', dataIndex: 'tenantName', key: 'tenantName', align: 'center' },
     { title: '创建时间', dataIndex: 'createTime', key: 'publishDate', align: 'center' },
@@ -76,7 +76,7 @@ const pageData = ref({
 
 
 function viewDetails({ id }) {
-    router.push(`/user/published/OfflineEvent/detail/${id}`);
+    router.push(`/user/join/OfflineEvent/detail/${id}`);
 };
 function createNewSourcing() {
     router.push(`/user/published/OfflineEvent/create`);
