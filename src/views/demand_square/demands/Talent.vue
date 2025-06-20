@@ -32,7 +32,8 @@ const pageData = ref({
     },
     filterConfigForPage,
     pageTitle: '行业人才',
-    showBanner: true
+    showBanner: true,
+    listPageisPadding: false
 })
 
 function viewDetails({ id }) {

@@ -4,7 +4,7 @@
         <span class="title-decorator-bar"></span>
         <h2 class="page-main-heading">{{ pageTitle }}</h2>
     </div>
-    <div class="list-page container">
+    <div class="list-page container" :class="{ 'listPageisPadding': listPageisPadding }">
         <!-- <breadcrumbs/> -->
         <!-- 1. Stats Bar -->
         <div class="stats-bar" v-if="userStatCardVisible">
@@ -146,6 +146,7 @@ const {
     handleStatClick,
     handleExportXls,
     clearfilters,
+    listPageisPadding = true,
     isVIP, // Ref from hook
 } = useUserDemandList({
     otherParams,
