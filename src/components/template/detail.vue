@@ -244,7 +244,7 @@ const getImgUrl = (url) => {
   if (url) {
     return getFileAccessHttpUrl(url);
   } else {
-    return defaultBanner;
+    return '';
   }
 }
 
