@@ -9,11 +9,11 @@ const defaultTabsConfig = {
     label: '我发布的',
     defaultSubTabKey: 'publishedAlternativeSourcing', // 第一个子页签作为默认
     subTabs: [
-      { key: 'publishedAlternativeSourcing', label: '国产替代寻源', path: '/user/published/DomesticSourcing' },
-      { key: 'publishedOriginalSourcing', label: '原厂件寻源', path: '/user/published/OEMPartsSourcing' },
-      { key: 'publishedRndCollaboration', label: '研发攻关', path: '/user/published/PublicRelations' },
-      { key: 'publishedTestingValidation', label: '检测验证', path: '/user/published/Verification' },
-      { key: 'publishedOfflineEvents', label: '线下活动', path: '/user/published/OfflineEvent' },
+      { key: 'AlternativeSourcing', label: '国产替代寻源', path: '/user/published/DomesticSourcing' },
+      { key: 'OriginalSourcing', label: '原厂件寻源', path: '/user/published/OEMPartsSourcing' },
+      { key: 'RndCollaboration', label: '研发攻关', path: '/user/published/PublicRelations' },
+      { key: 'TestingValidation', label: '检测验证', path: '/user/published/Verification' },
+      { key: 'OfflineEvents', label: '线下活动', path: '/user/published/OfflineEvent' },
       // ... 更多 "我发布的" 子页签
     ],
   },
@@ -22,11 +22,11 @@ const defaultTabsConfig = {
     label: '我参与的',
     defaultSubTabKey: 'joinAlternativeSourcing',
     subTabs: [
-      { key: 'joinAlternativeSourcing', label: '国产替代寻源', path: '/user/join/DomesticSourcing' },
-      { key: 'joinOriginalSourcing', label: '原厂件寻源', path: '/user/join/OEMPartsSourcing' },
-      { key: 'joinRndCollaboration', label: '研发攻关', path: '/user/join/PublicRelations' },
-      { key: 'joinTestingValidation', label: '检测验证', path: '/user/join/Verification' },
-      { key: 'joinOfflineEvents', label: '线下活动', path: '/user/join/OfflineEvent' },
+      { key: 'AlternativeSourcing', label: '国产替代寻源', path: '/user/join/DomesticSourcing' },
+      { key: 'OriginalSourcing', label: '原厂件寻源', path: '/user/join/OEMPartsSourcing' },
+      { key: 'RndCollaboration', label: '研发攻关', path: '/user/join/PublicRelations' },
+      { key: 'TestingValidation', label: '检测验证', path: '/user/join/Verification' },
+      { key: 'OfflineEvents', label: '线下活动', path: '/user/join/OfflineEvent' },
       // ... 更多 "我参与的" 子页签
     ],
   },
@@ -57,7 +57,8 @@ export function useUserCenterTabs(tabsConfig = defaultTabsConfig) {
       const firstSubTab = tabsConfig[mainKey]?.subTabs?.[0];
       
       // 导航到该主页签下的第一个子页签或默认子页签
-      const targetSubTabKey = defaultSubKey || (firstSubTab ? firstSubTab.key : null);
+      // const targetSubTabKey = defaultSubKey || (firstSubTab ? firstSubTab.key : null);
+      const targetSubTabKey = activeSubTabKey.value || defaultSubKey;
       if (targetSubTabKey) {
         selectSubTab(targetSubTabKey, mainKey); // 明确传递 mainKey
       } else if (firstSubTab && firstSubTab.path) {
