@@ -8,8 +8,17 @@
       <detail :pageData="pageData" @goBack="goBack" @submit="submit" ref="detailRef">
         <template #title="{ dataSource = {} }">
           <div class="avatar-wrapper">
-            <img src="@/assets/images/auth/avatar.png" alt="" class="avatar-image" v-if="!dataSource.gender">
-            <img :src="dataSource.gender === '男' ? ManImg : WomanImg" alt="" class="avatar-image" v-else>
+            <div class="avatar-image-wrapper">
+              <img src="@/assets/images/auth/avatar.png" alt="" class="avatar-image" v-if="!dataSource.gender">
+              <img :src="dataSource.gender === '男' ? ManImg : WomanImg" alt="" class="avatar-image" v-else>
+            </div>
+            <div class="avatar-info-wrapper">
+              <div><span class="info-label">姓名：</span><span class="info-value">{{ dataSource.realname }}</span></div>
+              <div>
+                <span class="mr-r"><span class="info-label">电话：</span><span class="info-value">{{ dataSource.phone }}</span></span>
+                <span class="info-label">邮箱：</span><span class="info-value">{{ dataSource.email }}</span>
+              </div>
+            </div>
           </div>
         </template>
         <template #content="{ dataSource = {}}">
@@ -149,11 +158,41 @@ const goBack = () => {
 }
 .avatar-wrapper{
   margin-bottom: 20px;
+  display: flex;
+  height: 64px;
+  .avatar-image-wrapper{
+    margin-right: @spacing-xl;
+  }
   .avatar-image{
     width: 64px;
-    height: 64px;
     border-width: 1px;
   }
+  .avatar-info-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .info-label{
+      font-family: PingFang SC;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 14px;
+      letter-spacing: 0%;
+      text-align: right;
+      color: #656C74;
+      margin-right: @spacing-md;
+    }
+    .info-value{
+      font-family: PingFang SC;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 22px;
+      letter-spacing: 0%;
+      color: #272A30;
+    }
+  }
+}
+.mr-r{
+  margin-right:120px;
 }
 
 </style>
