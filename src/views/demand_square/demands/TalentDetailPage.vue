@@ -91,7 +91,8 @@ const pageData = reactive({
   showLogList: false,
   canSubmit: true,
   showPageTitle: false,
-  actionNote: '联系平台获取专家信息'
+  actionNote: '联系平台获取专家信息',
+  listPath: '/demands/Talent',
 })
 
 const submit = async () => {

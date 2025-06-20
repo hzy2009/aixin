@@ -97,6 +97,7 @@ import {selectOptions} from '@/utils/index';
 import operationResultPage from './operationResultPage.vue';
 import CustomProgressTimeline from '@/components/layout/CustomProgressTimeline.vue';
 const route = useRoute();
+const router = useRouter();
 const auth = useAuthStore();
 
 const props = defineProps({
