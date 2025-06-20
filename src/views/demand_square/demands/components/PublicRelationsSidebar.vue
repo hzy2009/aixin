@@ -50,6 +50,7 @@ const {
 @import '@/assets/styles/_variables.less';
 
 .recommended-reports-list {
+  width: 282px;
   // The parent container (.sidebar-column in IndustryReportDetailPage.vue)
   // should provide the overall background and border for the sidebar area.
   // This component now only focuses on the list of items.

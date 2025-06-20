@@ -75,10 +75,9 @@
 					<slot name="actions">
 						<a-button @click="handleDefaultCancel" class="action-button cancel-button">返回</a-button>
 						<a-button type="primary" danger @click="handleDefaultSubmit" v-if='canSubmit'
-							class="action-button submit-button">一键敲门</a-button>
+							class="action-button submit-button">{{ actionNote }}</a-button>
 					</slot>
 				</div>
-		<!-- <p v-if="actionNote && canSubmit" class="action-submit-note">{{ actionNote }}</p> -->
             </div>
 			<div v-else>
                 <operationResultPage  @primaryAction="handleToDetail"
@@ -121,6 +120,7 @@ const {
 	showLogList = true,
 	showPageTitle = true,
     listPath,
+	actionNote='一键敲门'
 } = props.pageData;
 
 const baseFormConfigs = ref(formConfigs);
@@ -222,6 +222,10 @@ const goBack = () => {
 
 
 const handleDefaultSubmit = () => {
+	window.scrollTo({
+		top: 0,
+		behavior: 'smooth'
+	});
 	emit('submit');
 };
 
@@ -238,11 +242,16 @@ watch(() => route.params.id, (newId, oldId) => {
   if (newId && newId !== oldId) {
     internalDemandId.value = newId;
     fetchDemandDetail();
+	window.scrollTo({
+		top: 0,
+		behavior: 'smooth'
+	});
   }
 }, { immediate: false });
 
 defineExpose({
-	isCreating
+	isCreating,
+	handleToDetail
 })
 </script>
 

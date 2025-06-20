@@ -38,6 +38,10 @@ const pageData = ref({
   pageTitle: '行研报告',
 })
 const onChange = (page, pageSize) => {
+  window.scrollTo({
+    top: 400,
+    behavior: 'smooth'
+  });
   refListPage.value.handleTablePaginationChange({
     current: page,
     pageSize

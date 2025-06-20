@@ -5,7 +5,7 @@
     </div>
     <div v-else-if="tableData.length > 0" class="reports-list-items">
       <router-link v-for="item in tableData.slice(0, props.count)" :key="item.id"
-        :to="`/demands/TalentDetailPage/${item.id}`" class="report-item-link">
+        :to="`/demands/TalentDetailPage/${item.id}`" class="report-item-link" @click="handleReportClick">
         <div class="report-item-content">
     
           <h2 class="report-item-title">
@@ -13,7 +13,8 @@
             <span>{{ item.code }}</span>
             <ArrowRightOutlined class="arrow-icon" />
           </h2>
-          <p class="report-item-meta">研究领域：{{ item.skillAreaName }}</p>
+          <p class="report-item-title">{{ item.skillAreaName }}</p>
+          <p class="report-item-meta">意愿合作方向：{{ item.skillDesc }}</p>
           <p class="report-item-meta">主要研究方向：{{ item.skillDesc }}</p>
         <!-- <div class="report-item-footer report-item-summary">
             <span>期望匹配周期：{{ item.matchPeriodName }}</span>
@@ -39,6 +40,8 @@ const props = defineProps({
   count: { type: Number, default: 4 }
 });
 
+const emit = defineEmits(['reportClick']);
+
 const skeletonCount = computed(() => props.count); // For skeleton loader
 
 const {
@@ -49,6 +52,7 @@ const {
     list: '/apm/apmTalent/list/front',
   },
 })
+const handleReportClick = () => emit('reportClick');
 
 </script>
 
@@ -56,6 +60,7 @@ const {
 @import '@/assets/styles/_variables.less';
 
 .recommended-reports-list {
+  width: 282px;
   // The parent container (.sidebar-column in IndustryReportDetailPage.vue)
   // should provide the overall background and border for the sidebar area.
   // This component now only focuses on the list of items.
@@ -107,27 +112,41 @@ const {
   color: @text-color-base;
   margin-bottom: @spacing-xs;
   line-height: 1.5;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-height: calc(1.2em * 2);
+  // display: -webkit-box;
+  // -webkit-line-clamp: 2;
+  // -webkit-box-orient: vertical;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+  // min-height: calc(1.2em * 2);
   margin-bottom: 10px;
   img{
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     margin-right: 10px;
   }
 }
+.report-item-title{
+  font-family: PingFang SC;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 16px;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+  color: #272A30;
+}
 
 .report-item-meta {
-  font-size: 13px;
   color: @text-color-secondary;
-  line-height: 1.6;
   margin-bottom: @spacing-xs;
+  font-family: PingFang SC;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 22px;
+  letter-spacing: 0%;
+  text-align: justify;
   display: -webkit-box;
+  color: #656C74;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;

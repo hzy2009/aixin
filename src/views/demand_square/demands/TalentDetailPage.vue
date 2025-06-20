@@ -32,7 +32,7 @@
       </detail>
     </template>
     <template #sidebar>
-      <TalentSidebar />
+      <TalentSidebar @reportClick="handleReportClick" />
     </template>
   </ContentWithSidebarLayout>
 </template>
@@ -90,7 +90,8 @@ const pageData = reactive({
   pageTitle: '行业人才',
   showLogList: false,
   canSubmit: true,
-  showPageTitle: false
+  showPageTitle: false,
+  actionNote: '联系平台获取专家信息'
 })
 
 const submit = async () => {
@@ -101,6 +102,10 @@ const submit = async () => {
     message.error(response.message);
   }
 };
+
+const handleReportClick = () => {
+    detailRef.value.isCreating = true
+}
 
 const goBack = () => {
   router.push({ path: '/demands/Talent' });

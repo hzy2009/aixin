@@ -71,6 +71,10 @@ function create() {
   router.push(`/user/published/OfflineEvent/create`);
 };
 const onChange = (page, pageSize) => {
+  window.scrollTo({
+    top: 500,
+    behavior: 'smooth'
+  });
   refListPage.value.handleTablePaginationChange({
     current: page,
     pageSize
