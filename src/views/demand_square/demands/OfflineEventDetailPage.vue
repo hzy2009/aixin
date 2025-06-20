@@ -136,6 +136,7 @@ const formattedParticipants = computed(() => {
 
 const handleActionClick = async () => {
   const response = await defHttp.post({ url: `/apm/apmOfflineActivityRegister/newTodo/${eventDetail.value?.id}` });
+  console.log(response);
   if (response && response.success) {
     isRegisterSuccess.value = true;
   } else {

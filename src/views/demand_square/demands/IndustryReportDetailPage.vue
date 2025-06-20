@@ -73,8 +73,7 @@ watch(() => route.params.id, (newId, oldId) => {
 @import '@/assets/styles/_variables.less';
 
 .detail-view-page {
-  width: 894px;
-  margin-right: 24px;
+  min-width: 600px;
 }
 .sidebar{
   width: 282px;

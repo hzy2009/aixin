@@ -97,7 +97,7 @@ const isRegisterSuccess = ref(false);
 
 const handlePurchase = async () => {
   if (authStore?.token) {
-    const response = await defHttp.post({ url: `/apm/apmResearchReport/registerByMember/${props.report.id}` });
+    const response = await defHttp.post({ url: `/apm/apmResearchReportDetail/newTodo/${props.report.id}` });
     if (response && response.success) {
       isRegisterSuccess.value = true;
     }

@@ -44,7 +44,8 @@ class AxiosHttpClient {
         // Example: If your API returns { code: 0, data: ..., message: '...' }
         const res = response.data;
         if (res && typeof res.code !== 'undefined' && res.code !== 0 && res.code !== 200) {
-          return Promise.reject(new Error(res.message || 'Error from API'));
+          AntMessage.error(res.message);
+          return Promise.reject(res.message || 'Error from API');
         }
         return res; // Or return res.data; to directly get the data payload
       },
