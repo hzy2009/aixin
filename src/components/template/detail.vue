@@ -74,6 +74,7 @@
 				<div class="page-actions-footer">
 					<slot name="actions">
 						<a-button @click="handleDefaultCancel" class="action-button cancel-button">返回</a-button>
+						<a-button v-for="(item, i) in actionNotes" :key="i" class="action-button" @click="handleActionNoteClick(item)" :type="item.type">{{ item.title }}</a-button>
 						<a-button type="primary" danger @click="handleDefaultSubmit" v-if='canSubmit'
 							class="action-button submit-button">{{ actionNote }}</a-button>
 					</slot>
@@ -122,7 +123,8 @@ const {
 	showLogList = true,
 	showPageTitle = true,
     listPath,
-	actionNote='一键敲门'
+	actionNote='一键敲门',
+	actionNotes = []
 } = props.pageData;
 
 const baseFormConfigs = ref(formConfigs);
@@ -246,6 +248,11 @@ const getImgUrl = (url) => {
   } else {
     return '';
   }
+}
+const handleActionNoteClick = (actionNote) => {
+	if (actionNote.fn) {
+		actionNote.fn(demandDetailData)
+	}
 }
 
 watch(() => route.params.id, (newId, oldId) => {
@@ -451,17 +458,18 @@ defineExpose({
 	height: 36px;
 	font-size: 14px;
 	border-radius: @border-radius-sm;
-
+	margin-right: @spacing-md;
+	&:hover {
+		color: @primary-color;
+		border-color: @primary-color;
+	}
 	&.cancel-button {
-		margin-right: @spacing-md;
+		
 		background-color: @background-color-base;
 		border: 1px solid #D9D9D9;
 		color: @text-color-base;
 
-		&:hover {
-			color: @primary-color;
-			border-color: @primary-color;
-		}
+		
 	}
 
 	&.submit-button {

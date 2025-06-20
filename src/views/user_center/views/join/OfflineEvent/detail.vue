@@ -11,6 +11,7 @@ import detail from '@/components/template/detail.vue';
 import { useAuthStore } from '@/store/authStore';
 import { BUSINESS_REF_LIST, REGISTER_LIST, STATUS_HISTORY_COLUMNS} from '@/utils/const';
 import defHttp from '@/utils/http/axios'
+import { message } from 'ant-design-vue';
 
 const props = defineProps({
   IdProp: { type: String, default: null },
@@ -57,6 +58,19 @@ const pageData = reactive({
       ...BUSINESS_REF_LIST,
     }
   ],
+  actionNotes: [
+    {
+      title: '取消报名',
+      fn: () => {
+        const response = await defHttp.get({ url: `/apm/apmOfflineActivityRegister/cancel/${props.IdProp}` });
+        if (response && response.success) {
+          message.success(response.message);
+        } else {
+          message.error(response.message);
+        }
+      }
+    },
+  ]
 })
 const submit = async () => {
   const response = await defHttp.post({ url: `/apm/apmOfflineActivityRegister/newTodo/${props.IdProp}` });
