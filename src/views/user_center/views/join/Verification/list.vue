@@ -68,11 +68,11 @@ const pageData = ref({
     actions,
     pageTitle: '检测验证',
     tableOperations: [
-        {
-            title: '创建需求',
-            clickFn: createNewSourcing,
-            type: 'primary'
-        },
+        // {
+        //     title: '创建需求',
+        //     clickFn: createNewSourcing,
+        //     type: 'primary'
+        // },
         {
             title: '下载',
             type: 'primary',

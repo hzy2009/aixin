@@ -59,11 +59,11 @@ const pageData = ref({
     statusDictKey: 'sourcing_status',
     userStatCardVisible: true,
     tableOperations: [
-        {
-            title: '创建需求',
-            clickFn: createNewSourcing,
-            type: 'primary'
-        },
+        // {
+        //     title: '创建需求',
+        //     clickFn: createNewSourcing,
+        //     type: 'primary'
+        // },
         {
             title: '下载',
             type: 'primary',
