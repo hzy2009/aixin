@@ -30,7 +30,7 @@ const formConfigs = [
 ]
 
 const pageTitle = '线下活动详情'
-
+const detailRef = ref(null);
 const pageData = reactive({
   IdProp: props.IdProp,
   apiMap: {
