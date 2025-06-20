@@ -103,14 +103,13 @@ const handleReportClick = () => {
   font-size: 16px;
   font-weight: 500;
   color: @text-color-base;
-  margin-bottom: @spacing-xs;
   line-height: 1.5;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-height: calc(1.5em * 2);
+  min-height: calc(1.5em * 1);
 }
 
 .report-item-meta {
@@ -131,7 +130,7 @@ const handleReportClick = () => {
   line-height: 1.6;
   margin-bottom: @spacing-sm;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;

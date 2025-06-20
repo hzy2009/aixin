@@ -44,7 +44,7 @@ const pageTitle = '创建线下活动'
 const pageData = reactive({
   IdProp: props.IdProp,
   apiMap: {
-    add: 'apm/apmOfflineActivity/add',
+    add: 'apm/apmResearchReport/add',
     edit: 'apm/apmOfflineActivity/edit',
     detail: 'apm/apmOfflineActivity/queryById',
     submit: 'apm/apmOfflineActivity/submit',

@@ -16,7 +16,6 @@
           <span>报告编号：{{ report.code || '未知字段' }}</span>
         </div>
         <div class="report-action-block">
-
           <div class="report-price-header">
             <p class="original-price">原价: {{ report.unitPrice }}元</p>
             <p class="member-price">会员价: {{ report.memberUnitPrice || 198 }}元</p>
@@ -31,12 +30,14 @@
     </div>
 
     <!-- Outline Section Below -->
-    <div class="report-outline-section">
-      <h3 class="outline-title">大纲/目录</h3>
-      <div class="outline-list">
-        {{ report.outline }}
-      </div>
-    </div>
+    <section class="report-outline-section info-section">
+					<div class="section-title-wrapper">
+						<h3 class="section-title-text">大纲/目录</h3>
+					</div>
+          <div class="outline-list">
+            {{ report.outline }}
+          </div>
+    </section>
 
     <!-- Full Content (If applicable and different from summary) -->
     <!-- <div v-if="report.fullContentHtml && showFullContent" class="report-body-content">
@@ -48,11 +49,16 @@
     <!-- Previous/Next Navigation Below -->
     <div class="report-navigation-footer">
       <p v-if="report.previous">
-        <span class="link-text">上一篇：</span><router-link :to="`/demands/IndustryReportDetailPage/${report.previous.id}`">{{ report.previous.title
-        }}</router-link>
+        <router-link :to="`/demands/IndustryReportDetailPage/${report.previous.id}`">
+          <span class="link-text">上一篇：</span>
+          <span class="link-reportName">{{ report.previous.reportName}}</span>
+        </router-link>
       </p>
       <p v-if="report.next">
-       <span class="link-text">下一篇：</span><router-link :to="`/demands/IndustryReportDetailPage/${report.next.id}`">{{ report.next.title }}</router-link>
+       <router-link :to="`/demands/IndustryReportDetailPage/${report.next.id}`">
+        <span class="link-text">下一篇：</span>
+        <span class="link-reportName">{{ report.next.reportName}}</span>
+      </router-link>
       </p>
     </div>
   </div>
@@ -153,7 +159,6 @@ defineExpose({
   padding: @spacing-lg;
   background-color: @background-color-base; // White background for this block
   // border: 1px solid @border-color-light;
-  margin-bottom: @spacing-xl; // Space before outline
 }
 
 .report-header__image-wrapper {
@@ -301,6 +306,18 @@ defineExpose({
     margin-bottom: @spacing-md;
     padding-bottom: @spacing-sm;
     border-bottom: 1px solid @border-color-light;
+		position: relative;
+    &::after {
+			content: '';
+			display: block;
+			width: 100%;
+			height: 2px;
+			background-color: @primary-color;
+			position: absolute;
+			bottom: -(@spacing-xs + 1px);
+			left: 0;
+			z-index: 1;
+		}
   }
 
   .outline-list {
@@ -315,6 +332,37 @@ defineExpose({
       // &:last-child { border-bottom: none; }
     }
   }
+}
+.section-title-wrapper {
+	margin-bottom: @spacing-md;
+	padding-bottom: @spacing-xs;
+	border-bottom: 1px solid @border-color-light;
+	position: relative;
+
+	.section-title-text {
+		color: #656C74;
+		margin: 0;
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 15px;
+    letter-spacing: 0px;
+
+		display: inline-block;
+		position: relative;
+
+		&::after {
+			content: '';
+			display: block;
+			width: 100%;
+			height: 2px;
+			background-color: @primary-color;
+			position: absolute;
+			bottom: -10px;
+			left: 0;
+			z-index: 1;
+		}
+	}
 }
 
 .report-body-content {
@@ -368,6 +416,9 @@ defineExpose({
 .report-navigation-footer {
   .link-text{
       color: @primary-color;
+    }
+    .link-reportName{
+      color: #656C74;
     }
     color: #656C74;
     font-family: PingFang SC;

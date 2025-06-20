@@ -14,8 +14,8 @@
         <h4 class="item-title">{{ item.title }}</h4>
         <!-- <p v-if="item.summary" class="item-summary">{{ item.summary }}</p> -->
         <div class="item-meta">
-          <span v-if="item.createTime" class="item-date"><CalendarOutlined /> {{ item.createTime }}</span>
-          <ArrowRightOutlined class="item-arrow" />
+          <!-- <CalendarOutlined /> -->
+          <span v-if="item.createTime" class="item-date"> {{ item.createTime ? item.createTime.split(' ')[0] : '' }}</span>
         </div>
       </div>
     </div>
@@ -59,6 +59,7 @@ const onItemClick = (item) => {
 @import '@/assets/styles/_variables.less';
 
 .related-items-sidebar {
+  width: 384px;
   background-color: @background-color-base;
   padding: @spacing-lg;
   border-radius: @border-radius-base;
@@ -91,19 +92,21 @@ const onItemClick = (item) => {
 .items-list {
   display: flex;
   flex-direction: column;
-  gap: @spacing-md;
+  gap: 12px;
 }
 
 .related-item {
+  height: 77px;
   padding: @spacing-sm 0;
   border-bottom: 1px dashed @border-color-light;
   cursor: pointer;
   transition: background-color 0.2s;
-
-  &:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
+  display: flex;
+  flex-direction: column;
+  // &:last-child {
+  //   border-bottom: none;
+  //   padding-bottom: 0;
+  // }
   &:first-child {
       padding-top: 0;
   }
@@ -120,13 +123,14 @@ const onItemClick = (item) => {
   }
 
   .item-title {
+    flex-grow: 2;
     font-family: PingFang SC;
     font-weight: 400;
     font-size: 14px;
     line-height: 22px;
     letter-spacing: 0%;
     text-align: justify;
-
+    
     color: #656C74;
     margin-bottom: @spacing-xs;
     line-height: 1.4;
@@ -140,6 +144,7 @@ const onItemClick = (item) => {
   }
 
   .item-summary {
+    flex-grow: 1;
     font-size: 13px;
     color: @text-color-secondary;
     line-height: 1.6;
@@ -152,16 +157,16 @@ const onItemClick = (item) => {
   }
 
   .item-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    // display: flex;
+    // align-items: right;
+    text-align: right;
     font-size: 12px;
     color: @text-color-tertiary;
   }
 
   .item-date {
-    display: inline-flex;
-    align-items: center;
+    // display: inline-flex;
+    // align-items: right;
     .anticon-calendar {
       margin-right: 4px;
     }

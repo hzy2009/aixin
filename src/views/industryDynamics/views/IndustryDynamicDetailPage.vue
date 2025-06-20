@@ -141,7 +141,8 @@ watch(() => route.params.id, (newId, oldId) => {
 @import '@/assets/styles/_variables.less';
 
 .news-detail-main-content {
-  width: 794px;
+  // width: 794px;
+  min-width: 600px;
   padding: @spacing-md;
   background-color: #fff;
   // This is the white block from ContentWithSidebarLayout's #main slot
@@ -290,7 +291,7 @@ watch(() => route.params.id, (newId, oldId) => {
 .page-title-header {
     display: flex;
     align-items: center;
-    margin-bottom: @spacing-md;
+    margin-bottom: 15px;
     margin-top: @spacing-md;
     height: 28px;
 

@@ -292,7 +292,7 @@ defineExpose({
 	.section-title-text {
 		font-size: 14px;
 		font-weight: 400;
-		color: @text-color-secondary;
+		color: #656C74;
 		margin: 0;
 		display: inline-block;
 		position: relative;

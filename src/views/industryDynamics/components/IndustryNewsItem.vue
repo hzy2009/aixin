@@ -19,10 +19,6 @@ const props = defineProps({
     type: Object,
     required: true,
     default: () => ({
-      id: 'news-001',
-      title: '中国半导体企业加速技术突围',
-      summary: '人民财讯5月11日电，近日，中国第三代半导体领军企业英诺赛科（02577.HK）在与国际芯片巨头英飞凌的专利诉讼管辖权争议中取得关键胜利，最高人民法院终审裁定，驳回英飞凌中国公司及无锡公司提出的管辖权异议上诉，确认苏州市中级人民法院对案件的管辖权。',
-      publishDate: '2025-04-22', // YYYY-MM-DD format
     })
   }
 });
@@ -135,7 +131,7 @@ const navigateToDetail = ({id}) => {
     margin: 0;
     // Multi-line ellipsis for summary
     display: -webkit-box;
-    -webkit-line-clamp: 4; // Show 2 lines
+    -webkit-line-clamp: 3; // Show 2 lines
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;

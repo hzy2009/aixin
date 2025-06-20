@@ -5,7 +5,7 @@
   </div>
   <ContentWithSidebarLayout>
     <template #main>
-      <detail :pageData="pageData" @goBack="goBack"></detail>
+      <detail :pageData="pageData" @goBack="goBack" class="detail-view-page"></detail>
     </template>
     <template #sidebar>
       <PublicRelationsSidebar />
@@ -78,3 +78,9 @@ const goBack = () => {
   router.push({ path: '/demands/PublicRelations' });
 };
 </script>
+<style scoped lang="less">
+.detail-view-page{
+  width: 894px;
+}
+
+</style>

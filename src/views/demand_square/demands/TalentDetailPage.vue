@@ -41,10 +41,14 @@
 import { ref, onMounted, watch, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import detail from '@/components/template/detail.vue';
+import { message } from 'ant-design-vue';
 import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue'; // Adjust path if needed
 import TalentSidebar from './components/TalentSidebar.vue';
 import ManImg from '@/assets/images/auth/m.png';
 import WomanImg from '@/assets/images/auth/w.png';
+import defHttp from '@/utils/http/axios'
+
+
 const route = useRoute();
 const router = useRouter();
 const detailRef = ref();
@@ -89,12 +93,13 @@ const pageData = reactive({
   showPageTitle: false
 })
 
-const submit = () => {
-  console.log('submit');
-  setTimeout(() => {
+const submit = async () => {
+  const response = await defHttp.post({ url: `/apm/apmTalent/newTodo/${props.IdProp}` });
+  if (response && response.success) {
     detailRef.value.isCreating = false
-  }, 1000)
-  // router.push({ path: '/demands/Talent' });
+  } else {
+    message.error(response.message);
+  }
 };
 
 const goBack = () => {

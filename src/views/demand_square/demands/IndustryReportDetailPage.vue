@@ -5,10 +5,10 @@
   </div>
   <ContentWithSidebarLayout>
     <template #main>
-      <IndustryReportDetailContent :report="reportData" ref="reportDetail"/>
+      <IndustryReportDetailContent :report="reportData" ref="reportDetail" class="detail-view-page"/>
     </template>
     <template #sidebar>
-      <RecommendedSidebar :category="reportData?.category" :count="3" @reportClick="handleReportClick"/>
+      <RecommendedSidebar :category="reportData?.category" :count="3" @reportClick="handleReportClick" class="sidebar"/>
     </template>
   </ContentWithSidebarLayout>
 </template>
@@ -72,6 +72,13 @@ watch(() => route.params.id, (newId, oldId) => {
 <style scoped lang="less">
 @import '@/assets/styles/_variables.less';
 
+.detail-view-page {
+  width: 894px;
+  margin-right: 24px;
+}
+.sidebar{
+  width: 282px;
+}
 .industry-report-detail-page {
   background-color: @background-color-light-gray; // 整个页面的背景色
   padding-bottom: @spacing-xxl;
