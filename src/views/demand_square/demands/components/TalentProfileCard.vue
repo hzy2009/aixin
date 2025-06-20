@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <span class="talent-identifier">{{ talent.id }}</span>
+            <span class="talent-identifier">{{ talent.code }}</span>
             <a-button type="default" class="details-button" @click.stop="viewTalentDetails(talent)">
                 查看详情
             </a-button>
