@@ -27,7 +27,7 @@
 								{{ getDataDisplayValue(formModel[item.field]) }}
 							</span>
 							<span class="info-grid-value" v-else-if="item.fieldType === 'imageUpload'">
-								<img :src="formModel[item.field]" alt="" class="info-grid-image">
+								<img :src="getImgUrl(formModel[item.field])" :alt="formModel[item.field]" alt="" class="info-grid-image">
 								<!-- {{ formModel[item.field] }} -->
 							</span>
 							<span v-else class="info-grid-value">{{ formModel[item.field] }}</span>
@@ -96,6 +96,7 @@ import { useRouter, useRoute } from 'vue-router'; // 用于新建成功后跳转
 import {selectOptions} from '@/utils/index';
 import operationResultPage from './operationResultPage.vue';
 import CustomProgressTimeline from '@/components/layout/CustomProgressTimeline.vue';
+import { getFileAccessHttpUrl } from '@/utils/index';
 const route = useRoute();
 const router = useRouter();
 const auth = useAuthStore();
@@ -237,6 +238,14 @@ const handleToDetail = () => {
 const handleToList = () => {
     isCreating.value = true;
     router.push({ path: listPath });
+}
+
+const getImgUrl = (url) => {
+  if (url) {
+    return getFileAccessHttpUrl(url);
+  } else {
+    return defaultBanner;
+  }
 }
 
 watch(() => route.params.id, (newId, oldId) => {
