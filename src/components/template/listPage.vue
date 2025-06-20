@@ -129,7 +129,8 @@ const {
     pageTitle,
     tableOperations = [],
     dateRangeConfig = [],
-    searchTitle 
+    searchTitle,
+    listPageisPadding = true,
 } = props.pageData;
 const {
     selectOptions,
@@ -146,7 +147,6 @@ const {
     handleStatClick,
     handleExportXls,
     clearfilters,
-    listPageisPadding = true,
     isVIP, // Ref from hook
 } = useUserDemandList({
     otherParams,
