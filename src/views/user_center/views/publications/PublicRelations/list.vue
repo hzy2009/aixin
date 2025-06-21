@@ -53,7 +53,7 @@ const pageData = ref({
     filterConfigForPage,
     tableColumns,
     actions,
-    statusDictKey: 'sourcing_status',
+    statusDictKey: 'rd_breakthrough_status',
     userStatCardVisible: true,
     searchTitle: '研发攻关',
     tableOperations: [

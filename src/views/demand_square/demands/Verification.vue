@@ -70,7 +70,7 @@ const pageData = ref({
     showBanner: true,
     userStatCardVisible: true,
     pageTitle: '检测验证',
-    statusDictKey: 'rd_breakthrough_status',
+    statusDictKey: 'inspection_status',
     tableOperations: [
         {
         title: '创建检测验证',
