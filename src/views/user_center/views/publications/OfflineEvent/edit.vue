@@ -61,8 +61,7 @@ const pageData = reactive({
 })
 
 const goBack = () => {
-  router.go(-1);
-  // router.push('/user/published/PublicRelations');
+  router.push('/user/published/OfflineEvent');
 };
 
 </script>

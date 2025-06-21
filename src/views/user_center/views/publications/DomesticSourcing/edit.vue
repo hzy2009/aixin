@@ -64,7 +64,7 @@ const pageData = reactive({
 })
 
 const goBack = () => {
-  router.go(-1);
+  router.push({ path: '/user/published/DomesticSourcing' });
 };
 
 </script>
