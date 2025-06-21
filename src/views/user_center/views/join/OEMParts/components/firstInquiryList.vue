@@ -7,11 +7,16 @@
 </template>
 
 <script setup lang='jsx'>
+import { computed } from 'vue';
 // 1. 定义 props 和 emits
 const props = defineProps({
   data: {
     type: Array,
     default: () => []
+  },
+  allData: {
+    type: Object,
+    default: () => {}
   }
 });
 /**
@@ -26,6 +31,7 @@ const handlePaymentTermChange = (value, record, options) => {
         record.paymentTermsName = selectedOption.label;
     }
 };
+const isSecondRound = computed(() => props.allData.secondInquiryList && props.allData.secondInquiryList.length > 0);
 
 const columns = [
     {
@@ -45,6 +51,7 @@ const columns = [
       width: 100,
       customRender: ({ record }) => {
         return (
+            isSecondRound.value ? <span>{record.priceIncludingTax}</span> :
             <a-input-number
                 v-model:value={record.priceIncludingTax}
                 formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
@@ -60,6 +67,7 @@ const columns = [
       width: 100,
       customRender: ({ record }) => {
         return (
+            isSecondRound.value ? <span>{record.priceExcludingTax}</span> :
             <a-input-number
                 v-model:value={record.priceExcludingTax}
                 formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
@@ -75,6 +83,7 @@ const columns = [
       width: 60,
       customRender: ({ record }) => {
         return (
+            isSecondRound.value ? <span>{record.deliveryDate ? record.deliveryDate.split(' ')[0] : '--'}</span> :
             <a-date-picker v-model:value={record.deliveryDate} format="YYYY-MM-DD" valueFormat="YYYY-MM-DD HH:mm:ss" style={{ width: '100%' }}></a-date-picker>
         );
       }
@@ -84,8 +93,9 @@ const columns = [
       dataIndex: 'paymentTermsCode',
       width: 80,
       customRender: ({ record }) => {
-        const options = selectOptions('trade_type');
+        const options = selectOptions('paymentTerms_type');
           return (
+            isSecondRound.value ? <span>{record.paymentTermsName}</span> :
             <a-select 
               v-model:value={record.tradeTypeCode} 
               style={{ width: '100%' }} 
@@ -101,11 +111,21 @@ const columns = [
       title: '质保期',
       dataIndex: 'guaranteePeriod',
       width: 60,
+      customRender: ({ record }) => {
+        return (
+            isSecondRound.value ? <span>{record.guaranteePeriod}</span> :
+            <a-input v-model:value={record.guaranteePeriod} style={{ width: '100%' }}></a-input>)
+      }
     },
     {
       title: '质保说明',
       dataIndex: 'guaranteeDesc',
       width: 80,
+      customRender: ({ record }) => {
+        return (
+            isSecondRound.value ? <span>{record.guaranteePeriod}</span> :
+            <a-input v-model:value={record.guaranteeDesc} style={{ width: '100%' }}></a-input>)
+      }
     },
     {
       title: '报价截止日期',

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <detail :pageData="pageData" @goBack="goBack">
+    <detail :pageData="pageData" @goBack="goBack" ref="detailRef">
       <template #inquiryList="{ dataSource }">
-        <inquiryList :data="dataSource.inquiryList"></inquiryList>
+        <inquiryList :data="dataSource.inquiryList" @success="success"></inquiryList>
       </template>
     </detail>
   </div>
@@ -22,13 +22,15 @@ const props = defineProps({
   IdProp: { type: String, default: null },
 });
 
+const detailRef = ref();
+
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
   { label: '寻源编号', field: 'code', span: 24, },
   { label: '需求提出方', field: 'tenantName', span: 24, },
   { label: '提出需求日期', field: 'createTime', span: 24, fieldType: 'date'},
-  { label: '计划完成日期', field: 'expireDate', span: 24 , fieldType: 'date'},
+  { label: '期望完成日期', field: 'expireDate', span: 24 , fieldType: 'date'},
   { label: '寻源结果', field: 'inquiryList', span: 24 , fieldType: 'slot'},
 ]
 // const demandTypeDisplayName = '国产替代寻源需求';
@@ -42,11 +44,8 @@ const queryAfter = (data) => {
 const pageData = reactive({
   IdProp: props.IdProp,
   apiMap: {
-    add: 'apm/apmSourcing/add',
-    edit: 'apm/apmSourcing/edit',
-    detail: 'apm/apmSourcing/queryById',
-    submit: 'apm/apmSourcing/submit',
-    delete: 'apm/apmSourcing/delete',
+    edit: 'apm/apmSourcingOriginSubstitute/edit',
+    detail: 'apm/apmSourcingOriginSubstitute/queryById/join',
   },
   otherParams: {
     sourcingType: '原厂件寻源',
@@ -57,6 +56,9 @@ const pageData = reactive({
   queryAfter,
   statusDictKey: 'sourcing_status',
 })
+const success = () => {
+  detailRef.value.fetchDemandDetail();
+}
 
 const goBack = () => {
   router.go(-1);

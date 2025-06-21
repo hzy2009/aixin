@@ -29,7 +29,7 @@
     </a-table>
 
     <!-- 用于测试，展示最终数据 -->
-    <a-button @click="logFinalData" style="margin-top: 20px;">打印最终数据到控制台</a-button>
+    <!-- <a-button @click="logFinalData" style="margin-top: 20px;">打印最终数据到控制台</a-button> -->
 </template>
 
 <script setup lang='jsx'>
@@ -39,36 +39,12 @@ import secondInquiryList from './secondInquiryList.vue'
 import { selectOptions } from '@/utils/index';
 import defHttp from '@/utils/http/axios'
 
+const emit = defineEmits(['success']);
 const expandedRowKeys = ref([]);
 
-const initialData = [
-	{
-        key: 1, 
-        materialCode: 'AXS-001',
-        index: 1,
-        tradeTypeCode: undefined,
-        tradeTypeName: '',
-		firstInquiryList: [
-			{key: '1-1', refUserName: '贸易商A', isSelected: false, isWinne: false, id: 101},
-			{key: '1-2', refUserName: '贸易商B', isSelected: false, isWinne: false, id: 102},
-		],
-		secondInquiryList: [],
-	},
-	{
-        key: 2,
-        materialCode: 'AXS-002',
-        index: 2,
-        tradeTypeCode: undefined,
-        tradeTypeName: '',
-		firstInquiryList: [
-			{key: '2-1', refUserName: '贸易商C', isSelected: false, isWinne: false, id: 103},
-			{key: '2-2', refUserName: '贸易商D', isSelected: false, isWinne: false, id: 104},
-		],
-		secondInquiryList: [],
-	},
-];
+const props = defineProps(['data'])
 
-const dataSource = ref(JSON.parse(JSON.stringify(initialData)));
+const dataSource = ref(props.data);
 
 const handleToggleSelection = (parentRecord, { record: itemToToggle, checked }) => {
     const originalItem = parentRecord.firstInquiryList.find(item => item.key === itemToToggle.key);
@@ -225,30 +201,20 @@ const columns = [
     },
 ];
 
-const save = (record, actionType) => {
+const save = async (record, actionType) => {
     if (actionType === 'confirm_winner') {
-        const { winnerName } = getRowState(record);
-        const payload = {
-            // mainKey: record.key,
-            // winner: winnerName,
-            // tradeTypeCode: record.tradeTypeCode,
-            // tradeTypeName: record.tradeTypeName,
-			...record
-        };
-        if (!payload.tradeTypeCode) {
+        // const { winnerName } = getRowState(record);
+       
+        if (!record.tradeTypeCode) {
             alert('请选择交易方式！');
             return;
         }
-        console.log('提交【选定贸易商】数据:', payload);
-        // const res = defHttp.post({ url: '/confirm-winner-api', data: payload });
-    } else if (actionType === 'start_second_round') {
-        const payload = {
-            // mainKey: record.key,
-            // selectedItems: record.firstInquiryList.filter(item => item.isSelected),
-			...record
-        };
-        console.log('提交【进入第二轮报价】数据:', payload);
-        // const res = defHttp.post({ url: '/start-second-round-api', data: payload });
+    }
+    // start_second_round
+    const res = await defHttp.post({ url: '/apm/apmSourcingOriginSubstitute/apmSourcingMaterial/edit', data: record });
+    if (res.success) {
+        alert('操作成功');
+        emit('success');
     }
 }
 

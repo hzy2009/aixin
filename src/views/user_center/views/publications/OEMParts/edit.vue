@@ -25,7 +25,7 @@ const router = useRouter();
 const formConfigs = [
   { label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true, },
   { label: '提出需求日期', field: 'createTime', fieldType: 'date', span: 24},
-  { label: '计划完成日期', field: 'expireDate', fieldType: 'date', span: 24 },
+  { label: '期望完成日期', field: 'expireDate', fieldType: 'date', span: 24 },
 ]
 
 const statusHistoryColumns = [
@@ -41,11 +41,11 @@ const pageTitle = '原厂件寻源'
 const pageData = reactive({
   IdProp: props.IdProp,
   apiMap: {
-    add: 'apm/apmSourcing/add',
-    edit: 'apm/apmSourcing/edit',
-    detail: 'apm/apmSourcing/queryById',
-    submit: 'apm/apmSourcing/submit',
-    delete: 'apm/apmSourcing/delete',
+    add: 'apm/apmSourcingOriginSubstitute/add',
+    edit: 'apm/apmSourcingOriginSubstitute/edit',
+    detail: 'apm/apmSourcingOriginSubstitute/queryById',
+    submit: 'apm/apmSourcingOriginSubstitute/apmSourcingMaterial/submit',
+    delete: 'apm/apmSourcingOriginSubstitute/delete',
   },
   otherParams: {
     sourcingType: '原厂件寻源',

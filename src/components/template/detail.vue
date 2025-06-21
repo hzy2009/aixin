@@ -271,7 +271,8 @@ watch(() => route.params.id, (newId, oldId) => {
 
 defineExpose({
 	isCreating,
-	handleToDetail
+	handleToDetail,
+	fetchDemandDetail
 })
 </script>
 

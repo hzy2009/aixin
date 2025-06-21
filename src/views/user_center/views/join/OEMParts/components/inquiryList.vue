@@ -4,7 +4,7 @@
         :columns="columns" 
         :pagination="false" 
         bordered 
-        rowKey="key"
+        rowKey="id"
         v-model:expandedRowKeys="expandedRowKeys"
     >
         <template #bodyCell="{ column, record }">
@@ -12,9 +12,10 @@
         </template>
         <template #expandedRowRender="{ record: parentRecord }">
             <!-- 监听子组件的事件 -->
-            <div v-if="expandedRowKeys.includes(parentRecord.key)">
+            <div v-if="expandedRowKeys.includes(parentRecord.id)">
                 <firstInquiryList 
                     :data="parentRecord.firstInquiryList"
+                    :allData="parentRecord"
                 />
                 <secondInquiryList 
                     :data="parentRecord.secondInquiryList"
@@ -24,9 +25,6 @@
             </div>
         </template>
     </a-table>
-
-    <!-- 用于测试，展示最终数据 -->
-    <a-button @click="logFinalData" style="margin-top: 20px;">打印最终数据到控制台</a-button>
 </template>
 
 <script setup lang='jsx'>
@@ -37,35 +35,10 @@ import { selectOptions } from '@/utils/index';
 import defHttp from '@/utils/http/axios'
 
 const expandedRowKeys = ref([]);
+const props = defineProps(['data'])
 
-const initialData = [
-	{
-        key: 1, 
-        materialCode: 'AXS-001',
-        index: 1,
-        tradeTypeCode: undefined,
-        tradeTypeName: '',
-		firstInquiryList: [
-			{key: '1-1', refUserName: '贸易商A', isSelected: false, isWinne: false, id: 101},
-			{key: '1-2', refUserName: '贸易商B', isSelected: false, isWinne: false, id: 102},
-		],
-		secondInquiryList: [],
-	},
-	{
-        key: 2,
-        materialCode: 'AXS-002',
-        index: 2,
-        tradeTypeCode: undefined,
-        tradeTypeName: '',
-		firstInquiryList: [
-			{key: '2-1', refUserName: '贸易商C', isSelected: false, isWinne: false, id: 103},
-			{key: '2-2', refUserName: '贸易商D', isSelected: false, isWinne: false, id: 104},
-		],
-		secondInquiryList: [],
-	},
-];
-
-const dataSource = ref(JSON.parse(JSON.stringify(initialData)));
+const emit = defineEmits(['success']);
+const dataSource = ref(props.data);
 
 const columns = [
     {
@@ -96,8 +69,12 @@ const columns = [
     },
 ];
 
-const save = (record) => {
-    console.log('提交【选定贸易商】数据:', payload);
+const save = async (record) => {
+     const res = await defHttp.post({ url: '/apm/apmSourcingMaterialInquiry/edit', data: record });
+    if (res.success) {
+        alert('操作成功');
+        emit('success');
+    }
 }
 
 const logFinalData = () => {

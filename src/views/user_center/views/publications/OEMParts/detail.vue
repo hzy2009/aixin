@@ -1,8 +1,8 @@
 <template>
   <div>
-    <detail :pageData="pageData" @goBack="goBack">
+    <detail :pageData="pageData" @goBack="goBack" ref="detailRef">
       <template #inquiryList="{ dataSource }">
-        <inquiryList :data="dataSource.inquiryList"></inquiryList>
+        <inquiryList :data="dataSource.inquiryList" @success="success"></inquiryList>
       </template>
     </detail>
   </div>
@@ -21,6 +21,7 @@ import { BUSINESS_REF_LIST, STATUS_HISTORY_COLUMNS} from '@/utils/const';
 const props = defineProps({
   IdProp: { type: String, default: null },
 });
+const detailRef = ref();
 
 const router = useRouter();
 // // --- 表单配置 ---
@@ -42,11 +43,7 @@ const queryAfter = (data) => {
 const pageData = reactive({
   IdProp: props.IdProp,
   apiMap: {
-    add: 'apm/apmSourcing/add',
-    edit: 'apm/apmSourcing/edit',
-    detail: 'apm/apmSourcing/queryById',
-    submit: 'apm/apmSourcing/submit',
-    delete: 'apm/apmSourcing/delete',
+    detail: 'apm/apmSourcingOriginSubstitute/queryById/owner',
   },
   otherParams: {
     sourcingType: '原厂件寻源',
@@ -57,7 +54,9 @@ const pageData = reactive({
   queryAfter,
   statusDictKey: 'sourcing_status',
 })
-
+const success = () => {
+  detailRef.value.fetchDemandDetail();
+}
 const goBack = () => {
   router.go(-1);
 };
