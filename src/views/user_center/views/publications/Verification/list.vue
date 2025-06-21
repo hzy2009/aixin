@@ -62,7 +62,7 @@ const pageData = ref({
     },
     filterConfigForPage,
     tableColumns,
-    statusDictKey: 'sourcing_status',
+    statusDictKey: 'inspection_status',
     userStatCardVisible: true,
     actions,
     searchTitle: '检测验证',

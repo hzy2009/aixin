@@ -59,7 +59,7 @@ const pageData = ref({
     tableColumns,
     addButton,
     actions,
-    statusDictKey: 'sourcing_status',
+    statusDictKey: 'rd_breakthrough_status',
     userStatCardVisible: true,
     tableOperations: [
         // {

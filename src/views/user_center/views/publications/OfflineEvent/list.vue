@@ -17,7 +17,7 @@ const router = useRouter();
 const filterConfigForPage = reactive([
     { id: 'productType', label: '产品类别', maxVisibleWithoutMore: 7, dictKey: 'product_type' },
     { id: 'projectType', label: '项目分类', maxVisibleWithoutMore: 7, dictKey: 'project_type' },
-    { id: 'statusCode', label: '需求状态', maxVisibleWithoutMore: 7, dictKey: 'inspection_status' }
+    { id: 'statusCode', label: '需求状态', maxVisibleWithoutMore: 7, dictKey: 'activity_status' }
 ]);
 
 // --- Table Columns (remains in component as it's UI specific) ---
@@ -55,7 +55,7 @@ const pageData = ref({
     filterConfigForPage,
     tableColumns,
     actions,
-    statusDictKey: 'sourcing_status',
+    statusDictKey: 'activity_status',
     userStatCardVisible: true,
     searchTitle: '线下活动',
     tableOperations: [
