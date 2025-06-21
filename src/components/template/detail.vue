@@ -30,6 +30,9 @@
 								<img :src="getImgUrl(formModel[item.field])" :alt="formModel[item.field]" alt="" class="info-grid-image">
 								<!-- {{ formModel[item.field] }} -->
 							</span>
+							<div class="info-grid-value" v-else-if="item.fieldType === 'slot'" width="100%">
+								<slot :name="item.field" :dataSource="formModel"></slot>
+							</div>
 							<span v-else class="info-grid-value">{{ formModel[item.field] }}</span>
 						</div>
 						<div v-for="(tableSection, index) in tableSections" :key="`table-section-${index}`"
@@ -371,7 +374,7 @@ defineExpose({
 	.info-grid-value {
 		color: @text-color-base;
 		word-break: break-word;
-
+		flex: 1;
 		&.requester-id-value {
 			background-color: #F7F8FA;
 			padding: 2px 8px;

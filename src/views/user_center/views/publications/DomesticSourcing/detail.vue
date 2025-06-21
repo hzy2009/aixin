@@ -1,6 +1,10 @@
 <template>
   <div>
-    <detail :pageData="pageData" @goBack="goBack"></detail>
+    <detail :pageData="pageData" @goBack="goBack">
+      <template #materialVoList="{ dataSource }">
+        <materialVoList :data="dataSource.materialVoList"></materialVoList>
+      </template>
+    </detail>
   </div>
 </template>
 
@@ -8,8 +12,8 @@
 import { ref, computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import detail from '@/components/template/detail.vue';
+import materialVoList from './components/materialVoList.vue';
 import { useAuthStore } from '@/store/authStore';
-
 import { BUSINESS_REF_LIST, TENANT_REF_LIST, STATUS_HISTORY_COLUMNS} from '@/utils/const';
 
 
@@ -23,7 +27,8 @@ const formConfigs = [
   { label: '寻源编号', field: 'code', span: 24, },
   { label: '需求提出方', field: 'tenantName', span: 24, },
   { label: '提出需求日期', field: 'createTime', span: 24 , fieldType: 'date'},
-  { label: '计划完成日期', field: 'expireDate', span: 24 , fieldType: 'date'},
+  { label: '期望完成日期', field: 'expireDate', span: 24 , fieldType: 'date'},
+  { label: '寻源结果', field: 'materialVoList', span: 24 , fieldType: 'slot'},
 ]
 
 
@@ -51,25 +56,25 @@ const pageData = reactive({
   statusHistoryColumns: STATUS_HISTORY_COLUMNS,
   pageTitle,
   queryAfter,
-  tableSections: [
-    {
-      title: '物料清单',
-      groupCode: 'materialList',
-      columns: [
-        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
-        { title: '物料名称', dataIndex: 'materialName', key: 'materialName' },
-        { title: '物料数量', dataIndex: 'materialCount', key: 'materialCount' },
-        { title: '物料单位', dataIndex: 'materialUnit', key: 'materialUnit' },
-      ]
-    },
-    {
-      title: '已寻到厂商',
-      ...TENANT_REF_LIST,
-    },
-    {
-      ...BUSINESS_REF_LIST
-    }
-  ],
+  // tableSections: [
+  //   {
+  //     title: '物料清单',
+  //     groupCode: 'materialList',
+  //     columns: [
+  //       { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
+  //       { title: '物料名称', dataIndex: 'materialName', key: 'materialName' },
+  //       { title: '物料数量', dataIndex: 'materialCount', key: 'materialCount' },
+  //       { title: '物料单位', dataIndex: 'materialUnit', key: 'materialUnit' },
+  //     ]
+  //   },
+  //   {
+  //     title: '已寻到厂商',
+  //     ...TENANT_REF_LIST,
+  //   },
+  //   {
+  //     ...BUSINESS_REF_LIST
+  //   }
+  // ],
   statusDictKey: 'sourcing_status',
 })
 
