@@ -15,7 +15,7 @@ const columns = [
     },
     {
       title: '单据类型',
-      dataIndex: 'refBusinessName',
+      dataIndex: 'refBusinessTypeName',
     },
     {
       title: '单据编号',
