@@ -72,7 +72,8 @@ const columns = [
 ];
 
 const save = async (record) => {
-     const res = await defHttp.post({ url: '/apm/apmSourcingMaterialInquiry/edit', data: record });
+    const code = record.isSecondInquiryEnable == 1 ? 'secondInquiryList' : 'firstInquiryList';
+    const res = await defHttp.post({ url: '/apm/apmSourcingMaterialInquiry/edit', data: record[code][0] });
     if (res.success) {
         alert('操作成功');
         emit('success');
