@@ -1,10 +1,10 @@
 <template>
   <div class="home-page">
     <HomeHeroSection />
+    <HomePlatformMemberSection />
     <HomeStatsSection />
     <HomeFeaturedContentSection />
     <HomeExpertTalentSection />
-    <HomePlatformMemberSection />
     <HomeResearchReportSection />
   </div>
 </template>

@@ -25,7 +25,6 @@ const stats = ref([
 
 .home-stats-section {
   z-index: 1;
-  margin-top: -100px;
   position: relative;
   // padding: @spacing-xl 0;
   // background-color: @background-color-base;
