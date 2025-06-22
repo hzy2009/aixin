@@ -45,7 +45,7 @@ watch(() => props.data, (newData) => {
 const handleDateChange = (date, dateString, index) => {
   if (index === 0) {
     dataSource.value.forEach(item => {
-      item.expireDate = Dayjs(dateString); // Update all rows with the new dateString;
+      item.expireDate = date; // Update all rows with the new dateString;
     });
   }
   if (!dateString) return
@@ -80,12 +80,12 @@ const columns = [
     },
     {
       title: '含税价格',
-      dataIndex: 'price',
+      dataIndex: 'priceIncludingTax',
       width: 80,
     },
     {
       title: '未税价格',
-      dataIndex: 'untaxedPrice',
+      dataIndex: 'priceExcludingTax',
       width: 80,
     },
     {
@@ -133,10 +133,10 @@ const columns = [
       dataIndex: 'isWinner',
       width: 60,
       customRender: ({ record }) => {
-        const { price, untaxedPrice } = record
+        const { priceIncludingTax, priceExcludingTax } = record
         const disabled = () => {
           if (props.isFinished === 1) return true
-          if (!price || !untaxedPrice) return true
+          if (!priceIncludingTax || !priceExcludingTax) return true
           return false
         }
         return (

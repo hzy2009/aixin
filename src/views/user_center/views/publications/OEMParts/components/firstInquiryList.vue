@@ -50,22 +50,12 @@ const columns = [
     },
     {
       title: '含税价格',
-      dataIndex: 'price',
+      dataIndex: 'priceIncludingTax',
       width: 80,
-    //   customRender: ({ record }) => {
-    //     return (
-    //         <a-input-number
-    //             v-model:value={record.price}
-    //             formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-    //             parser={(value) => value.replace(/\$\s?|(,*)/g, '')} // 允许粘贴带逗号的数字
-    //             style={{ width: '100%' }}
-    //         />
-    //     );
-    //   },
     },
     {
       title: '未税价格',
-      dataIndex: 'untaxedPrice',
+      dataIndex: 'priceExcludingTax',
       width: 80,
     },
     {
@@ -101,10 +91,10 @@ const columns = [
       dataIndex: 'isSelected',
       width: 95,
       customRender: ({ record }) => {
-        const { price, untaxedPrice } = record
+        const { priceIncludingTax, priceExcludingTax } = record
         const disabled = () => {
           if (props.isSecondInquiryEnable === 1 || props.isFinished === 1) return true
-          if (!price || !untaxedPrice) return true
+          if (!priceIncludingTax || !priceExcludingTax) return true
           return false
         }
         return (
@@ -121,10 +111,10 @@ const columns = [
       dataIndex: 'isWinner',
       width: 75,
       customRender: ({ record }) => {
-        const { price, untaxedPrice } = record
+        const { priceIncludingTax, priceExcludingTax } = record
         const disabled = () => {
           if (props.isSecondInquiryEnable === 1 || props.isFinished === 1) return true
-          if (!price || !untaxedPrice) return true
+          if (!priceIncludingTax || !priceExcludingTax) return true
           return false
         }
         return (

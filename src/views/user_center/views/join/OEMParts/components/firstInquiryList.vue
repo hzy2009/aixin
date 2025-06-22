@@ -9,6 +9,7 @@
 <script setup lang='jsx'>
 import {selectOptions} from '@/utils/index';
 import { computed } from 'vue';
+import dayjs from 'dayjs';
 // 1. 定义 props 和 emits
 const props = defineProps({
   data: {
@@ -51,8 +52,10 @@ const columns = [
       dataIndex: 'priceIncludingTax',
       width: 80,
       customRender: ({ record }) => {
+        const expire = dayjs(record.expireDate); // 截止日期
+        const disabled = dayjs().isAfter(expire, 'day')
         return (
-            isSecondRound.value ? <span>{record.priceIncludingTax}</span> :
+            isSecondRound.value || disabled ? <span>{record.priceIncludingTax}</span> :
             <a-input-number
                 v-model:value={record.priceIncludingTax}
                 formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
@@ -67,8 +70,10 @@ const columns = [
       dataIndex: 'priceExcludingTax',
       width: 80,
       customRender: ({ record }) => {
+        const expire = dayjs(record.expireDate); // 截止日期
+        const disabled = dayjs().isAfter(expire, 'day')
         return (
-            isSecondRound.value ? <span>{record.priceExcludingTax}</span> :
+            isSecondRound.value || disabled ? <span>{record.priceExcludingTax}</span> :
             <a-input-number
                 v-model:value={record.priceExcludingTax}
                 formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
@@ -83,8 +88,10 @@ const columns = [
       dataIndex: 'deliveryDate',
       width: 100,
       customRender: ({ record }) => {
+        const expire = dayjs(record.expireDate); // 截止日期
+        const disabled = dayjs().isAfter(expire, 'day')
         return (
-            isSecondRound.value ? <span>{record.deliveryDate ? record.deliveryDate.split(' ')[0] : '--'}</span> :
+            isSecondRound.value || disabled ? <span>{record.deliveryDate ? record.deliveryDate.split(' ')[0] : '--'}</span> :
             <a-date-picker v-model:value={record.deliveryDate} format="YYYY-MM-DD" valueFormat="YYYY-MM-DD HH:mm:ss" style={{ width: '100%' }}></a-date-picker>
         );
       }
@@ -95,8 +102,10 @@ const columns = [
       width: 60,
       customRender: ({ record }) => {
         const options = selectOptions('paymentTerms_type');
+        const expire = dayjs(record.expireDate); // 截止日期
+        const disabled = dayjs().isAfter(expire, 'day')
           return (
-            isSecondRound.value ? <span>{record.paymentTermsName}</span> :
+            isSecondRound.value || disabled ? <span>{record.paymentTermsName}</span> :
             <a-select 
               v-model:value={record.tradeTypeCode} 
               style={{ width: '100%' }} 
@@ -113,8 +122,10 @@ const columns = [
       dataIndex: 'guaranteePeriod',
       width: 60,
       customRender: ({ record }) => {
+        const expire = dayjs(record.expireDate); // 截止日期
+        const disabled = dayjs().isAfter(expire, 'day')
         return (
-            isSecondRound.value ? <span>{record.guaranteePeriod}</span> :
+            isSecondRound.value || disabled ? <span>{record.guaranteePeriod}</span> :
             <a-input v-model:value={record.guaranteePeriod} style={{ width: '100%' }}></a-input>)
       }
     },
@@ -123,8 +134,10 @@ const columns = [
       dataIndex: 'guaranteeDesc',
       width: 80,
       customRender: ({ record }) => {
+        const expire = dayjs(record.expireDate); // 截止日期
+        const disabled = dayjs().isAfter(expire, 'day')
         return (
-            isSecondRound.value ? <span>{record.guaranteePeriod}</span> :
+            isSecondRound.value || disabled ? <span>{record.guaranteePeriod}</span> :
             <a-input v-model:value={record.guaranteeDesc} style={{ width: '100%' }}></a-input>)
       }
     },

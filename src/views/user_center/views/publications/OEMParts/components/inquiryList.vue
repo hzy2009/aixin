@@ -44,6 +44,7 @@ import firstInquiryList from './firstInquiryList.vue'
 import secondInquiryList from './secondInquiryList.vue'
 import { selectOptions } from '@/utils/index';
 import defHttp from '@/utils/http/axios'
+import { message } from 'ant-design-vue';
 
 const emit = defineEmits(['success']);
 const expandedRowKeys = ref([]);
@@ -67,6 +68,8 @@ const handleToggleSelection = (parentRecord, { record: itemToToggle, checked }) 
         });
         const newItemForSecondRound = { ...originalItem };
         delete newItemForSecondRound.id;
+        delete newItemForSecondRound.priceIncludingTax;
+        delete newItemForSecondRound.priceExcludingTax;
         
         // Set to 0
         newItemForSecondRound.isSelected = 0;
@@ -229,7 +232,7 @@ const save = async (record, actionType) => {
         // const { winnerName } = getRowState(record);
        
         if (!record.tradeTypeCode) {
-            alert('请选择交易方式！');
+            message.error('请选择交易方式');
             return;
         }
         record.isFinished = 1
@@ -239,8 +242,10 @@ const save = async (record, actionType) => {
     // start_second_round
     const res = await defHttp.post({ url: '/apm/apmSourcingOriginSubstitute/apmSourcingMaterial/edit', data: record });
     if (res.success) {
-        alert('操作成功');
+        message.success(res.message);
         emit('success');
+    } else {
+        message.error(res.message);
     }
 }
 
