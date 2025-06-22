@@ -35,6 +35,7 @@ import secondInquiryList from './secondInquiryList.vue'
 import { selectOptions } from '@/utils/index';
 import defHttp from '@/utils/http/axios'
 import { message } from 'ant-design-vue';
+import dayjs from 'dayjs';
 
 const expandedRowKeys = ref([]);
 const props = defineProps(['data'])
@@ -59,8 +60,17 @@ const columns = [
       dataIndex: 'action',
       width: 150,
 	  customRender: ({ record }) => {
+        const {isSecondInquiryEnable, firstInquiryList, secondInquiryList} = record
+        let expireDate = ''
+        if (isSecondInquiryEnable == 1) {
+            expireDate = secondInquiryList && secondInquiryList[0].expireDate
+        } else {
+            expireDate = firstInquiryList && firstInquiryList[0].expireDate
+        }
+        const disabled = dayjs().isAfter(expireDate, 'day')
+
         return (
-            record.isFinished === 1 ? <span>已完成</span> :
+            record.isFinished === 1 || disabled ? <span>已完成</span> :
 			<a-button 
                 type="link" 
                 onClick={() => save(record)}
@@ -77,6 +87,9 @@ const save = async (record) => {
     const res = await defHttp.post({ url: '/apm/apmSourcingMaterialInquiry/edit', data: record[code][0] });
     if (res.success) {
         message.success(res.message);
+        // if (code == 'firstInquiryList') {
+        //     record.isSecondInquiryEnable = 1
+        // }
     //    if (record.isSecondInquiryEnable !== 1) {
     //    } else {
     //      record.fisFinished = 1
