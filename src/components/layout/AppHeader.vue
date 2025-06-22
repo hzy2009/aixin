@@ -6,10 +6,10 @@
         <span class="welcome-text">欢迎来到爱芯享信息共享平台！</span>
         <div class="user-actions-group">
           <template v-if="auth.isLogin">
-             <span :count="unreadMessagesCount" :overflow-count="99" class="action-item notification-badge" @click="navigateToMessages">
+             <!-- <span :count="unreadMessagesCount" :overflow-count="99" class="action-item notification-badge" @click="navigateToMessages">
               <BellOutlined />
               <span class="action-text">您有{{ unreadMessagesCount }}条待办事项</span>
-             </span>
+             </span> -->
             <router-link to="/user" class="action-item action-link"> 
               会员中心
             </router-link>
