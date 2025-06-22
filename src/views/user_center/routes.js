@@ -49,6 +49,8 @@ const joinOfflineEvent = () =>import('./views/join/OfflineEvent/list.vue');
 const JoinOfflineEventDetailPage = () => import('./views/join/OfflineEvent/detail.vue');
 
 
+const MemberInfoPage = () => import('./views/userInfo/MemberInfoPage/index.vue');
+
 const userCenterRoutes = [
   {
     path: '/user/published', // “我发布的” 的父路由
@@ -204,6 +206,18 @@ const userCenterRoutes = [
       },
     ]
   },
+  // {
+  //   path: '/user/setting',
+  //   component: UserCenterCommonLayout,
+  //   meta: { requiresAuth: true },
+  //   children: [
+  //     {
+  //       path: 'userCenterInfo',
+  //       component: MemberInfoPage,
+  //       meta: { title: '会员信息' }
+  //     }
+  //   ]
+  // }
   // ... 其他顶层用户中心路由 ...
 ];
 

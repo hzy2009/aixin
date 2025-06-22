@@ -3,11 +3,19 @@
     <!-- Top Welcome Bar - Full Width -->
     <div class="top-welcome-bar" v-if="showTopWelcomeBar">
       <div class="top-welcome-bar__content container">
-        <span class="welcome-text">欢迎来到爱芯享信息共享平台!</span>
-        <div class="user-actions-top">
+        <span class="welcome-text">欢迎来到爱芯享信息共享平台！</span>
+        <div class="user-actions-group">
           <template v-if="auth.isLogin">
-            <!-- <router-link to="/user/published" class="top-action-link">我发布的</router-link> -->
-            <a @click="handleLogout" class="top-action-link">退出登录</a>
+             <span :count="unreadMessagesCount" :overflow-count="99" class="action-item notification-badge" @click="navigateToMessages">
+              <BellOutlined />
+              <span class="action-text">您有{{ unreadMessagesCount }}条待办事项</span>
+             </span>
+            <router-link to="/user" class="action-item action-link"> 
+              会员中心
+            </router-link>
+            <a @click="handleLogout" class="action-item action-link">
+              退出登录
+            </a>
           </template>
           <template v-else>
             <a @click="navigateToRegister" class="top-action-link register-link-top">入会指南</a>
@@ -65,11 +73,14 @@ import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/store/authStore';
 import { useNavigation } from './hooks/useNavigation';
+import { BellOutlined } from '@ant-design/icons-vue';
 
 const route = useRoute();
 const router = useRouter();
 const auth = useAuthStore();
 const { navigationItems, isActiveNavItem } = useNavigation();
+
+const unreadMessagesCount = computed(() => 9);
 
 const showTopWelcomeBar = computed(() => true);
 
@@ -100,7 +111,7 @@ const handleLogout = () => {
   height: 38px;
   display: flex;
   align-items: center;
-  font-size: 13px;
+  font-size: 14px;
   color: @text-color-secondary;
   // border-bottom: 1px solid @border-color-light; // Optional border
   &__content {
@@ -109,20 +120,85 @@ const handleLogout = () => {
     align-items: center;
     width: 100%;
   }
-  .user-actions-top {
+  // .user-actions-top {
+  //   display: flex;
+  //   align-items: center;
+  //   gap: @spacing-lg; // Increased gap
+  //   .top-action-link {
+  //     cursor: pointer;
+  //     color: @text-color-secondary;
+  //     text-decoration: none;
+  //     &:hover { color: @primary-color; }
+  //   }
+  //   .register-link-top { // Specific style if needed for top bar register
+  //       // e.g. color: @primary-color; font-weight: 500;
+  //   }
+  // }
+  .user-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 24px; // Space between action items
+
+  .action-item {
     display: flex;
     align-items: center;
-    gap: @spacing-lg; // Increased gap
-    .top-action-link {
-      cursor: pointer;
-      color: @text-color-secondary;
-      text-decoration: none;
-      &:hover { color: @primary-color; }
+    color: #646A73; // Default color for links
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s;
+
+    &:hover {
+      color: @primary-color; // Red on hover
     }
-    .register-link-top { // Specific style if needed for top bar register
-        // e.g. color: @primary-color; font-weight: 500;
+
+    .anticon {
+      margin-right: 6px;
+      font-size: 16px; // Icon size
+    }
+    .action-text {
+      // For "您有32条待办事项"
     }
   }
+  .notification-badge {
+      cursor: pointer;
+    .anticon-bell {
+      color: @primary-color; // Bell icon is red
+    }
+    .action-text{
+      color: #646A73;
+      text-decoration: none;
+      &:hover{
+      color: @primary-color; // Bell icon is red
+        
+      }
+    }
+     // AntD badge customization if needed
+    :deep(.ant-badge-count) {
+      background-color: @primary-color;
+      box-shadow: none;
+      // Adjust position if necessary
+      // top: -2px;
+      // right: -2px;
+    }
+  }
+
+  .action-link { // For "会员中心", "退出登录"
+    padding: 0 8px; // Add some padding to make them feel like separate links
+    position: relative; // For pseudo-element separator
+
+    // Vertical separator line (except for the last item)
+    &:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: -12px; // Half of the gap
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 12px; // Height of the separator
+      background-color: #DCDFE6; // Separator color
+    }
+  }
+}
 }
 
 .main-header-logo-area {

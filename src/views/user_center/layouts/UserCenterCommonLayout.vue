@@ -4,17 +4,18 @@
     <section class="uc-banner container">
       <div class=" uc-banner__content">
         <div class="uc-banner__avatar">
-          <a-avatar :size="80" :src="userInfo?.avatar">
+          <a-avatar :size="68" :src="userInfo?.avatar">
             <template #icon><UserOutlined /></template>
           </a-avatar>
         </div>
         <div class="uc-banner__info">
-          <h2 class="user-name">{{ userInfo?.realname || '会员用户' }}</h2>
+          <!-- <h2 class="user-name">{{ userInfo?.realname || '会员用户' }}</h2> -->
+          <div class="user-name">{{ '爱芯享信息共享平台' }}</div>
           <div class="user-membership-info">
             <span class="membership-level">{{ userInfo?.memberLevel || '普通会员' }}</span>
             <a-button type="link" class="upgrade-link" v-if="!isHighestLevel(userInfo?.memberLevel)">升级会员</a-button>
           </div>
-          <p class="user-id">ID: {{ userInfo?.loginTenantId || '加载中...' }}</p>
+          <p class="user-id">ID: {{ userInfo?.workNo || '加载中...' }}</p>
         </div>
       </div>
     </section>
@@ -123,6 +124,7 @@ const handleSubTabClick = (key) => {
 .user-center-common-layout {
   background-color: @background-color-light-gray; // 整个页面区域的背景色
   padding-bottom: @spacing-xxl; // 给底部留出一些空间
+  margin-top: 20px;
 }
 .uc-banner {
   background: url('@/assets/images/user_center/Rectangle 221.png'); // 假设你有这个图案
@@ -141,7 +143,7 @@ const handleSubTabClick = (key) => {
   }
 
   &__avatar {
-    margin-right: @spacing-lg;
+    margin-right: 14px;
     .ant-avatar {
       border: 3px solid rgba(255, 255, 255, 0.5);
     }
@@ -149,17 +151,22 @@ const handleSubTabClick = (key) => {
 
   &__info {
     .user-name {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: @spacing-xs;
+      font-family: PingFang SC;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 16px;
+      letter-spacing: 0%;
+      text-transform: uppercase;
+      margin-bottom: 5px;
       color: @text-color-light;
     }
     .user-membership-info {
       display: flex;
       align-items: center;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
       .membership-level {
         display: inline-block;
+        border-radius: 4px;
         background-color: @primary-color;
         color: #fff;
         padding: 0 8px;
@@ -174,8 +181,12 @@ const handleSubTabClick = (key) => {
         margin-right: @spacing-sm;
       }
       .upgrade-link {
-        color: @text-color-light; // 白色文字
+        font-family: PingFang SC;
+        font-weight: 400;
         font-size: 12px;
+        line-height: 12px;
+        letter-spacing: 0%;
+        color: @text-color-light; // 白色文字
         padding: 0;
         height: auto;
         &:hover {
@@ -184,8 +195,13 @@ const handleSubTabClick = (key) => {
       }
     }
     .user-id {
-      font-size: 13px;
-      color: darken(@text-color-light, 20%);
+      font-family: PingFang SC;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 12px;
+      letter-spacing: 0%;
+      text-transform: uppercase;
+      color: @text-color-light;
       margin: 0;
     }
   }
@@ -198,7 +214,7 @@ const handleSubTabClick = (key) => {
 
 .uc-main-tabs {
   display: flex;
-  height: 60px; // 主页签高度
+  height: 68px; // 主页签高度
 
   .main-tab-item {
     flex: 1;

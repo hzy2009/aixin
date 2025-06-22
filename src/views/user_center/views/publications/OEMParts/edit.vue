@@ -44,7 +44,7 @@ const pageData = reactive({
     add: 'apm/apmSourcingOriginSubstitute/add',
     edit: 'apm/apmSourcingOriginSubstitute/edit',
     detail: 'apm/apmSourcingOriginSubstitute/queryById',
-    submit: 'apm/apmSourcingOriginSubstitute/apmSourcingMaterial/submit',
+    submit: 'apm/apmSourcingOriginSubstitute/submit',
     delete: 'apm/apmSourcingOriginSubstitute/delete',
   },
   otherParams: {
