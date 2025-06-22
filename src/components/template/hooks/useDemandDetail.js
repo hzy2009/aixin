@@ -34,6 +34,8 @@ export function useDemandDetail({IdProp, mode, url, otherParams, queryAfter, han
       demandDetail.value = {
         ...otherParams,
         tenantName: authStore.userInfo.realname,
+        username: authStore.userInfo.username,
+        workNo: authStore.userInfo.workNo,
         tenantId: authStore.userInfo.loginTenantId,
         // ... 其他类型可能需要的默认字段 ...
       };
