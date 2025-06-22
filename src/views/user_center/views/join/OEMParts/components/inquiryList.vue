@@ -59,6 +59,7 @@ const columns = [
       width: 150,
 	  customRender: ({ record }) => {
         return (
+            record.isFinished === 1 ? <span>已完成</span> :
 			<a-button 
                 type="link" 
                 onClick={() => save(record)}

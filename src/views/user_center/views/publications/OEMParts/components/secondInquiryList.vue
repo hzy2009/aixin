@@ -117,14 +117,14 @@ const columns = [
         const disabled = props.isSecondInquiryEnable === 1 || props.isFinished === 1
         return (
           disabled ?
+            <span>{record.expireDate ? Dayjs(record.expireDate).format('YYYY-MM-DD') : '-'}</span> : 
             <a-date-picker 
                 format="YYYY-MM-DD" valueFormat="YYYY-MM-DD HH:mm:ss" style={{ width: '100%' }}
                 v-model:value={record.expireDate}
                 placeholder="请选择日期"
                 // Pass index to the handler
                 onChange={(date, dateString) => handleDateChange(date, dateString, index)}
-            /> : 
-            <span>{record.expireDate ? Dayjs(record.expireDate).format('YYYY-MM-DD') : '-'}</span>
+            />
         )
       }
     },

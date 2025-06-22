@@ -181,6 +181,7 @@ const columns = [
         const { isWinnerSelected } = getRowState(record);
 		const options = selectOptions('trade_type');
         return (
+            record.isFinished === 1 ? <span>{record.tradeTypeName}</span> : 
 			<a-select 
                 v-model:value={record.tradeTypeCode} 
                 style={{ width: '100%' }} 
@@ -210,6 +211,7 @@ const columns = [
             actionType = 'start_second_round';
         }
         return (
+            record.isFinished === 1 ? <span>已完成</span> : 
 			<a-button 
                 type="link" 
                 disabled={actionType === 'none'} 
