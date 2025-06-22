@@ -1,7 +1,12 @@
 <template>
     <div style="margin-bottom: 20px;">
         <div>第一轮报价</div>
-        <a-table class="custom-detail-table" :dataSource="props.data" :columns="columns" :pagination="false" bordered rowKey="key" size="small">
+        <a-table class="custom-detail-table" 
+          :dataSource="props.data" 
+          :columns="columns" 
+          :pagination="false" 
+          bordered 
+          size="small">
         </a-table>
     </div>
 </template>
@@ -47,7 +52,7 @@ const columns = [
     {
       title: '贸易商',
       width: '180px',
-      dataIndex: 'refUserName',
+      dataIndex: 'refUserCode',
     },
     {
       title: '含税价格',

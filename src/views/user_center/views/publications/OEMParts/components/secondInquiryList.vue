@@ -76,7 +76,7 @@ const columns = [
     {
       title: '贸易商',
       width: '180px',
-      dataIndex: 'refUserName',
+      dataIndex: 'refUserCode',
     },
     {
       title: '含税价格',

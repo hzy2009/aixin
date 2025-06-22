@@ -141,7 +141,7 @@ const getRowState = (record) => {
     const winner = winnerInFirst || winnerInSecond;
     if (winner) {
         isWinnerSelected = true;
-        winnerName = winner.refUserName;
+        winnerName = winner.refUserCode;
     }
     // Check for 1
     const isSecondRoundSelected = record.firstInquiryList.some(item => item.isSelected === 1);

@@ -44,7 +44,7 @@ const columns = [
     },
     {
       title: '贸易商',
-      dataIndex: 'refUserName',
+      dataIndex: 'refUserCode',
       width: 120,
     },
         {
