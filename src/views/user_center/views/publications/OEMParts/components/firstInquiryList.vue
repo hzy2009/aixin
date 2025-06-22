@@ -43,7 +43,7 @@ const columns = [
     {
       title: '含税价格',
       dataIndex: 'price',
-      width: 100,
+      width: 80,
     //   customRender: ({ record }) => {
     //     return (
     //         <a-input-number
@@ -58,7 +58,7 @@ const columns = [
     {
       title: '未税价格',
       dataIndex: 'untaxedPrice',
-      width: 100,
+      width: 80,
     },
     {
       title: '交期',
@@ -88,7 +88,7 @@ const columns = [
      {
       title: '入围第二轮报价',
       dataIndex: 'isSelected',
-      width: 90,
+      width: 95,
       customRender: ({ record }) => {
         return (
             <a-checkbox 
@@ -101,7 +101,7 @@ const columns = [
     {
       title: '选定中标方',
       dataIndex: 'isWinne',
-      width: 70,
+      width: 75,
       customRender: ({ record }) => {
         return (
             <a-checkbox 
