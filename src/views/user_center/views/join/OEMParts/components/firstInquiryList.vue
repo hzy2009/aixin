@@ -31,6 +31,7 @@ const handlePaymentTermChange = (value, record, options) => {
     const selectedOption = options.find(opt => opt.value === value);
     if (selectedOption) {
         record.paymentTermsName = selectedOption.label;
+        record.paymentTermsCode = value;
     }
 };
 const isSecondRound = computed(() => props.isSecondInquiryEnable.value === 1);
