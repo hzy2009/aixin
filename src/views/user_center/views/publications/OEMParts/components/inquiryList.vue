@@ -70,6 +70,10 @@ const handleToggleSelection = (parentRecord, { record: itemToToggle, checked }) 
         delete newItemForSecondRound.id;
         delete newItemForSecondRound.priceIncludingTax;
         delete newItemForSecondRound.priceExcludingTax;
+        delete newItemForSecondRound.deliveryDate;
+        delete newItemForSecondRound.paymentTermsName;
+        delete newItemForSecondRound.guaranteePeriod;
+        delete newItemForSecondRound.guaranteeDesc;
         
         // Set to 0
         newItemForSecondRound.isSelected = 0;

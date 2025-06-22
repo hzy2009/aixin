@@ -111,7 +111,7 @@ const columns = [
       dataIndex: 'expireDate',
       customRender: ({ record, index }) => {
         // Use a date picker for editing
-        const disabled = props.isSecondInquiryEnable === 1 || props.isFinished === 1
+        const disabled =  props.isFinished === 1
         return (
           disabled ?
             <span>{record.expireDate ? Dayjs(record.expireDate).format('YYYY-MM-DD') : '-'}</span> : 
