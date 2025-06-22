@@ -34,6 +34,7 @@ import firstInquiryList from './firstInquiryList.vue'
 import secondInquiryList from './secondInquiryList.vue'
 import { selectOptions } from '@/utils/index';
 import defHttp from '@/utils/http/axios'
+import { message } from 'ant-design-vue';
 
 const expandedRowKeys = ref([]);
 const props = defineProps(['data'])
@@ -75,8 +76,10 @@ const save = async (record) => {
     const code = record.isSecondInquiryEnable == 1 ? 'secondInquiryList' : 'firstInquiryList';
     const res = await defHttp.post({ url: '/apm/apmSourcingMaterialInquiry/edit', data: record[code][0] });
     if (res.success) {
-        alert('操作成功');
+        message.success(res.message);
         emit('success');
+    } else {
+        message.error(res.message);
     }
 }
 
