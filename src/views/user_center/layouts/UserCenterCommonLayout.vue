@@ -289,9 +289,10 @@ const handleSubTabClick = (key) => {
       // background-color: fade(@primary-color, 10%); // 图片中激活的子页签没有明显背景色，主要靠文字颜色和下划线
       // border-color: fade(@primary-color, 30%); // 激活状态边框颜色（如果需要）
 
-      // .ant-tabs-tab-btn {
-      //   color: @primary-color;
-      // }
+      .ant-tabs-tab-btn {
+        color: #666666;
+        text-shadow: none;
+      }
     }
     :deep(.ant-tabs-nav::before) {
       // border-bottom: none;
