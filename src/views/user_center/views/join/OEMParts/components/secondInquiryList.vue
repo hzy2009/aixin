@@ -7,6 +7,7 @@
 </template>
 
 <script setup lang='jsx'>
+import { computed } from 'vue';
 const props = defineProps({
   data: {
     type: Array,
@@ -30,7 +31,7 @@ const handlePaymentTermChange = (value, record, options) => {
         record.paymentTermsName = selectedOption.label;
     }
 };
-const isDisabled = computed(() => isFinished.value === 1);
+const isDisabled = computed(() => props.isFinished.value === 1);
 
 const columns = [
     {
@@ -130,6 +131,9 @@ const columns = [
       title: '报价截止日期',
       dataIndex: 'expireDate',
       width: 100,
+      customRender: ({ record }) => {
+        return record.expireDate ? record.expireDate.split(' ')[0] : '--';
+      }
     },
 ]
 </script>

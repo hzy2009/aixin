@@ -7,6 +7,7 @@
 </template>
 
 <script setup lang='jsx'>
+import {selectOptions} from '@/utils/index';
 import { computed } from 'vue';
 // 1. 定义 props 和 emits
 const props = defineProps({
@@ -31,24 +32,24 @@ const handlePaymentTermChange = (value, record, options) => {
         record.paymentTermsName = selectedOption.label;
     }
 };
-const isSecondRound = computed(() => isSecondInquiryEnable.value === 1);
+const isSecondRound = computed(() => props.isSecondInquiryEnable.value === 1);
 
 const columns = [
     {
       title: '序号',
       dataIndex: 'index',
-      width: 50,
+      width: 31,
       customRender: ({ index }) => index + 1 // 使用 customRender 实现序号
     },
     {
       title: '贸易商',
       dataIndex: 'refUserName',
-      width: 80,
+      width: 120,
     },
     {
       title: '含税价格',
       dataIndex: 'priceIncludingTax',
-      width: 100,
+      width: 80,
       customRender: ({ record }) => {
         return (
             isSecondRound.value ? <span>{record.priceIncludingTax}</span> :
@@ -64,7 +65,7 @@ const columns = [
     {
       title: '未税价格',
       dataIndex: 'priceExcludingTax',
-      width: 100,
+      width: 80,
       customRender: ({ record }) => {
         return (
             isSecondRound.value ? <span>{record.priceExcludingTax}</span> :
@@ -80,7 +81,7 @@ const columns = [
     {
       title: '交期',
       dataIndex: 'deliveryDate',
-      width: 60,
+      width: 100,
       customRender: ({ record }) => {
         return (
             isSecondRound.value ? <span>{record.deliveryDate ? record.deliveryDate.split(' ')[0] : '--'}</span> :
@@ -91,7 +92,7 @@ const columns = [
     {
       title: '付款条件',
       dataIndex: 'paymentTermsCode',
-      width: 80,
+      width: 60,
       customRender: ({ record }) => {
         const options = selectOptions('paymentTerms_type');
           return (
@@ -130,7 +131,10 @@ const columns = [
     {
       title: '报价截止日期',
       dataIndex: 'expireDate',
-      width: 90,
+      width: 70,
+      customRender: ({ record }) => {
+        return record.expireDate ? record.expireDate.split(' ')[0] : '--';
+      }
     },
 ]
 </script>

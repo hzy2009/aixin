@@ -2,7 +2,7 @@
   <div>
     <detail :pageData="pageData" @goBack="goBack" ref="detailRef">
       <template #inquiryList="{ dataSource }">
-        <inquiryList :data="dataSource.inquiryList" @success="success"></inquiryList>
+        <inquiryList :data="dataSource.inquiryList" @success="success" v-if="dataSource.inquiryList && dataSource.inquiryList.length > 0"></inquiryList>
       </template>
     </detail>
   </div>

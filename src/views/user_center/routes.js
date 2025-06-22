@@ -35,6 +35,7 @@ const joinDomesticSourcing = () => import('./views/join/DomesticSourcing/list.vu
 
 
 const joinOEMPartsSourcing = () =>import('./views/join/OEMParts/list.vue'); 
+const joinOEMPartsDetailPage = () =>import('./views/join/OEMParts/detail.vue'); 
 
 
 const joinPublicRelations = () =>import('./views/join/PublicRelations/list.vue'); 
@@ -167,7 +168,7 @@ const userCenterRoutes = [
       },
       {
         path: 'OEMPartsSourcing/detail/:id', 
-        component: OEMPartsDetailPage, 
+        component: joinOEMPartsDetailPage, 
         props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
         meta: { title: '原厂件寻源详情', breadcrumb: ['原厂件寻源详情'] }
       },

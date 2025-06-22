@@ -51,7 +51,7 @@ const actions = reactive([
 
 const pageData = ref({
     url: {
-        list: 'apm/apmSourcingOriginSubstitute/queryById/join',
+        list: 'apm/apmSourcingOriginSubstitute/list/join',
         overview: 'apm/apmSourcingOriginSubstitute/overview?referer=join'
     },
     otherParams: {
@@ -91,7 +91,7 @@ const pageData = ref({
 
 
 function viewDetails({ id }) {
-    router.push(`/user/published/OEMPartsSourcing/detail/${id}`);
+    router.push(`/user/join/OEMPartsSourcing/detail/${id}`);
 };
 function createNewSourcing() {
     router.push(`/user/published/OEMPartsSourcing/create`);
