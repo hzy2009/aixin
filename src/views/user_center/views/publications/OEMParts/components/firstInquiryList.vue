@@ -1,12 +1,13 @@
 <template>
     <div style="margin-bottom: 20px;">
         <div>第一轮报价</div>
-        <a-table class="custom-detail-table" :dataSource="props.data" :columns="columns" :pagination="false" bordered rowKey="key">
+        <a-table class="custom-detail-table" :dataSource="props.data" :columns="columns" :pagination="false" bordered rowKey="key" size="small">
         </a-table>
     </div>
 </template>
 
 <script setup lang='jsx'>
+import  Dayjs  from 'dayjs'; // Import Dayjs for type-checking if needed
 // 1. 定义 props 和 emits
 const props = defineProps({
   data: {
@@ -40,48 +41,52 @@ const columns = [
     {
       title: '序号',
       dataIndex: 'index',
-      width: 50,
+      width: '44px',
       customRender: ({ index }) => index + 1 // 使用 customRender 实现序号
     },
     {
       title: '贸易商',
+      width: '180px',
       dataIndex: 'refUserName',
-      width: 80,
     },
     {
       title: '含税价格',
+      width: '80px',
       dataIndex: 'priceIncludingTax',
-      width: 80,
     },
     {
       title: '未税价格',
+      width: '80px',
       dataIndex: 'priceExcludingTax',
-      width: 80,
     },
     {
       title: '交期',
       dataIndex: 'deliveryDate',
-      width: 60,
+      width: '90px',
+      customRender: ({ record }) => {
+        // Use a date picker for editing
+        return record.deliveryDate ? Dayjs(record.deliveryDate).format('YYYY-MM-DD') : '-'
+      }
     },
     {
       title: '付款条件',
+      width: '80px',
       dataIndex: 'paymentTermsName',
-      width: 80,
     },
     {
       title: '质保期',
+      width: '70px',
       dataIndex: 'guaranteePeriod',
-      width: 60,
     },
     {
       title: '质保说明',
+      width: '90px',
       dataIndex: 'guaranteeDesc',
-      width: 80,
     },
     {
       title: '报价截止日期',
+      width: '100px',
       dataIndex: 'expireDate',
-      width: 90,
       customRender: ({ record }) => {
         return record.expireDate ? record.expireDate.split(' ')[0] : '-';
       }
@@ -89,7 +94,7 @@ const columns = [
      {
       title: '入围第二轮报价',
       dataIndex: 'isSelected',
-      width: 95,
+      fixed: 'right',
       customRender: ({ record }) => {
         const { priceIncludingTax, priceExcludingTax } = record
         const disabled = () => {
@@ -109,7 +114,7 @@ const columns = [
     {
       title: '选定中标方',
       dataIndex: 'isWinner',
-      width: 75,
+      fixed: 'right',
       customRender: ({ record }) => {
         const { priceIncludingTax, priceExcludingTax } = record
         const disabled = () => {

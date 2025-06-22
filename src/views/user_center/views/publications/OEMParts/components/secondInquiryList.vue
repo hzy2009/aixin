@@ -70,48 +70,45 @@ const columns = [
     {
       title: '序号',
       dataIndex: 'index',
-      width: 50,
+      width: '44px',
       customRender: ({ index }) => index + 1
     },
     {
       title: '贸易商',
+      width: '180px',
       dataIndex: 'refUserName',
-      width: 80,
     },
     {
       title: '含税价格',
       dataIndex: 'priceIncludingTax',
-      width: 80,
     },
     {
       title: '未税价格',
       dataIndex: 'priceExcludingTax',
-      width: 80,
     },
     {
       title: '交期',
       dataIndex: 'deliveryDate',
-      width: 60,
+      customRender: ({ record }) => {
+        // Use a date picker for editing
+        return record.deliveryDate ? Dayjs(record.deliveryDate).format('YYYY-MM-DD') : '-'
+      }
     },
     {
       title: '付款条件',
       dataIndex: 'paymentTermsName',
-      width: 80,
     },
     {
       title: '质保期',
       dataIndex: 'guaranteePeriod',
-      width: 60,
     },
     {
       title: '质保说明',
       dataIndex: 'guaranteeDesc',
-      width: 80,
     },
     {
       title: '报价截止日期',
       dataIndex: 'expireDate',
-      width: 100,
       customRender: ({ record, index }) => {
         // Use a date picker for editing
         const disabled = props.isSecondInquiryEnable === 1 || props.isFinished === 1
@@ -131,7 +128,7 @@ const columns = [
     {
       title: '选定中标方',
       dataIndex: 'isWinner',
-      width: 60,
+      width: 75,
       customRender: ({ record }) => {
         const { priceIncludingTax, priceExcludingTax } = record
         const disabled = () => {
