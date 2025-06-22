@@ -101,9 +101,15 @@ const columns = [
       dataIndex: 'isSelected',
       width: 95,
       customRender: ({ record }) => {
+        const { price, untaxedPrice } = record
+        const disabled = () => {
+          if (props.isSecondInquiryEnable === 1 || props.isFinished === 1) return true
+          if (!price || !untaxedPrice) return true
+          return false
+        }
         return (
             <a-checkbox 
-                disabled={props.isSecondInquiryEnable === 1 || props.isFinished === 1}
+                disabled={disabled()}
                 checked={record.isSelected === 1} 
                 onChange={(e) => handleSelectionChange(record, e.target.checked)}
             />
