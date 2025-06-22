@@ -39,7 +39,7 @@ const columns = [
     {
       title: '序号',
       dataIndex: 'index',
-      width: 31,
+      width: 32,
       customRender: ({ index }) => index + 1 // 使用 customRender 实现序号
     },
     {

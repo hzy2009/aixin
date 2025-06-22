@@ -77,6 +77,11 @@ const save = async (record) => {
     const res = await defHttp.post({ url: '/apm/apmSourcingMaterialInquiry/edit', data: record[code][0] });
     if (res.success) {
         message.success(res.message);
+       if (record.isSecondInquiryEnable !== 1) {
+         record.isSecondInquiryEnable = 1
+       } else {
+         record.fisFinished = 1
+       }
         emit('success');
     } else {
         message.error(res.message);

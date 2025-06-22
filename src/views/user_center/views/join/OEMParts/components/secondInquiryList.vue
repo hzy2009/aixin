@@ -39,18 +39,18 @@ const columns = [
     {
       title: '序号',
       dataIndex: 'index',
-      width: 50,
+      width: 32,
       customRender: ({ index }) => index + 1 // 使用 customRender 实现序号
     },
     {
       title: '贸易商',
       dataIndex: 'refUserName',
-      width: 80,
+      width: 120,
     },
         {
       title: '含税价格',
       dataIndex: 'priceIncludingTax',
-      width: 100,
+      width: 80,
       customRender: ({ record }) => {
         const expire = dayjs(record.expireDate); // 截止日期
         const disabled = dayjs().isAfter(expire, 'day')
@@ -68,7 +68,7 @@ const columns = [
     {
       title: '未税价格',
       dataIndex: 'priceExcludingTax',
-      width: 100,
+      width: 80,
       customRender: ({ record }) => {
         const expire = dayjs(record.expireDate); // 截止日期
         const disabled = dayjs().isAfter(expire, 'day')
@@ -86,7 +86,7 @@ const columns = [
     {
       title: '交期',
       dataIndex: 'deliveryDate',
-      width: 60,
+      width: 100,
       customRender: ({ record }) => {
         const expire = dayjs(record.expireDate); // 截止日期
         const disabled = dayjs().isAfter(expire, 'day')
@@ -99,7 +99,7 @@ const columns = [
     {
       title: '付款条件',
       dataIndex: 'paymentTermsCode',
-      width: 80,
+      width: 60,
       customRender: ({ record }) => {
         const expire = dayjs(record.expireDate); // 截止日期
         const disabled = dayjs().isAfter(expire, 'day')
@@ -144,7 +144,7 @@ const columns = [
     {
       title: '报价截止日期',
       dataIndex: 'expireDate',
-      width: 100,
+      width: 70,
       customRender: ({ record }) => {
         return record.expireDate ? record.expireDate.split(' ')[0] : '--';
       }
