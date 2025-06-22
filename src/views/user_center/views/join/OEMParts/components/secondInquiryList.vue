@@ -33,7 +33,7 @@ const handlePaymentTermChange = (value, record, options) => {
         record.paymentTermsName = selectedOption.label;
     }
 };
-const isDisabled.value || disabled = computed(() => props.isFinished.value === 1);
+const isDisabled = computed(() => props.isFinished.value === 1);
 
 const columns = [
     {
