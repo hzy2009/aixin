@@ -4,23 +4,29 @@
         :columns="columns" 
         :pagination="false" 
         bordered 
-        rowKey="key"
+        rowKey="id"
         v-model:expandedRowKeys="expandedRowKeys"
     >
         <template #bodyCell="{ column, record }">
             <span v-if="column.dataIndex === 'index'">{{ record.index }}</span>
         </template>
         <template #expandedRowRender="{ record: parentRecord }">
+            
             <!-- 监听子组件的事件 -->
-            <div v-if="expandedRowKeys.includes(parentRecord.key)">
+            <div v-if="expandedRowKeys.includes(parentRecord.id)">
                 <firstInquiryList 
                     :data="parentRecord.firstInquiryList"
+                    :isSecondInquiryEnable="parentRecord.isSecondInquiryEnable"
+                    :isFinished="parentRecord.isFinished"
                     @toggle-selection="payload => handleToggleSelection(parentRecord, payload)"
                     @select-winner="payload => handleSelectWinner(payload)"
                 />
                 <secondInquiryList 
                     :data="parentRecord.secondInquiryList"
+                    :isSecondInquiryEnable="parentRecord.isSecondInquiryEnable"
+                    :isFinished="parentRecord.isFinished"
                     @select-winner="payload => handleSelectWinner(payload)"
+                    v-model:data="parentRecord.secondInquiryList"
                     style="margin-bottom: 16px;"
                     v-show='parentRecord.secondInquiryList && parentRecord.secondInquiryList.length > 0'
                 />
@@ -47,51 +53,74 @@ const props = defineProps(['data'])
 const dataSource = ref(props.data);
 
 const handleToggleSelection = (parentRecord, { record: itemToToggle, checked }) => {
-    const originalItem = parentRecord.firstInquiryList.find(item => item.key === itemToToggle.key);
+    const originalItem = parentRecord.firstInquiryList.find(item => item.id === itemToToggle.id);
     if (!originalItem) return;
-    originalItem.isSelected = checked;
+    
+    // Convert boolean from event to 1 or 0
+    originalItem.isSelected = checked ? 1 : 0;
+    
     if (checked) {
         dataSource.value.forEach(mainRecord => {
-            mainRecord.firstInquiryList.forEach(item => item.isWinne = false);
-            mainRecord.secondInquiryList.forEach(item => item.isWinne = false);
+            // Set to 0
+            mainRecord.firstInquiryList.forEach(item => item.isWinner = 0);
+            mainRecord.secondInquiryList.forEach(item => item.isWinner = 0);
         });
         const newItemForSecondRound = { ...originalItem };
         delete newItemForSecondRound.id;
-        newItemForSecondRound.isSelected = false;
-        newItemForSecondRound.isWinne = false;
-        newItemForSecondRound.key = `second-${originalItem.key}`;
-        newItemForSecondRound.originKey = originalItem.key;
+        
+        // Set to 0
+        newItemForSecondRound.isSelected = 0;
+        newItemForSecondRound.isWinner = 0;
+        newItemForSecondRound.key = `second-${originalItem.id}`;
+        newItemForSecondRound.originKey = originalItem.id;
         parentRecord.secondInquiryList.push(newItemForSecondRound);
-		parentRecord.tradeTypeCode = null;
+        parentRecord.tradeTypeCode = null;
 		parentRecord.tradeTypeName = null;
     } else {
         parentRecord.secondInquiryList = parentRecord.secondInquiryList.filter(
-            item => item.originKey !== originalItem.key
+            item => item.originKey !== originalItem.id
         );
     }
 };
-const handleSelectWinner = ({ record: winningItem, checked }) => {
+
+const handleSelectWinner = ({ record: winningItem, checked, type }) => {
     dataSource.value.forEach(mainRecord => {
-        mainRecord.firstInquiryList.forEach(item => {
-            if (checked) {
-                item.isSelected = false;
-                item.isWinne = item.key === winningItem.key;
-            } else {
-                 if (item.key === winningItem.key) item.isWinne = false;
-            }
-        });
-        mainRecord.secondInquiryList.forEach(item => {
-            if (checked) {
-                item.isWinne = item.key === winningItem.key;
-            } else {
-                 if (item.key === winningItem.key) item.isWinne = false;
-            }
-        });
-        if (checked) {
-            mainRecord.secondInquiryList = mainRecord.secondInquiryList.filter(item => item.key === winningItem.key);
+        if (type === 'first') {
+            mainRecord.firstInquiryList.forEach(item => {
+                if (checked) {
+                    // Set to 0
+                    item.isSelected = 0;
+                    // Use ternary to set 1 or 0
+                    item.isWinner = item.id === winningItem.id ? 1 : 0;
+                } else {
+                    if (item.id === winningItem.id) item.isWinner = 0;
+                }
+            });
+        }
+        if (type === 'second') {
+            mainRecord.secondInquiryList.forEach(item => {
+                if (checked) {
+                    if (winningItem.id) {
+                        item.isWinner = item.id === winningItem.id ? 1 : 0;
+                    } else {
+                        item.isWinner = item.key === winningItem.key ? 1 : 0;
+                    }
+                    // Use ternary to set 1 or 0
+                } else {
+                    if (winningItem.id) {
+                        if (item.id === winningItem.id) item.isWinner = 0;
+                    } else {
+                        if (item.key === winningItem.key) item.isWinner = 0;
+                    }
+                }
+            });
+        }
+        if (checked && type === 'first') {
+            mainRecord.secondInquiryList = mainRecord.secondInquiryList.filter(item => item.isWinner === 1);
         }
         if (!checked) {
-            const isAnyWinnerLeft = mainRecord.firstInquiryList.some(i => i.isWinne) || mainRecord.secondInquiryList.some(i => i.isWinne);
+            // Check for 1
+            const isAnyWinnerLeft = mainRecord.firstInquiryList.some(i => i.isWinner === 1) || mainRecord.secondInquiryList.some(i => i.isWinner === 1);
             if (!isAnyWinnerLeft) {
                 mainRecord.tradeTypeCode = undefined;
                 mainRecord.tradeTypeName = '';
@@ -100,31 +129,22 @@ const handleSelectWinner = ({ record: winningItem, checked }) => {
     });
 };
 
-/**
- * 辅助函数：获取当前行的状态
- * @param {object} record - 当前主表行的数据
- * @returns {object} - 包含状态信息的对象
- */
 const getRowState = (record) => {
     let winnerName = null;
     let isWinnerSelected = false;
-    const winnerInFirst = record.firstInquiryList.find(item => item.isWinne);
-    const winnerInSecond = record.secondInquiryList.find(item => item.isWinne);
+    // Check for 1
+    const winnerInFirst = record.firstInquiryList.find(item => item.isWinner === 1);
+    const winnerInSecond = record.secondInquiryList.find(item => item.isWinner === 1);
     const winner = winnerInFirst || winnerInSecond;
     if (winner) {
         isWinnerSelected = true;
         winnerName = winner.refUserName;
     }
-    const isSecondRoundSelected = record.firstInquiryList.some(item => item.isSelected);
+    // Check for 1
+    const isSecondRoundSelected = record.firstInquiryList.some(item => item.isSelected === 1);
     return { winnerName, isWinnerSelected, isSecondRoundSelected };
 };
 
-/**
- * 处理交易方式选择的变化
- * @param {string} value - 选中的值
- * @param {object} record - 当前主表行的数据
- * @param {Array} options - 选项列表
- */
 const handleTradeTypeChange = (value, record, options) => {
     const selectedOption = options.find(opt => opt.value === value);
     if (selectedOption) {
@@ -179,12 +199,13 @@ const columns = [
       width: 150,
 	  customRender: ({ record }) => {
         const { isWinnerSelected, isSecondRoundSelected } = getRowState(record);
+        const isSecondInquiryEnable = record.isSecondInquiryEnable;
         let buttonText = '请先选择';
         let actionType = 'none';
         if (isWinnerSelected) {
             buttonText = '选定贸易商';
             actionType = 'confirm_winner';
-        } else if (isSecondRoundSelected) {
+        } else if (isSecondRoundSelected && isSecondInquiryEnable !== 1) {
             buttonText = '进入第二轮报价';
             actionType = 'start_second_round';
         }
@@ -209,6 +230,9 @@ const save = async (record, actionType) => {
             alert('请选择交易方式！');
             return;
         }
+        record.isFinished = 1
+    } else {
+        record.isSecondInquiryEnable = 1
     }
     // start_second_round
     const res = await defHttp.post({ url: '/apm/apmSourcingOriginSubstitute/apmSourcingMaterial/edit', data: record });

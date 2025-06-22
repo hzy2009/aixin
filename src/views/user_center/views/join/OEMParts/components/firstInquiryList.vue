@@ -14,9 +14,9 @@ const props = defineProps({
     type: Array,
     default: () => []
   },
-  allData: {
-    type: Object,
-    default: () => {}
+  isSecondInquiryEnable: {
+    type: Number,
+    default: 0
   }
 });
 /**
@@ -31,7 +31,7 @@ const handlePaymentTermChange = (value, record, options) => {
         record.paymentTermsName = selectedOption.label;
     }
 };
-const isSecondRound = computed(() => props.allData.secondInquiryList && props.allData.secondInquiryList.length > 0);
+const isSecondRound = computed(() => isSecondInquiryEnable.value === 1);
 
 const columns = [
     {

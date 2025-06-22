@@ -12,20 +12,28 @@ const props = defineProps({
   data: {
     type: Array,
     default: () => []
+  },
+  isSecondInquiryEnable: {
+    type: Number,
+    default: 0
+  },
+  isFinished: {
+    type: Number,
+    default: 0
   }
 });
 const emit = defineEmits(['toggle-selection', 'select-winner']);
 
 
 // 2. 定义处理函数，它们只负责 emit 事件
-const handleSelectionChange = (record, checked) => {
+const handleSelectionChange = (record, checked, type) => {
   // 通知父组件：哪个记录的“入围”状态改变了
   emit('toggle-selection', { record, checked });
 };
 
 const handleWinnerChange = (record, checked) => {
   // 通知父组件：哪个记录被选为“中标方”
-  emit('select-winner', { record, checked });
+  emit('select-winner', { record, checked, type: 'first' });
 };
 // import { ref, watchEffect } from 'vue'
 const columns = [
@@ -84,6 +92,9 @@ const columns = [
       title: '报价截止日期',
       dataIndex: 'expireDate',
       width: 90,
+      customRender: ({ record }) => {
+        return record.expireDate ? record.expireDate.split(' ')[0] : '-';
+      }
     },
      {
       title: '入围第二轮报价',
@@ -92,7 +103,8 @@ const columns = [
       customRender: ({ record }) => {
         return (
             <a-checkbox 
-                checked={record.isSelected} // 直接使用 prop 的值
+                disabled={props.isSecondInquiryEnable === 1 || props.isFinished === 1}
+                checked={record.isSelected === 1} 
                 onChange={(e) => handleSelectionChange(record, e.target.checked)}
             />
         );
@@ -100,12 +112,19 @@ const columns = [
     },
     {
       title: '选定中标方',
-      dataIndex: 'isWinne',
+      dataIndex: 'isWinner',
       width: 75,
       customRender: ({ record }) => {
+        const { price, untaxedPrice } = record
+        const disabled = () => {
+          if (props.isSecondInquiryEnable === 1 || props.isFinished === 1) return true
+          if (!price || !untaxedPrice) return true
+          return false
+        }
         return (
             <a-checkbox 
-                checked={record.isWinne} // 直接使用 prop 的值
+                disabled={disabled()}
+                checked={record.isWinner === 1}
                 onChange={(e) => handleWinnerChange(record, e.target.checked)}
             />
         );

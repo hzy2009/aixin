@@ -15,10 +15,11 @@
             <div v-if="expandedRowKeys.includes(parentRecord.id)">
                 <firstInquiryList 
                     :data="parentRecord.firstInquiryList"
-                    :allData="parentRecord"
+                    :isSecondInquiryEnable="parentRecord.isSecondInquiryEnable"
                 />
                 <secondInquiryList 
                     :data="parentRecord.secondInquiryList"
+                    :isFinished="parentRecord.isFinished"
                     style="margin-bottom: 16px;"
                     v-show='parentRecord.secondInquiryList && parentRecord.secondInquiryList.length > 0'
                 />
