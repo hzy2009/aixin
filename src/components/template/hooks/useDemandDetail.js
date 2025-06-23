@@ -5,7 +5,7 @@ import { message } from 'ant-design-vue';
 import { useAuthStore } from '@/store/authStore';
 import { useRouter, useRoute } from 'vue-router'; // 用于新建成功后跳转
 
-export function useDemandDetail({IdProp, mode, url, otherParams, queryAfter, handleformConfigsAfter}) { // 接收 props
+export function useDemandDetail({IdProp, mode, url, otherParams, queryAfter, handleformConfigsAfter, localeGetDetail}) { // 接收 props
   const demandDetail = ref(null);
   const isLoading = ref(false);
   const error = ref(null);
@@ -29,39 +29,59 @@ export function useDemandDetail({IdProp, mode, url, otherParams, queryAfter, han
   // --- 权限计算结束 ---
 
   async function fetchDemandDetail() {
-    if (!internalDemandId.value) {
-      // 新建模式或没有ID，初始化空/默认表单数据
-      demandDetail.value = {
-        ...otherParams,
-        tenantName: authStore.userInfo.realname,
-        username: authStore.userInfo.username,
-        workNo: authStore.userInfo.workNo,
-        tenantId: authStore.userInfo.loginTenantId,
-        // ... 其他类型可能需要的默认字段 ...
-      };
-      isLoading.value = false;
-      return;
-    }
-
-    isLoading.value = true;
-    error.value = null;
-    try {
-      const response = await defHttp.get({ url: url.detail, params: {id: internalDemandId.value} });
-      
-      if (response.success) {
-        const data = queryAfter && queryAfter(response.result) || response.result;
-        demandDetail.value = data;
-        handleformConfigsAfter && handleformConfigsAfter(demandDetail.value);
-      } else {
-        throw new Error(response.data.message || '获取需求详情失败');
+    if (localeGetDetail) {
+      isLoading.value = true;
+      error.value = null;
+      try {
+        const response = await localeGetDetail();
+        if (response.success) {
+          const data = queryAfter && queryAfter(response.result) || response.result;
+          demandDetail.value = data;
+          handleformConfigsAfter && handleformConfigsAfter(demandDetail.value);
+        } else {
+          throw new Error(response.data.message || '获取需求详情失败');
+        }
+      } catch (err) {
+        console.error("获取需求详情失败:", err);
+        error.value = err.message || "加载需求详情失败。";
+      } finally {
+        isLoading.value = false;
       }
-    } catch (err) {
-      console.error("获取需求详情失败:", err);
-      error.value = err.message || "加载需求详情失败。";
-      demandDetail.value = null;
-      message.error(error.value);
-    } finally {
-      isLoading.value = false;
+    } else {
+      if (!internalDemandId.value) {
+        // 新建模式或没有ID，初始化空/默认表单数据
+        demandDetail.value = {
+          ...otherParams,
+          tenantName: authStore.userInfo.realname,
+          username: authStore.userInfo.username,
+          workNo: authStore.userInfo.workNo,
+          tenantId: authStore.userInfo.loginTenantId,
+          // ... 其他类型可能需要的默认字段 ...
+        };
+        isLoading.value = false;
+        return;
+      }
+
+      isLoading.value = true;
+      error.value = null;
+      try {
+        const response = await defHttp.get({ url: url.detail, params: {id: internalDemandId.value} });
+        
+        if (response.success) {
+          const data = queryAfter && queryAfter(response.result) || response.result;
+          demandDetail.value = data;
+          handleformConfigsAfter && handleformConfigsAfter(demandDetail.value);
+        } else {
+          throw new Error(response.data.message || '获取需求详情失败');
+        }
+      } catch (err) {
+        console.error("获取需求详情失败:", err);
+        error.value = err.message || "加载需求详情失败。";
+        demandDetail.value = null;
+        message.error(error.value);
+      } finally {
+        isLoading.value = false;
+      }
     }
   }
 

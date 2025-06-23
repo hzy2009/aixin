@@ -55,7 +55,7 @@
 				<section class="info-section" v-if="$slots.content" >
 					<slot name="content" :dataSource="formModel"></slot>
 				</section>
-				<section v-if="showLogList && statusTracking" class="info-section">
+				<section v-if="showProgressList" class="info-section">
 					<div class="section-title-wrapper">
 						<h3 class="section-title-text">{{ statusTracking.title || '状态跟踪' }}</h3>
 					</div>
@@ -129,7 +129,8 @@ const {
 	actionNote='一键敲门',
 	actionNotes = [],
 	statusTrackingTitle,
-	isUseBack = true
+	isUseBack = true,
+	localeGetDetail = null
 } = props.pageData;
 
 const baseFormConfigs = ref(formConfigs);
@@ -153,7 +154,8 @@ const {
 	mode,
 	url: apiMap,
 	otherParams,
-	handleformConfigsAfter
+	handleformConfigsAfter,
+	localeGetDetail
 });
 const formModel = ref({});
 const isCreating = ref(true);
@@ -259,6 +261,14 @@ const handleActionNoteClick = (actionNote) => {
 		actionNote.fn(demandDetailData)
 	}
 }
+const showProgressList = computed(() => {
+	if (showLogList && statusTracking) {
+		if(statusTrackingTitle !== '状态跟踪' && (!formModel.value.progressList || formModel.value.progressList.length === 0)) {
+			return false
+		}
+	}
+	return true
+})
 
 watch(() => route.params.id, (newId, oldId) => {
   if (newId && newId !== oldId) {
