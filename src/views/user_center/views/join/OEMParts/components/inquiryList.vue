@@ -70,7 +70,7 @@ const columns = [
         const disabled = dayjs().isAfter(expireDate, 'day')
 
         return (
-            record.isFinished === 1 || disabled ? <span>已完成</span> :
+            record.isFinished === 1 || disabled ? <span></span> :
 			<a-button 
                 type="link" 
                 onClick={() => save(record)}
