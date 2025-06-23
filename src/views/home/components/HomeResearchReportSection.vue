@@ -49,8 +49,8 @@ const reports = ref([
 @import '@/assets/styles/_variables.less';
 
 .section-padding {
-  padding: @spacing-xxl 0;
-  background-color: @background-color-section-alt; // Light gray background for this section
+  padding: 10px 0;
+  background-color: #FAFAFA; // Light gray background for this section
 }
 
 .report-grid {

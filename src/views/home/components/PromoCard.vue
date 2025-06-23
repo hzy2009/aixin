@@ -4,22 +4,28 @@
       <SectionHeader title-ch="通用件集采" title-en="COMMON PARTS BULK PURCHASING" /> 
       <div class="purchase-blocks-container">
         <!-- Left Block -->
-        <div class="purchase-block">
+        <div class="purchase-block special-hover-effect">
           <img src="@/assets/images/home/PromoCard1.png" alt="FA工厂自动化零件一站式采购平台" class="block-background-image"/>
-          <div class="block-content">
+          <!-- <div class="block-content">
             <a-button type="primary" class="purchase-button" @click="handlePurchaseClick('aian')">
               点击采购，享受爱芯享会员折扣
             </a-button>
+          </div> -->
+           <div class="block-hover-overlay" @click="handlePurchaseClick('jd_overlay')">
+            <span class="hover-action-text">点击采购，享受爱芯享会员折扣</span>
           </div>
         </div>
 
         <!-- Right Block -->
-        <div class="purchase-block">
+        <div class="purchase-block special-hover-effect">
           <img src="@/assets/images/home/PromoCard2.png" alt="打造多元化资产管理服务生态" class="block-background-image"/>
-          <div class="block-content">
+          <!-- <div class="block-content">
             <a-button type="primary" class="purchase-button" @click="handlePurchaseClick('jd')">
               点击采购，享受爱芯享会员折扣
             </a-button>
+          </div> -->
+          <div class="block-hover-overlay" @click="handlePurchaseClick('jd_overlay')">
+            <span class="hover-action-text">点击采购，享受爱芯享会员折扣</span>
           </div>
         </div>
       </div>
@@ -118,8 +124,49 @@ const handlePurchaseClick = (partnerKey) => {
   // Hover effect for the block
   &:hover {
     .block-background-image {
-      transform: scale(1.05); // Slight zoom on background image
+      // transform: scale(1.05); // Slight zoom on background image
     }
   }
+ 
+}
+.hover-action-text{
+      color: #fff;
+
+}
+.special-hover-effect:hover {
+    .block-background-image {
+      // transform: scale(1.05); // Still zoom background
+    }
+    .block-hover-overlay {
+      opacity: 1;
+      pointer-events: auto; // Make overlay interactive on hover
+    }
+    .hover-action-text {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .original-button.small-initial-button { // Hide the initial small button
+        opacity: 0;
+        transform: scale(0.9); // Optional: shrink it out
+        pointer-events: none;
+    }
+}
+.block-hover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.45); // Semi-transparent dark overlay from image
+  z-index: 3; // Overlay on top of .block-content
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  opacity: 0; // Hidden by default
+  pointer-events: none; // Not interactive by default
+  transition: opacity 0.3s ease-in-out;
+  cursor: pointer; // Overlay itself is clickable
 }
 </style>
