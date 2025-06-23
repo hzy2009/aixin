@@ -76,7 +76,7 @@
 				<!-- Action Buttons -->
 				<div class="page-actions-footer">
 					<slot name="actions">
-						<a-button @click="handleDefaultCancel" class="action-button cancel-button">返回</a-button>
+						<a-button @click="handleDefaultCancel" class="action-button cancel-button" v-if="props.isUseBack">返回</a-button>
 						<a-button v-for="(item, i) in actionNotes" :key="i" class="action-button cancel-button" @click="handleActionNoteClick(item)" :type="item.type">{{ item.title }}</a-button>
 						<a-button type="primary" danger @click="handleDefaultSubmit" v-if='canSubmit'
 							class="action-button submit-button">{{ actionNote }}</a-button>
@@ -127,7 +127,9 @@ const {
 	showPageTitle = true,
     listPath,
 	actionNote='一键敲门',
-	actionNotes = []
+	actionNotes = [],
+	statusTrackingTitle,
+	isUseBack = true
 } = props.pageData;
 
 const baseFormConfigs = ref(formConfigs);
@@ -167,7 +169,7 @@ const statusTracking = computed(() => {
 		}
 	})
 	return {
-		title: '状态跟踪',
+		title: statusTrackingTitle || '状态跟踪',
 		steps
 	}
 })
@@ -361,10 +363,23 @@ defineExpose({
 	.info-grid-item {
 		display: flex;
 		padding: @spacing-md 0;
-		line-height: 1.6;
+		// line-height: 1.6;
+		font-family: PingFang SC;
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 22px;
+		letter-spacing: 0%;
 	}
 
 	.info-grid-label {
+		// font-family: PingFang SC;
+		// font-weight: 400;
+		// font-size: 14px;
+		// line-height: 22px;
+		// letter-spacing: 0%;
+		display: flex;
+		justify-content: right;
+    	align-items: center;
 		color: @text-color-secondary;
 		margin-right: @spacing-xs;
 		white-space: nowrap;
@@ -373,7 +388,7 @@ defineExpose({
 	}
 
 	.info-grid-value {
-		color: @text-color-base;
+		color: #272A30;
 		word-break: break-word;
 		flex: 1;
 		&.requester-id-value {

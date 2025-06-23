@@ -30,15 +30,15 @@ const defaultTabsConfig = {
       // ... 更多 "我参与的" 子页签
     ],
   },
-  // userCenter: {
-  //   key: 'userCenter',
-  //   label: '账号管理',
-  //   defaultSubTabKey: 'userCenterInfo',
-  //   subTabs: [
-  //     { key: 'userCenterInfo', label: '会员信息', path: '/user/setting/userCenterInfo' },
-  //     { key: 'userCenterPassword', label: '修改密码', path: '/user/setting/userCenterPassword' },
-  //   ]
-  // }
+  userCenter: {
+    key: 'userCenter',
+    label: '账号管理',
+    defaultSubTabKey: 'userCenterInfo',
+    subTabs: [
+      { key: 'userCenterInfo', label: '会员信息', path: '/user/setting/userCenterInfo' },
+      { key: 'userCenterPassword', label: '修改密码', path: '/user/setting/userCenterPassword' },
+    ]
+  }
 };
 
 export function useUserCenterTabs(tabsConfig = defaultTabsConfig) {

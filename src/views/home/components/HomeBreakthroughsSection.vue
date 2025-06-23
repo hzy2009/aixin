@@ -21,6 +21,9 @@ import { ref, onMounted } from 'vue';
 import SectionHeader from '@/components/common/SectionHeader.vue';
 import SpecificPagedList from './SpecificPagedList.vue';
 import defHttp from '@/utils/http/axios'
+import { useModalStore } from '@/store/modalStore'; 
+import { message } from 'ant-design-vue';
+const modalStore = useModalStore();
 const breakthroughItems = ref([]);
 const fetchBreakthroughItems = async () => {
   const res = await defHttp.get({ url: `/apm/apmNewsForRd/list/front`, params: { page: 1, pageSize: 28 } });
@@ -29,14 +32,6 @@ const fetchBreakthroughItems = async () => {
     items = res.result.records
   }
   breakthroughItems.value = items;
-  // await new Promise(resolve => setTimeout(resolve, 450));
-  // const itemsData = [];
-  // const texts = [ '光学声子软化新理论：突破半导体器件功耗瓶颈新希望', '浙江大学PEDL团队五项重要成果在功率器件顶级会议ISPSD发表', '镓仁半导体成功制备VB法100毫米(010)面氧化镓单晶衬底', '高整流、超低漏P-Si/N-ALN异质结PN二极管', '众专家学者共话硅、碳化硅器件及其他高压功率器件进展', '高整流、超低漏P-Si/N-ALN异质结PN二极管 (重复示例)', '众专家学者共话硅、碳化硅器件及其他高压功率器件进展 (重复示例)' ];
-  // const dates = ['2025/06/03', '2025/06/03', '2025/06/03', '2025/06/01', '2025/05/24', '2025/06/01', '2025/05/24', '2025/05/20', '2025/05/18'];
-  // for (let i = 0; i < texts.length; i++) {
-  //   itemsData.push({ id: `bk-${i + 1}`, text: texts[i], date: dates[i], actionText: '点击联系平台获取最新进展', });
-  // }
-  // breakthroughItems.value = itemsData;
 };
 
 const handleBreakthroughItemRowClick = (item) => {
@@ -44,10 +39,21 @@ const handleBreakthroughItemRowClick = (item) => {
   // Potentially navigate to a detail page if the row itself is meant to be a link
   // router.push({ name: 'BreakthroughDetail', params: { id: item.id } });
 };
-const handleBreakthroughActionBtnClick = (item) => {
-  console.log('Breakthrough ACTION BUTTON clicked:', item);
-  // message.info(`联系平台关于: ${item.text.substring(0,15)}...`);
-  // Implement contact logic (e.g., open a modal, go to contact page)
+const handleBreakthroughActionBtnClick = async (item) => {
+  const res = await defHttp.get({ url: `/apm/apmTodo/apmNewsForRd/newTodo/${item.id}`});
+  if (res.success) {
+    const defaultConfig = {
+      title: '一键敲门成功',
+      message: '一键敲门后后，客服人员将在30分钟内与您联系',
+      contactInfo: { name: '陈靖玮', phone: '010-55698507', email: 'chenjingwei@icshare.com' },
+      buttonText: '返回首页',
+      showButton: false,
+      onAction: null, // Default onAction is handled in store to go home
+    };
+    modalStore.showSuccessPrompt({ ...defaultConfig });
+  } else {
+    message.error(res.message)
+  }
 };
 
 onMounted(() => {

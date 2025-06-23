@@ -51,6 +51,7 @@ const JoinOfflineEventDetailPage = () => import('./views/join/OfflineEvent/detai
 
 
 const MemberInfoPage = () => import('./views/userInfo/MemberInfoPage/index.vue');
+const passWordPage = () => import('./views/userInfo/passWord/index.vue');
 
 const userCenterRoutes = [
   {
@@ -207,18 +208,23 @@ const userCenterRoutes = [
       },
     ]
   },
-  // {
-  //   path: '/user/setting',
-  //   component: UserCenterCommonLayout,
-  //   meta: { requiresAuth: true },
-  //   children: [
-  //     {
-  //       path: 'userCenterInfo',
-  //       component: MemberInfoPage,
-  //       meta: { title: '会员信息' }
-  //     }
-  //   ]
-  // }
+  {
+    path: '/user/setting',
+    component: UserCenterCommonLayout,
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: 'userCenterInfo',
+        component: MemberInfoPage,
+        meta: { title: '会员信息' }
+      },
+      {
+        path: 'userCenterPassword',
+        component: passWordPage,
+        meta: { title: '修改密码' }
+      }
+    ]
+  }
   // ... 其他顶层用户中心路由 ...
 ];
 
