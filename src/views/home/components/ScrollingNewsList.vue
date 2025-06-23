@@ -26,7 +26,7 @@
             class="news-item-entry"
             @click="() => onItemClick(item)"
           >
-            <span class="news-item-entry-text">{{ item.content }}</span>
+            <span class="news-item-entry-text">{{ item.content || item.message }}</span>
             <span class="news-item-entry-date">{{ item.createTime ? formatDate(item.createTime) : '' }}</span>
           </div>
         </transition-group>
