@@ -26,8 +26,8 @@
             class="news-item-entry"
             @click="() => onItemClick(item)"
           >
-            <span class="news-item-entry-text">{{ item.text }}</span>
-            <span class="news-item-entry-date">{{ item.date }}</span>
+            <span class="news-item-entry-text">{{ item.content }}</span>
+            <span class="news-item-entry-date">{{ item.createTime ? formatDate(item.createTime) : '' }}</span>
           </div>
         </transition-group>
       </div>
@@ -46,6 +46,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
+import {formatDate} from '@/utils';
 
 const props = defineProps({
   items: {

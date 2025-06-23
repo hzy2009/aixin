@@ -1,4 +1,6 @@
 import { useAuthStore } from '@/store/authStore';
+import dayjs from 'dayjs';
+
 const auth = useAuthStore();
 export function getFileAccessHttpUrl(fileUrl, prefix = 'http') {
   let result = fileUrl;
@@ -23,3 +25,7 @@ export function selectOptions  (dictKey) {
 	if (!auth.sysAllDictItems[dictKey]) return []
 	return auth.sysAllDictItems[dictKey].map(({ label, value }) => ({ label, value })) || [];
 };
+
+export function formatDate (date, format) {
+  return dayjs(date).format(format || 'YYYY-MM-DD');
+}

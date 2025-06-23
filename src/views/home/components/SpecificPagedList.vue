@@ -27,11 +27,11 @@
               <img src="@/assets/images/home/rightIcon.png" alt="">
           </div>
           <div class="item-text-content">
-            <span class="item-main-text">{{ item.text }}</span>
+            <span class="item-main-text">{{ item.content }}</span>
           </div>
           <!-- Date is now a separate element before the action button's container -->
           <div class="item-date-column">
-            <span class="item-date-text">{{ item.date }}</span>
+            <span class="item-date-text">{{ item.createTime ? formatDate(item.createTime) : '' }}</span>
           </div>
           <div class="item-action-column">
             <a-button type="link" class="action-link" @click.stop="() => onActionClick(item)">
@@ -59,7 +59,7 @@
 // No changes needed in the <script setup> block.
 import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
 import { Button as AButton } from 'ant-design-vue';
-
+import {formatDate} from '@/utils';
 const props = defineProps({
   items: { type: Array, required: true, default: () => [] },
   itemsPerPage: { type: Number, default: 7 },

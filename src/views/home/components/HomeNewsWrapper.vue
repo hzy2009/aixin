@@ -34,7 +34,7 @@ const platformNews = ref([]);
 const memberNews = ref([]);
 
 const fetchPlatformNews = async () => {
-  const res = await defHttp.get({ url: `/apm/apmNewsForVip/list/front`, params: { page: 1, pageSize: 28 } });
+  const res = await defHttp.get({ url: `/apm/apmNewsForVip/list/front`, params: { page: 1, pageSize: 20 } });
   let items = [];
   if (res.success) {
     items = res.result.records
@@ -42,7 +42,7 @@ const fetchPlatformNews = async () => {
   platformNews.value = items;
 };
 const fetchMemberNews = async () => {
-  const res = await defHttp.get({ url: `/apm/apmNewsForVip/list/front`, params: { page: 1, pageSize: 28 } });
+  const res = await defHttp.get({ url: `/apm/apmNewsForVip/list/front`, params: { page: 1, pageSize: 20 } });
   let items = [];
   if (res.success) {
     items = res.result.records
