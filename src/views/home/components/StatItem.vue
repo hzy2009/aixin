@@ -1,8 +1,9 @@
 <template>
   <div class="stat-item">
     <div class="stat-item__number-wrapper">
-      <span class="stat-item__number-main">{{ mainNumber }}</span>
-      <span class="stat-item__number-plus" v-if="plusSymbol">{{ plusSymbol }}</span>
+      <span class="stat-item__number-main">{{ formattedMainNumber(mainNumber) }}</span>
+      <!-- <span class="stat-item__number-plus" v-if="plusSymbol">{{ plusSymbol }}</span> -->
+      <span class="stat-item__number-plus" >+</span>
     </div>
     <div class="stat-item__underline"></div>
     <h3 class="stat-item__title">{{ title }}</h3>
@@ -43,7 +44,14 @@ const plusSymbol = computed(() => {
 const formattedDescription = computed(() => {
   return props.description
 });
+const formattedMainNumber = (n) => {
+  if (n> 999) {
+    return 999
+  }
+  return n
+}
 </script>
+
 
 <style scoped lang="less">
 @import '@/assets/styles/_variables.less';
@@ -85,13 +93,15 @@ const formattedDescription = computed(() => {
   &__number-plus {
     font-family: Roboto;
     font-weight: 700;
+    font-family: Roboto;
+    font-weight: 700;
     font-size: 20px;
     line-height: 30px;
     letter-spacing: 0%;
     text-transform: uppercase;
     margin-left: 2px; // Small gap
     position: relative;
-    top: 2px; // Nudge it up slightly to align better with top of number
+    top: 15px; // Nudge it up slightly to align better with top of number
   }
 
   &__underline {

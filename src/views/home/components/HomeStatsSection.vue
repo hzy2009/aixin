@@ -8,17 +8,34 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import StatItem from './StatItem.vue'; // Import the new component
 import { useRouter } from 'vue-router';
+import defHttp from '@/utils/http/axios';
 const router = useRouter();
 const stats = ref([
-  { number: '500+', label: '国产替代寻源', description: `丰富的厂商数据库、产品数据库\n颗粒度足够细，实用性足够高\n权威性足够强`, link: '/demands/DomesticSourcing'},
-  { number: '360+', label: '原厂件寻源', description: '汇集行业内有能力的贸易商\n在线竞价，快速反馈及促成交易', link: '/demands/OEMPartsSourcing' },
-  { number: '78+', label: '研发攻关', description: '需求匹配、项目跟踪\n厂商赋能、项目申报', link: '/demands/PublicRelations' },
-  { number: '180+', label: '检测验证', description: '拉通需求、标准、方案\n加速验证，降低直接上线风险', link: '/demands/Verification' },
-  { number: '50+', label: '线下对接会', description: '供需对接会、技术对接会\n精准、高效、快速匹配需求', link: '/demands/OfflineEvent' },
+  { key: 'AXX-GS', number: '0', label: '国产替代寻源', description: `丰富的厂商数据库、产品数据库\n颗粒度足够细，实用性足够高\n权威性足够强`, link: '/demands/DomesticSourcing'},
+  { key: 'AXX-MS', number: '0', label: '原厂件寻源', description: '汇集行业内有能力的贸易商\n在线竞价，快速反馈及促成交易', link: '/demands/OEMPartsSourcing' },
+  { key: 'AXX-RD', number: '0', label: '研发攻关', description: '需求匹配、项目跟踪\n厂商赋能、项目申报', link: '/demands/PublicRelations' },
+  { key: 'AXX-PV', number: '0', label: '检测验证', description: '拉通需求、标准、方案\n加速验证，降低直接上线风险', link: '/demands/Verification' },
+  { key: 'AXX-BM', number: '0', label: '线下对接会', description: '供需对接会、技术对接会\n精准、高效、快速匹配需求', link: '/demands/OfflineEvent' },
 ]);
+const map = ref({});
+const fetchMap = async () => {
+  const res = await defHttp.get({ url: `/apm/sys/business/count/front`});
+  if (res.success) {
+    map.value = res.result
+    stats.value.forEach(item => {
+      item.number = map.value[item.key]
+    })
+  } else { 
+    map.value = {} 
+  }
+}
+onMounted(() => {
+  fetchMap();
+})
+
 const handleTo = (item) => {
   router.push({path: item.link});
 }
