@@ -1,26 +1,27 @@
 <template>
   <div class="expert-talent-card" @click="viewExpertProfile(expert.id)">
     <div class="card-header">
-      <a-avatar :size="40" :src="ManImg" class="expert-avatar">
+      <a-avatar :size="40" :src="expert.gender == '男'? ManImg : WomanImg" class="expert-avatar">
         <template #icon v-if="!expert.avatarUrl"><UserOutlined /></template>
       </a-avatar>
       <div> </div>
       <div class="expert-info">
-        <h4 class="expert-name">{{ expert.name }}</h4>
+        <h4 class="expert-name">{{expert.realname ? formatName(expert.realname) : '无'  }}</h4>
         <p class="expert-contact">电话: {{ expert.phone }}</p>
       </div>
     </div>
     <div class="card-body">
       <div class="info-line">
         <span class="info-label">合作方向:</span>
-        <span class="info-value">{{ expert.cooperationDirection }}</span>
+        <span class="info-value">{{ expert.skillDesc }}</span>
       </div>
       <div class="info-line research-areas">
         <span class="info-label">研究领域:</span>
         <ul class="areas-list">
-          <li v-for="(area, index) in expert.researchAreas" :key="index" class="area-item">
+          <li class="area-item"> {{ expert.skillAreaName }}</li>
+          <!-- <li v-for="(area, index) in expert.researchAreas" :key="index" class="area-item">
             {{ index + 1 }}. {{ area }}
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>
@@ -37,17 +38,24 @@ const props = defineProps({
   expert: {
     type: Object,
     required: true,
-    default: () => ({
-      id: 'exp-001',
-      name: '王**',
-      phone: '1**********4',
-      avatarUrl: null, // Will use placeholder or specific image path
-      cooperationDirection: '推动成果产业化孵化公司',
-      researchAreas: ['集成电路产业环境保护', '环境影响评价']
-    })
+    default: () => ({})
   }
 });
 const router = useRouter();
+
+
+// 正常显示第二字，其他字都用*代替
+const formatName = (name) =>{
+  let newName = '';
+  for (let i = 0; i < name.length; i++) {
+    if (i === 1) {
+      newName += name[i];
+    } else {
+      newName += '*';
+    }
+  }
+  return newName;
+}
 
 const viewExpertProfile = (id) => {
   // TODO: Navigate to expert's detail page

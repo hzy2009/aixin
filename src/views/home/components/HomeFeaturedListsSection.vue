@@ -44,6 +44,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { Spin as ASpin, Empty as AEmpty } from 'ant-design-vue';
 import SectionHeader from '@/components/common/SectionHeader.vue';
+import defHttp from '@/utils/http/axios'
 // Import the item components directly (no longer separate files if you prefer full encapsulation later)
 // For now, assuming they are still separate components as per previous step for clarity.
 import IndustryHotspotItem from './IndustryHotspotItem.vue'; // Path relative to this new component or from feature root
@@ -64,15 +65,21 @@ async function fetchIndustryHotspots() {
   isLoadingHotspots.value = true;
   try {
     // TODO: Replace with actual API call: apiClient.get('/api/home/hotspots?limit=6')
-    await new Promise(resolve => setTimeout(resolve, 300));
-    hotspots.value = [
-      { id: 'hs1', title: '英伟达与PERPLEXITY联手助力欧洲中东AI企业提升本地语言模型', date: '2025/04/22', link: '#' },
-      { id: 'hs2', title: '华为近十年研发累计投入12490亿元，2024年研发投入占比达20%', date: '2025/04/22', link: '#' },
-      { id: 'hs3', title: '众专家学者共话硅、碳化硅器件及其他高压功率器件进展', date: '2025/04/22', link: '#' },
-      { id: 'hs4', title: '2025功率半导体器件与集成电路会议（CSPSD 2025）在南京召开', date: '2025/04/22', link: '#' },
-      { id: 'hs5', title: '深圳大学在宽禁带半导体功率器件领域取得突破性进展', date: '2025/04/22', link: '#' },
-      { id: 'hs6', title: 'KAUST李晓航研究团队研制出硅衬底上常规型 Ga₂O₃ 功率晶体管', date: '2025/04/22', link: '#' },
-    ];
+    const res = await defHttp.get({ url: `/apm/apmTalent/list/front`, params: { page: 1, pageSize: 4 } });
+    let items = [];
+    if (res.success) {
+      items = res.result.records
+    }
+    hotspots.value = items;
+    // await new Promise(resolve => setTimeout(resolve, 300));
+    // hotspots.value = [
+    //   { id: 'hs1', title: '英伟达与PERPLEXITY联手助力欧洲中东AI企业提升本地语言模型', date: '2025/04/22', link: '#' },
+    //   { id: 'hs2', title: '华为近十年研发累计投入12490亿元，2024年研发投入占比达20%', date: '2025/04/22', link: '#' },
+    //   { id: 'hs3', title: '众专家学者共话硅、碳化硅器件及其他高压功率器件进展', date: '2025/04/22', link: '#' },
+    //   { id: 'hs4', title: '2025功率半导体器件与集成电路会议（CSPSD 2025）在南京召开', date: '2025/04/22', link: '#' },
+    //   { id: 'hs5', title: '深圳大学在宽禁带半导体功率器件领域取得突破性进展', date: '2025/04/22', link: '#' },
+    //   { id: 'hs6', title: 'KAUST李晓航研究团队研制出硅衬底上常规型 Ga₂O₃ 功率晶体管', date: '2025/04/22', link: '#' },
+    // ];
   } catch (error) {
     console.error("Failed to fetch industry hotspots:", error);
   } finally {
@@ -84,18 +91,12 @@ async function fetchExpertsAndTalents() {
   isLoadingExperts.value = true;
   try {
     // TODO: Replace with actual API call: apiClient.get('/api/home/experts?limit=4')
-    await new Promise(resolve => setTimeout(resolve, 400));
-    const fetchedExperts = [
-      { id: 'exp1', name: '王**', phone: '1**********4', avatarUrl: null, cooperationDirection: '推动成果产业化孵化公司', researchAreas: ['集成电路产业环境保护', '环境影响评价'] },
-      { id: 'exp2', name: '姓*', phone: '0**-6******0', avatarUrl: null, cooperationDirection: '合作方向合作方向合作方向', researchAreas: ['研究领域', '研究领域', '研究领域'] },
-      { id: 'exp3', name: '毛**', phone: '0**-6******0', avatarUrl: null, cooperationDirection: '承接科研项目', researchAreas: ['透明陶瓷性能和应用', '陶瓷成型和烧结技术', '集成电路陶瓷部件'] },
-      { id: 'exp4', name: '姓*', phone: '1**********0', avatarUrl: null, cooperationDirection: '合作方向合作方向合作方向', researchAreas: ['研究领域', '研究领域', '研究领域'] },
-    ];
-    // Assign avatar types/colors if not from backend for consistent display
-    // fetchedExperts.forEach((exp, index) => {
-    //   exp.avatarType = index % 2 === 0 ? 'pink' : 'blue';
-    // });
-    experts.value = fetchedExperts;
+    const res = await defHttp.get({ url: `/apm/apmTalent/list/front`, params: { page: 1, pageSize: 4 } });
+    let items = [];
+    if (res.success) {
+      items = res.result.records
+    }
+    experts.value = items;
   } catch (error) {
     console.error("Failed to fetch experts and talents:", error);
   } finally {
