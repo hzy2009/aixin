@@ -2,15 +2,15 @@
   <div class="home-page">
     <HomeHeroSection />
     <HomeStatsSection />
-    <!-- <HomePlatformMemberSection /> -->
+    <HomePlatformMemberSection />
     <!-- <HomeFeaturedContentSection /> -->
     <!-- <HomeExpertTalentSection /> -->
-    <!-- <HomeNewsWrapper />
+    <HomeNewsWrapper />
     <HomeBreakthroughsSection/>
     <PromoCard/>
     <HomeFeaturedListsSection/>
     <HomeResearchReportSection />
-    <SynergyNodesSection/> -->
+    <SynergyNodesSection/>
   </div>
 </template>
 

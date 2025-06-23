@@ -1,18 +1,17 @@
 <template>
   <div class="stat-item">
     <div class="stat-item__number-wrapper">
-      <span class="stat-item__number-main">{{ formattedMainNumber(mainNumber) }}</span>
-      <!-- <span class="stat-item__number-plus" v-if="plusSymbol">{{ plusSymbol }}</span> -->
+      <span class="stat-item__number-main">{{ displayNumber }}</span>
       <span class="stat-item__number-plus" >+</span>
     </div>
     <div class="stat-item__underline"></div>
     <h3 class="stat-item__title">{{ title }}</h3>
-    <p class="stat-item__description preserve-newlines">{{ formattedDescription }}</p>
+    <p class="stat-item__description preserve-newlines">{{ description }}</p>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 
 const props = defineProps({
   number: {
@@ -27,29 +26,76 @@ const props = defineProps({
     type: String,
     required: true,
   },
-});
-
-// Separate the main number from a potential '+' if it's part of the number prop
-const mainNumber = computed(() => {
-  const numStr = String(props.number);
-  return numStr.replace('+', '');
-});
-
-const plusSymbol = computed(() => {
-  const numStr = String(props.number);
-  return numStr.includes('+') ? '+' : '';
-});
-
-// Allow line breaks in description if passed with <br> or \n
-const formattedDescription = computed(() => {
-  return props.description
-});
-const formattedMainNumber = (n) => {
-  if (n> 999) {
-    return 999
+  animationDuration: { // Duration of the count-up animation in milliseconds
+    type: Number,
+    default: 1500, // 1.5 seconds
   }
-  return n
-}
+});
+
+const displayNumber = ref(0); // The number that will be animated and displayed
+let animationFrameId = null;
+
+// Parse the target number and check for '+'
+const targetMainNumber = computed(() => {
+  return parseInt(String(props.number).replace('+', ''), 10);
+});
+
+const hasPlusSymbol = computed(() => {
+  return String(props.number).includes('+');
+});
+
+// Clamp the target number to 999 for display formatting if needed
+const clampedTargetNumber = computed(() => {
+    return Math.min(targetMainNumber.value, 999);
+});
+
+
+const animateNumber = (target) => {
+  // Ensure previous animation is stopped
+  if (animationFrameId) {
+    cancelAnimationFrame(animationFrameId);
+  }
+
+  const startNumber = 0; // Always start from 0 for the animation
+  const startTime = performance.now();
+
+  const step = (currentTime) => {
+    const elapsedTime = currentTime - startTime;
+    const progress = Math.min(elapsedTime / props.animationDuration, 1); // Progress from 0 to 1
+
+    // Apply an easing function for smoother animation (e.g., easeOutCubic)
+    // easeOutCubic: progress => 1 - Math.pow(1 - progress, 3)
+    const easedProgress = 1 - Math.pow(1 - progress, 3);
+
+    let currentVal = Math.floor(easedProgress * target);
+
+    // Clamp the display number if the original target was > 999 but we animate to clamped target
+    if (targetMainNumber.value > 999 && target === 999) {
+        currentVal = Math.floor(easedProgress * 999);
+    } else {
+        currentVal = Math.floor(easedProgress * target);
+    }
+    
+    displayNumber.value = currentVal;
+
+    if (progress < 1) {
+      animationFrameId = requestAnimationFrame(step);
+    } else {
+      // Ensure final value is exactly the target (or clamped target)
+      displayNumber.value = target; // Set to the actual animated target
+    }
+  };
+
+  animationFrameId = requestAnimationFrame(step);
+};
+
+// Watch for changes in the 'number' prop to re-trigger animation
+watch(() => props.number, (newVal, oldVal) => {
+  if (newVal !== oldVal) {
+    // Animate to the clamped target number if original > 999, else animate to original target
+    animateNumber(targetMainNumber.value > 999 ? 999 : targetMainNumber.value);
+  }
+}, { immediate: true }); // `immediate: true` will run the watcher on component mount
 </script>
 
 
@@ -63,7 +109,7 @@ const formattedMainNumber = (n) => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  // justify-content: center;
   box-sizing: border-box;
   text-align: center; // General text-align for children
 
@@ -73,6 +119,7 @@ const formattedMainNumber = (n) => {
               transform 0.5s ease; // Added transform for a slight lift effect
 
   &__number-wrapper {
+    margin-top: 15px;
     display: flex;
     align-items: flex-start; // Aligns baseline of number with top of plus
     justify-content: center;
