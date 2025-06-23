@@ -7,10 +7,10 @@
     <HomeNewsWrapper />
     <HomeBreakthroughsSection/>
     <PromoCard/>
-
-
-    <HomeExpertTalentSection />
+    <HomeFeaturedListsSection/>
+    <!-- <HomeExpertTalentSection /> -->
     <HomeResearchReportSection />
+    <SynergyNodesSection/>
   </div>
 </template>
 
@@ -24,7 +24,8 @@ import HomeResearchReportSection from '../components/HomeResearchReportSection.v
 import HomeNewsWrapper from '../components/HomeNewsWrapper.vue';
 import HomeBreakthroughsSection from '../components/HomeBreakthroughsSection.vue';
 import PromoCard from '../components/PromoCard.vue';
-
+import HomeFeaturedListsSection from '../components/HomeFeaturedListsSection.vue';
+import SynergyNodesSection from '../components/SynergyNodesSection.vue';
 </script>
 
 <style scoped lang="less">

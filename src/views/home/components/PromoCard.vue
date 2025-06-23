@@ -15,7 +15,7 @@
 
         <!-- Right Block -->
         <div class="purchase-block">
-          <img src="@/assets/images/home/PromoCard1.png" alt="打造多元化资产管理服务生态" class="block-background-image"/>
+          <img src="@/assets/images/home/PromoCard2.png" alt="打造多元化资产管理服务生态" class="block-background-image"/>
           <div class="block-content">
             <a-button type="primary" class="purchase-button" @click="handlePurchaseClick('jd')">
               点击采购，享受爱芯享会员折扣

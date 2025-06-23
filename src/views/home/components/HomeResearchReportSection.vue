@@ -3,28 +3,26 @@
     <div class="container">
       <SectionHeader title-ch="行研报告" title-en="INDUSTRY RESEARCH REPORT" more-link="/reports" />
       <div class="report-grid">
-        <a-card
+        <div
           v-for="report in reports"
           :key="report.id"
           hoverable
           class="report-card"
-          :body-style="{ padding: '16px', display: 'flex', flexDirection: 'column', flexGrow: 1 }"
         >
-          <template #cover>
+          <div >
             <router-link :to="`/reports/${report.id}`" class="report-card__cover-link">
               <img :alt="report.title" :src="report.image" class="report-card__image" />
             </router-link>
-          </template>
+          </div>
 
           <div class="report-card__content">
             <router-link :to="`/reports/${report.id}`" class="report-card__title-link">
               <h3 class="report-card__title">{{ report.title }}</h3>
             </router-link>
-            <p class="report-card__description">{{ report.description }}</p>
+            <div class="report-card__description">{{ report.description }}</div>
+            <p class="report-card__date">{{ report.date }}</p>
           </div>
-
-          <p class="report-card__date">{{ report.date }}</p>
-        </a-card>
+        </div>
       </div>
     </div>
   </section>
@@ -58,7 +56,7 @@ const reports = ref([
 .report-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr); // 3 reports per row
-  gap: @spacing-lg;
+  gap: 24px;
 
   @media (max-width: 991px) { // Tablet: 2 columns
     grid-template-columns: repeat(2, 1fr);
@@ -69,8 +67,8 @@ const reports = ref([
 }
 
 .report-card {
-  background-color: @background-color-base;
-  border: 1px solid @border-color-light;
+  background-color: #fff;
+  // border: 1px solid @border-color-light;
   border-radius: @border-radius-base;
   overflow: hidden;
   display: flex; // Important for flex-grow in body-style to work
@@ -89,8 +87,8 @@ const reports = ref([
   }
 
   &__image {
-    width: 100%;
-    height: 190px; // Fixed height for the cover image
+    width: 384px;
+    height: 100px; // Fixed height for the cover image
     object-fit: cover;
     display: block; // Remove any extra space below image
   }
@@ -98,7 +96,7 @@ const reports = ref([
   // This div will hold title and description, allowing date to be pushed to bottom by flex-grow
   &__content {
     flex-grow: 1; // This makes this section take up available space, pushing date down
-    padding: 0; // Padding is handled by body-style and individual elements if needed
+    padding: 15px 20px; // Padding is handled by body-style and individual elements if needed
   }
 
   &__title-link {
@@ -106,46 +104,50 @@ const reports = ref([
   }
 
   &__title {
-    font-size: 17px; // Prominent title
-    font-weight: 600;
-    color: @text-color-base;
-    line-height: 1.4;
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 14px;
+    letter-spacing: 0%;
+    text-transform: uppercase;
+    color: #333333;
     margin: 0 0 @spacing-sm 0; // Margin bottom for space before description
     transition: color 0.3s ease;
-
     // Text truncation for title (2 lines)
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin-bottom: 4px;
     // min-height needed to reserve space if title is short, ensuring description alignment
-    min-height: calc(1.4em * 2); // 1.4em is line-height * 2 lines
+    // min-height: calc(1.4em * 2); // 1.4em is line-height * 2 lines
   }
 
   &__description {
-    font-size: 13px;
-    color: @text-color-secondary;
-    line-height: 1.6;
-    margin-bottom: @spacing-md; // Space before the date
-
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0%;
+    text-align: justify;
+    color: #656C74;
     // Text truncation for description (3 lines)
     display: -webkit-box;
-    -webkit-line-clamp: 3; // Show 3 lines
+    -webkit-line-clamp: 2; // Show 3 lines
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
     // min-height to reserve space for 3 lines, helps with consistent date positioning
-    min-height: calc(1.6em * 3); // 1.6em is line-height * 3 lines
   }
 
   &__date {
     font-size: 12px;
+    text-align: right;
     color: @text-color-tertiary; // Lighter gray for the date
     line-height: 1; // Single line for date
     margin: 0; // Remove any default paragraph margin
     padding-top: @spacing-sm; // Space above date if description is short
-    border-top: 1px solid @border-color-light; // Separator line above date, as per some designs
     margin-top: auto; // This is an alternative to flex-grow on content if padding is inside body-style
                        // With flex-grow on __content, this can be removed or set to 0
   }
