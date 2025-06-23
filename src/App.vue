@@ -9,12 +9,25 @@
       @navigate-to-register="navigateToRegister"
       @navigate-to-forgot-password="navigateToForgotPassword"
     />
+    <SuccessPromptModal
+      :is-visible="modalStore.isSuccessPromptVisible"
+      :title="getSuccessPromptConfig.title"
+      :message="getSuccessPromptConfig.message"
+      :contact-info="getSuccessPromptConfig.contactInfo"
+      :button-text="getSuccessPromptConfig.buttonText"
+      :on-action="getSuccessPromptConfig.onActionCallback"
+      :on-close="getSuccessPromptConfig.onCloseCallback"
+      :show-button="getSuccessPromptConfig.showButton"
+      @close="modalStore.hideSuccessPrompt"
+      @action="() => { /* Modal internal action also calls its onClose */ }"
+    />
 </template>
 
 <script setup>
 import { computed } from 'vue';
 import zhCN from 'ant-design-vue/es/locale/zh_CN';
 import LoginPromptModal from '@/components/layout/LoginPromptModal.vue';
+import SuccessPromptModal from '@/components/common/SuccessPromptModal.vue';
 import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore'; 
 const authStore = useAuthStore();
@@ -26,6 +39,7 @@ const modalStore = useModalStore();
 // const route = useRoute(); // For redirect after login
 
 const isLoginModalVisible = computed(() => modalStore.isLoginModalVisible);
+const getSuccessPromptConfig = computed(() => modalStore.getSuccessPromptConfig);
 
 const showLoginModal = () => {
   modalStore.showLogin();

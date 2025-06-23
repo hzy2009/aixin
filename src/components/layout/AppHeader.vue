@@ -10,7 +10,7 @@
               <BellOutlined />
               <span class="action-text">您有{{ unreadMessagesCount }}条待办事项</span>
              </span> -->
-            <router-link to="/user" class="action-item action-link"> 
+            <router-link to="/user/setting/userCenterInfo" class="action-item action-link"> 
               会员中心
             </router-link>
             <a @click="handleLogout" class="action-item action-link">
