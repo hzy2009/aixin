@@ -28,33 +28,24 @@
 import { ref, onMounted  } from 'vue';
 import SectionHeader from '@/components/common/SectionHeader.vue'; // Your existing section header
 import ScrollingNewsList from './ScrollingNewsList.vue'; // Adjust path
-
+import defHttp from '@/utils/http/axios'
 
 const platformNews = ref([]);
 const memberNews = ref([]);
 
 const fetchPlatformNews = async () => {
-  await new Promise(resolve => setTimeout(resolve, 300));
-  const items = [];
-  for (let i = 1; i <= 12; i++) {
-    items.push({
-      id: `pn-${i}`,
-      text: `欢迎会员A000${i}加入，成为爱芯享平台零${i > 9 ? i : '0'+i}部件会员！`,
-      date: `2025/06/${i > 9 ? i : '0'+i}`,
-    });
+  const res = await defHttp.get({ url: `/apm/apmNewsForVip/list/front`, params: { page: 1, pageSize: 28 } });
+  let items = [];
+  if (res.success) {
+    items = res.result.records
   }
   platformNews.value = items;
 };
-
 const fetchMemberNews = async () => {
-  await new Promise(resolve => setTimeout(resolve, 400));
-  const items = [];
-  for (let i = 1; i <= 7; i++) {
-    items.push({
-      id: `mn-${i}`,
-      text: `会员B000${i}发布一条国产替代寻源需求，寻陶${i}件国产厂商！`,
-      date: `2025/05/${i + 20}`,
-    });
+  const res = await defHttp.get({ url: `/apm/apmNewsForVip/list/front`, params: { page: 1, pageSize: 28 } });
+  let items = [];
+  if (res.success) {
+    items = res.result.records
   }
   memberNews.value = items;
 };

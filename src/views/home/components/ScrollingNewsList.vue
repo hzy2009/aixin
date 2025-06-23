@@ -207,7 +207,7 @@ watch(() => props.autoCycleInterval, () => {
   position: relative;
   width: 100%;
   // min-height: ... (as before, calculate based on 5 items)
-  min-height: (14px * 1.7 * 5) + (@spacing-xs * (5 - 1)) + (@spacing-sm * 2);
+  min-height: 222px;
 
 }
 
