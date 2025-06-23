@@ -3,7 +3,7 @@
     <HomeHeroSection :height="160"/>
     <div class="page-title-header container" >
         <span class="title-decorator-bar"></span>
-        <h2 class="page-main-heading">行业动态</h2>
+        <h2 class="page-main-heading">行业热点</h2>
     </div>
     <ContentWithSidebarLayout>
       <template #main>
@@ -151,7 +151,7 @@ watch(() => route.params.id, (newId, oldId) => {
 .page-section-title-bar {
   display: flex;
   align-items: center;
-  margin-bottom: @spacing-xl; // Space after "行业动态" title
+  margin-bottom: @spacing-xl; // Space after "行业热点" title
   .title-red-accent-bar {
     width: 4px;
     height: 18px; // Matches image
@@ -173,7 +173,7 @@ watch(() => route.params.id, (newId, oldId) => {
   font-size: 24px;
   line-height: 24px;
   letter-spacing: 0%;
-  margin-bottom: @spacing-md; // Space after "行业动态" title
+  margin-bottom: @spacing-md; // Space after "行业热点" title
 }
 
 .article-meta-info-bar {

@@ -2,7 +2,7 @@
   <section class="home-stats-section">
     <div class="home-stats-section__content container">
       <StatItem v-for="stat in stats" :key="stat.label" :number="stat.number" :title="stat.label"
-        :description="stat.description" class="individual-stat-item" />
+        :description="stat.description" class="individual-stat-item" @click="handleTo(stat)"/>
     </div>
   </section>
 </template>
@@ -10,14 +10,18 @@
 <script setup>
 import { ref } from 'vue';
 import StatItem from './StatItem.vue'; // Import the new component
-
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const stats = ref([
-  { number: '500+', label: '国产替代寻源', description: `丰富的厂商数据库、产品数据库\n颗粒度足够细，实用性足够高\n权威性足够强`},
-  { number: '360+', label: '原厂件寻源', description: '汇集行业内有能力的贸易商\n在线竞价，快速反馈及促成交易' },
-  { number: '78+', label: '研发攻关', description: '需求匹配、项目跟踪\n厂商赋能、项目申报' },
-  { number: '180+', label: '检测验证', description: '拉通需求、标准、方案\n加速验证，降低直接上线风险' },
-  { number: '50+', label: '线下沙龙', description: '供需对接会、技术对接会\n精准、高效、快速匹配需求' },
+  { number: '500+', label: '国产替代寻源', description: `丰富的厂商数据库、产品数据库\n颗粒度足够细，实用性足够高\n权威性足够强`, link: '/demands/DomesticSourcing'},
+  { number: '360+', label: '原厂件寻源', description: '汇集行业内有能力的贸易商\n在线竞价，快速反馈及促成交易', link: '/demands/OEMPartsSourcing' },
+  { number: '78+', label: '研发攻关', description: '需求匹配、项目跟踪\n厂商赋能、项目申报', link: '/demands/PublicRelations' },
+  { number: '180+', label: '检测验证', description: '拉通需求、标准、方案\n加速验证，降低直接上线风险', link: '/demands/Verification' },
+  { number: '50+', label: '线下对接会', description: '供需对接会、技术对接会\n精准、高效、快速匹配需求', link: '/demands/OfflineEvent' },
 ]);
+const handleTo = (item) => {
+  router.push({path: item.link});
+}
 </script>
 <style scoped lang="less">
 @import '@/assets/styles/_variables.less';
@@ -46,7 +50,7 @@ const stats = ref([
   flex: 1;
   min-width: 180px; // Minimum width before it gets too squeezed
   max-width: 235px; // Optional max width
-
+  cursor: pointer;
   @media (max-width: 1200px) {
     flex-basis: calc(33.33% - @spacing-md);
   }

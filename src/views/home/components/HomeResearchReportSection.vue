@@ -1,7 +1,7 @@
 <template>
   <section class="home-research-report-section section-padding">
     <div class="container">
-      <SectionHeader title-ch="行研报告" title-en="INDUSTRY RESEARCH REPORT" more-link="/reports" />
+      <SectionHeader title-ch="行研报告" title-en="INDUSTRY RESEARCH REPORT" more-link="/demands/IndustryReport" />
       <div class="report-grid">
         <div
           v-for="report in reports"
@@ -10,13 +10,13 @@
           class="report-card"
         >
           <div >
-            <router-link :to="`/reports/${report.id}`" class="report-card__cover-link">
+            <router-link :to="`/demands/IndustryReportDetailPage/${report.id}`" class="report-card__cover-link">
               <img :alt="report.reportName" :src="report.imageUrl ? getFileAccessHttpUrl(report.imageUrl) : reportImg1" class="report-card__image" />
             </router-link>
           </div>
 
           <div class="report-card__content">
-            <router-link :to="`/reports/${report.id}`" class="report-card__title-link">
+            <router-link :to="`/demands/IndustryReportDetailPage/${report.id}`" class="report-card__title-link">
               <h3 class="report-card__title">{{ report.reportName }}</h3>
             </router-link>
             <div class="report-card__description">{{ report.description }}</div>

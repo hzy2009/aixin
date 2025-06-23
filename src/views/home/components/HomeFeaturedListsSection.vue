@@ -52,11 +52,11 @@ import ExpertTalentCard from './ExpertTalentCard.vue';   // Path relative to thi
 
 const hotspots = ref([]);
 const isLoadingHotspots = ref(false);
-const hotspotsMoreLink = ref('/industry-hotspots'); // Example "More" link
+const hotspotsMoreLink = ref('/industry-dynamics'); // Example "More" link
 
 const experts = ref([]);
 const isLoadingExperts = ref(false);
-const expertsMoreLink = ref('/experts-talents'); // Example "More" link
+const expertsMoreLink = ref('/demands/Talent'); // Example "More" link
 
 // Define how many columns the experts grid should have to adjust empty state spanning
 const expertsColumnCount = ref(2); // Default to 2 columns for experts in this side-by-side layout
@@ -65,21 +65,12 @@ async function fetchIndustryHotspots() {
   isLoadingHotspots.value = true;
   try {
     // TODO: Replace with actual API call: apiClient.get('/api/home/hotspots?limit=6')
-    const res = await defHttp.get({ url: `/apm/apmTalent/list/front`, params: { page: 1, pageSize: 4 } });
+    const res = await defHttp.get({ url: `/apm/apmNews/list/front`, params: { page: 1, pageSize: 4 } });
     let items = [];
     if (res.success) {
       items = res.result.records
     }
     hotspots.value = items;
-    // await new Promise(resolve => setTimeout(resolve, 300));
-    // hotspots.value = [
-    //   { id: 'hs1', title: '英伟达与PERPLEXITY联手助力欧洲中东AI企业提升本地语言模型', date: '2025/04/22', link: '#' },
-    //   { id: 'hs2', title: '华为近十年研发累计投入12490亿元，2024年研发投入占比达20%', date: '2025/04/22', link: '#' },
-    //   { id: 'hs3', title: '众专家学者共话硅、碳化硅器件及其他高压功率器件进展', date: '2025/04/22', link: '#' },
-    //   { id: 'hs4', title: '2025功率半导体器件与集成电路会议（CSPSD 2025）在南京召开', date: '2025/04/22', link: '#' },
-    //   { id: 'hs5', title: '深圳大学在宽禁带半导体功率器件领域取得突破性进展', date: '2025/04/22', link: '#' },
-    //   { id: 'hs6', title: 'KAUST李晓航研究团队研制出硅衬底上常规型 Ga₂O₃ 功率晶体管', date: '2025/04/22', link: '#' },
-    // ];
   } catch (error) {
     console.error("Failed to fetch industry hotspots:", error);
   } finally {
@@ -146,12 +137,14 @@ onMounted(() => {
   // No specific styling needed here if items handle their own separation
 }
 .hotspots-list-inner {
+  min-height: 309px;
     // If IndustryHotspotItem has padding:0 on top for first-child, this container might need padding-top.
     // But current IndustryHotspotItem has padding:10px 0; so it's fine.
 }
 
 
 .experts-grid-container {
+  min-height: 309px;
   display: grid;
   // For "专家人才", it's a 2x2 grid within its column if space allows
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); // Responsive within its column

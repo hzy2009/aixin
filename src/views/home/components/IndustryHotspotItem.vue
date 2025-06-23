@@ -1,36 +1,33 @@
 <template>
-  <a :href="hotspot.link || '#'" target="_blank" class="hotspot-item" @click.prevent="onItemClick">
+  <a :href="`/industry-dynamics/${hotspot.id}` || '#'" target="_blank" class="hotspot-item" @click.prevent="onItemClick">
     <span class="hotspot-title">{{ hotspot.title }}</span>
-    <span class="hotspot-date">{{ hotspot.date }}</span>
+    <span class="hotspot-date">{{ hotspot.createTime ? formatDate(hotspot.createTime) : '' }}</span>
   </a>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router';
-
+import {formatDate} from '@/utils';
 const props = defineProps({
   hotspot: {
     type: Object,
     required: true,
     default: () => ({
-      id: 'hs-001',
-      title: '英伟达与PERPLEXITY联手助力欧洲中东AI企业提升本地语言模型',
-      date: '2025/04/22',
-      link: '#' // Actual link to the news/article
     })
   }
 });
 const router = useRouter();
 
 const onItemClick = () => {
-  if (props.hotspot.link && props.hotspot.link !== '#') {
+  // if (props.hotspot.link && props.hotspot.link !== '#') {
     // If it's an external link, let the browser handle it (or use window.open)
     // If it's an internal route, use router.push
     // For this example, we assume it's a link to be opened.
     // If you have internal detail pages:
-    // router.push({ name: 'HotspotDetail', params: { id: props.hotspot.id } });
-    console.log('Hotspot clicked:', props.hotspot.title);
-  }
+    // router.push({ paht: `/industry-dynamics/${hotspot.id}`});
+  // }
+    router.push({ path: `/industry-dynamics/${props.hotspot.id}`});
+
 };
 </script>
 

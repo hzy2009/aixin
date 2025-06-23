@@ -9,11 +9,18 @@
       更多 
       <!-- <RightOutlined /> -->
     </router-link>
+    <!-- <div v-if="moreLink" class="section-header__more-link" @click="handleToMore">
+      更多 
+    </div> -->
   </div>
 </template>
 
 <script setup>
 import { RightOutlined } from '@ant-design/icons-vue';
+// import { useAuthStore } from '@/store/authStore';
+// import { useModalStore } from '@/store/modalStore'; 
+// const authStore = useAuthStore();
+// authStore.getDictItems();
 
 defineProps({
   titleCh: {
@@ -29,6 +36,10 @@ defineProps({
     default: null,
   },
 });
+
+const handleToMore =  () => {
+  
+}
 </script>
 
 <style scoped lang="less">

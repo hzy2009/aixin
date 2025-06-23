@@ -1,7 +1,7 @@
 <template>
   <section class="home-industry-trends-section section-padding">
     <div class="container">
-      <SectionHeader title-ch="行业动态" title-en="INDUSTRY TRENDS" more-link="/industry-dynamics" />
+      <SectionHeader title-ch="行业热点" title-en="INDUSTRY TRENDS" more-link="/industry-dynamics" />
       <a-list item-layout="horizontal" :data-source="trends" :split="false" class="trends-list">
         <template #renderItem="{ item }">
           <a-list-item class="trend-item">

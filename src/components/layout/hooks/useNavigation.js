@@ -11,7 +11,7 @@ export function useNavigation() {
   // `requiresAuth` and `requiresGuest` can be used to conditionally show links.
   const navigationItems = ref([
     { key: 'home', label: '首页', path: '/', matchPaths: ['/'] },
-    { key: 'industryDynamics', label: '行业动态', path: '/industry-dynamics', matchPaths: ['/industry-dynamics'] },
+    { key: 'industryDynamics', label: '行业热点', path: '/industry-dynamics', matchPaths: ['/industry-dynamics'] },
     { key: 'alternativeSourcing', label: '国产替代寻源', path: '/demands/DomesticSourcing', queryParams: { type: 'DomesticSourcing'}, basePath: '/demand',
       subItems: [
         { key: 'publishedDomesticSourcing', label: '我发布的', path: '/user/published/DomesticSourcing', basePath: '/demand' },

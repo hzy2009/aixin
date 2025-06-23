@@ -1,6 +1,6 @@
 <template>
   <div class="industry-trends-list-wrapper">
-    <SectionHeader title-ch="行业动态" title-en="INDUSTRY TRENDS" more-link="/industry-dynamics" />
+    <SectionHeader title-ch="行业热点" title-en="INDUSTRY TRENDS" more-link="/industry-dynamics" />
     <a-list :data-source="trends" :split="false" class="trends-list">
       <template #renderItem="{ item, index }">
         <a-list-item
