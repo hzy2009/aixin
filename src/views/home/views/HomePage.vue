@@ -6,6 +6,9 @@
     <!-- <HomeFeaturedContentSection /> -->
     <HomeNewsWrapper />
     <HomeBreakthroughsSection/>
+    <PromoCard/>
+
+
     <HomeExpertTalentSection />
     <HomeResearchReportSection />
   </div>
@@ -20,7 +23,7 @@ import HomePlatformMemberSection from '../components/HomePlatformMemberSection.v
 import HomeResearchReportSection from '../components/HomeResearchReportSection.vue';
 import HomeNewsWrapper from '../components/HomeNewsWrapper.vue';
 import HomeBreakthroughsSection from '../components/HomeBreakthroughsSection.vue';
-
+import PromoCard from '../components/PromoCard.vue';
 
 </script>
 

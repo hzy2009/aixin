@@ -24,7 +24,7 @@
           @click="() => onItemClick(item)"
         >
           <div class="item-icon-area">
-            <span class="custom-icon-placeholder"></span>
+              <img src="@/assets/images/home/rightIcon.png" alt="">
           </div>
           <div class="item-text-content">
             <span class="item-main-text">{{ item.text }}</span>
@@ -105,7 +105,7 @@ watch(() => [props.autoCycleInterval, props.loop], () => { if (actualTotalPages.
   width: 100%;
   min-height: @min-list-height;
   background-color: @background-color-base;
-  padding: @spacing-xs 0; // Reduced overall vertical padding to match single list look
+  padding: 15px 20px; // Reduced overall vertical padding to match single list look
 }
 
 .sliding-container {
@@ -142,34 +142,26 @@ watch(() => [props.autoCycleInterval, props.loop], () => { if (actualTotalPages.
   margin-right: @spacing-sm; // 8px
   display: flex;
   align-items: center;
-  .custom-icon-placeholder {
-    width: 16px;
+  .img{
     height: 16px;
-    background-color: @primary-color; // Red
-    border-radius: 50%;
-    position: relative;
-    &::after { // CSS Arrow
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-top: 3.5px solid transparent; // Slightly adjust arrow size
-      border-bottom: 3.5px solid transparent;
-      border-left: 4.5px solid white;
-      transform: translate(-45%, -50%); // Fine-tune centering
-    }
+    width: 16px;
   }
 }
 
 .item-text-content {
-  flex-grow: 1; // Takes up available space between icon and date
+  flex: 1.5; // Takes up available space between icon and date
   min-width: 0; // Essential for text-overflow to work in flex items
   padding-right: @spacing-md; // Space before date column
   .item-main-text {
+    font-family: PingFang SC;
+    font-weight: 400;
     font-size: 14px;
-    color: #5A5A5A; // Dark gray text from image
+    line-height: 14px;
+    letter-spacing: 0%;
+    text-transform: uppercase;
+
+    color: #333;
+    // color: #5A5A5A; // Dark gray text from image
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -178,13 +170,21 @@ watch(() => [props.autoCycleInterval, props.loop], () => { if (actualTotalPages.
 }
 
 .item-date-column {
+  flex: 1; // Takes up available space between icon and date
   flex-shrink: 0;
   padding-right: @spacing-lg; // Space between date and action button
   .item-date-text {
+    font-family: PingFang SC;
+    font-weight: 400;
     font-size: 14px;
-    color: #8C8C8C; // Light gray date text
+    line-height: 14px;
+    letter-spacing: 0%;
+    text-align: right;
+    text-transform: uppercase;
+
+    // color: #8C8C8C; // Light gray date text
+    color: #333; // Light gray date text
     white-space: nowrap;
-    line-height: 1.5;
   }
 }
 
@@ -193,10 +193,10 @@ watch(() => [props.autoCycleInterval, props.loop], () => { if (actualTotalPages.
   .action-link {
     font-size: 13px;
     color: @primary-color;
-    background-color: fade(@primary-color, 7%);
-    border: 1px solid fade(@primary-color, 25%);
+    background-color: #fff;
+    border: 1px solid #EAEAEA;
     padding: 3px 12px; // Adjusted padding for button
-    border-radius: @border-radius-sm;
+    border-radius: 4px;
     white-space: nowrap;
     height: auto; // Let AntD button size itself
     line-height: 1.5;
