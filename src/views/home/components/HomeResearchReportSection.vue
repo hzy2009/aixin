@@ -11,13 +11,13 @@
         >
           <div >
             <router-link :to="`/reports/${report.id}`" class="report-card__cover-link">
-              <img :alt="report.title" :src="report.image" class="report-card__image" />
+              <img :alt="report.reportName" :src="report.imageUrl ? getFileAccessHttpUrl(report.imageUrl) : reportImg1" class="report-card__image" />
             </router-link>
           </div>
 
           <div class="report-card__content">
             <router-link :to="`/reports/${report.id}`" class="report-card__title-link">
-              <h3 class="report-card__title">{{ report.title }}</h3>
+              <h3 class="report-card__title">{{ report.reportName }}</h3>
             </router-link>
             <div class="report-card__description">{{ report.description }}</div>
             <p class="report-card__date">{{ report.date }}</p>
@@ -29,20 +29,27 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { Card as ACard } from 'ant-design-vue'; // CardMeta not used directly in this layout
+import { ref, onMounted } from 'vue';
 import SectionHeader from '@/components/common/SectionHeader.vue';
-
+import defHttp from '@/utils/http/axios'
+import {getFileAccessHttpUrl} from '@/utils/index'
 // Placeholder images
 import reportImg1 from '@/assets/images/home/report-thumb-1.png';
-import reportImg2 from '@/assets/images/home/report-thumb-2.png';
-import reportImg3 from '@/assets/images/home/report-thumb-3.png';
 
-const reports = ref([
-  { id: 1, title: '中国半导体行业协会2025年环境、安全与健康发展趋势深度剖析报告', image: reportImg1, description: '近年来，集成电路产业在成为国家重点鼓励、扶持的战略性新兴产业的同时，也日益面临着更为严峻的环境和安全问题，国内外多项法规标准相继出台，对企业提出了更高要求。', date: '2025-04-22' },
-  { id: 2, title: '先进封装技术发展趋势与市场前景展望报告：Chiplet异构集成引领未来', image: reportImg2, description: '随着芯片集成度的不断提高，先进封装技术在提升性能、降低成本方面扮演着越来越重要的角色。本报告深入分析了Fan-Out, 2.5D/3D, Chiplet等关键技术...', date: '2025-04-10' },
-  { id: 3, title: '第三代半导体材料碳化硅(SiC)与氮化镓(GaN)产业研究及国产化进程', image: reportImg3, description: '碳化硅与氮化镓作为第三代半导体的代表材料，凭借其优异的物理特性，在新能源汽车、光伏发电、5G通信、快速充电等领域展现出巨大潜力，市场空间广阔。', date: '2025-03-28' },
-]);
+const reports = ref([]);
+
+const fetchrReportsItems = async () => {
+  const res = await defHttp.get({ url: `/apm/apmResearchReport/list/front`, params: { page: 1, pageSize: 6 } });
+  let items = [];
+  if (res.success) {
+    items = res.result.records
+  }
+  reports.value = items;
+};
+onMounted(() => {
+  fetchrReportsItems();
+});
+
 </script>
 
 <style scoped lang="less">

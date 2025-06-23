@@ -80,7 +80,7 @@ const linkColumns = ref([
 @import '@/assets/styles/_variables.less';
 
 .section-padding { // Re-use or define locally
-  padding-top: @spacing-xl; // Slightly less top padding than other major sections
+  padding-top: 10px; // Slightly less top padding than other major sections
   padding-bottom: @spacing-xxl;
 }
 

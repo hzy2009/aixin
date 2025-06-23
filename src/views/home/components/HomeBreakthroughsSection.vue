@@ -46,7 +46,7 @@ const handleBreakthroughItemRowClick = (item) => {
 };
 const handleBreakthroughActionBtnClick = (item) => {
   console.log('Breakthrough ACTION BUTTON clicked:', item);
-  message.info(`联系平台关于: ${item.text.substring(0,15)}...`);
+  // message.info(`联系平台关于: ${item.text.substring(0,15)}...`);
   // Implement contact logic (e.g., open a modal, go to contact page)
 };
 
