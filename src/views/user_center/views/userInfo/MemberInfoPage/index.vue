@@ -3,8 +3,8 @@
     <detail :pageData="pageData" @goBack="goBack">
       <template v-slot:role="{ dataSource }">
         <span>{{ dataSource.role }}</span>
-        <a-button class='upgrade-button upgrade-button-vip' @click="upgradeVip" v-if="dataSource.role == '普通会员'">升级VIP</a-button>
-        <span v-if="dataSource.role == '普通会员'">提交升级VIP申请后，管理员将在30分钟内与您联系</span>
+        <a-button class='upgrade-button upgrade-button-vip' @click="upgradeVip" v-if="dataSource.role == '普通会员' && dataSource.progressList.length == 0">升级VIP</a-button>
+        <span v-if="dataSource.role == '普通会员' && dataSource.progressList.length == 0">提交升级VIP申请后，管理员将在30分钟内与您联系</span>
       </template>
       <template v-slot:endTime="{ dataSource }">
         <span>{{ dataSource.endTime ? formatDate(dataSource.endTime) : ''}}</span>

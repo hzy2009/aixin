@@ -90,6 +90,9 @@ export function useUserCenterTabs(tabsConfig = defaultTabsConfig) {
         if (route.path !== subTab.path) {
           router.push(subTab.path);
         }
+      } else {
+        const firstSubTab = tabsConfig[mainKeyOverride]?.subTabs?.[0]
+        router.push(firstSubTab.path);
       }
     }
   };
