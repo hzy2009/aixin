@@ -25,7 +25,7 @@ defineProps({
 @import '@/assets/styles/_variables.less';
 
 .home-hero-section {
-  background-image: url('@/assets/images/home/banner.png'); // Moved to child div
+  background-image: url('@/assets/images/home/banner.jpg'); // Moved to child div
   background-size: cover;
   background-position: center;
   color: @text-color-light;

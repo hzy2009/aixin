@@ -12,26 +12,27 @@ import { ref } from 'vue';
 import StatItem from './StatItem.vue'; // Import the new component
 
 const stats = ref([
-  { number: '500+', label: '国产替代寻源', description: '寻找并采用\n国内企业生产的芯片或相关技术\n以替代原本依赖的进口产品' },
-  { number: '360+', label: '原厂件寻源', description: '通过正规渠道获取\n直接生产或授权的正品元器件' },
-  { number: '78+', label: '研发攻关', description: '集中资源突破关键技术瓶颈\n或解决复杂问题' },
-  { number: '180+', label: '检测验证', description: '通过系统化测试与分析\n确保芯片设计、制造等环节\n符合各种要求' },
-  { number: '50+', label: '线下沙龙', description: '专家分享、实践互动\n促进行业合作与发展' },
+  { number: '500+', label: '国产替代寻源', description: `丰富的厂商数据库、产品数据库\n颗粒度足够细，实用性足够高\n权威性足够强`},
+  { number: '360+', label: '原厂件寻源', description: '汇集行业内有能力的贸易商\n在线竞价，快速反馈及促成交易' },
+  { number: '78+', label: '研发攻关', description: '需求匹配、项目跟踪\n厂商赋能、项目申报' },
+  { number: '180+', label: '检测验证', description: '拉通需求、标准、方案\n加速验证，降低直接上线风险' },
+  { number: '50+', label: '线下沙龙', description: '供需对接会、技术对接会\n精准、高效、快速匹配需求' },
 ]);
 </script>
-
 <style scoped lang="less">
 @import '@/assets/styles/_variables.less';
 
 .home-stats-section {
   z-index: 1;
   position: relative;
+  margin-top: -30px;
   // padding: @spacing-xl 0;
   // background-color: @background-color-base;
 
   &__content {
     display: flex;
     flex-wrap: wrap; // Allow wrapping on smaller screens
+    gap: 6px;
   }
 }
 
@@ -44,7 +45,7 @@ const stats = ref([
   // flex-basis: calc(20% - @spacing-md); // Adjust based on gap and desired items per row
   flex: 1;
   min-width: 180px; // Minimum width before it gets too squeezed
-  max-width: 240px; // Optional max width
+  max-width: 235px; // Optional max width
 
   @media (max-width: 1200px) {
     flex-basis: calc(33.33% - @spacing-md);

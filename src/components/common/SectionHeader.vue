@@ -3,10 +3,11 @@
     <div class="section-header__title-group">
       <span class="section-header__title-decorator"></span>
       <h2 class="section-header__title-ch">{{ titleCh }}</h2>
-      <span v-if="titleEn" class="section-header__title-en">| {{ titleEn.toUpperCase() }}</span>
+      <span v-if="titleEn" class="section-header__title-en">{{ titleEn.toUpperCase() }}</span>
     </div>
     <router-link v-if="moreLink" :to="moreLink" class="section-header__more-link">
-      更多 <RightOutlined />
+      更多 
+      <!-- <RightOutlined /> -->
     </router-link>
   </div>
 </template>
@@ -37,9 +38,9 @@ defineProps({
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: @spacing-lg;
+  margin-bottom: 10px;
   // border-bottom: 1px solid @border-color-light; // Removed bottom border to match design
-  padding-bottom: @spacing-sm;
+  // padding-bottom: @spacing-sm;
 
 
   &__title-group {
@@ -50,30 +51,41 @@ defineProps({
   &__title-decorator {
     display: inline-block;
     width: 4px;
-    height: 20px; // Matches typical h2 font size height
+    height: 30px; // Matches typical h2 font size height
     background-color: @primary-color;
-    margin-right: @spacing-sm;
+    margin-right:10px;
   }
 
   &__title-ch {
-    font-size: 22px; // As per design, looks around this size
-    font-weight: 600;
-    color: @text-color-base;
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-transform: uppercase;
+
+    color: @primary-color;
     margin: 0;
-    line-height: 1; // Ensure it aligns well with decorator
+    margin-right:10px;
   }
 
   &__title-en {
-    font-size: 14px; // Smaller for EN
-    color: @text-color-tertiary; // Lighter gray
-    margin-left: @spacing-xs;
+    font-family: PingFang SC;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: 0%;
     text-transform: uppercase;
-    font-weight: 300; // Lighter weight
-    line-height: 1;
+    color: @text-color-tertiary; // Lighter gray
+    // line-height: 1;
   }
 
   &__more-link {
+    font-family: PingFang SC;
+    font-weight: 400;
     font-size: 14px;
+    line-height: 14px;
+    letter-spacing: 0%;
     color: @text-color-secondary;
     display: flex;
     align-items: center;

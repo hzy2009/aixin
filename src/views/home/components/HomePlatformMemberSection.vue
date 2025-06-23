@@ -1,7 +1,7 @@
 <template>
   <section class="home-platform-member-section section-padding">
     <div class="container">
-      <SectionHeader title-ch="平台会员" title-en="PLATFORM MEMBER" more-link="/members" />
+      <SectionHeader title-ch="会员名录" title-en="MEMBERSHIP" more-link="/members" />
       <div class="member-logos-grid">
         <div v-for="member in members" :key="member.id" class="member-logo-item">
           <img :src="member.logo" :alt="member.name" />
@@ -31,8 +31,8 @@ const members = ref([
 @import '@/assets/styles/_variables.less';
 
 .section-padding {
-  padding: @spacing-xxl 0;
-  background-color: @background-color-base; // White background
+  padding: 20px 0;
+  background-color:#FAFAFA; // White background
 }
 
 .member-logos-grid {

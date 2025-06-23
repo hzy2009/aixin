@@ -1,9 +1,11 @@
 <template>
   <div class="home-page">
     <HomeHeroSection />
-    <HomePlatformMemberSection />
     <HomeStatsSection />
-    <HomeFeaturedContentSection />
+    <HomePlatformMemberSection />
+    <!-- <HomeFeaturedContentSection /> -->
+    <HomeNewsWrapper />
+    <HomeBreakthroughsSection/>
     <HomeExpertTalentSection />
     <HomeResearchReportSection />
   </div>
@@ -16,6 +18,10 @@ import HomeFeaturedContentSection from '../components/HomeFeaturedContentSection
 import HomeExpertTalentSection from '../components/HomeExpertTalentSection.vue';
 import HomePlatformMemberSection from '../components/HomePlatformMemberSection.vue';
 import HomeResearchReportSection from '../components/HomeResearchReportSection.vue';
+import HomeNewsWrapper from '../components/HomeNewsWrapper.vue';
+import HomeBreakthroughsSection from '../components/HomeBreakthroughsSection.vue';
+
+
 </script>
 
 <style scoped lang="less">
