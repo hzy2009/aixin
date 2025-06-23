@@ -8,6 +8,8 @@
             :class="{ 'form-item-full-width-input': field.fieldType === 'textarea' || field.fullWidthInput }">
             <a-input v-if="field.fieldType === 'input'" v-model:value="internalFormModel[field.field]"
               :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear />
+            <a-input-password v-else-if="field.fieldType === 'password'" v-model:value="internalFormModel[field.field]"
+              :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear />
 
             <a-input-number v-else-if="field.fieldType === 'number'" v-model:value="internalFormModel[field.field]"
               :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" style="width: 100%;"
@@ -42,7 +44,6 @@
               :precision="field.precision !== undefined ? field.precision : 2" style="width: 100%;"
               :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled"
               :min="field.min !== undefined ? field.min : 0" />
-
             <!-- New Image Upload Field -->
             <div v-else-if="field.fieldType === 'imageUpload'" class="image-upload-container">
               <a-upload v-model:file-list="internalFormModel[field.field]" :name="field.uploadName || 'file'"
@@ -80,6 +81,7 @@ import {
   Select as ASelect, RadioGroup as ARadioGroup, DatePicker as ADatePicker,
   Textarea as ATextarea, InputNumber as AInputNumber, Row as ARow, Col as ACol,
   RangePicker as ARangePicker, Upload as AUpload, Modal as AModal, message
+
 } from 'ant-design-vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
 import { getFileAccessHttpUrl } from "@/utils/index";
@@ -286,7 +288,7 @@ const disabledDate = (current) => {
   return current && current < dayjs().subtract(1, 'month');
 }
 
-defineExpose({ validate, resetFields, clearValidate, getAllData, formModel: internalFormModel });
+defineExpose({ validate, resetFields, clearValidate, getAllData, formModel: internalFormModel,formRef });
 </script>
 
 <style scoped lang="less">

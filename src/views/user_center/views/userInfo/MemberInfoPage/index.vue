@@ -1,6 +1,16 @@
 <template>
   <div>
-    <detail :pageData="pageData" @goBack="goBack"></detail>
+    <detail :pageData="pageData" @goBack="goBack">
+      <template v-slot:level="{ dataSource }">
+        <span>{{ dataSource.tenantName }}</span>
+        <a-button class='upgrade-button' @click="upgradeVip" v-if="!authStore.isVip">升级VIP</a-button>
+        <span v-if="!authStore.isVip">提交升级VIP申请后，管理员将在30分钟内与您联系</span>
+      </template>
+      <template v-slot:endDate="{ dataSource }">
+        <span>{{ dataSource.tenantName }}</span>
+        <a-button class='upgrade-button' @click="renewVip">会员续费</a-button>
+      </template>
+    </detail>
   </div>
 </template>
 
@@ -9,61 +19,98 @@ import { ref, computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import detail from '@/components/template/detail.vue';
 import { useAuthStore } from '@/store/authStore';
+import defHttp from '@/utils/http/axios'
+import { useModalStore } from '@/store/modalStore'; 
 
+import {message} from 'ant-design-vue'
 import { BUSINESS_REF_LIST, TENANT_REF_LIST, STATUS_HISTORY_COLUMNS} from '@/utils/const';
 
 const authStore = useAuthStore();
-
+const modalStore = useModalStore();
 const props = defineProps({
   IdProp: { type: String, default: null },
 });
-
+console.log('authStore.isVip', authStore.isVip)
 
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
-  { label: '研发攻关编号', field: 'code', span: 24},
+  { label: '会员等级', field: 'level', span: 24, fieldType: 'slot' },
   {
-    label: '研发攻关类型', field: 'rdType', dictKey: 'rd_type', span: 24,
+    label: '会员类型', field: 'rdType', dictKey: 'rd_type', span: 24,
   },
-  {
-    label: '期望匹配周期', field: 'matchPeriodName', dictKey: 'rd_breakthrough_period', span: 24,
-  },
+  { label: '会员开始日期', field: 'startDate', span: 24},
+  { label: '会员结束日期', field: 'endDate', span: 24, fieldType: 'slot' },
+  
   // { label: '需求有效期', field: 'expireDate', span: 24 },
-  { label: '需求提出方', field: 'tenantName', span: 24, },
+  { label: '在籍天数', field: 'tenantName', span: 24, },
 ]
 
 
 // const demandTypeDisplayName = '研发攻关';
 
-const pageTitle = '研发攻关详情'
+const pageTitle = '爱芯享信息共享平台'
 
 const pageData = reactive({
   IdProp: props.IdProp,
   apiMap: {
-    add: 'apm/apmRdBreakthrough/add',
-    edit: 'apm/apmRdBreakthrough/edit',
-    detail: 'apm/apmRdBreakthrough/queryById',
-    submit: 'apm/apmRdBreakthrough/submit',
-    delete: 'apm/apmRdBreakthrough/delete',
+    detail: 'sys/user/login/setting/getUserData',
   },
   formConfigs,
   statusHistoryColumns: STATUS_HISTORY_COLUMNS,
   pageTitle,
-  tableSections: [
-    {
-      title: '研发攻关承接方',
-      ...TENANT_REF_LIST
-    },
-    {
-      ...BUSINESS_REF_LIST
-    }
-  ],
+  statusTrackingTitle: '升级VIP进度',
+  isUseBack: false
 })
 
-const goBack = () => {
-  router.go(-1);
-  // router.push('/user/published/PublicRelations');
-};
+const upgradeVip = async () => {
+  const res = await defHttp.get({ url: `/apm/apmTodo/vipUpgrade/newTodo` });
+  if (res.success) {
+    const defaultConfig = {
+      title: '一键敲门成功',
+      message: '一键敲门后后，客服人员将在30分钟内与您联系',
+      contactInfo: { name: '陈靖玮', phone: '010-55698507', email: 'chenjingwei@icshare.com' },
+      buttonText: '返回首页',
+      showButton: false,
+      onAction: null, // Default onAction is handled in store to go home
+    };
+    modalStore.showSuccessPrompt({ ...defaultConfig });
+  }else {
+    message.error(res.message)
+  }
+}
+
+const renewVip = async () => {
+  const res = await defHttp.get({ url: `/apm/apmTodo/vipPay/newTodo` });
+  if (res.success) {
+     const defaultConfig = {
+      title: '一键敲门成功',
+      message: '一键敲门后后，客服人员将在30分钟内与您联系',
+      contactInfo: { name: '陈靖玮', phone: '010-55698507', email: 'chenjingwei@icshare.com' },
+      buttonText: '返回首页',
+      onAction: null, // Default onAction is handled in store to go home
+      // onClose: null,
+    };
+    modalStore.showSuccessPrompt({ ...defaultConfig });
+  } else {
+    message.error(res.message)
+  }
+}
 
 </script>
+<style scoped lang="less">
+@import '@/assets/styles/_variables.less'; // Your global LESS variables
+
+.upgrade-button {
+  margin-left: 70px;
+  margin-right: 13px;
+  color: #fff;
+  background-color: @primary-color;
+  padding: 0 20px;
+  height: 30px;
+  &:hover {
+    color: #fff;
+    border-color: @primary-color;
+  }
+}
+</style>

@@ -12,16 +12,21 @@
                     </div>
                     <DynamicForm ref="dynamicFormRef" :form-config="currentFormConfig" :initial-model="formModel"
                         :default-span="12" />
+                    <div>
+                        <slot name="moreForm"></slot>
+                    </div>
                 </div>
                 <!-- 3. Action Buttons -->
-                <div class="page-actions-footer">
-                    <a-button @click="goBack" class="action-button cancel-button">取消</a-button>
-                    <a-button type="primary" danger @click="handleSubmitForm" :loading="isSubmitting"
-                        class="action-button submit-button">
-                        一键敲门
-                    </a-button>
-                </div>
-                <p class="action-submit-note">一键敲门后，客服人员将在<span class="text">30分钟内</span>与您联系</p>
+                 <div v-if='useFooterAction'>
+                    <div class="page-actions-footer">
+                        <a-button @click="goBack" class="action-button cancel-button">取消</a-button>
+                        <a-button type="primary" danger @click="handleSubmitForm" :loading="isSubmitting"
+                            class="action-button submit-button">
+                            一键敲门
+                        </a-button>
+                    </div>
+                    <p class="action-submit-note">一键敲门后，客服人员将在<span class="text">30分钟内</span>与您联系</p>
+                 </div>
             </div>
             <div v-else>
                 <operationResultPage :pageData="resultPageData" @primaryAction="handleToDetail"
@@ -59,6 +64,7 @@ const {
     handleBeforeSave,
     detailPath,
     listPath,
+    useFooterAction = true,
 } = props.pageData;
 const emit = defineEmits(['goBack']);
 const {
@@ -174,6 +180,12 @@ watch(() => props.IdProp, (newId) => {
         // 如果从有ID的路由变到没有ID的路由（理论上不应直接发生，应走/new），则清空
         demandDetailData.value = null;
     }
+});
+const getAllData = () => dynamicFormRef.value?.getAllData();
+
+defineExpose({
+    getAllData,
+    formRef: dynamicFormRef
 });
 
 </script>
