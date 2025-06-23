@@ -181,10 +181,18 @@ watch(() => props.IdProp, (newId) => {
         demandDetailData.value = null;
     }
 });
-const getAllData = () => dynamicFormRef.value?.getAllData();
+const getAllData = async() => {
+    const params = dynamicFormRef.value?.getAllData()
+    return params
+}
+const validate = async() => {
+  const d =  await dynamicFormRef.value?.validate();
+  return d
+}
 
 defineExpose({
     getAllData,
+    validate,
     formRef: dynamicFormRef
 });
 

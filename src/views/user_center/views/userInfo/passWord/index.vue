@@ -29,7 +29,7 @@ console.log('authStore.isVip', authStore.isVip)
 const router = useRouter();
 const validatePass = async (_rule, value) => {
   const p = editPage.value.getAllData()
-  if (value === '') {
+  if (value == '' || value === null || value === undefined) {
     return Promise.reject('请输入密码');
   } else {
     if (p.password !== '') {
@@ -40,7 +40,7 @@ const validatePass = async (_rule, value) => {
 };
 const validatePass2 = async (_rule, value) => {
   const p = editPage.value.getAllData()
-  if (value === '') {
+  if (value == ''|| value === null || value === undefined) {
     return Promise.reject('请输入密码');
   } else if (value !== p.password && p.password) {
     return Promise.reject("两次密码不一致");
@@ -51,7 +51,7 @@ const validatePass2 = async (_rule, value) => {
 
 // // --- 表单配置 ---
 const formConfigs = [
-  { label: '原密码', field: 'oldpassword', span: 24, fieldType: 'password'},
+  { label: '原密码', field: 'oldpassword', span: 24, fieldType: 'password', rules: [{ required: true }] },
   {
     label: '新密码', field: 'password', fieldType: 'password', span: 24, rules: [{ required: true, validator: validatePass, trigger: 'change' }] 
   },
@@ -73,22 +73,13 @@ const pageData = reactive({
 })
 
 const handleSubmitForm = async () => {
-  const data = editPage.value.getAllData()
-  const res = await defHttp.put({ url: `sys/user/updatePassword`,data });
-  if (res.success) {
-    // const defaultConfig = {
-    //   title: '一键敲门成功',
-    //   message: '一键敲门后后，客服人员将在30分钟内与您联系',
-    //   contactInfo: { name: '陈靖玮', phone: '010-55698507', email: 'chenjingwei@icshare.com' },
-    //   buttonText: '返回首页',
-    //   showButton: false,
-    //   onAction: null, // Default onAction is handled in store to go home
-    // };
-    // modalStore.showSuccessPrompt({ ...defaultConfig });
-    message.success(res.message)
-  }else {
-    message.error(res.message)
-  }
+  const data = await editPage.value.validate()
+  const res = await defHttp.put({ url: `sys/user/updatePassword`, data })
+    if (res.success) {
+        message.success(res.message)
+    }else {
+      message.error(res.message)
+    }
 }
 
 
