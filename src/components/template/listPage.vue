@@ -118,7 +118,7 @@ const {
 const {
     selectOptions, stats, currentFilters, search, isLoading, tableData,
     pagination, handleFiltersChange, triggerSearch, handleTablePaginationChange,
-    getStatusTagColor, handleStatClick, handleExportXls, clearfilters, isVIP,
+    getStatusTagColor, handleStatClick, handleExportXls, clearfilters, isVIP,handleDelete
 } = useUserDemandList({
     otherParams, url, statusDictKey, userStatCardVisible
 });
@@ -229,11 +229,16 @@ const handleDateValuesUpdate = (values) => {
 
 const handleActionClick = (record, action) => {
     if (authStore?.token) {
-        action?.clickFn(record);
+        if (action.type == 'del') {
+            handleDelete(record);
+        } else {
+            action?.clickFn(record);
+        }
     } else {
         modalStore.showLogin();
     }
 };
+
 
 const handleReset = () => {
     clearfilters();

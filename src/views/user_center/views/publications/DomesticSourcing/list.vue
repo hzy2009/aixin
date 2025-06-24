@@ -11,14 +11,17 @@ import listPage from '@/components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 const router = useRouter();
 import { DOMESTIC_SOURCING_COLUMNS } from '@/utils/const';
-
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
   // { id: 'statusCode', label: '寻源状态', maxVisibleWithoutMore: 9, dictKey: 'sourcing_status' }
 ]);
 
 // --- Table Columns (remains in component as it's UI specific) ---
-const tableColumns = reactive([{type: 'checkbox', width: 34},...DOMESTIC_SOURCING_COLUMNS]);
+const tableColumns = reactive([
+  {type: 'checkbox', width: 34},
+  ...DOMESTIC_SOURCING_COLUMNS.filter(column => column.key !== 'actions'),
+  { title: '操作', width: '140px', align: 'center', fixed: 'right', key: 'actions' },
+]);
 
 const addButton = reactive({
   text: '创建需求',
@@ -28,15 +31,12 @@ const addButton = reactive({
 const actions = reactive([
   {
     text: '详情',
-    icon: FileTextOutlined,
     clickFn: viewDetails,
     type: 'detail',
     // isVisible: (record) => record.statusCode !== '已完成' // Example condition
   },
   {
     text: '删除',
-    icon: FileTextOutlined,
-    clickFn: viewDetails,
     type: 'del',
     // isVisible: (record) => record.statusCode !== '已完成' // Example condition
   },
@@ -45,6 +45,7 @@ const actions = reactive([
 const pageData = ref({
   url: {
     list: 'apm/apmSourcing/list/owner',
+    delete: 'apm/apmSourcing/delete',
     overview: 'apm/apmSourcing/overview?referer=owner',
   },
   otherParams: {

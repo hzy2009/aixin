@@ -21,7 +21,8 @@ const filterConfigForPage = reactive([
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = reactive([
     {type: 'checkbox', width: 40},
-    ...PUBLIC_RELATIONS_COLUMNS
+...DOMESTIC_SOURCING_COLUMNS.filter(column => column.key !== 'actions'),
+  { title: '操作', width: '140px', align: 'center', fixed: 'right', key: 'actions' },
 ]);
 
 
@@ -31,7 +32,14 @@ const actions = reactive([
         icon: FileTextOutlined,
         clickFn: viewDetails,
         // isVisible: (record) => record.statusCode !== '已完成' // Example condition
-    }
+    },
+  {
+    text: '删除',
+    icon: FileTextOutlined,
+    clickFn: viewDetails,
+    type: 'del',
+    // isVisible: (record) => record.statusCode !== '已完成' // Example condition
+  },
 ]);
 
 const pageData = ref({

@@ -1,6 +1,7 @@
 import { ref, reactive, computed, onMounted } from 'vue';
 import defHttp from '@/utils/http/axios'
 import { useAuthStore } from '@/store/authStore';
+import { message } from 'ant-design-vue';
 
 // 模拟的状态映射表，可以从外部传入或在这里定义
 const defaultStatusMap = {
@@ -132,7 +133,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
   const handleExportXls = async (name, url, params, isXlsx = false) => {
     const data = await defHttp.get({ url: url, params: params, responseType: 'blob', timeout: 60000 }, { isTransformResponse: false });
     if (!data) {
-      createMessage.warning('文件下载失败');
+      message.warning('文件下载失败');
       return;
     }
     let reader = new FileReader()
@@ -143,7 +144,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
           try {
             const { success, message } = JSON.parse(reader.result.toString());
             if (!success) {
-              createMessage.warning('导出失败，失败原因：' + message);
+              message.warning('导出失败，失败原因：' + message);
             } else {
               exportExcel(name, isXlsx, data);
             }
@@ -188,6 +189,15 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     pagination.current = 1;
     loadTableData();
   }
+  const handleDelete = ({id}) => {
+    isLoading.value = true;
+    defHttp.delete({ url: url.delete, params: { id } }).then(() => {
+      message.success('删除成功');
+      loadTableData();
+    }).finally(() => {
+      isLoading.value = false;
+    });
+  }
 
   onMounted(() => {
     if (userStatCardVisible) loadStats();
@@ -213,5 +223,6 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     isVIP,
     handleExportXls,
     clearfilters,
+    handleDelete,
   };
 }
