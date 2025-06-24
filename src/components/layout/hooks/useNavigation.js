@@ -28,6 +28,11 @@ export function useNavigation() {
         { key: 'createOEMPartsSourcing', label: '创建原厂件寻源', path: '/user/published/OEMPartsSourcing/create', basePath: '/demand' },
       ] 
     },
+    { key: 'tongyongcaiji', label: '通用采集', fn: (router, message) => { 
+      // const v = router
+      // v.push({path: '/tech-forum'})
+      message.info('网站建设中，敬请期待')
+    } },
     { key: 'rndCollaboration', label: '研发攻关', path: '/demands/PublicRelations', queryParams: { type: 'PublicRelations'}, basePath: '/demand',
       subItems: [
         { key: 'demand_squarePublicRelations', label: '需求广场', path: '/demands/PublicRelations', basePath: '/demand' },
@@ -54,7 +59,7 @@ export function useNavigation() {
     },
     { key: 'industryReport', label: '行研报告', path: '/demands/IndustryReport', queryParams: { type: 'industryReport'}, basePath: '/demand' },
     { key: 'industryTalent', label: '行业人才', path: '/demands/Talent', queryParams: { type: 'industryTalent'}, basePath: '/demand' },
-    { key: 'techForum', label: '技术论坛', path: '/tech-forum', matchPaths: ['/tech-forum'], fn: (router, message) => { 
+    { key: 'techForum', label: '技术论坛', fn: (router, message) => { 
       // const v = router
       // v.push({path: '/tech-forum'})
       message.info('网站建设中，敬请期待')
