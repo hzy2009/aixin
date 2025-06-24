@@ -15,6 +15,7 @@ const router = useRouter();
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
     { id: 'rdCode', label: '研发攻关类型', maxVisibleWithoutMore: 7, dictKey: 'rd_type' },
+    { id: 'matchPeriodName', label: '匹配周期', maxVisibleWithoutMore: 7, dictKey: 'rd_breakthrough_period' },
 ]);
 
 // --- Table Columns (remains in component as it's UI specific) ---
@@ -49,12 +50,12 @@ const pageData = ref({
         type: 'primary'
         }
     ],
-    dateRangeConfig: [
-        {
-            field: 'createTime', // Unique key for this date range
-            label: '提出需求日期',
-        }
-    ],
+    // dateRangeConfig: [
+    //     {
+    //         field: 'createTime', // Unique key for this date range
+    //         label: '提出需求日期',
+    //     }
+    // ],
     searchTitle: '研发攻关'
 })
 
