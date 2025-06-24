@@ -5,7 +5,12 @@
   </div>
   <ContentWithSidebarLayout>
     <template #main>
-      <detail :pageData="pageData" @goBack="goBack"></detail>
+      <detail :pageData="pageData" @goBack="goBack">
+         <template #inquiryList="{ dataSource }">
+          <inquiryList :data="dataSource.inquiryList" @success="success" v-if="dataSource.inquiryList && dataSource.inquiryList.length > 0"></inquiryList>
+          <span v-else>暂无结果</span>
+        </template>
+      </detail>
     </template>
     <template #sidebar>
       <RelatedItemsSidebar title="其他" :items="relatedEvents" :is-loading="isLoadingRelated" empty-description="暂无其他推荐"
@@ -21,7 +26,7 @@ import detail from '@/components/template/detail.vue';
 import { useAuthStore } from '@/store/authStore';
 import RelatedItemsSidebar from '@/components/common/RelatedItemsSidebar.vue'; // Adjust path if needed
 import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue'; // Adjust path if needed
-
+import inquiryList from '@/views/user_center/views/publications/OEMParts/components/inquiryList.vue'
 const authStore = useAuthStore();
 
 const props = defineProps({
@@ -36,8 +41,9 @@ const formConfigs = [
   { label: '需求提出方', field: 'tenantName', span: 24, },
   { label: '提出需求日期', field: 'createTime', span: 24, fieldType: 'date' },
   { label: '计划完成日期', field: 'expireDate', span: 24, fieldType: 'date' },
-  { label: '寻源结果', field: 'statusName', span: 24 },
+  { label: '寻源结果', field: 'inquiryList', span: 24 },
   { label: '贸易商/晶链慧采：', field: 'xxx', span: 24 },
+  { label: '寻源结果', field: 'statusName', span: 24 },
 ]
 
 // const statusHistoryColumns = [
