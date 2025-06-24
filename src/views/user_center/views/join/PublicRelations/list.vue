@@ -9,32 +9,19 @@ import { ref, reactive } from 'vue'; // onMounted removed as hook handles it
 import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
+import { PUBLIC_RELATIONS_COLUMNS } from '@/utils/const';
 const router = useRouter();
 
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
     { id: 'rdCode', label: '研发攻关类型', maxVisibleWithoutMore: 7, dictKey: 'rd_type' },
-    { id: 'statusCode', label: '需求状态', maxVisibleWithoutMore: 9, dictKey: 'rd_breakthrough_status' }
 ]);
 
-// --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = reactive([
-    { title: '序号', type: 'seq', key: 'index', textAlign: 'center', width: '60px' },
-    { title: '单号', field: 'code', key: 'code', ellipsis: true, },
-    { title: '发起人', field: 'tenantName', key: 'tenantName', ellipsis: true, width: '120px' },
-    { title: '研发攻关类型', field: 'rdType', key: 'rdType', align: 'center',
-        // customRender: ({record}) => {
-        // const { reqPartsTotal, reqPartsFinish } = record;
-        // // 计算未完成数量
-        // return <span>{reqPartsUnfinish || '-'}</span>;
-        // }
-    }, 
-    { title: '研发需求', field: 'sourceDesc', key: 'sourceDesc', align: 'center' }, // Corrected key
-    { title: '需求状态', field: 'statusName', key: 'statusName', align: 'center' }, // Key matches display field
-    { title: '创建日期', field: 'createTime', key: 'createTime', align: 'center' },
-    { title: '期望匹配周期', field: 'matchPeriodName', key: 'matchPeriodName', align: 'center' },
-    { title: '操作', key: 'actions', width: '10%', align: 'center', fixed: 'right' },
+    {type: 'checkbox', width: 40},
+    ...PUBLIC_RELATIONS_COLUMNS
 ]);
+
 
 const addButton = reactive({
     text: '创建研发攻关',
