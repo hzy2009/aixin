@@ -1,7 +1,7 @@
 <template>
   <section class="home-platform-member-section section-padding">
     <div class="container">
-      <SectionHeader title-ch="会员名录" title-en="MEMBERSHIP" more-link="/members" />
+      <SectionHeader title-ch="会员名录" title-en="MEMBERSHIP" more-link="/other/platformMember" />
       <div v-if="isLoading && pages.length === 0" class="loading-placeholder">
         <a-spin />
       </div>

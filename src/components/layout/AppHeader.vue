@@ -86,7 +86,7 @@ const showTopWelcomeBar = computed(() => true);
 
 const navigateToLogin = () => router.push('/login');
 const navigateToRegister = () => {
-  // router.push('/register')
+  router.push('/other/membershipGuide')
 };
 
 const handleLogout = () => {
@@ -124,12 +124,12 @@ const handleLogout = () => {
   //   display: flex;
   //   align-items: center;
   //   gap: @spacing-lg; // Increased gap
-  //   .top-action-link {
-  //     cursor: pointer;
-  //     color: @text-color-secondary;
-  //     text-decoration: none;
-  //     &:hover { color: @primary-color; }
-  //   }
+    .top-action-link {
+      cursor: pointer;
+      color: @text-color-secondary;
+      text-decoration: none;
+      &:hover { color: @primary-color; }
+    }
   //   .register-link-top { // Specific style if needed for top bar register
   //       // e.g. color: @primary-color; font-weight: 500;
   //   }
