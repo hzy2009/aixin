@@ -95,7 +95,8 @@ import { useUserDemandList } from './hooks/useUserDemandList.js';
 import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore';
 import { selectOptions as getDictOptions, formatDate } from '@/utils/index';
-
+import detailIcon from '@/assets/images/icon-detail.png';
+import delIcon from '@/assets/images/icon-delete.png';
 const authStore = useAuthStore();
 const modalStore = useModalStore();
 const router = useRouter();
@@ -169,9 +170,12 @@ const vxeTableColumns = computed(() => {
             vxeCol.slots = {
                 default: ({ row }) => (
                     actions.map((action, i) => (
-                        <AButton type="link" onClick={() => handleActionClick(row, action)} class="action-link" key={i}>
-                            {action.text}
-                        </AButton>
+                        <span class="action-item" onClick={() => handleActionClick(row, action)}>
+                            <span><img src={ action.type =='detail' ? detailIcon : delIcon} alt="" class="action-icon" /></span>
+                            <AButton type="link"  class="action-link" key={i}>
+                                {action.text}
+                            </AButton>
+                        </span>
                     ))
                 )
             };
@@ -262,8 +266,21 @@ defineExpose({
 :deep(.status-tag) {
     // Add any specific styles for the tag here
 }
-
+.action-item{
+    cuorsor: pointer;
+}
 :deep(.action-link) {
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 12px;
+    letter-spacing: 0px;
+    color: #656C74;
+    padding: 4px 5px;
+    &:hover {
+        color: #656C74;
+        // color: @primary-color;
+    }
     // Add any specific styles for the action links here
 }
 

@@ -30,8 +30,16 @@ const actions = reactive([
     text: '详情',
     icon: FileTextOutlined,
     clickFn: viewDetails,
+    type: 'detail',
     // isVisible: (record) => record.statusCode !== '已完成' // Example condition
-  }
+  },
+  {
+    text: '删除',
+    icon: FileTextOutlined,
+    clickFn: viewDetails,
+    type: 'del',
+    // isVisible: (record) => record.statusCode !== '已完成' // Example condition
+  },
 ]);
 
 const pageData = ref({
