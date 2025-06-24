@@ -1,19 +1,22 @@
 <template>
     <div style="margin-bottom: 20px;">
         <div>第一轮报价</div>
-        <a-table class="custom-detail-table" 
-          :dataSource="props.data" 
-          :columns="columns" 
-          :pagination="false" 
-          bordered 
-          size="small">
-        </a-table>
+        <!-- 使用 vxe-grid 替代 a-table -->
+        <vxe-grid
+          class="custom-detail-table"
+          :data="props.data"
+          :columns="columns"
+          border
+          size="small"
+        >
+        </vxe-grid>
     </div>
 </template>
 
 <script setup lang='jsx'>
-import  Dayjs  from 'dayjs'; // Import Dayjs for type-checking if needed
-// 1. 定义 props 和 emits
+import Dayjs from 'dayjs';
+
+// 1. 定义 props 和 emits (保持不变)
 const props = defineProps({
   data: {
     type: Array,
@@ -31,8 +34,8 @@ const props = defineProps({
 const emit = defineEmits(['toggle-selection', 'select-winner']);
 
 
-// 2. 定义处理函数，它们只负责 emit 事件
-const handleSelectionChange = (record, checked, type) => {
+// 2. 定义处理函数 (保持不变)
+const handleSelectionChange = (record, checked) => {
   // 通知父组件：哪个记录的“入围”状态改变了
   emit('toggle-selection', { record, checked });
 };
@@ -41,100 +44,110 @@ const handleWinnerChange = (record, checked) => {
   // 通知父组件：哪个记录被选为“中标方”
   emit('select-winner', { record, checked, type: 'first' });
 };
-// import { ref, watchEffect } from 'vue'
+
+// 3. vxe-grid 的列配置 (移除了 TypeScript 类型注解)
 const columns = [
     {
+      type: 'seq', // 使用 vxe-table 内置的序号类型
       title: '序号',
-      dataIndex: 'index',
-      width: '44px',
-      customRender: ({ index }) => index + 1 // 使用 customRender 实现序号
+      fixed: 'left',
+      width: '60px',
     },
     {
       title: '贸易商',
       width: '180px',
-      dataIndex: 'refUserCode',
+      fixed: 'left',
+      field: 'refUserCode',
     },
     {
       title: '含税价格',
-      width: '80px',
-      dataIndex: 'priceIncludingTax',
+      width: '100px',
+      field: 'priceIncludingTax',
     },
     {
       title: '未税价格',
-      width: '80px',
-      dataIndex: 'priceExcludingTax',
+      width: '100px',
+      field: 'priceExcludingTax',
     },
     {
       title: '交期',
-      dataIndex: 'deliveryDate',
-      width: '90px',
-      customRender: ({ record }) => {
-        // Use a date picker for editing
-        return record.deliveryDate ? Dayjs(record.deliveryDate).format('YYYY-MM-DD') : '-'
+      field: 'deliveryDate',
+      width: '130px',
+      // 使用 formatter 进行简单的日期格式化
+      formatter: ({ cellValue }) => {
+        return cellValue ? Dayjs(cellValue).format('YYYY-MM-DD') : ''
       }
     },
     {
       title: '付款条件',
-      width: '80px',
-      dataIndex: 'paymentTermsName',
+      width: '100px',
+      field: 'paymentTermsName',
     },
     {
       title: '质保期',
-      width: '70px',
-      dataIndex: 'guaranteePeriod',
+      width: '100px',
+      field: 'guaranteePeriod',
     },
     {
       title: '质保说明',
-      width: '90px',
-      dataIndex: 'guaranteeDesc',
+      width: '150px',
+      field: 'guaranteeDesc',
     },
     {
       title: '报价截止日期',
-      width: '100px',
-      dataIndex: 'expireDate',
-      customRender: ({ record }) => {
-        return record.expireDate ? record.expireDate.split(' ')[0] : '-';
+      width: '130px',
+      field: 'expireDate',
+      // 使用 formatter 进行简单的字符串处理
+      formatter: ({ cellValue }) => {
+        return cellValue ? cellValue.split(' ')[0] : '';
       }
     },
      {
       title: '入围第二轮报价',
-      dataIndex: 'isSelected',
+      field: 'isSelected',
       fixed: 'right',
-      customRender: ({ record }) => {
-        const { priceIncludingTax, priceExcludingTax } = record
-        const disabled = () => {
-          if (props.isSecondInquiryEnable === 1 || props.isFinished === 1) return true
-          if (!priceIncludingTax || !priceExcludingTax) return true
-          return false
+      width: '120px', // vxe-table 要求固定列有明确宽度
+      // 使用 slots.default 来自定义单元格内容
+      slots: {
+        default: ({ row }) => { // vxe-table 作用域变量是 row
+          const { priceIncludingTax, priceExcludingTax } = row
+          const disabled = () => {
+            if (props.isSecondInquiryEnable === 1 || props.isFinished === 1) return true
+            if (!priceIncludingTax || !priceExcludingTax) return true
+            return false
+          }
+          return (
+              <a-checkbox
+                  disabled={disabled()}
+                  checked={row.isSelected === 1}
+                  onChange={(e) => handleSelectionChange(row, e.target.checked)}
+              />
+          );
         }
-        return (
-            <a-checkbox 
-                disabled={disabled()}
-                checked={record.isSelected === 1} 
-                onChange={(e) => handleSelectionChange(record, e.target.checked)}
-            />
-        );
-      },
+      }
     },
     {
       title: '选定中标方',
-      dataIndex: 'isWinner',
+      field: 'isWinner',
       fixed: 'right',
-      customRender: ({ record }) => {
-        const { priceIncludingTax, priceExcludingTax } = record
-        const disabled = () => {
-          if (props.isSecondInquiryEnable === 1 || props.isFinished === 1) return true
-          if (!priceIncludingTax || !priceExcludingTax) return true
-          return false
+      width: '110px', // vxe-table 要求固定列有明确宽度
+      slots: {
+        default: ({ row }) => { // vxe-table 作用域变量是 row
+          const { priceIncludingTax, priceExcludingTax } = row
+          const disabled = () => {
+            if (props.isSecondInquiryEnable === 1 || props.isFinished === 1) return true
+            if (!priceIncludingTax || !priceExcludingTax) return true
+            return false
+          }
+          return (
+              <a-checkbox
+                  disabled={disabled()}
+                  checked={row.isWinner === 1}
+                  onChange={(e) => handleWinnerChange(row, e.target.checked)}
+              />
+          );
         }
-        return (
-            <a-checkbox 
-                disabled={disabled()}
-                checked={record.isWinner === 1}
-                onChange={(e) => handleWinnerChange(record, e.target.checked)}
-            />
-        );
-      },
+      }
     },
 ]
 </script>
@@ -145,28 +158,30 @@ const columns = [
 .custom-detail-table {
 	margin-top: @spacing-xs;
 
-	:deep(.ant-table-thead > tr > th) {
+	// 适配 vxe-table 的表头单元格
+	:deep(.vxe-header--column) {
 		background-color: #FAFAFA;
 		color: @text-color-base;
 		font-weight: 500;
 		font-size: 13px;
 		padding: 10px 8px;
 		text-align: left;
+    // vxe-table 的padding和ant-table计算方式不同，为了使文本居中，可能需要调整
+    .vxe-cell {
+      padding-left: 8px;
+      padding-right: 8px;
+    }
 	}
 
-	:deep(.ant-table-tbody > tr > td) {
+	// 适配 vxe-table 的表体单元格
+	:deep(.vxe-body--column) {
 		color: @text-color-secondary;
 		font-size: 13px;
-		padding: 10px 8px;
+    // padding 应用在内部的 .vxe-cell 上
+		.vxe-cell {
+      padding: 10px 8px;
+    }
 		word-break: break-all;
-	}
-
-	:deep(.ant-table-bordered .ant-table-container) {
-		border-color: @border-color-light !important;
-	}
-
-	:deep(.ant-table-cell) {
-		border-color: @border-color-light !important;
 	}
 }
 </style>

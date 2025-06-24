@@ -5,23 +5,17 @@
         <h2 class="page-main-heading">{{ pageTitle }}</h2>
     </div>
     <div class="list-page container" :class="{ 'listPageisPadding': listPageisPadding }">
-        <!-- <breadcrumbs/> -->
-        <!-- 1. Stats Bar -->
+        <!-- Components above the table remain the same -->
         <div class="stats-bar" v-if="userStatCardVisible">
             <UserStatCard :label="item.label" :value="item.count || 0" v-for="item in stats.list"
                 :key="item.label + item.count" @click="handleStatClick(item)">
                 <template #icon><img src="@/assets/images/user_center/icon-pending.png" alt="未响应" /></template>
             </UserStatCard>
-            <!-- <UserStatCard label="总计" :value="stats.total || 0">
-                <template #icon><img src="@/assets/images/user_center/icon-total.png" alt="总计" /></template>
-            </UserStatCard> -->
         </div>
 
-        <!-- 2. Filter Accordion -->
         <UserFilterAccordion :filter-groups="filterConfigForPage" :initial-filters="currentFilters" v-if="filterConfigForPage && filterConfigForPage.length > 0"
             @filters-changed="handleFiltersChange" class="filter-accordion-section" ref="userFilterAccordionRef" />
 
-        <!-- 3. Date Range Picker -->
         <MultiDateRangePickerGroup
             v-if="dateRangeConfig.length > 0"
             :config="dateRangeConfig"
@@ -29,7 +23,6 @@
             ref="multiDateRangePickerRef"
         />
 
-        <!-- 4. Search and Action Bar -->
         <div class="search-action-bar">
             <div class="search-input-wrapper">
                 <a-input v-model:value="search" placeholder="请输入关键字" allow-clear @pressEnter="triggerSearch">
@@ -37,16 +30,14 @@
                         <SearchOutlined />
                     </template>
                 </a-input>
-                
-                <!-- <a-button type="primary" :icon="h(DeleteOutlined)">清空筛选条件</a-button> -->
                 <div class='rest' @click="handleReset">
-                    <DeleteOutlined />&nbsp;
+                    <DeleteOutlined /> 
                     <span>清空筛选条件</span>
                 </div>
             </div>
             <div class="results-count-wrapper">
                 <span>为你找到</span>
-                <span class="results-count">&nbsp;{{ paginationConfig.total }}&nbsp;</span>
+                <span class="results-count"> {{ pagination.total }} </span>
                 <span>个{{ searchTitle }}</span>
             </div>
         </div>
@@ -61,52 +52,49 @@
                 {{ Operations.title }}
             </a-button>
         </div>
-        <slot name="content" :dataSource="tableData" :paginationConfig="paginationConfig">
+        
+        <slot name="content" :dataSource="tableData" :paginationConfig="pagination">
             <div class="results-table-section">
-                <a-table :columns="tableColumns" :dataSource="tableData" :loading="isLoading" bordered
-                    :pagination="paginationConfig" row-key="id" @change="handleTablePaginationChange" size="middle" :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
-                    class="user-demands-table">
-                    <template #bodyCell="{ column, record, index }">
-                         <span v-if="column.dataIndex === 'index'">
-                            {{ (paginationConfig.current - 1) * paginationConfig.pageSize + index + 1 }}
-                        </span>
-                        <template v-if="column.key === 'statusCode'">
-                            <a-tag :color="getStatusTagColor(record.sourcingStatus)" class="status-tag">
-                                {{ record.statusCode }}
-                            </a-tag>
-                        </template>
-                        <template v-else-if="column.key === 'actions'">
-                            <a-button type="link" @click="handleActionClick(record, action)" class="action-link"
-                                v-for="(action, i) in actions" :key="i">
-                                {{ action.text }}
-                            </a-button>
-                        </template>
-                    </template>
-                </a-table>
+                <!-- VXE-GRID REPLACEMENT -->
+                <vxe-grid
+                    class="user-demands-table"
+                    ref="gridRef"
+                    :data="tableData"
+                    :columns="vxeTableColumns"
+                    :loading="isLoading"
+                    border
+                    size="medium"
+                    :row-config="{ keyField: 'id' }"
+                    :checkbox-config="{ checkRowKeys: selectedRowKeys }"
+                    :pager-config="paginationConfig"
+                    @page-change="handlePageChange"
+                    @checkbox-change="handleCheckboxChange"
+                    @checkbox-all="handleCheckboxChange"
+                >
+                </vxe-grid>
             </div>
         </slot>
     </div>
 </template>
 
-<script setup lang="jsx">// jsx for custom pagination render if kept
-import { ref, computed, toRefs, h } from 'vue'; // onMounted removed as hook handles it
-import { Table as ATable, Tag as ATag, Button as AButton, Input as AInput } from 'ant-design-vue';
-import { SearchOutlined, DeleteOutlined } from '@ant-design/icons-vue';
+<script setup lang="jsx">
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
+// Ant Design components can still be used elsewhere on the page
+import { Button as AButton, Input as AInput, Tag as ATag } from 'ant-design-vue';
+import { SearchOutlined, DeleteOutlined } from '@ant-design/icons-vue';
+
+// Your components and hooks remain the same
 import HomeHeroSection from '@/views/home/components/HomeHeroSection.vue';
 import UserStatCard from '@/components/layout/UserStatCard.vue';
 import UserFilterAccordion from '@/components/layout/UserFilterAccordion.vue';
 import MultiDateRangePickerGroup from '@/components/layout/MultiDateRangePickerGroup.vue';
-import breadcrumbs from './breadcrumbs.vue';
-
-import { useUserDemandList } from './hooks/useUserDemandList.js'; // Adjust path
+import { useUserDemandList } from './hooks/useUserDemandList.js';
 import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore';
-import { notification as Notification } from 'ant-design-vue'
 
 const authStore = useAuthStore();
 const modalStore = useModalStore();
-
 const router = useRouter();
 
 const userFilterAccordionRef = ref(null);
@@ -118,59 +106,89 @@ const props = defineProps({
 });
 
 const { 
-    url,
-    filterConfigForPage,
-    tableColumns,
-    actions,
-    otherParams,
-    statusDictKey,
-    userStatCardVisible,
-    showBanner = false,
-    pageTitle,
-    tableOperations = [],
-    dateRangeConfig = [],
-    searchTitle,
-    listPageisPadding = true,
+    url, filterConfigForPage, tableColumns, actions, otherParams,
+    statusDictKey, userStatCardVisible, showBanner = false, pageTitle,
+    tableOperations = [], dateRangeConfig = [], searchTitle, listPageisPadding = true,
 } = props.pageData;
+
 const {
-    selectOptions,
-    stats,
-    currentFilters,       // Ref from hook
-    search,    // Ref from hook
-    isLoading,            // Ref from hook
-    tableData,            // Ref from hook
-    pagination,           // Reactive object from hook
-    handleFiltersChange,  // Method from hook
-    triggerSearch,        // Method from hook
-    handleTablePaginationChange, // Method from hook
-    getStatusTagColor,
-    handleStatClick,
-    handleExportXls,
-    clearfilters,
-    isVIP, // Ref from hook
+    selectOptions, stats, currentFilters, search, isLoading, tableData,
+    pagination, handleFiltersChange, triggerSearch, handleTablePaginationChange,
+    getStatusTagColor, handleStatClick, handleExportXls, clearfilters, isVIP,
 } = useUserDemandList({
-    otherParams,
-    url: url,
-    statusDictKey,
-    userStatCardVisible
+    otherParams, url, statusDictKey, userStatCardVisible
 });
+
 filterConfigForPage && filterConfigForPage.forEach(item => {
     if (!item.options && item.dictKey) {
         item.options = selectOptions(item.dictKey);
     }
 });
-const multiDateRangePickerRef = ref()
-// --- Pagination Config (computed property using hook's pagination) ---
-const paginationConfig = computed(() => ({
-    ...pagination, // Spread all properties from the hook's pagination object
-    itemRender: ({ type, originalElement }) => { // Custom render directly here
-        if (type === 'prev' || type === 'next' || type === 'page') return originalElement;
-        if (type === 'jump-prev' || type === 'jump-next') {
-            return <span class="ant-pagination-item-ellipsis" >•••</span>;
+
+// --- VXE-TABLE ADAPTATION ---
+
+const multiDateRangePickerRef = ref();
+const selectedRowKeys = ref([]);
+
+// 1. Adapt columns for vxe-table
+const vxeTableColumns = computed(() => {
+    const columns = [
+        { type: 'checkbox', width: 50, fixed: 'left' },
+    ];
+    tableColumns.forEach(col => {
+        if (col.dataIndex === 'index') {
+            columns.push({ type: 'seq', title: '序号', width: 60 });
+            return;
         }
-        return null; // Should not happen for other types
-    },
+        const vxeCol = {
+            field: col.dataIndex,
+            title: col.title,
+            width: col.width,
+        };
+        if (col.key === 'statusCode') {
+            vxeCol.slots = {
+                default: ({ row }) => (
+                    <ATag color={getStatusTagColor(row.sourcingStatus)} class="status-tag">
+                        {row.statusCode}
+                    </ATag>
+                )
+            };
+        } else if (col.key === 'actions') {
+            vxeCol.slots = {
+                default: ({ row }) => (
+                    actions.map((action, i) => (
+                        <AButton type="link" onClick={() => handleActionClick(row, action)} class="action-link" key={i}>
+                            {action.text}
+                        </AButton>
+                    ))
+                )
+            };
+        }
+        columns.push(vxeCol);
+    });
+    return columns;
+});
+
+// 2. Configure the pager (CORRECTED)
+const paginationConfig = computed(() => ({
+    enabled: true,
+    currentPage: pagination.current,
+    pageSize: pagination.pageSize,
+    total: pagination.total,
+    layouts: ['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']
 }));
+
+// 3. Create adapter for pagination event
+const handlePageChange = ({ currentPage, pageSize }) => {
+    handleTablePaginationChange({ current: currentPage, pageSize });
+};
+
+// 4. Create handler for checkbox changes
+const handleCheckboxChange = ({ records }) => {
+    selectedRowKeys.value = records.map(record => record.id);
+};
+
+// --- REST OF THE LOGIC (MOSTLY UNCHANGED) ---
 
 const operationsClick = (btn) => {
     if (authStore?.token) {
@@ -180,96 +198,65 @@ const operationsClick = (btn) => {
                 ...otherParams,
             });
         } else if (btn.btnType == 'delete') {
-            triggerSearch({
-                deleteFlag: 1
-            })
-        }  else {
+            triggerSearch({ deleteFlag: 1 });
+        } else {
             btn.clickFn();
         }
     } else {
         modalStore.showLogin();
-        // Notification.info({
-        //     message: `没有权限操作`,
-        //     placement: 'topRight',
-        //     description: '请先登录',
-        // });
-        // setTimeout(() => {
-        //     router.push('/login');
-        // }, 1000)
     }
-}
-
-const selectedRowKeys = ref([]);
-
-const onSelectChange = (rowKeys) => {
-    console.log('selectedRowKeys changed: ', rowKeys);
-    selectedRowKeys.value = rowKeys;
-}
+};
 
 const handleDateValuesUpdate = (values) => {
-    triggerSearch(values)
-}
+    triggerSearch(values);
+};
 
 const handleActionClick = (record, action) => {
     if (authStore?.token) {
-        action?.clickFn(record)
+        action?.clickFn(record);
     } else {
         modalStore.showLogin();
     }
-}
+};
+
 const handleReset = () => {
-    clearfilters()
-    multiDateRangePickerRef.value?.resetAllDates()
-}
+    clearfilters();
+    multiDateRangePickerRef.value?.resetAllDates();
+};
+
 defineExpose({
     handleTablePaginationChange
-})
+});
 </script>
 
 <style scoped lang="less">
+// Your original styles for the page layout
 @import './styles/list.less';
-:deep(.ant-pagination) {
-        margin-top: @spacing-lg;
-        justify-content: flex-end; // Align pagination to the right
-}
 
-:deep(.ant-pagination-item-active) {
-    background-color: @primary-color;
-    border-color: @primary-color;
-
-    a {
+// Vxe-table specific custom styles can go here if needed.
+// The default styles are generally good, but you can override them.
+// For example, to style the pager like you did for Ant Design:
+:deep(.vxe-pager) {
+    margin-top: @spacing-lg;
+    
+    .vxe-pager--num-btn.is--active {
+        background-color: @primary-color;
+        border-color: @primary-color;
         color: white;
     }
-
-    &:hover {
-        background-color: darken(@primary-color, 10%);
-        border-color: darken(@primary-color, 10%);
-
-        a {
-            color: white;
-        }
-    }
 }
 
-:deep(.ant-pagination-item-link) {
-
-    // Prev/Next buttons
-    &:not(.ant-pagination-disabled):hover {
-        // color: @primary-color;
-        // border-color: @primary-color;
-    }
+// Keep a-tag styles if you're still using it inside the table
+:deep(.status-tag) {
+    // Add any specific styles for the tag here
 }
 
-:deep(.ant-pagination-options-quick-jumper input) {
-    border-radius: @border-radius-sm;
+:deep(.action-link) {
+    // Add any specific styles for the action links here
+}
 
-    &:hover {
-        border-color: @primary-color;
-    }
-
-    &:focus {
-        border-color: @primary-color;
-        box-shadow: 0 0 0 2px fade(@primary-color, 20%);
-    }
+// Override vxe-grid border color to match your theme
+:deep(.user-demands-table.vxe-grid--border-line) {
+    border-color: #f0f0f0; // Or use your LESS variable
 }
 </style>

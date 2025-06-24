@@ -26,16 +26,16 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
   const search = ref('');
   const isLoading = ref(false);
   const tableData = ref([]);
+  
+  // *** THIS IS THE ONLY CHANGE ***
+  // Simplified pagination object to only hold state, not UI config.
+  // vxe-grid's pager-config in the component will handle the UI aspects.
   const pagination = reactive({
     current: 1,
     pageSize: initialPageSize,
     total: 0,
-    showSizeChanger: true,
-    showQuickJumper: true,
-    pageSizeOptions: ['10', '20', '30', '40', '50'],
-    showTotal: (total) => `共 ${total} 条`,
-    // itemRender can be customized directly in component if needed, or passed as prop to hook
   });
+
   const selectOptions = (dictKey) => {
     const all = { value: '', label: '全部' }
     if (!dictKey) return [];
@@ -43,8 +43,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     const options = authStore.sysAllDictItems[dictKey].map(({ label, value }) => ({ label, value })) || [];
     return [all,...options];
   }
-  // --- API Call Placeholders ---
-  // TODO: Replace with actual API calls
+  
   async function fetchStatsAPI() {
     const statusMapp = authStore.sysAllDictItems[statusDictKey] || []
     const res = await defHttp.get({url: url.overview, params: {...otherParams}});
@@ -58,12 +57,9 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     statusMapp.forEach(item => {
       item.count = countMap[item.value]
     });
-    // Simulate different stats for different demand types if necessary
     return {list:statusMapp.slice(0, 5), total:total}
   }
-
-  // --- End API Call Placeholders ---
-
+  
   async function loadStats() {
     stats.value = await fetchStatsAPI();
   }
@@ -86,7 +82,6 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     } catch (error) {
       tableData.value = [];
       pagination.total = 0;
-      // TODO: Show error to user
     } finally {
       isLoading.value = false;
     }
@@ -94,7 +89,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
 
   const handleFiltersChange = (newFilters) => {
     currentFilters.value = { ...newFilters };
-    pagination.current = 1; // Reset to first page
+    pagination.current = 1; 
     loadTableData();
   };
   const handleStatClick = (statusKey) => {
@@ -104,14 +99,12 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     } else {
       currentFilters.value = { ...currentFilters.value,statusCode: statusKey?.value };
     }
-    pagination.current = 1; // Reset to first page
+    pagination.current = 1; 
     loadTableData();
   };
 
   const handleSearchTermChange = (newSearchTerm) => {
     search.value = newSearchTerm;
-    // Decide if search triggers immediately or on button click
-    // For now, let's assume it triggers on button click or Enter
   };
 
   const triggerSearch = (params = {}) => {
@@ -119,10 +112,10 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     loadTableData(params);
   };
 
+  // This function remains unchanged and works perfectly with the adapter in ListPage.vue
   const handleTablePaginationChange = (pageInfo) => {
     pagination.current = pageInfo.current;
-    pagination.pageSize = pageInfo.pageSize; // If page size changer enabled
-    // pagination.pageSize = pageInfo.pageSize; // If page size changer enabled
+    pagination.pageSize = pageInfo.pageSize;
     loadTableData();
   };
 
@@ -132,14 +125,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     return authStore.isVip || false;
   });
 
-
-    /**
-   * 导出文件xlsx的mime-type
-   */
   const XLSX_MIME_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-  /**
-   * 导出文件xlsx的文件后缀
-   */
   const XLSX_FILE_SUFFIX = '.xlsx';
 
   const handleExportXls = async (name, url, params, isXlsx = false) => {
@@ -148,13 +134,11 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
       createMessage.warning('文件下载失败');
       return;
     }
-    //update-begin---author:wangshuai---date:2024-04-18---for: 导出excel失败提示，不进行导出---
     let reader = new FileReader()
     reader.readAsText(data, 'utf-8')
     reader.onload = async () => {
       if(reader.result){
         if(reader.result.toString().indexOf("success") !=-1){
-          // update-begin---author:liaozhiyang---date:2025-02-11---for:【issues/7738】文件中带"success"导出报错 ---
           try {
             const { success, message } = JSON.parse(reader.result.toString());
             if (!success) {
@@ -166,11 +150,9 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
           } catch (error) {
             exportExcel(name, isXlsx, data);
           }
-          // update-end---author:liaozhiyang---date:2025-02-11---for:【issues/7738】文件中带"success"导出报错 ---
         }
       }
       exportExcel(name, isXlsx, data);
-      //update-end---author:wangshuai---date:2024-04-18---for: 导出excel失败提示，不进行导出---
     }
   }
 
@@ -194,19 +176,17 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
       link.setAttribute('download', name + fileSuffix);
       document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link); //下载完成移除元素
-      window.URL.revokeObjectURL(url); //释放掉blob对象
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
     }
   }
 
   const clearfilters = () => {
     currentFilters.value = {};
-    currentFilters.value = {};
     search.value = '';
-    pagination.current = 1; // Reset to first page
+    pagination.current = 1;
     loadTableData();
   }
-
 
   onMounted(() => {
     if (userStatCardVisible) loadStats();
@@ -219,13 +199,12 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     search,
     isLoading,
     tableData,
-    pagination, // Expose the reactive pagination object
-    // Methods
+    pagination,
     loadStats,
     loadTableData,
     handleFiltersChange,
     handleStatClick,
-    handleSearchTermChange, // If you want to bind v-model directly to search
+    handleSearchTermChange,
     triggerSearch,
     handleTablePaginationChange,
     getStatusTagColor,

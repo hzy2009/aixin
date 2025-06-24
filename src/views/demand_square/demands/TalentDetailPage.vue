@@ -26,16 +26,16 @@
 						<h3 class="section-title-text">获得省市国家级荣誉</h3>
 					</div>
 					<div>
-							<a-table 
-									:columns="columns"
-									:data-source="dataSource.achievementList || []" :pagination="false"
-									:row-key="'id'" bordered size="middle" class="custom-detail-table" >
-                <template #bodyCell="{ column, record, index }">
-                    <span v-if="column.dataIndex === 'index'">
-                        {{ index + 1 }}   
-                    </span>
-                </template>
-            </a-table >
+            <!-- CONVERTED TO VXE-GRID -->
+						<vxe-grid 
+								:columns="columns"
+								:data="dataSource.achievementList || []"
+								:row-config="{ keyField: 'id' }"
+								border
+								size="medium"
+								class="custom-detail-table" >
+              <!-- The #bodyCell template is no longer needed -->
+            </vxe-grid>
 					</div>
         </template>
       </detail>
@@ -51,12 +51,11 @@ import { ref, onMounted, watch, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import detail from '@/components/template/detail.vue';
 import { message } from 'ant-design-vue';
-import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue'; // Adjust path if needed
+import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue';
 import TalentSidebar from './components/TalentSidebar.vue';
 import ManImg from '@/assets/images/auth/m.png';
 import WomanImg from '@/assets/images/auth/w.png';
 import defHttp from '@/utils/http/axios'
-
 
 const route = useRoute();
 const router = useRouter();
@@ -75,23 +74,27 @@ const formConfigs = [
   { label: '主要研究方向', field: 'skillDesc', span: 24, },
   { label: '论文成果', field: 'xx', span: 24, },
 ]
+
+// --- Columns are now defined in vxe-table format ---
 const columns = [
 	{
+		type: 'seq', // Using vxe-table's built-in sequence type
 		title: '序号',
-		dataIndex: 'index',
-		key: 'index',
+		key: 'seq', // Using a unique key is good practice
 	},
   {
     title: '荣誉',
-    dataIndex: 'achievement',
+    field: 'achievement', // dataIndex -> field
     key: 'achievement',
   },
   {
     title: '取得荣誉年份',
-    dataIndex: 'year',
+    field: 'year', // dataIndex -> field
     key: 'year',
   },
 ]
+
+// --- All other logic remains the same ---
 const pageData = reactive({
   IdProp: props.IdProp,
   mode: props.mode,
@@ -126,10 +129,11 @@ const goBack = () => {
 </script>
 
 <style scoped lang="less">
+// No style changes needed here as they are handled by the parent/generic component
 @import '@/assets/styles/_variables.less';
 
 .industry-report-detail-page {
-  background-color: @background-color-light-gray; // 整个页面的背景色
+  background-color: @background-color-light-gray;
   padding-bottom: @spacing-xxl;
 }
 .section-title-wrapper {
@@ -197,5 +201,4 @@ const goBack = () => {
 .mr-r{
   margin-right:120px;
 }
-
 </style>

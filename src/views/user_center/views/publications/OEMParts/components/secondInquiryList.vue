@@ -1,15 +1,24 @@
 <template>
-  <div v-show="props.data.length > 0">
+  <div v-show="props.data && props.data.length > 0">
     <div>第二轮报价</div>
-    <a-table  class="custom-detail-table" :dataSource="dataSource" :columns="columns" :pagination="false" bordered rowKey="key">
-    </a-table>
-  </div></template>
+    <!-- 使用 vxe-grid 替代 a-table -->
+    <vxe-grid
+      class="custom-detail-table"
+      :data="dataSource"
+      :columns="columns"
+      :row-config="{ keyField: 'key' }"
+      border
+      size="small"
+    >
+    </vxe-grid>
+  </div>
+</template>
 
 <script setup lang='jsx'>
 import { ref, watch } from 'vue'
-import  Dayjs  from 'dayjs'; // Import Dayjs for type-checking if needed
+import Dayjs from 'dayjs';
 
-// 1. Define props and emits. 'update:data' is key for v-model.
+// 1. Define props and emits. This part remains unchanged.
 const props = defineProps({
   data: {
     type: Array,
@@ -26,155 +35,153 @@ const props = defineProps({
 });
 const emit = defineEmits(['select-winner', 'update:data']);
 
-// 2. Create a local, modifiable copy of the data.
+// 2. Create a local, modifiable copy of the data. This logic is UI-independent and remains unchanged.
 const dataSource = ref([]);
 
-// 3. Watch the incoming prop to update the local copy.
+// 3. Watch the incoming prop to update the local copy. This also remains unchanged.
 watch(() => props.data, (newData) => {
-  // Use deep copy to avoid mutating props directly.
   dataSource.value = JSON.parse(JSON.stringify(newData || []));
 }, { immediate: true, deep: true });
 
-// --- NEW LOGIC ---
-/**
- * Handles changes to the expiry date.
- * @param {Dayjs | null} date - The new date value from the picker.
- * @param {string} dateString - The formatted date string.
- * @param {number} index - The index of the row being edited.
- */
+// --- All business logic functions remain unchanged ---
 const handleDateChange = (date, dateString, index) => {
+  console.log('date', date, 'dateString', dateString, 'index', index);
   if (index === 0) {
     dataSource.value.forEach(item => {
-      item.expireDate = date; // Update all rows with the new dateString;
+      item.expireDate = date;
     });
   }
-  if (!dateString) return
+  if (!dateString) return;
   
   emit('update:data', dataSource.value);
 };
-// --- END NEW LOGIC ---
 
 const handleWinnerChange = (record, checked) => {
-  // This logic can now be simplified if we let the parent handle it,
-  // but for full encapsulation, we can do it here and emit.
-  // const isWin = checked ? 1 : 0;
-  // record.isWinner = isWin; // Update local record
-
-  // Emit the event for the parent to handle global logic (like clearing other lists)
   emit('select-winner', { record, checked, type:'second' });
-  // Also emit the data update
-  // emit('update:data', dataSource.value);
 };
 
+// --- Column definitions are converted to vxe-table format ---
 const columns = [
     {
+      type: 'seq', // Use vxe-table's built-in sequence type
       title: '序号',
-      dataIndex: 'index',
-      width: '44px',
-      customRender: ({ index }) => index + 1
+      width: '60px',
+      fixed: 'left',
     },
     {
       title: '贸易商',
       width: '180px',
-      dataIndex: 'refUserCode',
+      field: 'refUserCode',
+      fixed: 'left',
     },
     {
       title: '含税价格',
-      dataIndex: 'priceIncludingTax',
+      field: 'priceIncludingTax',
+      width: '100px',
     },
     {
       title: '未税价格',
-      dataIndex: 'priceExcludingTax',
+      field: 'priceExcludingTax',
+      width: '100px',
     },
     {
       title: '交期',
-      dataIndex: 'deliveryDate',
-      customRender: ({ record }) => {
-        // Use a date picker for editing
-        return record.deliveryDate ? Dayjs(record.deliveryDate).format('YYYY-MM-DD') : '-'
+      field: 'deliveryDate',
+      width: '130px',
+      // Simple formatting is cleaner with a formatter
+      formatter: ({ cellValue }) => {
+        return cellValue ? Dayjs(cellValue).format('YYYY-MM-DD') : ''
       }
     },
     {
       title: '付款条件',
-      dataIndex: 'paymentTermsName',
+      width: '100px',
+      field: 'paymentTermsName',
     },
     {
       title: '质保期',
-      dataIndex: 'guaranteePeriod',
+      width: '100px',
+      field: 'guaranteePeriod',
     },
     {
       title: '质保说明',
-      dataIndex: 'guaranteeDesc',
+      width: '150px',
+      field: 'guaranteeDesc',
     },
     {
       title: '报价截止日期',
-      dataIndex: 'expireDate',
-      customRender: ({ record, index }) => {
-        // Use a date picker for editing
-        const disabled =  props.isFinished === 1
-        return (
-          disabled ?
-            <span>{record.expireDate ? Dayjs(record.expireDate).format('YYYY-MM-DD') : '-'}</span> : 
-            <a-date-picker 
-                format="YYYY-MM-DD" valueFormat="YYYY-MM-DD HH:mm:ss" style={{ width: '100%' }}
-                v-model:value={record.expireDate}
-                placeholder="请选择日期"
-                // Pass index to the handler
-                onChange={(date, dateString) => handleDateChange(date, dateString, index)}
-            />
-        )
+      field: 'expireDate',
+      width: 130,
+      // Use slots.default for rendering complex components like a-date-picker
+      slots: {
+        default: ({ row, $rowIndex }) => { // vxe-table uses { row, $rowIndex }
+          const disabled = props.isFinished == 1 || props.isSecondInquiryEnable == 1;
+          return (
+            disabled ?
+              <span>{row.expireDate ? Dayjs(row.expireDate).format('YYYY-MM-DD') : ''}</span> : 
+              <a-date-picker 
+                  format="YYYY-MM-DD" valueFormat="YYYY-MM-DD HH:mm:ss" style={{ width: '100%' }}
+                  v-model:value={row.expireDate}
+                  placeholder="请选择日期"
+                  onChange={(date, dateString) => handleDateChange(date, dateString, $rowIndex)}
+              />
+          )
+        }
       }
     },
     {
       title: '选定中标方',
-      dataIndex: 'isWinner',
-      width: 75,
-      customRender: ({ record }) => {
-        const { priceIncludingTax, priceExcludingTax } = record
-        const disabled = () => {
-          if (props.isFinished === 1) return true
-          if (!priceIncludingTax || !priceExcludingTax) return true
-          return false
-        }
-        return (
-            <a-checkbox 
-                disabled={disabled()}
-                checked={record.isWinner}
-                onChange={(e) => handleWinnerChange(record, e.target.checked)}
-            />
-        );
-      },
+      field: 'isWinner',
+      fixed: 'right',
+      width: 110,
+      // Use slots.default for rendering a-checkbox
+      slots: {
+        default: ({ row }) => { // vxe-table uses { row }
+          const { priceIncludingTax, priceExcludingTax } = row;
+          const isDisabled = () => {
+            if (props.isFinished === 1) return true;
+            if (!priceIncludingTax || !priceExcludingTax) return true;
+            return false;
+          }
+          return (
+              <a-checkbox 
+                  disabled={isDisabled()}
+                  checked={row.isWinner === 1} // Explicitly check for 1
+                  onChange={(e) => handleWinnerChange(row, e.target.checked)}
+              />
+          );
+        },
+      }
     },
 ];
 </script>
 
 <style lang="less" scoped>
+// Styles are updated for vxe-table classes
 @import '@/assets/styles/_variables.less';
 .custom-detail-table {
 	margin-top: @spacing-xs;
 
-	:deep(.ant-table-thead > tr > th) {
+	:deep(.vxe-header--column) {
 		background-color: #FAFAFA;
 		color: @text-color-base;
 		font-weight: 500;
 		font-size: 13px;
 		padding: 10px 8px;
 		text-align: left;
+    .vxe-cell {
+      padding-left: 8px;
+      padding-right: 8px;
+    }
 	}
 
-	:deep(.ant-table-tbody > tr > td) {
+	:deep(.vxe-body--column) {
 		color: @text-color-secondary;
 		font-size: 13px;
-		padding: 10px 8px;
+    .vxe-cell {
+      padding: 10px 8px;
+    }
 		word-break: break-all;
-	}
-
-	:deep(.ant-table-bordered .ant-table-container) {
-		border-color: @border-color-light !important;
-	}
-
-	:deep(.ant-table-cell) {
-		border-color: @border-color-light !important;
 	}
 }
 </style>

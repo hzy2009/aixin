@@ -1,55 +1,62 @@
 <template>
-    <a-table class="custom-detail-table" :dataSource="props.data" :columns="columns" :pagination="false" bordered >
-        <template #bodyCell="{ column, record, index }"><span v-if="column.dataIndex === 'index'">{{ index + 1 }}</span></template>
-
-    </a-table>
+    <!-- 使用 vxe-grid 替代 a-table -->
+    <vxe-grid
+      class="custom-detail-table"
+      :data="props.data"
+      :columns="columns"
+      border
+    >
+        <!-- bodyCell 插槽不再需要，vxe-table 通过列配置直接处理 -->
+    </vxe-grid>
 </template>
 
 <script setup>
 const props = defineProps(['data'])
+
+// 列定义已转换为 vxe-table 格式
 const columns = [
     {
+      type: 'seq', // 使用 vxe-table 内置的序号类型，更简单
       title: '序号',
-      dataIndex: 'index',
       width: 80,
     },
     {
       title: '单据类型',
-      dataIndex: 'refBusinessTypeName',
+      field: 'refBusinessTypeName', // dataIndex -> field
     },
     {
       title: '单据编号',
-      dataIndex: 'refBusinessCode',
+      field: 'refBusinessCode', // dataIndex -> field
     },
 ]
 </script>
+
 <style lang="less" scoped>
-@import '@/assets/styles/_variables.less'; // Your global LESS variables
-.custom-detail-table {
-	margin-top: @spacing-xs;
+// @import '@/assets/styles/_variables.less';
 
-	:deep(.ant-table-thead > tr > th) {
-		background-color: #FAFAFA;
-		color: @text-color-base;
-		font-weight: 500;
-		font-size: 13px;
-		padding: 10px 8px;
-		text-align: left; // Ensure headers align left by default
-	}
+// .custom-detail-table {
+// 	margin-top: @spacing-xs;
 
-	:deep(.ant-table-tbody > tr > td) {
-		color: @text-color-secondary;
-		font-size: 13px;
-		padding: 10px 8px;
-		word-break: break-all;
-	}
+// 	// 已适配 vxe-table 的表头单元格
+// 	:deep(.vxe-header--column) {
+// 		background-color: #FAFAFA;
+// 		color: @text-color-base;
+// 		font-weight: 500;
+// 		font-size: 13px;
+// 		text-align: left;
+//     .vxe-cell {
+//       padding: 10px 8px;
+//     }
+// 	}
 
-	:deep(.ant-table-bordered .ant-table-container) {
-		border-color: @border-color-light !important;
-	}
-
-	:deep(.ant-table-cell) {
-		border-color: @border-color-light !important;
-	}
-}
+// 	// 已适配 vxe-table 的表体单元格
+// 	:deep(.vxe-body--column) {
+// 		color: @text-color-secondary;
+// 		font-size: 13px;
+// 		word-break: break-all;
+//     .vxe-cell {
+//       padding: 10px 8px;
+//     }
+// 	}
+// }
 </style>
