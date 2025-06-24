@@ -201,10 +201,16 @@ const handleToList = () => {
 const getImgUrl = (url) => url ? getFileAccessHttpUrl(url) : '';
 const handleActionNoteClick = (actionNote) => { if (actionNote.fn) actionNote.fn(demandDetailData); };
 const showProgressList = computed(() => {
-	if (showLogList && statusTracking.value) {
-		if (statusTrackingTitle !== '状态跟踪' && (!formModel.value.progressList || formModel.value.progressList.length === 0)) {
+	if (showLogList) {
+		if (statusTracking.value) {
+			if (statusTrackingTitle !== '状态跟踪' && (!formModel.value.progressList || formModel.value.progressList.length === 0)) {
+			return false;
+			}
+		} else {
 			return false;
 		}
+	} else {
+		return false;
 	}
 	return true;
 });
