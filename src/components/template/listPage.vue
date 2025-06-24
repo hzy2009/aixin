@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="results-count-wrapper">
-                <span>为你找到</span>
+                <span>为您找到</span>
                 <span class="results-count"> {{ pagination.total }} </span>
                 <span>个{{ searchTitle }}</span>
             </div>
@@ -132,7 +132,6 @@ filterConfigForPage && filterConfigForPage.forEach(item => {
 
 const multiDateRangePickerRef = ref();
 const selectedRowKeys = ref([]);
-console.log('getDictOptions', getDictOptions);
 
 // 1. Adapt columns for vxe-table
 const vxeTableColumns = computed(() => {
@@ -147,7 +146,11 @@ const vxeTableColumns = computed(() => {
             vxeCol.formatter = ({ cellValue }) => {
                 console.log('cellValue', cellValue);
                 console.log('cellValue', getDictOptions(col.dictKey));
-                return getDictOptions(col.dictKey).find(option => option.value === cellValue)?.label;
+                if (getDictOptions(col.dictKey)) {
+                    return getDictOptions(col.dictKey).find(option => option.value === cellValue)?.label;
+                } else {
+                    return '';
+                }
             }
         } else if (col.fieldType === 'date') {
             vxeCol.formatter = ({ cellValue }) => {

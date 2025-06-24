@@ -9,8 +9,7 @@ import { ref, computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import edit from '@/components/template/edit.vue';
 import { useAuthStore } from '@/store/authStore';
-
-
+import dayjs from 'dayjs';
 
 const props = defineProps({
   IdProp: { type: String, default: null },
@@ -49,6 +48,7 @@ const pageData = reactive({
   },
   otherParams: {
     sourcingType: '原厂件寻源',
+    createTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
   },
   formConfigs,
   statusHistoryColumns,
