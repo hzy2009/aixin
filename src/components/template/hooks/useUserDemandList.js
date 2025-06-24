@@ -57,7 +57,8 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     statusMapp.forEach(item => {
       item.count = countMap[item.value]
     });
-    return {list:statusMapp.slice(0, 5), total:total}
+    // return {list:statusMapp.slice(0, 5), total:total}
+    return {list:statusMapp, total:total}
   }
   
   async function loadStats() {
