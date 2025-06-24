@@ -48,13 +48,14 @@
           class="unified-nav-item-wrapper"
           :class="{ 'has-submenu': item.subItems && item.subItems.length > 0 }"
         >
-          <router-link
+          <div
             :key="item.key"
             :to="item.path"
+            @click="handleMenuClick(item)"
             class="unified-nav-link"
           >
             {{ item.label }}
-          </router-link>
+          </div>
 
           <!-- Pure CSS Hover Submenu -->
           <ul v-if="auth.isLogin && item.subItems && item.subItems.length > 0" class="css-submenu">
@@ -74,6 +75,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/store/authStore';
 import { useNavigation } from './hooks/useNavigation';
 import { BellOutlined } from '@ant-design/icons-vue';
+import { message } from 'ant-design-vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -93,6 +95,14 @@ const handleLogout = () => {
   auth.logout();
   router.push('/login');
 };
+const handleMenuClick = (item) => {
+  // Handle menu item click, e.g., navigate to the corresponding route
+  if (item.fn) {
+    item.fn(router, message)
+  } else {
+    router.push(item.path);
+  }
+}
 </script>
 
 <style scoped lang="less">

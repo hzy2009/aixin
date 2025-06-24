@@ -14,6 +14,7 @@ export function useNavigation() {
     { key: 'industryDynamics', label: '行业热点', path: '/industry-dynamics', matchPaths: ['/industry-dynamics'] },
     { key: 'alternativeSourcing', label: '国产替代寻源', path: '/demands/DomesticSourcing', queryParams: { type: 'DomesticSourcing'}, basePath: '/demand',
       subItems: [
+        { key: 'demand_squareDomesticSourcing', label: '需求广场', path: '/demands/DomesticSourcing', basePath: '/demand' },
         { key: 'publishedDomesticSourcing', label: '我发布的', path: '/user/published/DomesticSourcing', basePath: '/demand' },
         { key: 'joinDomesticSourcing', label: '我参与的', path: '/user/join/DomesticSourcing', basePath: '/demand' },
         { key: 'createDomesticSourcing', label: '创建国产替代寻源', path: '/user/published/DomesticSourcing/create', basePath: '/demand' },
@@ -21,6 +22,7 @@ export function useNavigation() {
     },
     { key: 'originalSourcing', label: '原厂件寻源', path: '/demands/OEMPartsSourcing', queryParams: { type: 'OEMPartsSourcing'}, basePath: '/demand',
       subItems: [
+        { key: 'demand_squareOEMPartsSourcing', label: '需求广场', path: '/demands/OEMPartsSourcing', basePath: '/demand' },
         { key: 'publishedDomesticSourcing', label: '我发布的', path: '/user/published/OEMPartsSourcing', basePath: '/demand' },
         { key: 'joinOEMPartsSourcing', label: '我参与的', path: '/user/join/OEMPartsSourcing', basePath: '/demand' },
         { key: 'createOEMPartsSourcing', label: '创建原厂件寻源', path: '/user/published/OEMPartsSourcing/create', basePath: '/demand' },
@@ -28,6 +30,7 @@ export function useNavigation() {
     },
     { key: 'rndCollaboration', label: '研发攻关', path: '/demands/PublicRelations', queryParams: { type: 'PublicRelations'}, basePath: '/demand',
       subItems: [
+        { key: 'demand_squarePublicRelations', label: '需求广场', path: '/demands/PublicRelations', basePath: '/demand' },
         { key: 'publishedPublicRelations', label: '我发布的', path: '/user/published/PublicRelations', basePath: '/demand' },
         { key: 'joinPublicRelations', label: '我参与的', path: '/user/join/PublicRelations', basePath: '/demand' },
         { key: 'createPublicRelations', label: '创建研发攻关', path: '/user/published/PublicRelations/create', basePath: '/demand' },
@@ -35,6 +38,7 @@ export function useNavigation() {
     },
     { key: 'testingValidation', label: '检测验证', path: '/demands/Verification', queryParams: { type: 'Verification'}, basePath: '/demand',
       subItems: [
+        { key: 'demand_squareVerification', label: '需求广场', path: '/demands/Verification', basePath: '/demand' },
         { key: 'publishedVerification', label: '我发布的', path: '/user/published/Verification', basePath: '/demand' },
         { key: 'joinVerification', label: '我参与的', path: '/user/join/Verification', basePath: '/demand' },
         { key: 'createVerification', label: '创建检测验证', path: '/user/published/Verification/create', basePath: '/demand' },
@@ -42,6 +46,7 @@ export function useNavigation() {
   },
     { key: 'offlineEvents', label: '线下活动', path: '/demands/OfflineEvent', queryParams: { type: 'offlineEvents'}, basePath: '/demand',
       subItems: [
+        { key: 'demand_squareOfflineEvent', label: '需求广场', path: '/demands/OfflineEvent', basePath: '/demand' },
         { key: 'publishedOfflineEvent', label: '我发布的', path: '/user/published/OfflineEvent', basePath: '/demand' },
         { key: 'joinOfflineEvent', label: '我参与的', path: '/user/join/OfflineEvent', basePath: '/demand' },
         { key: 'createOfflineEvent', label: '创建线下活动', path: '/user/published/OfflineEvent/create', basePath: '/demand' },
@@ -49,7 +54,11 @@ export function useNavigation() {
     },
     { key: 'industryReport', label: '行研报告', path: '/demands/IndustryReport', queryParams: { type: 'industryReport'}, basePath: '/demand' },
     { key: 'industryTalent', label: '行业人才', path: '/demands/Talent', queryParams: { type: 'industryTalent'}, basePath: '/demand' },
-    { key: 'techForum', label: '技术论坛', path: '/tech-forum', matchPaths: ['/tech-forum'] },
+    { key: 'techForum', label: '技术论坛', path: '/tech-forum', matchPaths: ['/tech-forum'], fn: (router, message) => { 
+      // const v = router
+      // v.push({path: '/tech-forum'})
+      message.info('网站建设中，敬请期待')
+    } },
     // Add more items as needed
   ]);
 
