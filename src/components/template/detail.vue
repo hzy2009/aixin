@@ -39,7 +39,8 @@
 							class="info-grid-item">
 							<span class="info-grid-label">{{ tableSection.title }}：</span>
 							<div class="flex1">
-								<vxe-grid
+								<span v-if='!formModel[`${tableSection.groupCode}`] || formModel[`${tableSection.groupCode}`].length === 0'>暂无数据</span>
+								<vxe-grid v-else
 									:columns="tableSection.columns|| []"
 									:data="formModel[`${tableSection.groupCode}`] || []"
 									:row-config="{ keyField: tableSection.rowKey || 'id' }"
