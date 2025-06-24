@@ -10,8 +10,11 @@ import './assets/styles/index.less';
 import 'ant-design-vue/dist/reset.css'; // Or antd.css / antd.less depending on your preference
 
 
+ import VxeUIAll from 'vxe-pc-ui'
+import 'vxe-pc-ui/lib/style.css'
 import VxeUITable from 'vxe-table'
 import 'vxe-table/lib/style.css'
+
 // Optional: For @vueuse/head
 // import { createHead } from '@vueuse/head'
 // const head = createHead()
@@ -21,7 +24,8 @@ const app = createApp(App);
 app.use(pinia);
 app.use(router);
 app.use(Antd);
-app.use(VxeUITable);
+app.use(VxeUIAll)
+app.use(VxeUITable)
 // app.use(head); // If using @vueuse/head
 
 app.mount('#app');
