@@ -83,7 +83,7 @@ const navigateToDetail = ({id}) => {
   .date-day-month {
     color: #999999;
     font-family: PingFang SC;
-    font-weight: 400;
+    font-weight: 540;
     font-size: 26px;
     line-height: 26px;
     letter-spacing: 0%;

@@ -1,13 +1,13 @@
 <template>
     <div class="industry-Talent-page">
         <listPage :pageData="pageData">
-            <template #content="{ dataSource, paginationConfig }">
+            <template #content="{ dataSource, paginationConfig, handleTablePaginationChange }">
                 <div class="results-grid content-section">
                     <TalentProfileCard v-for="item in dataSource" :key="item.id" :talent="item" @handleDetail="viewDetails"/>
                 </div>
-            <div class="pagination-wrapper">
-                <a-pagination size="small" v-model:current="paginationConfig.current" v-bind="paginationConfig" show-quick-jumper :total="dataSource.length" @change="onChange" />
-          </div>
+                <div class="pagination-wrapper">
+                    <a-pagination size="small" v-model:current="paginationConfig.current" v-bind="paginationConfig" show-quick-jumper @change="(p) => handleChagePage(p, handleTablePaginationChange, paginationConfig)" />
+                </div>
             </template>
         </listPage>
     </div>
@@ -35,7 +35,16 @@ const pageData = ref({
     showBanner: true,
     listPageisPadding: false
 })
-
+const handleChagePage = (page, handleTablePaginationChange, paginationConfig) => {
+    window.scrollTo({
+        top: 400,
+        behavior: 'smooth'
+    });
+    handleTablePaginationChange({
+        current: page,
+        pageSize: paginationConfig.pageSize
+    });
+}
 function viewDetails({ id }) {
     router.push(`/demands/TalentDetailPage/${id}`);
 };

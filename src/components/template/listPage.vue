@@ -53,7 +53,7 @@
             </a-button>
         </div>
         
-        <slot name="content" :dataSource="tableData" :paginationConfig="pagination">
+        <slot name="content" :dataSource="tableData" :paginationConfig="pagination" :handleTablePaginationChange="handleTablePaginationChange">
             <div class="results-table-section">
                 <!-- VXE-GRID REPLACEMENT -->
                 <vxe-grid

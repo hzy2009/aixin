@@ -18,7 +18,7 @@
               :news="newsItem"
             />
             <div class="pagination-wrapper">
-              <a-pagination size="small" v-model:current="pagination.current" v-bind="pagination" :show-size-changer="false" show-quick-jumper  @change="handleTablePaginationChange" />
+              <a-pagination size="small" v-model:current="pagination.current" v-bind="pagination" :show-size-changer="false" show-quick-jumper  @change="handlePageChange" />
             </div>
           </div>
           <div v-else class="list-empty-placeholder">
@@ -54,16 +54,23 @@ import HomeHeroSection from '@/views/home/components/HomeHeroSection.vue';
 const url = {
     list: '/apm/apmNews/list/front',
 }
-
+const pageSize = 5
 const {
     isLoading,
     tableData,          
     pagination,       
-    handleTablePaginationChange
+    handleTablePaginationChange,
 } = useUserDemandList({
     url: url,
+    initialPageSize: pageSize
 });
-
+const handlePageChange = (page) => {
+  const P = {
+    current: page,
+    pageSize: pageSize
+  }
+  handleTablePaginationChange(P);
+}
 const router = useRouter();
 
 const navigateToHotNewsDetail = (newsItem) => {
@@ -128,8 +135,8 @@ const navigateToHotNewsDetail = (newsItem) => {
 .page-title-header {
     display: flex;
     align-items: center;
-    margin-bottom: @spacing-md;
-    margin-top: @spacing-md;
+    margin-bottom: 20px;
+    margin-top: 20px;
     height: 28px;
 
     .title-decorator-bar {

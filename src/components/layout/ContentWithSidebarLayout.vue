@@ -20,7 +20,7 @@
 
 .content-with-sidebar-layout {
   background-color: @background-color-light-gray; // Overall page background
-  padding: @spacing-lg 0 @spacing-xxl 0; // Top and bottom padding for the whole page
+  // padding: @spacing-lg 0 @spacing-xxl 0; // Top and bottom padding for the whole page
 }
 
 .layout-container {

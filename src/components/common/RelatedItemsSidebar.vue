@@ -1,6 +1,6 @@
 <template>
   <div class="related-items-sidebar">
-    <h3 class="sidebar-title">{{ title }}</h3>
+    <div class="sidebar-title">{{ title }}</div>
     <div v-if="isLoading" class="sidebar-loading">
       <a-spin />
     </div>
@@ -71,8 +71,7 @@ const onItemClick = (item) => {
   font-size: 17px;
   font-weight: 600;
   color: #000000;
-  margin-bottom: @spacing-md;
-  padding-bottom: @spacing-sm;
+  margin-bottom: 16px;
   font-family: PingFang SC;
   font-weight: 400;
   font-size: 18px;
@@ -98,7 +97,7 @@ const onItemClick = (item) => {
 .related-item {
   height: 77px;
   padding: @spacing-sm 0;
-  border-bottom: 1px dashed @border-color-light;
+  border-bottom: 1px solid @border-color-light;
   cursor: pointer;
   transition: background-color 0.2s;
   display: flex;
