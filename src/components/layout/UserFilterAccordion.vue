@@ -198,7 +198,7 @@ defineExpose({ resetAllFilters });
 .filter-row {
   display: flex;
   align-items: center;
-  padding: @spacing-md 0;
+  padding: @spacing-md 20px @spacing-md 0;
 
   &__label {
     width: 100px;

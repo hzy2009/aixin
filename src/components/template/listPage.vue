@@ -6,13 +6,13 @@
     </div>
     <div class="list-page container" :class="{ 'listPageisPadding': listPageisPadding }">
         <!-- Components above the table remain the same -->
-        <div class="stats-bar" v-if="userStatCardVisible">
-            <UserStatCard :label="item.label" :value="item.count || 0" v-for="item in stats.list"
+        <!-- <div class="stats-bar" v-if="userStatCardVisible">
+            <UserStatCardSm :label="item.label" :value="item.count || 0" v-for="item in stats.list"
                 :key="item.label + item.count" @click="handleStatClick(item)">
                 <template #icon><img src="@/assets/images/user_center/icon-pending.png" alt="未响应" /></template>
-            </UserStatCard>
-        </div>
-
+            </UserStatCardSm>
+        </div> -->
+        <UserStatCardSm :stats=stats.list @statsChanged="(item) => handleStatClick(item)"></UserStatCardSm>
         <UserFilterAccordion :filter-groups="filterConfigForPage" :initial-filters="currentFilters" v-if="filterConfigForPage && filterConfigForPage.length > 0"
             @filters-changed="handleFiltersChange" class="filter-accordion-section" ref="userFilterAccordionRef" />
 
@@ -86,7 +86,7 @@ import { SearchOutlined, DeleteOutlined } from '@ant-design/icons-vue';
 
 // Your components and hooks remain the same
 import HomeHeroSection from '@/views/home/components/HomeHeroSection.vue';
-import UserStatCard from '@/components/layout/UserStatCard.vue';
+import UserStatCardSm from '@/components/layout/UserStatCardSm.vue';
 import UserFilterAccordion from '@/components/layout/UserFilterAccordion.vue';
 import MultiDateRangePickerGroup from '@/components/layout/MultiDateRangePickerGroup.vue';
 import { useUserDemandList } from './hooks/useUserDemandList.js';
