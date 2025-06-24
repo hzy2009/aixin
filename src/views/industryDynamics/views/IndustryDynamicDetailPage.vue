@@ -24,8 +24,7 @@
               <img :src="getImgUrl(formModel.imageUrl)" :alt="formModel.title" class="article-banner-img"/>
             </div>
 
-            <div class="article-body-content rich-text-format" >
-              {{ formModel.content }}
+            <div class="article-body-content rich-text-format" v-html="formModel.content">
             </div>
 
             <div class="article-navigation-links">
