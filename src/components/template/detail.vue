@@ -74,7 +74,7 @@
 				<!-- Action Buttons (remain unchanged) -->
 				<div class="page-actions-footer">
 					<slot name="actions">
-						<a-button @click="handleDefaultCancel" class="action-button cancel-button" v-if="props.isUseBack">返回</a-button>
+						<a-button @click="handleDefaultCancel" class="action-button cancel-button" v-if="isUseBack">返回</a-button>
 						<a-button v-for="(item, i) in actionNotes" :key="i" class="action-button cancel-button" @click="handleActionNoteClick(item)" :type="item.type">{{ item.title }}</a-button>
 						<a-button type="primary" danger @click="handleDefaultSubmit" v-if='canSubmit'
 							class="action-button submit-button">{{ actionNote }}</a-button>
@@ -121,7 +121,7 @@ const {
 	showLogList = true, showPageTitle = true, listPath, actionNote='一键敲门',
 	actionNotes = [], statusTrackingTitle, isUseBack = true, localeGetDetail = null
 } = props.pageData;
-
+console.log('props.pageData', isUseBack);
 const baseFormConfigs = ref(formConfigs);
 const emit = defineEmits(['goBack', 'cancel', 'submit']);
 const handleformConfigsAfter = (data) => {
@@ -238,6 +238,13 @@ defineExpose({ isCreating, handleToDetail, fetchDemandDetail });
 	align-items: center;
 	margin-bottom: @spacing-md;
 
+	.title-decorator-bar {
+		width: 4px;
+		height: 20px;
+		background-color: @primary-color;
+		margin-right: @spacing-sm;
+	}
+
 	.page-main-heading {
 		font-size: 18px;
 		font-weight: 500;
@@ -263,6 +270,7 @@ defineExpose({ isCreating, handleToDetail, fetchDemandDetail });
 		margin: 0;
 		display: inline-block;
 		position: relative;
+
 		&::after {
 			content: '';
 			display: block;
@@ -278,69 +286,162 @@ defineExpose({ isCreating, handleToDetail, fetchDemandDetail });
 }
 
 .basic-info-grid {
+	// display: grid;
+	// grid-template-columns: 1fr; // Default to single column
 	gap: @spacing-sm @spacing-lg;
 	font-size: 14px;
+
+	// If you want a two-column layout for basic info sometimes for larger screens:
+	@media (min-width: 768px) {
+		// Example breakpoint
+		// By default, items take 1fr. If span=2, it takes 2fr (full width on 2-col grid)
+		// This requires items to specify their span if they need to be full width.
+		// For now, let's assume a dynamic grid based on item.span or a fixed 2-column layout.
+		// To force a 2-column layout where items with span=1 take half:
+		// grid-template-columns: repeat(2, 1fr);
+	}
+
 
 	.info-grid-item {
 		display: flex;
 		padding: @spacing-md 0;
+		// line-height: 1.6;
 		font-family: PingFang SC;
 		font-weight: 400;
 		font-size: 14px;
 		line-height: 22px;
 		letter-spacing: 0%;
 	}
+
 	.info-grid-label {
+		// font-family: PingFang SC;
+		// font-weight: 400;
+		// font-size: 14px;
+		// line-height: 22px;
+		// letter-spacing: 0%;
 		display: flex;
 		justify-content: right;
     	align-items: center;
 		color: @text-color-secondary;
 		margin-right: @spacing-xs;
 		white-space: nowrap;
-		min-width: 120px;
+		min-width: 120px; // Adjust as needed for your longest labels
 		text-align: right;
 	}
+
 	.info-grid-value {
 		color: #272A30;
 		word-break: break-word;
 		flex: 1;
+		&.requester-id-value {
+			background-color: #F7F8FA;
+			padding: 2px 8px;
+			border-radius: @border-radius-sm;
+		}
 	}
 }
 
 .custom-detail-table {
 	margin-top: @spacing-xs;
 
-	// Targeting vxe-table classes now
-	:deep(.vxe-header--column) {
+	:deep(.ant-table-thead > tr > th) {
 		background-color: #FAFAFA;
 		color: @text-color-base;
 		font-weight: 500;
 		font-size: 13px;
-		text-align: left;
-		.vxe-cell {
-			padding: 10px 8px;
-		}
+		padding: 10px 8px;
+		text-align: left; // Ensure headers align left by default
 	}
-	:deep(.vxe-body--column) {
+
+	:deep(.ant-table-tbody > tr > td) {
 		color: @text-color-secondary;
 		font-size: 13px;
+		padding: 10px 8px;
 		word-break: break-all;
-		.vxe-cell {
-			padding: 10px 8px;
-		}
+	}
+
+	:deep(.ant-table-bordered .ant-table-container) {
+		border-color: @border-color-light !important;
+	}
+
+	:deep(.ant-table-cell) {
+		border-color: @border-color-light !important;
 	}
 }
 
-// All other styles remain the same
 .status-steps {
-    // ...
+	margin: @spacing-lg 0 @spacing-xl 0;
+	padding: 0 @spacing-xs; // Reduced horizontal padding a bit
+
+	:deep(.ant-steps-item-title) {
+		font-size: 13px;
+		font-weight: 400;
+	}
+
+	:deep(.ant-steps-item-description) {
+		font-size: 12px;
+		color: @text-color-tertiary;
+	}
+
+	:deep(.ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon .ant-steps-icon-dot),
+	:deep(.ant-steps-item-process .ant-steps-item-icon > .ant-steps-icon .ant-steps-icon-dot) {
+		background: @primary-color;
+	}
+
+	:deep(.ant-steps-item-wait .ant-steps-item-icon > .ant-steps-icon .ant-steps-icon-dot) {
+		background: #D9D9D9;
+	}
+
+	// :deep(.ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-tail::after),
+	// :deep(.ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-tail::after) {
+	// 	// Also color tail for current process
+	// 	background-color: @primary-color;
+	// }
+	:deep(.ant-steps-item-finish>.ant-steps-item-container>.ant-steps-item-tail::after) {
+		background-color: @primary-color;
+	}
 }
+
+.status-history-table {
+	// No specific overrides needed beyond .custom-detail-table for now
+}
+
 .page-actions-footer {
-    // ...
+	display: flex;
+	justify-content: flex-end;
+	margin-top: @spacing-xl;
+	padding-top: @spacing-lg;
+	// border-top: 1px solid @border-color-light;
 }
+
 .action-button {
-    // ...
+	min-width: 88px;
+	height: 36px;
+	font-size: 14px;
+	border-radius: @border-radius-sm;
+	margin-right: @spacing-md;
+	&.cancel-button {
+		background-color: @background-color-base;
+		border: 1px solid #D9D9D9;
+		color: @text-color-base;
+			&:hover {
+			color: @primary-color;
+			border-color: @primary-color;
+		}
+	}
+
+	&.submit-button {
+		// type="primary" danger for red
+	}
 }
+
+.action-submit-note {
+	text-align: right;
+	margin-top: @spacing-xs;
+	font-size: 12px;
+	color: @text-color-tertiary;
+}
+
 .info-grid-image {
 	max-width: 300px;
 	max-height: 300px;

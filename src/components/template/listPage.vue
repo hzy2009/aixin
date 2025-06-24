@@ -62,6 +62,7 @@
                     :data="tableData"
                     :columns="vxeTableColumns"
                     :loading="isLoading"
+                    resizable
                     border
                     size="medium"
                     :row-config="{ keyField: 'id' }"
