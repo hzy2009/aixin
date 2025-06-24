@@ -5,7 +5,11 @@
   </div>
   <ContentWithSidebarLayout>
     <template #main>
-      <detail :pageData="pageData" @goBack="goBack"></detail>
+       <detail :pageData="pageData" @goBack="goBack" ref="detailRef">
+          <template #materialVoList="{ dataSource }">
+            <materialVoList :data="dataSource.materialVoList"></materialVoList>
+          </template>
+        </detail>
     </template>
     <template #sidebar>
       <RelatedItemsSidebar title="其他" :items="relatedEvents" :is-loading="isLoadingRelated" empty-description="暂无其他推荐"
@@ -22,6 +26,7 @@ import { useAuthStore } from '@/store/authStore';
 import RelatedItemsSidebar from '@/components/common/RelatedItemsSidebar.vue'; // Adjust path if needed
 import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue'; // Adjust path if needed
 import { BUSINESS_REF_LIST, TENANT_REF_LIST} from '@/utils/const';
+import materialVoList from '@/views/user_center/views/publications/DomesticSourcing/components/materialVoList.vue'
 
 const authStore = useAuthStore();
 
@@ -37,8 +42,9 @@ const formConfigs = [
   { label: '需求提出方', field: 'tenantName', span: 24, },
   { label: '提出需求日期', field: 'createTime', span: 24, fieldType: 'date' },
   { label: '计划完成日期', field: 'expireDate', span: 24, fieldType: 'date' },
-  { label: '寻源结果', field: 'statusName', span: 24 },
+  { label: '寻源结果', field: 'materialVoList', span: 24 , fieldType: 'slot'},
   { label: '贸易商/晶链慧采：', field: 'xxx', span: 24 },
+  { label: '寻源结果', field: 'statusName', span: 24 },
 ]
 
 // const statusHistoryColumns = [
@@ -74,23 +80,23 @@ const pageData = reactive({
   pageTitle,
   queryAfter,
   showLogList: false,
-  tableSections: [
-    {
-      title: '物料清单',
-      groupCode: 'materialList',
-      columns: [
-        { title: '序号', type: 'seq', key: 'index', width: 60, align: 'center', align: 'center' },
-        { title: '爱芯享单据号', field: 'businessCode', key: 'businessCode' },
-      ]
-    },
-    {
-      ...TENANT_REF_LIST,
-      title: '已寻到厂商',
-    },
-    {
-      ...BUSINESS_REF_LIST
-    }
-  ],
+  // tableSections: [
+  //   {
+  //     title: '物料清单',
+  //     groupCode: 'materialList',
+  //     columns: [
+  //       { title: '序号', type: 'seq', key: 'index', width: 60, align: 'center', align: 'center' },
+  //       { title: '爱芯享单据号', field: 'businessCode', key: 'businessCode' },
+  //     ]
+  //   },
+  //   {
+  //     ...TENANT_REF_LIST,
+  //     title: '已寻到厂商',
+  //   },
+  //   {
+  //     ...BUSINESS_REF_LIST
+  //   }
+  // ],
 })
 
 const goBack = () => {
