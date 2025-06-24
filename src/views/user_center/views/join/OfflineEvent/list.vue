@@ -10,33 +10,18 @@ import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 import { useAuthStore } from '@/store/authStore';
-
+import {OFFLINE_EVENT_COLUMNS} from '@/utils/const';
 const router = useRouter();
 
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
-    { id: 'productType', label: '产品类别', maxVisibleWithoutMore: 7, dictKey: 'product_type' },
-    { id: 'projectType', label: '项目分类', maxVisibleWithoutMore: 7, dictKey: 'project_type' },
-    { id: 'statusCode', label: '需求状态', maxVisibleWithoutMore: 7, dictKey: 'activity_status' }
+    { id: '', label: '活动类型', maxVisibleWithoutMore: 7, dictKey: 'activity_type' },
 ]);
 
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = reactive([
-    { title: '序号', type: 'seq', key: 'index', textAlign: 'center', width: '60px' },
-    { title: '单号', field: 'code', key: 'code', ellipsis: true, width: '120px' },
-    { title: '发起人', field: 'tenantName', key: 'tenantName', ellipsis: true, width: '120px' },
-    { title: '活动名称', field: 'activityName', key: 'activityName', align: 'center' }, // This should be 'sourcingType' from mock
-    { title: '类型名称', field: 'activityTypeName', key: 'activityTypeName', align: 'center' }, // This should be 'sourcingType' from mock
-    { title: '规模', field: 'registerLimit', key: 'registerLimit', align: 'center' }, // This should be 'sourcingType' from mock
-    { title: '活动日期', field: 'activityDate', key: 'activityDate', align: 'center' }, // This should be 'sourcingType' from mock
-    { title: '活动区域', field: 'activityArea', key: 'activityArea', align: 'center' }, // This should be 'sourcingType' from mock
-    { title: '活动地址', field: 'activityAddress', key: 'activityAddress', align: 'center' }, // This should be 'sourcingType' from mock
-    { title: '内容', field: 'description', key: 'description', align: 'center', ellipsis: true }, // This should be 'sourcingType' from mock
-    { title: '需求状态', field: 'statusName', key: 'statusName', align: 'center' }, // Corrected key
-    { title: '需求提出方', field: 'tenantName', key: 'tenantName', align: 'center' },
-    { title: '创建时间', field: 'createTime', key: 'publishDate', align: 'center' },
-    { title: '更新时间', field: 'updateTime', key: 'updateTime', ellipsis: true },
-    { title: '操作', key: 'actions', align: 'center', fixed: 'right' },
+    {type: 'checkbox', width: 40},
+    ...OFFLINE_EVENT_COLUMNS
 ]);
 
 const actions = reactive([
