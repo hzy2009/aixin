@@ -71,12 +71,12 @@ const handleToggleSelection = (parentRecord, { record: itemToToggle, checked }) 
         });
         const newItemForSecondRound = { ...originalItem };
         delete newItemForSecondRound.id;
-        delete newItemForSecondRound.priceIncludingTax;
-        delete newItemForSecondRound.priceExcludingTax;
-        delete newItemForSecondRound.deliveryDate;
-        delete newItemForSecondRound.paymentTermsName;
-        delete newItemForSecondRound.guaranteePeriod;
-        delete newItemForSecondRound.guaranteeDesc;
+        // delete newItemForSecondRound.priceIncludingTax;
+        // delete newItemForSecondRound.priceExcludingTax;
+        // delete newItemForSecondRound.deliveryDate;
+        // delete newItemForSecondRound.paymentTermsName;
+        // delete newItemForSecondRound.guaranteePeriod;
+        // delete newItemForSecondRound.guaranteeDesc;
 
         newItemForSecondRound.isSelected = 0;
         newItemForSecondRound.isWinner = 0;
