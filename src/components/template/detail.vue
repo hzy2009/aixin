@@ -40,7 +40,7 @@
 							<span class="info-grid-label">{{ tableSection.title }}：</span>
 							<div class="flex1">
 								<vxe-grid
-									:columns="transformToVxeColumns(tableSection.columns)"
+									:columns="tableSection.columns|| []"
 									:data="formModel[`${tableSection.groupCode}`] || []"
 									:row-config="{ keyField: tableSection.rowKey || 'id' }"
 									border
@@ -62,7 +62,7 @@
 					<!-- Status History Table - CONVERTED TO VXE-GRID -->
 					<vxe-grid
 						v-if="formModel.logList && formModel.logList.length > 0"
-						:columns="transformToVxeColumns(statusHistoryColumns)"
+						:columns="statusHistoryColumns || []"
 						:data="formModel.logList"
 						:row-config="{ keyField: 'id' }"
 						border
@@ -102,26 +102,6 @@ import operationResultPage from './operationResultPage.vue';
 import CustomProgressTimeline from '@/components/layout/CustomProgressTimeline.vue';
 import { getFileAccessHttpUrl } from '@/utils/index';
 
-// --- NEW HELPER FUNCTION for column conversion ---
-/**
- * Converts Ant Design table columns to Vxe-table format.
- * - Replaces 'dataIndex' with 'field'.
- * - Replaces a column with dataIndex:'index' with a vxe-table sequence column.
- * @param {Array} antColumns - The original array of columns for a-table.
- * @returns {Array} The converted array of columns for vxe-grid.
- */
-const transformToVxeColumns = (antColumns) => {
-    if (!antColumns) return [];
-    return antColumns.map(col => {
-        if (col.dataIndex === 'index') {
-            return { type: 'seq', title: col.title || '序号', width: col.width || 60 };
-        }
-        return {
-            ...col,
-            field: col.dataIndex, // The main change: dataIndex -> field
-        };
-    });
-};
 
 // --- ALL OTHER SCRIPT LOGIC IS UNCHANGED ---
 const route = useRoute();

@@ -73,12 +73,12 @@ const columns = [
     },
     {
       title: '爱芯享单据号',
-      field: 'materialCode', // dataIndex -> field
+      field: 'materialCode', // field -> field
       width: 120,
     },
 	{
       title: '操作',
-      field: 'action', // dataIndex -> field
+      field: 'action', // field -> field
       width: 150,
 	  slots: {
         default: ({ row }) => { // customRender -> slots.default, {record} -> {row}

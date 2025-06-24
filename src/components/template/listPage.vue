@@ -92,6 +92,7 @@ import MultiDateRangePickerGroup from '@/components/layout/MultiDateRangePickerG
 import { useUserDemandList } from './hooks/useUserDemandList.js';
 import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore';
+import { selectOptions as getDictOptions, formatDate } from '@/utils/index';
 
 const authStore = useAuthStore();
 const modalStore = useModalStore();
@@ -129,23 +130,29 @@ filterConfigForPage && filterConfigForPage.forEach(item => {
 
 const multiDateRangePickerRef = ref();
 const selectedRowKeys = ref([]);
+console.log('getDictOptions', getDictOptions);
 
 // 1. Adapt columns for vxe-table
 const vxeTableColumns = computed(() => {
     const columns = [
-        { type: 'checkbox', width: 50, fixed: 'left' },
+        // { type: 'checkbox', width: 50, fixed: 'left' },
     ];
     tableColumns.forEach(col => {
-        if (col.dataIndex === 'index') {
-            columns.push({ type: 'seq', title: '序号', width: 60 });
-            return;
-        }
         const vxeCol = {
-            field: col.dataIndex,
-            title: col.title,
-            width: col.width,
+            ...col
         };
-        if (col.key === 'statusCode') {
+        if (col.dictKey && col.fieldType === 'select') {
+            vxeCol.formatter = ({ cellValue }) => {
+                console.log('cellValue', cellValue);
+                console.log('cellValue', getDictOptions(col.dictKey));
+                return getDictOptions(col.dictKey).find(option => option.value === cellValue)?.label;
+            }
+        } else if (col.fieldType === 'date') {
+            vxeCol.formatter = ({ cellValue }) => {
+                return cellValue ? formatDate(cellValue) : '-';
+            }
+        }
+        else if (col.key === 'statusCode') {
             vxeCol.slots = {
                 default: ({ row }) => (
                     <ATag color={getStatusTagColor(row.sourcingStatus)} class="status-tag">

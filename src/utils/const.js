@@ -1,22 +1,21 @@
-import {selectOptions} from '@/utils/index';
+import { selectOptions, formatDate } from '@/utils/index';
 
 export const BUSINESS_REF_LIST = {
     title: '关联业务',
     groupCode: 'businessRefList',
     columns: [
-    { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
-    { title: '单据类型', dataIndex: 'refBusinessType', key: 'materialName', align: 'center',
-        customRender: ({record}) => {
-        let label = ''
-        selectOptions('business_type').forEach(item => {
-            if (item.value == record.refBusinessType) {
-            label = item.label;
+        { title: '序号', type: 'seq', width: 74, align: 'center' },
+        { 
+            title: '单据类型', 
+            field: 'refBusinessType', 
+            align: 'center',
+            // 使用 formatter 进行简单的值-标签转换，更符合 vxe-table 的用法
+            formatter: ({ cellValue }) => {
+                const option = selectOptions('business_type').find(item => item.value == cellValue);
+                return option ? option.label : '';
             }
-        })
-        return label;
-        }
         },
-    { title: '单据号', dataIndex: 'refBusinessCode', key: 'materialCount', align: 'center' },
+        { title: '单据号', field: 'refBusinessCode', align: 'center' },
     ]
 }
 
@@ -24,61 +23,76 @@ export const REGISTER_LIST = {
     title: '参与者',
     groupCode: 'registerList',
     columns: [
-    { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center' },
-    { title: '类型', dataIndex: 'registerType', key: 'registerType',
-        customRender: ({record}) => {
-        let label = ''
-        selectOptions('register_type').forEach(item => {
-            if (item.value == record.registerType) {
-            label = item.label;
+        { title: '序号', type: 'seq', width: 74, align: 'center' },
+        { 
+            title: '类型', 
+            field: 'registerType',
+            // 使用 formatter 进行转换
+            formatter: ({ cellValue }) => {
+                const option = selectOptions('register_type').find(item => item.value == cellValue);
+                return option ? option.label : '';
             }
-        })
-        return label;
-        }
         },
-    { title: '编号', dataIndex: 'registerUserWorkNo', key: 'registerUserWorkNo' },
+        { title: '编号', field: 'registerUserWorkNo', align: 'center' },
     ]
 }
 
 export const TENANT_REF_LIST = {
     groupCode: 'tenantRefList',
     columns: [
-    { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
-    { title: '寻源承接方', dataIndex: 'refUserName', key: 'materialName', align: 'center' },
+        { title: '序号', type: 'seq', width: 74, align: 'center' },
+        { title: '寻源承接方', field: 'refUserName', align: 'center' },
     ]
 }
 
 export const STATUS_HISTORY_COLUMNS = [
-    { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center' },
-    { title: '状态', dataIndex: 'operateName', key: 'operateName'},
-    { title: '完成日期', dataIndex: 'createTime', key: 'createTime' },
-    { title: '备注', dataIndex: 'remark', key: 'remark' },
+    { title: '序号', type: 'seq', width: 74, align: 'center' },
+    { title: '状态', field: 'operateName', align: 'center' },
+    { title: '完成日期', field: 'createTime', align: 'center' },
+    { title: '备注', field: 'remark', align: 'center' },
 ]
 
 export const DOMESTIC_SOURCING_COLUMNS = [
-  { title: '序号', dataIndex: 'index', key: 'index', width: '60px' },
-  { title: '寻源单号', dataIndex: 'code', key: 'code', width: '120px' },
-  { title: '需求方', dataIndex: 'tenantName', key: 'tenantName', },
-  { title: '创建日期', dataIndex: 'createTime', key: 'createTime', },
-  { title: '期望完成日期', dataIndex: 'expireDate', key: 'expireDate', width: '120px' },
-  { title: '需求状态', dataIndex: 'statusName', key: 'statusName', width: '80px' },
-  { title: '操作', key: 'actions', width: '10%', align: 'center', fixed: 'right' },
+    { title: '序号', type: 'seq', width: 74, align: 'center' },
+    { title: '寻源单号', field: 'code', align: 'center', width: 180 },
+    { title: '需求者', field: 'createUserName', align: 'center' },
+    { title: '需求提出日期', field: 'createTime', align: 'center', fieldType: 'date' },
+    { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date'},
+    { title: '爱芯享单据号', field: 'xx', align: 'center' },
+    { title: '期望完成日期', field: 'xx', align: 'center' },
+    { title: '需求状态', field: 'statusName', align: 'center' },
+    // 操作列通常没有 field，通过插槽（slot）来定义其内容
+    { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
 ]
 
-export const OEM_PARTS_COLUMNS = [
-    
+export const OEM_PARTS_SOURCING_COLUMNS = [
+    { title: '序号', type: 'seq', width: 74, align: 'center' },
+    { title: '寻源单号', field: 'code', align: 'center', width: 180 },
+    { title: '需求者', field: 'createUserName', align: 'center' },
+    { title: '需求提出日期', field: 'createTime', align: 'center', fieldType: 'date'},
+    { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date'},
+    { title: '爱芯享单据号', field: 'xx', align: 'center' },
+    { title: '期望完成日期', field: 'xx', align: 'center' },
+    { title: '需求状态', field: 'statusName', align: 'center' },
+    // 操作列通常没有 field，通过插槽（slot）来定义其内容
+    { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
 ]
-// .map(item => ({ ...item, align: 'center', resizable: true }))
 
 export const OFFLINE_EVENT_COLUMNS = [
-    
-]
 
+]
 
 export const PUBLIC_RELATIONS_COLUMNS = [
-    
+    { title: '序号', type: 'seq', width: 74, align: 'center' },
+    { title: '研发攻关单号', field: 'code', align: 'center', width: 180 },
+    { title: '研发攻关类型', field: 'rdType', align: 'center'},
+    { title: '期望匹配周期', field: 'matchPeriodName', align: 'center' },
+    { title: '需求方', field: 'createUserName', align: 'center' },
+    { title: '承接方', field: 'xx', align: 'center' },
+    { title: '需求状态', field: 'statusName', align: 'center' },
+    // 操作列通常没有 field，通过插槽（slot）来定义其内容
+    { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
 ]
-
 
 export const VERIFICATION_COLUMNS = [
     

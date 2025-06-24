@@ -50,7 +50,7 @@ const columns = [
     },
     {
       title: '贸易商',
-      field: 'refUserCode', // dataIndex -> field
+      field: 'refUserCode', // field -> field
       width: 120,
     },
     {

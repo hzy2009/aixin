@@ -22,11 +22,11 @@ const columns = [
     },
     {
       title: '单据类型',
-      field: 'refBusinessTypeName', // dataIndex -> field
+      field: 'refBusinessTypeName', // field -> field
     },
     {
       title: '单据编号',
-      field: 'refBusinessCode', // dataIndex -> field
+      field: 'refBusinessCode', // field -> field
     },
 ]
 </script>

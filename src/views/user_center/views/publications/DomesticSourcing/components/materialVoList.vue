@@ -40,7 +40,7 @@ const columns = [
     },
     {
       title: '爱芯享单据号',
-      field: 'materialCode', // dataIndex -> field
+      field: 'materialCode', // field -> field
     },
 ]
 </script>

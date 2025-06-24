@@ -61,10 +61,10 @@ const pageData = reactive({
   //     title: '物料清单',
   //     groupCode: 'materialList',
   //     columns: [
-  //       { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
-  //       { title: '物料名称', dataIndex: 'materialName', key: 'materialName' },
-  //       { title: '物料数量', dataIndex: 'materialCount', key: 'materialCount' },
-  //       { title: '物料单位', dataIndex: 'materialUnit', key: 'materialUnit' },
+  //       { title: '序号', type: 'seq', key: 'index', width: 60, align: 'center', align: 'center' },
+  //       { title: '物料名称', field: 'materialName', key: 'materialName' },
+  //       { title: '物料数量', field: 'materialCount', key: 'materialCount' },
+  //       { title: '物料单位', field: 'materialUnit', key: 'materialUnit' },
   //     ]
   //   },
   //   {

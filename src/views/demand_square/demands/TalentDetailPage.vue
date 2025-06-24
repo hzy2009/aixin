@@ -84,12 +84,12 @@ const columns = [
 	},
   {
     title: '荣誉',
-    field: 'achievement', // dataIndex -> field
+    field: 'achievement', // field -> field
     key: 'achievement',
   },
   {
     title: '取得荣誉年份',
-    field: 'year', // dataIndex -> field
+    field: 'year', // field -> field
     key: 'year',
   },
 ]

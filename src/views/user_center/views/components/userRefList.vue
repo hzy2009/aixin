@@ -21,7 +21,7 @@ const columns = [
     },
      {
       title: '已寻到厂商',
-      field: 'refUserName', // dataIndex -> field
+      field: 'refUserName', // field -> field
     },
 ]
 </script>

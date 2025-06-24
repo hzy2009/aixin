@@ -42,10 +42,10 @@ const formConfigs = [
 ]
 
 // const statusHistoryColumns = [
-//   { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center' },
-//   { title: '状态', dataIndex: 'operateName', key: 'operateName' },
-//   { title: '完成日期', dataIndex: 'createTime', key: 'createTime' },
-//   { title: '备注', dataIndex: 'remark', key: 'remark' },
+//   { title: '序号', type: 'seq', key: 'index', width: 60, align: 'center' },
+//   { title: '状态', field: 'operateName', key: 'operateName' },
+//   { title: '完成日期', field: 'createTime', key: 'createTime' },
+//   { title: '备注', field: 'remark', key: 'remark' },
 // ]
 
 // const demandTypeDisplayName = '国产替代寻源需求';
@@ -79,8 +79,8 @@ const pageData = reactive({
       title: '物料清单',
       groupCode: 'materialList',
       columns: [
-        { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', align: 'center' },
-        { title: '爱芯享单据号', dataIndex: 'businessCode', key: 'businessCode' },
+        { title: '序号', type: 'seq', key: 'index', width: 60, align: 'center', align: 'center' },
+        { title: '爱芯享单据号', field: 'businessCode', key: 'businessCode' },
       ]
     },
     {
