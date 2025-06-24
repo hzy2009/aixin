@@ -1,5 +1,14 @@
 <template>
-  <a-config-provider :locale="zhCN">
+  <a-config-provider
+    :locale="zhCN"
+     :theme="{
+      token: {
+        colorPrimary: '#BC1A2C',
+        borderRadius: 4,
+        colorError: '#BC1A2C',
+      },
+    }"
+    >
     <router-view />
   </a-config-provider>
    <LoginPromptModal

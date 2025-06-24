@@ -1,0 +1,290 @@
+/**
+ * vxe-table / vxe-grid 全局主题覆盖文件
+ * 主题色: #BC1A2C
+ *
+ * 使用方法:
+ * 1. 将此文件保存到项目中，例如 src/assets/styles/vxe-theme.less
+ * 2. 在 main.js 中，先引入 vxe-table 的官方 CSS，再引入此文件。
+ *    import 'vxe-table/lib/style.css';
+ *    import '@/assets/styles/vxe-theme.less';
+ */
+
+// ===================================================================
+// 1. 主题变量定义
+// ===================================================================
+@primary-color: #BC1A2C;
+@primary-color-hover: lighten(@primary-color, 8%); // 悬停时更亮的颜色
+@primary-color-active: darken(@primary-color, 8%); // 点击时更深的颜色
+@primary-color-light: fade(@primary-color, 10%); // 用于背景或阴影的浅色
+
+// 文本颜色
+@text-color-base: #0D162A; // 主要文字，如表头
+@text-color-secondary: #656C74; // 次要文字，如表体
+@text-color-placeholder: #c0c4cc; // 输入框占位符
+
+// 背景颜色
+@bg-color-header: #F5F5F5; // 表头背景
+@bg-color-body: #ffffff; // 表体背景
+@bg-color-hover: #fafafa; // 行悬停背景
+@bg-color-stripe: #F9F9F9; // 斑马条纹背景
+
+// 边框颜色
+@border-color-base: #e8eaec;
+
+
+// ===================================================================
+// 2. 表格全局和容器
+// ===================================================================
+.vxe-grid,
+.vxe-table {
+    font-family: 'PingFang SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    // 表格外边框
+    &.vxe-table--border-line {
+        border-color: @border-color-base;
+    }
+}
+
+
+// ===================================================================
+// 3. 表头 (Header)
+// ===================================================================
+.vxe-header--column {
+    background-color: @bg-color-header;
+    text-align: center; // 表头默认居中对齐
+
+    .vxe-cell {
+        font-weight: 500;
+        font-size: 13px;
+        color: @text-color-base;
+        padding: 0 10px;
+    }
+}
+
+
+// ===================================================================
+// 4. 表体 (Body)
+// ===================================================================
+.vxe-body--column {
+    background-color: @bg-color-body;
+    text-align: center; // 表体默认居中对齐
+    border-color: @border-color-base;
+
+    .vxe-cell {
+        font-size: 13px;
+        color: @text-color-secondary;
+        padding: 10px; // 确保单元格有足够的内边距
+    }
+}
+
+// --- 表体行状态 ---
+
+// 行悬停 (Hover)
+.vxe-body--row:hover>.vxe-body--column {
+    background-color: @bg-color-hover;
+}
+
+// 斑马条纹 (Stripe)
+.vxe-body--row.row--stripe>.vxe-body--column {
+    background-color: @bg-color-stripe;
+}
+
+// 当前选中行 (Current Row)
+.vxe-body--row.row--current>.vxe-body--column {
+    background-color: @primary-color-light;
+}
+
+// 可展开行的单元格
+.vxe-body--expanded-cell {
+    padding: 16px;
+    background-color: #fdfdfd;
+    border-bottom: 1px solid @border-color-base;
+}
+
+
+// ===================================================================
+// 5. 交互组件
+// ===================================================================
+
+// --- 复选框 (Checkbox) ---
+.vxe-checkbox {
+
+    // 未选中时，鼠标悬停时的边框
+    &:not(.is--disabled):hover .vxe-checkbox--icon {
+        border-color: @primary-color;
+    }
+
+    // 选中和半选状态
+    &.is--checked,
+    &.is--indeterminate {
+        .vxe-checkbox--icon {
+            background-color: @primary-color;
+            border-color: @primary-color;
+
+            // 内部的 "✓" 和 "-" 符号
+            &::after {
+                border-color: #fff;
+            }
+        }
+    }
+
+    // 禁用状态
+    &.is--disabled.is--checked .vxe-checkbox--icon {
+        background-color: lighten(@primary-color, 30%);
+        border-color: lighten(@primary-color, 30%);
+    }
+
+    // 获取焦点时的外发光效果
+    &.is--focus .vxe-checkbox--icon {
+        box-shadow: 0 0 0 2px @primary-color-light;
+    }
+}
+
+// --- 单选框 (Radio) ---
+.vxe-radio {
+    &:not(.is--disabled):hover .vxe-radio--icon {
+        border-color: @primary-color;
+    }
+
+    &.is--checked .vxe-radio--icon {
+        border-color: @primary-color;
+
+        // 中间的圆点
+        .vxe-radio--dot {
+            background-color: @primary-color;
+        }
+    }
+
+    &.is--focus .vxe-radio--icon {
+        box-shadow: 0 0 0 2px @primary-color-light;
+    }
+}
+
+// --- 按钮 (Button) ---
+.vxe-button.vxe-button--primary {
+    background-color: @primary-color;
+    border-color: @primary-color;
+
+    &:not(.is--disabled):hover {
+        background-color: @primary-color-hover;
+        border-color: @primary-color-hover;
+    }
+
+    &:not(.is--disabled):active {
+        background-color: @primary-color-active;
+        border-color: @primary-color-active;
+    }
+}
+
+// --- 输入框/选择器 (Input/Select) ---
+.vxe-input--inner,
+.vxe-select--panel {
+    &:focus {
+        border-color: @primary-color;
+        box-shadow: 0 0 0 2px @primary-color-light;
+    }
+}
+
+.vxe-select-option.is--hover,
+.vxe-select-option.is--current {
+    color: @primary-color;
+    background-color: @primary-color-light;
+}
+
+
+// ===================================================================
+// 6. 其他组件
+// ===================================================================
+
+// --- 分页器 (Pager) ---
+.vxe-pager {
+
+    .vxe-pager--num-btn.is--active,
+    .vxe-pager--current-btn {
+        background-color: @primary-color;
+        border-color: @primary-color;
+        color: white;
+    }
+
+    .vxe-pager--jump-prev:hover,
+    .vxe-pager--jump-next:hover,
+    .vxe-pager--num-btn:not(.is--disabled):hover,
+    .vxe-pager--prev-btn:not(.is--disabled):hover,
+    .vxe-pager--next-btn:not(.is--disabled):hover {
+        color: @primary-color;
+    }
+}
+
+// --- 加载动画 (Loading) ---
+.vxe-loading {
+    .vxe-loading--spinner::after {
+        // 强制覆盖 vxe-table 的内联样式
+        border-color: @primary-color transparent @primary-color transparent !important;
+    }
+}
+
+// --- 提示 (Tooltip) ---
+.vxe-tooltip--wrapper.theme--dark {
+    background-color: @primary-color;
+
+    .vxe-tooltip--arrow {
+        border-bottom-color: @primary-color;
+    }
+}
+
+/* ==================================
+ * 复选框样式 (Checkbox) - 修正版
+ * ================================== */
+
+// 使用 .vxe-grid 作为父选择器，确保高优先级
+.vxe-grid .vxe-checkbox {
+
+    // --- 状态 1: 选中 (Checked) 和 半选 (Indeterminate) ---
+    // 这是最核心的样式，改变勾选后的背景色和边框
+    &.is--checked .vxe-checkbox--icon,
+    &.is--indeterminate .vxe-checkbox--icon {
+        background-color: @primary-color;
+        border-color: @primary-color;
+
+        // 勾选符号 "✓" 和半选符号 "-" 的颜色
+        // vxe-table 用 ::after 伪元素来画这个符号，它的颜色是边框颜色
+        &::after {
+            border-color: #fff; // 在红色背景上，符号必须是白色才能看清
+        }
+    }
+
+    // --- 状态 2: 未选中时，鼠标悬停 (Hover) ---
+    // 当鼠标移到未选中的框上时，边框变为主题色
+    &:not(.is--disabled):not(.is--checked):not(.is--indeterminate):hover .vxe-checkbox--icon {
+        border-color: @primary-color;
+    }
+
+    // --- 状态 3: 获取焦点 (Focus) ---
+    // 点击或用键盘导航到复选框时，出现的外发光效果，替换默认的蓝色光晕
+    &.is--focus .vxe-checkbox--icon {
+        box-shadow: 0 0 0 2px fade(@primary-color, 20%);
+    }
+
+    // --- 状态 4: 禁用 (Disabled) ---
+    // 当复选框是选中状态但被禁用时，显示一个更浅的颜色
+    &.is--disabled.is--checked .vxe-checkbox--icon,
+    &.is--disabled.is--indeterminate .vxe-checkbox--icon {
+        background-color: lighten(@primary-color, 30%);
+        border-color: lighten(@primary-color, 30%);
+    }
+}
+
+.vxe-table--render-default .vxe-cell--checkbox.is--checked,
+.vxe-table--render-default .vxe-cell--checkbox.is--checked .vxe-checkbox--icon,
+.vxe-table--render-default .vxe-cell--checkbox.is--indeterminate,
+.vxe-table--render-default .vxe-cell--checkbox.is--indeterminate .vxe-checkbox--icon {
+    color: @primary-color;
+}
+
+.vxe-table--render-default .vxe-cell--checkbox:not(.is--disabled):hover .vxe-checkbox--icon {
+    color: @primary-color;
+}
+
+:where(.css-dev-only-do-not-override-zk0ajy).ant-btn-link {
+    color: @primary-color;
+}

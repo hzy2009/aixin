@@ -1,0 +1,162 @@
+/**
+ * vxe-table / vxe-grid 全局主题覆盖文件
+ * 主题色: #BC1A2C
+ *
+ * 使用方法:
+ * 1. 将此文件保存到项目中，例如 src/assets/styles/vxe-theme.less
+ * 2. 在 main.js 中，先引入 vxe-table 的官方 CSS，再引入此文件。
+ *    import 'vxe-table/lib/style.css';
+ *    import '@/assets/styles/vxe-theme.less';
+ */
+.vxe-grid,
+.vxe-table {
+  font-family: 'PingFang SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+.vxe-grid.vxe-table--border-line,
+.vxe-table.vxe-table--border-line {
+  border-color: #e8eaec;
+}
+.vxe-header--column {
+  background-color: #F5F5F5;
+  text-align: center;
+}
+.vxe-header--column .vxe-cell {
+  font-weight: 500;
+  font-size: 13px;
+  color: #0D162A;
+  padding: 0 10px;
+}
+.vxe-body--column {
+  background-color: #ffffff;
+  text-align: center;
+  border-color: #e8eaec;
+}
+.vxe-body--column .vxe-cell {
+  font-size: 13px;
+  color: #656C74;
+  padding: 10px;
+}
+.vxe-body--row:hover > .vxe-body--column {
+  background-color: #fafafa;
+}
+.vxe-body--row.row--stripe > .vxe-body--column {
+  background-color: #F9F9F9;
+}
+.vxe-body--row.row--current > .vxe-body--column {
+  background-color: rgba(188, 26, 44, 0.1);
+}
+.vxe-body--expanded-cell {
+  padding: 16px;
+  background-color: #fdfdfd;
+  border-bottom: 1px solid #e8eaec;
+}
+.vxe-checkbox:not(.is--disabled):hover .vxe-checkbox--icon {
+  border-color: #BC1A2C;
+}
+.vxe-checkbox.is--checked .vxe-checkbox--icon,
+.vxe-checkbox.is--indeterminate .vxe-checkbox--icon {
+  background-color: #BC1A2C;
+  border-color: #BC1A2C;
+}
+.vxe-checkbox.is--checked .vxe-checkbox--icon::after,
+.vxe-checkbox.is--indeterminate .vxe-checkbox--icon::after {
+  border-color: #fff;
+}
+.vxe-checkbox.is--disabled.is--checked .vxe-checkbox--icon {
+  background-color: #ee818d;
+  border-color: #ee818d;
+}
+.vxe-checkbox.is--focus .vxe-checkbox--icon {
+  box-shadow: 0 0 0 2px rgba(188, 26, 44, 0.1);
+}
+.vxe-radio:not(.is--disabled):hover .vxe-radio--icon {
+  border-color: #BC1A2C;
+}
+.vxe-radio.is--checked .vxe-radio--icon {
+  border-color: #BC1A2C;
+}
+.vxe-radio.is--checked .vxe-radio--icon .vxe-radio--dot {
+  background-color: #BC1A2C;
+}
+.vxe-radio.is--focus .vxe-radio--icon {
+  box-shadow: 0 0 0 2px rgba(188, 26, 44, 0.1);
+}
+.vxe-button.vxe-button--primary {
+  background-color: #BC1A2C;
+  border-color: #BC1A2C;
+}
+.vxe-button.vxe-button--primary:not(.is--disabled):hover {
+  background-color: #e01f34;
+  border-color: #e01f34;
+}
+.vxe-button.vxe-button--primary:not(.is--disabled):active {
+  background-color: #981524;
+  border-color: #981524;
+}
+.vxe-input--inner:focus,
+.vxe-select--panel:focus {
+  border-color: #BC1A2C;
+  box-shadow: 0 0 0 2px rgba(188, 26, 44, 0.1);
+}
+.vxe-select-option.is--hover,
+.vxe-select-option.is--current {
+  color: #BC1A2C;
+  background-color: rgba(188, 26, 44, 0.1);
+}
+.vxe-pager .vxe-pager--num-btn.is--active,
+.vxe-pager .vxe-pager--current-btn {
+  background-color: #BC1A2C;
+  border-color: #BC1A2C;
+  color: white;
+}
+.vxe-pager .vxe-pager--jump-prev:hover,
+.vxe-pager .vxe-pager--jump-next:hover,
+.vxe-pager .vxe-pager--num-btn:not(.is--disabled):hover,
+.vxe-pager .vxe-pager--prev-btn:not(.is--disabled):hover,
+.vxe-pager .vxe-pager--next-btn:not(.is--disabled):hover {
+  color: #BC1A2C;
+}
+.vxe-loading .vxe-loading--spinner::after {
+  border-color: #BC1A2C transparent #BC1A2C transparent !important;
+}
+.vxe-tooltip--wrapper.theme--dark {
+  background-color: #BC1A2C;
+}
+.vxe-tooltip--wrapper.theme--dark .vxe-tooltip--arrow {
+  border-bottom-color: #BC1A2C;
+}
+/* ==================================
+ * 复选框样式 (Checkbox) - 修正版
+ * ================================== */
+.vxe-grid .vxe-checkbox.is--checked .vxe-checkbox--icon,
+.vxe-grid .vxe-checkbox.is--indeterminate .vxe-checkbox--icon {
+  background-color: #BC1A2C;
+  border-color: #BC1A2C;
+}
+.vxe-grid .vxe-checkbox.is--checked .vxe-checkbox--icon::after,
+.vxe-grid .vxe-checkbox.is--indeterminate .vxe-checkbox--icon::after {
+  border-color: #fff;
+}
+.vxe-grid .vxe-checkbox:not(.is--disabled):not(.is--checked):not(.is--indeterminate):hover .vxe-checkbox--icon {
+  border-color: #BC1A2C;
+}
+.vxe-grid .vxe-checkbox.is--focus .vxe-checkbox--icon {
+  box-shadow: 0 0 0 2px rgba(188, 26, 44, 0.2);
+}
+.vxe-grid .vxe-checkbox.is--disabled.is--checked .vxe-checkbox--icon,
+.vxe-grid .vxe-checkbox.is--disabled.is--indeterminate .vxe-checkbox--icon {
+  background-color: #ee818d;
+  border-color: #ee818d;
+}
+.vxe-table--render-default .vxe-cell--checkbox.is--checked,
+.vxe-table--render-default .vxe-cell--checkbox.is--checked .vxe-checkbox--icon,
+.vxe-table--render-default .vxe-cell--checkbox.is--indeterminate,
+.vxe-table--render-default .vxe-cell--checkbox.is--indeterminate .vxe-checkbox--icon {
+  color: #BC1A2C;
+}
+.vxe-table--render-default .vxe-cell--checkbox:not(.is--disabled):hover .vxe-checkbox--icon {
+  color: #BC1A2C;
+}
+:where(.css-dev-only-do-not-override-zk0ajy).ant-btn-link {
+  color: #BC1A2C;
+}

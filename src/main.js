@@ -14,7 +14,7 @@ import 'ant-design-vue/dist/reset.css'; // Or antd.css / antd.less depending on 
 import 'vxe-pc-ui/lib/style.css'
 import VxeUITable from 'vxe-table'
 import 'vxe-table/lib/style.css'
-
+import '@/assets/styles/vxe-override.less'
 // Optional: For @vueuse/head
 // import { createHead } from '@vueuse/head'
 // const head = createHead()
