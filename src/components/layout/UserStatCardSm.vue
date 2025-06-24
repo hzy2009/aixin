@@ -6,8 +6,10 @@
       class="stat-item"
       @click="$emit('statsChanged', item)"
     >
-      <div class="stat-label">{{ item.label }}</div>
-      <div class="stat-value">{{ item.count || 0 }}</div>
+      <div class="stat-content">
+        <div class="stat-label">{{ item.label }}</div>
+        <div class="stat-value">{{ item.count || 0 }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -37,12 +39,13 @@ defineProps({
   align-items: center; // 子项在交叉轴上居中对齐
   background-color: #fff; // 图片背景色是白色
   padding: 25px 20px; // 上下留白
+  margin-bottom: 20px;
   // border-radius: @border-radius-base; // 如果需要圆角可以加上
   // box-shadow: 0 1px 3px rgba(0,0,0,0.04); // 如果需要阴影可以加上
 }
 
 .stat-item {
-  flex: 1; // 让每个统计项占据相等的空间
+  flex: 1.5; // 让每个统计项占据相等的空间
   min-width: 0; // 允许flex项收缩到比其内容更小
   // padding: 0 20px; // 左右内边距，这会创建统计项之间的空隙
   color: @primary-color; // 图片中标签的红色
@@ -57,17 +60,32 @@ defineProps({
   flex-direction: column;
   align-items: center; // 子项（label和value）在交叉轴上居中
   text-align: center; // 文本水平居中
+  &:first-child {
+    flex: 1;
+    align-items: normal; 
+    text-align: left; 
+    padding-right: 20px;
+    display: flex;
+    align-items: flex-start;
+  }
+  &:last-child {
+    flex: 1;
+    align-items: normal; 
+    text-align: right; 
+    padding-right: 20px;
+    display: flex;
+    align-items: flex-end;
+  }
 }
-
 .stat-label {
   font-family: PingFang SC;
   font-weight: 500;
   font-size: 14px;
   line-height: 14px;
+  width: 100%;
   letter-spacing: 0%;
   text-align: center;
   height: 14px;
-  width: 100px;
   margin-bottom: 10px; // 标签与数值之间的间距
   white-space: nowrap; // 防止标签文本换行
   overflow: hidden;
@@ -75,8 +93,8 @@ defineProps({
 }
 
 .stat-value {
-  width: 100px;
   height: 35px;
+  width: 100%;
   font-family: PingFang SC;
   font-weight: 540;
   font-size: 30px;

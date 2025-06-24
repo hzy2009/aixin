@@ -116,7 +116,7 @@ defineExpose({ resetAllDates, getCurrentValues: () => {
 @import '@/assets/styles/_variables.less';
 
 .multi-date-range-picker-group {
-  padding: 16px 0;
+  padding: @spacing-md 20px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;

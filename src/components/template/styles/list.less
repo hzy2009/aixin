@@ -2,7 +2,7 @@
 
 .list-page {
     &.listPageisPadding {
-        padding: 0 @content-padding-horizontal;
+        // padding: 0 @content-padding-horizontal;
     }
 
     // Page itself has no extra padding, UserCenterLayout handles it
@@ -24,9 +24,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: #fff;
     margin-bottom: @spacing-sm;
     // background-color: #f7f8fa; // Light grey background for this bar
-    padding: @spacing-md @spacing-sm;
+    padding: @spacing-md 20px;
     border-radius: @border-radius-base;
 
     .search-input-wrapper {
@@ -80,7 +81,9 @@
 
 
 .results-table-section {
+    background-color: #fff;
     min-height: 700px;
+    padding: 0 20px;
 
     .title-link {
         color: @text-color-base; // Default title color
@@ -219,7 +222,8 @@
 }
 
 .table-operations {
-    margin-bottom: @spacing-md;
+    padding: 10px 20px;
+    background-color: #fff;
 
     .primary-btn {
         background-color: @primary-color; // Ensure it's the brand red
