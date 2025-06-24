@@ -1,7 +1,8 @@
 <template>
     <!-- 使用 vxe-grid 替代 a-table -->
     <vxe-grid
-        :data="dataSource" 
+        class="custom-detail-table"
+        :data="dataSource"
         :columns="columns"
         border
         :row-config="{ keyField: 'id' }"
@@ -12,21 +13,25 @@
 </template>
 
 <script setup lang='jsx'>
-import { ref } from 'vue'
-import firstInquiryList from './firstInquiryList.vue'
-import secondInquiryList from './secondInquiryList.vue'
+import { ref } from 'vue';
+import firstInquiryList from './firstInquiryList.vue';
+import secondInquiryList from './secondInquiryList.vue';
 import { selectOptions } from '@/utils/index';
-import defHttp from '@/utils/http/axios'
+import defHttp from '@/utils/http/axios';
 import { message } from 'ant-design-vue';
 import dayjs from 'dayjs';
 
 const expandedRowKeys = ref([]);
-const props = defineProps(['data'])
-
+const props = defineProps(['data']);
 const emit = defineEmits(['success']);
+
 const dataSource = ref(props.data);
 
-// 新增：处理 vxe-table 的行展开/折叠事件
+// 【新增】创建 ref 对象，用于按行ID存储子组件的实例
+const firstInquiryListRefs = ref({});
+const secondInquiryListRefs = ref({});
+
+// 处理 vxe-table 的行展开/折叠事件
 const handleToggleExpand = ({ row, expanded }) => {
     const key = row.id;
     if (expanded) {
@@ -43,23 +48,27 @@ const handleToggleExpand = ({ row, expanded }) => {
 
 // vxe-table 的列配置
 const columns = [
-    { 
-      type: 'expand', // vxe-table 的展开列
+    {
+      type: 'expand',
       width: 50,
       slots: {
-        content: ({ row: parentRecord }) => { // 使用 {row} 并重命名为 parentRecord
+        // 【关键修改】在渲染子组件时，绑定 ref
+        content: ({ row: parentRecord }) => {
            return (
-            // 使用 v-show 可以在折叠时保留子组件状态
             <div v-show={expandedRowKeys.value.includes(parentRecord.id)}>
-                <firstInquiryList 
+                <firstInquiryList
                     data={parentRecord.firstInquiryList}
                     isSecondInquiryEnable={parentRecord.isSecondInquiryEnable}
+                    // 将组件实例存入 ref 对象，以行 id 为 key
+                    ref={el => { if (el) firstInquiryListRefs.value[parentRecord.id] = el; }}
                 />
-                <secondInquiryList 
+                <secondInquiryList
                     data={parentRecord.secondInquiryList}
                     isFinished={parentRecord.isFinished}
                     style="margin-bottom: 16px;"
                     v-show={parentRecord.secondInquiryList && parentRecord.secondInquiryList.length > 0}
+                    // 将组件实例存入 ref 对象，以行 id 为 key
+                    ref={el => { if (el) secondInquiryListRefs.value[parentRecord.id] = el; }}
                 />
             </div>
            )
@@ -67,21 +76,21 @@ const columns = [
       }
     },
     {
-      type: 'seq', // 使用内置序号
+      type: 'seq',
       title: '序号',
       width: 60,
     },
     {
       title: '爱芯享单据号',
-      field: 'materialCode', // field -> field
+      field: 'materialCode',
       width: 120,
     },
 	{
       title: '操作',
-      field: 'action', // field -> field
+      field: 'action',
       width: 150,
 	  slots: {
-        default: ({ row }) => { // customRender -> slots.default, {record} -> {row}
+        default: ({ row }) => {
             const {isSecondInquiryEnable, firstInquiryList, secondInquiryList} = row
             let expireDate = ''
             if (isSecondInquiryEnable == 1) {
@@ -93,8 +102,8 @@ const columns = [
 
             return (
                 row.isFinished === 1 || disabled ? <span></span> :
-                <a-button 
-                    type="link" 
+                <a-button
+                    type="link"
                     onClick={() => save(row)}
                 >
                     报价
@@ -105,17 +114,48 @@ const columns = [
     },
 ];
 
-// save 函数保持不变，因为它操作的是数据 (row)，与UI组件无关
+// 【重大修改】重写 save 函数，以从子组件获取最新数据
 const save = async (record) => {
-    const code = record.isSecondInquiryEnable == 1 ? 'secondInquiryList' : 'firstInquiryList';
-    const res = await defHttp.post({ url: '/apm/apmSourcingMaterialInquiry/edit', data: record[code][0] });
-    if (res.success) {
-        message.success(res.message);
-        emit('success');
-    } else {
-        message.error(res.message);
+    // 1. 判断当前是哪一轮报价，并确定要使用的 Refs 容器
+    const isSecondRound = record.isSecondInquiryEnable == 1;
+    const activeRefs = isSecondRound ? secondInquiryListRefs.value : firstInquiryListRefs.value;
+    const activeListName = isSecondRound ? '第二轮报价' : '第一轮报价';
+
+    // 2. 根据行 ID 从 Refs 容器中获取对应的子组件实例
+    const childInstance = activeRefs[record.id];
+
+    // 3. 检查实例和 getData 方法是否存在
+    if (!childInstance || typeof childInstance.getData !== 'function') {
+        message.error(`无法获取【${activeListName}】的最新数据，请确保该行已展开。`);
+        console.error(`Component instance for row ${record.id} not found or it does not have a getData method.`);
+        return;
     }
-}
+
+    // 4. 调用子组件的 getData() 方法获取最新数据
+    // 假设 getData() 返回一个数组，并且我们只需要第一个元素
+    const freshDataList = childInstance.getData();
+    if (!freshDataList || freshDataList.length === 0) {
+        message.error('报价数据为空，无法保存。');
+        return;
+    }
+    const dataToSave = freshDataList[0];
+
+    console.log("即将保存的最新数据:", dataToSave);
+
+    // 5. 使用获取到的最新数据进行 API 调用
+    try {
+        const res = await defHttp.post({ url: '/apm/apmSourcingMaterialInquiry/edit', data: dataToSave });
+        if (res.success) {
+            message.success(res.message || '报价成功');
+            emit('success');
+        } else {
+            message.error(res.message || '报价失败');
+        }
+    } catch(error) {
+        console.error("保存报价失败:", error);
+        message.error("请求出错，请稍后重试。");
+    }
+};
 
 const logFinalData = () => {
     console.log("最终数据:", JSON.stringify(dataSource.value, null, 2));
@@ -124,8 +164,8 @@ const logFinalData = () => {
 </script>
 
 <style lang="less" scoped>
-// 样式已适配 vxe-table
 @import '@/assets/styles/_variables.less';
+
 .custom-detail-table {
 	margin-top: @spacing-xs;
 	:deep(.vxe-header--column) {
@@ -150,6 +190,7 @@ const logFinalData = () => {
 	}
     :deep(.vxe-body--expanded-cell) {
         padding: 12px;
+        background-color: #fff;
     }
 }
 </style>

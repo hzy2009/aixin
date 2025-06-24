@@ -8,12 +8,14 @@
           :columns="columns"
           border
           size="small"
+          ref="gridRef"
         >
         </vxe-grid>
     </div>
 </template>
 
 <script setup lang='jsx'>
+import { ref } from 'vue';
 import Dayjs from 'dayjs';
 
 // 1. 定义 props 和 emits (保持不变)
@@ -32,7 +34,7 @@ const props = defineProps({
   }
 });
 const emit = defineEmits(['toggle-selection', 'select-winner']);
-
+const gridRef = ref(null);
 
 // 2. 定义处理函数 (保持不变)
 const handleSelectionChange = (record, checked) => {
@@ -150,6 +152,11 @@ const columns = [
       }
     },
 ]
+const getData = () => {
+  let data = gridRef.value.getData();
+  return data
+}
+defineExpose({ getData });
 </script>
 
 <style lang="less" scoped>

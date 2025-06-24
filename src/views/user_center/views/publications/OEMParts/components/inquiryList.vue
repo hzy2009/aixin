@@ -3,16 +3,15 @@
     <vxe-grid
         class="custom-detail-table"
         ref="gridRef"
-        :data="dataSource" 
+        :data="dataSource"
         :columns="columns"
         border
         :row-config="{ keyField: 'id' }"
         :expand-config="{ expandRowKeys: expandedRowKeys, trigger: 'default' }"
         @toggle-row-expand="handleToggleExpand"
     >
-        <!-- 
-            vxe-table 的展开行内容通过 expand 列的 content 插槽实现 
-            插槽名字格式为 "expand_content" + 列的 field (如果定义了) 或者 "expand_content"
+        <!--
+            vxe-table 的展开行内容通过 expand 列的 content 插槽实现
             为了简单，我们直接在列配置的 slots.content 中定义 JSX
         -->
     </vxe-grid>
@@ -22,21 +21,25 @@
 </template>
 
 <script setup lang='jsx'>
-import { ref } from 'vue'
-import firstInquiryList from './firstInquiryList.vue'
-import secondInquiryList from './secondInquiryList.vue'
+import { ref } from 'vue';
+import firstInquiryList from './firstInquiryList.vue';
+import secondInquiryList from './secondInquiryList.vue';
 import { selectOptions } from '@/utils/index';
-import defHttp from '@/utils/http/axios'
-import { message } from 'ant-design-vue'; // 假设您仍在使用 a-message
+import defHttp from '@/utils/http/axios';
+import { message } from 'ant-design-vue';
 
 const emit = defineEmits(['success']);
-const expandedRowKeys = ref([]); // 控制展开行的 key 数组，保持不变
+const expandedRowKeys = ref([]); // 控制展开行的 key 数组
 
-const props = defineProps(['data'])
+const props = defineProps(['data']);
 
 const dataSource = ref(props.data);
 
-// 新增：处理 vxe-table 的行展开/折叠事件，以模拟 v-model:expandedRowKeys
+// 【新增】创建两个 ref 对象，用于按行ID存储子组件的实例
+const firstInquiryListRefs = ref({});
+const secondInquiryListRefs = ref({});
+
+// 处理 vxe-table 的行展开/折叠事件
 const handleToggleExpand = ({ row, expanded }) => {
     const key = row.id;
     if (expanded) {
@@ -56,9 +59,9 @@ const handleToggleExpand = ({ row, expanded }) => {
 const handleToggleSelection = (parentRecord, { record: itemToToggle, checked }) => {
     const originalItem = parentRecord.firstInquiryList.find(item => item.id === itemToToggle.id);
     if (!originalItem) return;
-    
+
     originalItem.isSelected = checked ? 1 : 0;
-    
+
     if (checked) {
         dataSource.value.forEach(mainRecord => {
             mainRecord.firstInquiryList.forEach(item => item.isWinner = 0);
@@ -74,7 +77,7 @@ const handleToggleSelection = (parentRecord, { record: itemToToggle, checked }) 
         delete newItemForSecondRound.paymentTermsName;
         delete newItemForSecondRound.guaranteePeriod;
         delete newItemForSecondRound.guaranteeDesc;
-        
+
         newItemForSecondRound.isSelected = 0;
         newItemForSecondRound.isWinner = 0;
         newItemForSecondRound.key = `second-${originalItem.id}`;
@@ -157,31 +160,33 @@ const handleTradeTypeChange = (value, record, options) => {
 
 // vxe-table 的列配置
 const columns = [
-    { 
-      type: 'expand', // 这是 vxe-table 的展开列
+    {
+      type: 'expand',
       width: 50,
-      // 展开行的内容在这里定义
       slots: {
-        content: ({ row: parentRecord }) => { // vxe-table 作用域变量是 {row}
+        // 【关键修改】在渲染子组件时，通过 ref 函数将其存入我们的 ref 容器中
+        content: ({ row: parentRecord }) => {
            return (
-            // 优化：仅在行展开时渲染内部组件
-            <div v-show={expandedRowKeys.value.includes(parentRecord.id)}> 
-                <firstInquiryList 
+            <div v-show={expandedRowKeys.value.includes(parentRecord.id)}>
+                <firstInquiryList
                     data={parentRecord.firstInquiryList}
                     isSecondInquiryEnable={parentRecord.isSecondInquiryEnable}
                     isFinished={parentRecord.isFinished}
                     onToggle-selection={payload => handleToggleSelection(parentRecord, payload)}
                     onSelect-winner={payload => handleSelectWinner(payload)}
+                    // 关键改动：绑定 ref，将组件实例存入 ref 对象，以行 id 为 key
+                    ref={el => { if (el) firstInquiryListRefs.value[parentRecord.id] = el; }}
                 />
-                <secondInquiryList 
+                <secondInquiryList
                     data={parentRecord.secondInquiryList}
                     isSecondInquiryEnable={parentRecord.isSecondInquiryEnable}
                     isFinished={parentRecord.isFinished}
                     onSelect-winner={payload => handleSelectWinner(payload)}
-                    // v-model:data 语法糖无法直接在JSX中使用，需要手动更新
                     onUpdate:data={newData => parentRecord.secondInquiryList = newData}
                     style="margin-bottom: 16px;"
                     v-show={parentRecord.secondInquiryList && parentRecord.secondInquiryList.length > 0}
+                    // 关键改动：绑定 ref
+                    ref={el => { if (el) secondInquiryListRefs.value[parentRecord.id] = el; }}
                 />
             </div>
            )
@@ -189,7 +194,7 @@ const columns = [
       }
     },
     {
-      type: 'seq', // 使用内置序号
+      type: 'seq',
       title: '序号',
       width: 60,
     },
@@ -201,7 +206,7 @@ const columns = [
       title: '选定贸易商',
       field: 'winnerName',
       slots: {
-        default: ({ row }) => { // 使用 {row} 代替 {record}
+        default: ({ row }) => {
             const { winnerName } = getRowState(row);
             return <span>{winnerName || '--'}</span>;
         }
@@ -211,17 +216,17 @@ const columns = [
       title: '交易方式',
       field: 'tradeTypeCode',
 	  slots: {
-        default: ({ row }) => { // 使用 {row} 代替 {record}
+        default: ({ row }) => {
             const { isWinnerSelected } = getRowState(row);
             const options = selectOptions('trade_type');
             return (
-                row.isFinished === 1 ? <span>{row.tradeTypeName}</span> : 
-                <a-select 
-                    v-model:value={row.tradeTypeCode} 
-                    style={{ width: '100%' }} 
+                row.isFinished === 1 ? <span>{row.tradeTypeName}</span> :
+                <a-select
+                    v-model:value={row.tradeTypeCode}
+                    style={{ width: '100%' }}
                     placeholder="请选择交易方式"
                     disabled={!isWinnerSelected}
-                    options={options} // vxe-table/jsx 中直接用 options prop 更简洁
+                    options={options}
                     onChange={value => handleTradeTypeChange(value, row, options)}
                 />
             );
@@ -233,7 +238,7 @@ const columns = [
       field: 'action',
       width: 150,
 	  slots: {
-        default: ({ row }) => { // 使用 {row} 代替 {record}
+        default: ({ row }) => {
             const { isWinnerSelected, isSecondRoundSelected } = getRowState(row);
             const isSecondInquiryEnable = row.isSecondInquiryEnable;
             let buttonText = '请先选择';
@@ -246,10 +251,10 @@ const columns = [
                 actionType = 'start_second_round';
             }
             return (
-                row.isFinished === 1 ? <span>已完成</span> : 
-                <a-button 
-                    type="link" 
-                    disabled={actionType === 'none'} 
+                row.isFinished === 1 ? <span>已完成</span> :
+                <a-button
+                    type="link"
+                    disabled={actionType === 'none'}
                     onClick={() => save(row, actionType)}
                 >
                     {buttonText}
@@ -260,35 +265,63 @@ const columns = [
     },
 ];
 
+// 【重大修改】重写 save 函数，以获取子组件的最新数据
 const save = async (record, actionType) => {
-    console.log('record', record);
-    // if (actionType === 'confirm_winner') {
-    //     if (!record.tradeTypeCode) {
-    //         message.error('请选择交易方式');
-    //         return;
-    //     }
-    //     record.isFinished = 1
-    // } else {
-    //     record.isSecondInquiryEnable = 1
-    // }
-    // const res = await defHttp.post({ url: '/apm/apmSourcingOriginSubstitute/apmSourcingMaterial/edit', data: record });
-    // if (res.success) {
-    //     message.success(res.message);
-    //     emit('success');
-    // } else {
-    //     message.error(res.message);
-    // }
-}
+    // 1. 创建一个即将发送到后端的数据副本，避免直接修改 props 或 UI 状态
+    const finalRecordData = JSON.parse(JSON.stringify(record));
 
+    // 2. 从 ref 容器中查找对应行的子组件实例
+    const firstListInstance = firstInquiryListRefs.value[record.id];
+    const secondListInstance = secondInquiryListRefs.value[record.id];
+
+    // 3. 调用子组件的 getData() 方法获取最新数据，并更新到副本中
+    // 如果 getData() 是异步方法，这里需要使用 await
+    if (firstListInstance && typeof firstListInstance.getData === 'function') {
+        finalRecordData.firstInquiryList = firstListInstance.getData();
+    }
+    // 第二轮询价列表可能不存在，所以需要检查实例是否存在
+    if (secondListInstance && typeof secondListInstance.getData === 'function') {
+        finalRecordData.secondInquiryList = secondListInstance.getData();
+    }
+
+    console.log('即将保存的最终完整数据:', finalRecordData);
+
+    // 4. 使用更新后的 finalRecordData 执行后续的业务逻辑
+    if (actionType === 'confirm_winner') {
+        if (!finalRecordData.tradeTypeCode) {
+            message.error('请选择交易方式');
+            return;
+        }
+        finalRecordData.isFinished = 1;
+    } else { // 'start_second_round'
+        finalRecordData.isSecondInquiryEnable = 1;
+    }
+
+    // 5. 使用包含最新子表数据的 finalRecordData 进行 API 调用
+    try {
+        const res = await defHttp.post({ url: '/apm/apmSourcingOriginSubstitute/apmSourcingMaterial/edit', data: finalRecordData });
+        if (res.success) {
+            message.success(res.message || '操作成功');
+            emit('success');
+        } else {
+            message.error(res.message || '操作失败');
+        }
+    } catch (error) {
+        console.error("保存失败:", error);
+        message.error("请求出错，请稍后重试");
+    }
+};
+
+// 用于调试的函数
 const logFinalData = () => {
-    console.log("最终数据:", JSON.stringify(dataSource.value, null, 2));
+    console.log("最终数据源:", JSON.parse(JSON.stringify(dataSource.value)));
     alert("最终数据已打印到浏览器控制台。");
 };
 </script>
 
 <style lang="less" scoped>
-// 样式已适配 vxe-table
-@import '@/assets/styles/_variables.less';
+@import '@/assets/styles/_variables.less'; // 假设您的项目中有这个文件
+
 .custom-detail-table {
 	margin-top: @spacing-xs;
 	:deep(.vxe-header--column) {
@@ -312,7 +345,8 @@ const logFinalData = () => {
 		word-break: break-all;
 	}
     :deep(.vxe-body--expanded-cell) {
-        padding: 12px; // 给展开行内容一些内边距
+        padding: 12px;
+        background-color: #fff; // 展开行背景色
     }
 }
 </style>

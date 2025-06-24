@@ -4,8 +4,10 @@
         <!-- 使用 vxe-grid 替代 a-table -->
         <vxe-grid
           class="custom-detail-table"
+          ref="gridRef"
           :data="props.data"
           :columns="columns"
+          resizable
           :row-config="{ keyField: 'key' }"
           border
           size="small"
@@ -16,7 +18,7 @@
 
 <script setup lang='jsx'>
 import {selectOptions} from '@/utils/index';
-import { computed } from 'vue';
+import { computed,ref } from 'vue';
 import dayjs from 'dayjs';
 
 // 1. props and computed logic remain unchanged.
@@ -41,23 +43,25 @@ const handlePaymentTermChange = (value, record, options) => {
         record.paymentTermsCode = value;
     }
 };
-
+const gridRef = ref(null);
 // 2. Columns are converted to vxe-table format.
 const columns = [
     {
       type: 'seq', // Using vxe-table's built-in sequence type
       title: '序号',
-      width: 32,
+      fixed: 'left',
+      width: '60px',
     },
     {
       title: '贸易商',
-      field: 'refUserCode', // field -> field
-      width: 120,
+      width: '160px',
+      fixed: 'left',
+      field: 'refUserCode',
     },
     {
       title: '含税价格',
       field: 'priceIncludingTax',
-      width: 80,
+      width: '160px',
       slots: {
         default: ({ row }) => { // customRender -> slots.default, {record} -> {row}
             const expire = dayjs(row.expireDate);
@@ -66,6 +70,8 @@ const columns = [
                 isSecondRound.value || disabled ? <span>{row.priceIncludingTax}</span> :
                 <a-input-number
                     v-model:value={row.priceIncludingTax}
+                    min={0}
+                    precision={2}
                     formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
                     style={{ width: '100%' }}
@@ -77,7 +83,7 @@ const columns = [
     {
       title: '未税价格',
       field: 'priceExcludingTax',
-      width: 80,
+      width: '160px',
       slots: {
         default: ({ row }) => { // customRender -> slots.default, {record} -> {row}
             const expire = dayjs(row.expireDate);
@@ -86,6 +92,8 @@ const columns = [
                 isSecondRound.value || disabled ? <span>{row.priceExcludingTax}</span> :
                 <a-input-number
                     v-model:value={row.priceExcludingTax}
+                    min={0}
+                    precision={2}
                     formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
                     style={{ width: '100%' }}
@@ -97,7 +105,7 @@ const columns = [
     {
       title: '交期',
       field: 'deliveryDate',
-      width: 100,
+      width: 140,
       slots: {
         default: ({ row }) => { // customRender -> slots.default, {record} -> {row}
             const expire = dayjs(row.expireDate);
@@ -112,7 +120,7 @@ const columns = [
     {
       title: '付款条件',
       field: 'paymentTermsCode',
-      width: 60,
+      width: '120px',
       slots: {
         default: ({ row }) => { // customRender -> slots.default, {record} -> {row}
             const options = selectOptions('paymentTerms_type');
@@ -134,7 +142,7 @@ const columns = [
     {
       title: '质保期',
       field: 'guaranteePeriod',
-      width: 60,
+      width: '120px',
       slots: {
         default: ({ row }) => { // customRender -> slots.default, {record} -> {row}
             const expire = dayjs(row.expireDate);
@@ -149,7 +157,7 @@ const columns = [
     {
       title: '质保说明',
       field: 'guaranteeDesc',
-      width: 80,
+      width: '160px',
       slots: {
         default: ({ row }) => { // customRender -> slots.default, {record} -> {row}
             const expire = dayjs(row.expireDate);
@@ -164,13 +172,19 @@ const columns = [
     {
       title: '报价截止日期',
       field: 'expireDate',
-      width: 70,
+      width: '160px',
+      fixed: 'right',
       // Using formatter for simple text transformation is cleaner
       formatter: ({ cellValue }) => {
         return cellValue ? cellValue.split(' ')[0] : '--';
       }
     },
 ]
+const getData = () => {
+  let data = gridRef.value.getData();
+  return data
+}
+defineExpose({ getData });
 </script>
 
 <style lang="less" scoped>

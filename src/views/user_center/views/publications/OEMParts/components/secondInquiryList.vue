@@ -8,6 +8,7 @@
       :columns="columns"
       :row-config="{ keyField: 'key' }"
       border
+      ref="gridRef"
       size="small"
     >
     </vxe-grid>
@@ -34,7 +35,7 @@ const props = defineProps({
   }
 });
 const emit = defineEmits(['select-winner', 'update:data']);
-
+const gridRef = ref(null);
 // 2. Create a local, modifiable copy of the data. This logic is UI-independent and remains unchanged.
 const dataSource = ref([]);
 
@@ -154,6 +155,11 @@ const columns = [
       }
     },
 ];
+const getData = () => {
+  let data = gridRef.value.getData();
+  return data
+}
+defineExpose({ getData });
 </script>
 
 <style lang="less" scoped>
