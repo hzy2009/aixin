@@ -91,6 +91,7 @@ export const OFFLINE_EVENT_COLUMNS = [
     { title: '结论', field: 'xxx', align: 'center' },
     { title: '创建日期', field: 'createTime', align: 'center', fieldType: 'date'},
     { title: '活动状态', field: 'statusName', align: 'center'},
+    { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
 ]
 
 export const PUBLIC_RELATIONS_COLUMNS = [
