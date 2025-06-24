@@ -7,6 +7,7 @@ import demandsRoutes from '@/views/demand_square/demands/routes/index'; // Impor
 // import publicationsRoutes from '@/views/demand_square/publications/routes/index'; // Import new routes
 import industryDynamicsRoutes from '@/views/industryDynamics/routes'; // <-- Import
 import userCenterRoutes from '@/views/user_center/routes';
+import otherPageRoutes from '@/views/otherPage/routes';
 
 import { useAuthStore } from '@/store/authStore'; // Import for navigation guard
 
@@ -18,6 +19,7 @@ const routes = [
       ...homeRoutes,
       demandsRoutes,
       ...userCenterRoutes, 
+      ...otherPageRoutes,
       // publicationsRoutes,
       ...industryDynamicsRoutes,
       // ... other feature routes that use DefaultLayout

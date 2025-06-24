@@ -1,24 +1,7 @@
 <template>
   <div class="user-center-common-layout">
     <!-- Banner Section -->
-    <section class="uc-banner container">
-      <div class=" uc-banner__content">
-        <div class="uc-banner__avatar">
-          <a-avatar :size="68" :src="userInfo?.avatar">
-            <template #icon><UserOutlined /></template>
-          </a-avatar>
-        </div>
-        <div class="uc-banner__info">
-          <!-- <h2 class="user-name">{{ userInfo?.realname || '会员用户' }}</h2> -->
-          <div class="user-name">{{ '爱芯享信息共享平台' }}</div>
-          <div class="user-membership-info">
-            <span class="membership-level">{{ userInfo?.memberLevel || '普通会员' }}</span>
-            <a-button type="link" class="upgrade-link" v-if="!isHighestLevel(userInfo?.memberLevel)">升级会员</a-button>
-          </div>
-          <p class="user-id">ID: {{ userInfo?.workNo || '加载中...' }}</p>
-        </div>
-      </div>
-    </section>
+   
     <!-- Main Tabs Section -->
     <section class="uc-main-tabs-wrapper container">
       <div class="">
@@ -32,35 +15,6 @@
             {{ tab.label }}
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- Sub Tabs Section -->
-    <section class="uc-sub-tabs-wrapper container">
-      <div class="">
-        <!-- <div class="uc-sub-tabs">
-          <div
-            v-for="subTab in currentSubTabs"
-            :key="subTab.key"
-            :class="['sub-tab-item', { 'sub-tab-item--active': activeSubTabKey === subTab.key }]"
-            @click="handleSubTabClick(subTab.key)"
-          >
-            {{ subTab.label }}
-          </div>
-        </div> -->
-        <a-tabs
-          :active-key="activeSubTabKey"
-          @tabClick="handleSubTabClick"
-          class="custom-sub-tabs"
-          type="card"
-        >
-          <a-tab-pane
-            v-for="subTab in currentSubTabs"
-            :key="subTab.key"
-            :tab="subTab.label"
-          >
-          </a-tab-pane>
-        </a-tabs>
       </div>
     </section>
 
@@ -85,17 +39,7 @@ import { useAuthStore } from '@/store/authStore'; // 用于获取用户信息
 
 const route = useRoute();
 const authStore = useAuthStore();
-const userInfo = computed(() => authStore.userInfo);
-const isHighestLevel = (level) => {
-    // TODO: 实现判断是否为最高等级会员的逻辑
-    return level === '高级会员'; // 示例
-};
-// TODO: 从 authStore 或特定用户 profile hook 获取更详细的用户信息
-// const userInfo = computed(() => ({
-//   name: authStore.userInfo?.name || '爱芯享信息共享平台', // 示例名称
-//   memberId: authStore.user?.id || '16278962361-1456489', // 示例 ID
-//   avatarUrl: authStore.user?.avatar || null, // 从 authStore 获取头像
-// }));
+
 
 // 页签配置 (可以从外部传入或在这里定义更复杂的结构)
 // 我们将使用 Hook 内部的 defaultTabsConfig
@@ -105,16 +49,13 @@ const {
   mainTabs,
   currentSubTabs,
   selectMainTab,
-  selectSubTab,
 } = useUserCenterTabs(); // 使用默认配置
 
 const handleMainTabClick = (key) => {
   selectMainTab(key);
 };
 
-const handleSubTabClick = (key) => {
-  selectSubTab(key);
-};
+
 </script>
 
 <style scoped lang="less">
@@ -213,10 +154,11 @@ const handleSubTabClick = (key) => {
 
 .uc-main-tabs {
   display: flex;
-  height: 68px; // 主页签高度
+  height: 60px; // 主页签高度
 
   .main-tab-item {
-    flex: 1;
+    // flex: 1;
+    width: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
