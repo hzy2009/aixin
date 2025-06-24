@@ -87,7 +87,7 @@ export const PUBLIC_RELATIONS_COLUMNS = [
     { title: '研发攻关单号', field: 'code', align: 'center', width: 180 },
     { title: '研发攻关类型', field: 'rdType', align: 'center'},
     { title: '期望匹配周期', field: 'matchPeriodName', align: 'center' },
-    { title: '需求方', field: 'createUserName', align: 'center' },
+    { title: '需求提出方', field: 'createUserName', align: 'center' },
     { title: '承接方', field: 'xx', align: 'center' },
     { title: '需求状态', field: 'statusName', align: 'center' },
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
@@ -95,5 +95,15 @@ export const PUBLIC_RELATIONS_COLUMNS = [
 ]
 
 export const VERIFICATION_COLUMNS = [
-    
+    { title: '序号', type: 'seq', width: 74, align: 'center' },
+    { title: '单号', field: 'code', align: 'center', width: 180 },
+    { title: '检测验证类别', field: 'projectType', align: 'center', fieldType: 'select', dictKey: 'project_type' },
+    { title: '产品类别', field: 'productType', align: 'center', fieldType: 'select', dictKey: 'product_type' },
+    { title: '期望匹配周期', field: 'matchPeriodName', align: 'center' },
+    { title: '需求方', field: 'createUserName', align: 'center' },
+    { title: '承接方', field: 'xx', align: 'center' },
+    { title: '创建时间', field: 'createTime', align: 'center', fieldType: 'date'},
+    { title: '需求状态', field: 'statusName', align: 'center' },
+    // 操作列通常没有 field，通过插槽（slot）来定义其内容
+    { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
 ]

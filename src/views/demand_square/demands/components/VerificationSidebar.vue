@@ -9,7 +9,7 @@
         <div class="report-item-content">
           <h2 class="report-item-title">{{ item.code }}</h2>
           <p class="report-item-meta">产品类别：{{ getSelectDisplayValue(item.productType, 'product_type') }}</p>
-          <p class="report-item-meta">检测验证类型：{{ getSelectDisplayValue(item.projectType, 'project_type') }}</p>
+          <p class="report-item-meta">检测验证类别：{{ getSelectDisplayValue(item.projectType, 'project_type') }}</p>
           <div class="report-item-footer report-item-summary">
             <span>期望完成日期：{{ item.expireDate }}</span>
             <ArrowRightOutlined class="arrow-icon" />

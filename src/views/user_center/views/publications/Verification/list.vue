@@ -10,40 +10,20 @@ import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 import { useAuthStore } from '@/store/authStore';
+import {VERIFICATION_COLUMNS} from '@/utils/const';
 const authStore = useAuthStore();
 const router = useRouter();
 
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
-    { id: 'productType', label: '产品类别', maxVisibleWithoutMore: 7, dictKey: 'product_type' },
-    { id: 'projectType', label: '验证类型', maxVisibleWithoutMore: 7, dictKey: 'project_type' },
-    { id: 'statusCode', label: '需求状态', maxVisibleWithoutMore: 7, dictKey: 'inspection_status' }
+    { id: 'projectType', label: '验证验证类型', maxVisibleWithoutMore: 7, dictKey: 'project_type' },
+    { id: 'productType', label: '产品类别', maxVisibleWithoutMore: 9, dictKey: 'product_type' },
 ]);
 
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = reactive([
-    { title: '序号', type: 'seq', key: 'index', textAlign: 'center', width: '60px' },
-    { title: '单号', field: 'code', key: 'code', ellipsis: true, width: '120px' },
-    { title: '验证项目', field: 'projectName', key: 'projectName', align: 'center' }, // This should be 'sourcingType' from mock
-    { title: '产品类别', field: 'productType', key: 'productType', align: 'center',
-        customRender: ({record}) => {
-            const dictMap = authStore.sysAllDictItems['product_type'];
-            const str = dictMap.find(item => item.value == record.productType);
-            return <span>{str?.label || '-'}</span>;
-        }
-     }, // Key matches display field
-    { title: '检测验证类型', field: 'projectType', key: 'projectType', align: 'center',
-        customRender: ({record}) => {
-            const dictMap = authStore.sysAllDictItems['project_type'];
-            const str = dictMap.find(item => item.value == record.productType);
-            return <span>{str?.label || '-'}</span>;
-        }
-     },
-    { title: '需求状态', field: 'statusName', key: 'statusName', align: 'center' }, // Corrected key
-    { title: '需求提出方', field: 'tenantName', key: 'tenantName', align: 'center' },
-    { title: '创建时间', field: 'createTime', key: 'publishDate', align: 'center' },
-    { title: '更新时间', field: 'updateTime', key: 'updateTime', ellipsis: true },
-    { title: '操作', key: 'actions', align: 'center', fixed: 'right' },
+    {type: 'checkbox', width: 40},
+  ...VERIFICATION_COLUMNS
 ]);
 
 const actions = reactive([
@@ -86,10 +66,10 @@ const pageData = ref({
         },
     ],
     dateRangeConfig: [
-        {
-            field: 'createTime', // Unique key for this date range
-            label: '提出需求日期',
-        }
+        // {
+        //     field: 'createTime', // Unique key for this date range
+        //     label: '提出需求日期',
+        // }
     ],
 })
 
