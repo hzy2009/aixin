@@ -74,6 +74,7 @@ const pageData = reactive({
 
 const handleSubmitForm = async () => {
   const data = await editPage.value.validate()
+  data.username  = authStore.userInfo.username
   const res = await defHttp.put({ url: `sys/user/updatePassword`, data })
     if (res.success) {
         message.success(res.message)
