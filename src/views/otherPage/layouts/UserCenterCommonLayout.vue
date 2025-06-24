@@ -94,7 +94,7 @@ const handleMainTabClick = (key) => {
       font-family: PingFang SC;
       font-weight: 400;
       font-size: 18px;
-      line-height: 16px;
+      line-height: 18px;
       letter-spacing: 0%;
       text-transform: uppercase;
       margin-bottom: 5px;

@@ -4,7 +4,8 @@
     <section class="uc-banner container">
       <div class=" uc-banner__content">
         <div class="uc-banner__avatar">
-          <a-avatar :size="68" :src="userInfo?.avatar">
+          <!-- <a-avatar :size="68" :src="userInfo?.avatar"> -->
+          <a-avatar :size="68" :src="baipng">
             <template #icon><UserOutlined /></template>
           </a-avatar>
         </div>
@@ -82,7 +83,7 @@ import { Avatar as AAvatar } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { useUserCenterTabs } from './hooks/useUserCenterTabs'; // 调整路径
 import { useAuthStore } from '@/store/authStore'; // 用于获取用户信息
-
+import baipng from '@/assets/images/auth/bai.png';
 const route = useRoute();
 const authStore = useAuthStore();
 const userInfo = computed(() => authStore.userInfo);
@@ -144,7 +145,7 @@ const handleSubTabClick = (key) => {
   &__avatar {
     margin-right: 14px;
     .ant-avatar {
-      border: 3px solid rgba(255, 255, 255, 0.5);
+      // border: 3px solid rgba(255, 255, 255, 0.5);
     }
   }
 
@@ -153,7 +154,7 @@ const handleSubTabClick = (key) => {
       font-family: PingFang SC;
       font-weight: 400;
       font-size: 18px;
-      line-height: 16px;
+      line-height: 18px;
       letter-spacing: 0%;
       text-transform: uppercase;
       margin-bottom: 5px;
