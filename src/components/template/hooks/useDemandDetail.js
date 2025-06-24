@@ -52,7 +52,7 @@ export function useDemandDetail({IdProp, mode, url, otherParams, queryAfter, han
         // 新建模式或没有ID，初始化空/默认表单数据
         demandDetail.value = {
           ...otherParams,
-          tenantName: authStore.userInfo.realname,
+          tenantName: authStore.userInfo.username,
           username: authStore.userInfo.username,
           workNo: authStore.userInfo.workNo,
           tenantId: authStore.userInfo.loginTenantId,
