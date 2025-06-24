@@ -21,7 +21,7 @@ const filterConfigForPage = reactive([
 
 const tableColumns = reactive([
     {type: 'checkbox', width: 40},
-   ...DOMESTIC_SOURCING_COLUMNS.filter(column => column.key !== 'actions'),
+   ...OFFLINE_EVENT_COLUMNS.filter(column => column.key !== 'actions'),
   { title: '操作', width: '140px', align: 'center', fixed: 'right', key: 'actions' },
 ]);
 
