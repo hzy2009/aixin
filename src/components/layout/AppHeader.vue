@@ -270,9 +270,12 @@ const handleMenuClick = (item) => {
     flex: 1;
     text-align: center;
   .unified-nav-link {
-    color: fade(@text-color-light, 90%);
-    font-size: 15px; // Consistent font size
-    font-weight: 500;
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 18px;
+    letter-spacing: 0%;
+    text-align: center;
+    color: #fff;
     display: inline-block;
     width: 100%;
     text-decoration: none;

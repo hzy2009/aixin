@@ -1,0 +1,62 @@
+.action-button {
+  min-width: 88px;
+  font-size: 14px;
+  border-radius: 4px;
+}
+.action-button.cancel-button {
+  margin-right: 16px;
+  background-color: #ffffff;
+  border: 1px solid #e8e8e8;
+  color: #C3CBCF;
+}
+.action-button.cancel-button:hover {
+  color: #BC1A2C;
+  border-color: #BC1A2C;
+}
+.action-button.submit-button {
+  background-color: #BC1A2C;
+  border-color: #BC1A2C;
+  color: #ffffff;
+}
+.action-button.submit-button:hover {
+  background-color: #8f1422;
+  border-color: #8f1422;
+}
+.action-submit-note {
+  font-family: PingFang SC;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: 0%;
+  text-align: right;
+  margin-top: 16px;
+  font-size: 12px;
+  color: #656C74;
+}
+.action-submit-note .text {
+  font-size: 18px;
+  color: #BC1A2C;
+}
+.page-section-title-bar {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  background-color: #FAFAFA;
+}
+.page-section-title-bar .decorator {
+  width: 4px;
+  height: 30px;
+  background-color: #BC1A2C;
+  margin-right: 8px;
+}
+.page-section-title-bar .title-text {
+  font-weight: 600;
+  color: #BC1A2C;
+  margin: 0;
+  font-family: PingFang SC;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  height: 20px;
+}

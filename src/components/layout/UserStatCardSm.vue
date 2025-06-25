@@ -96,7 +96,7 @@ defineProps({
   height: 35px;
   width: 100%;
   font-family: PingFang SC;
-  font-weight: 540;
+  font-weight: 400;
   font-size: 30px;
   line-height: 35px;
   letter-spacing: 0%;

@@ -1,5 +1,8 @@
 // src/assets/styles/_base.less
-html, body {
+@import '_variables.less';
+
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -21,6 +24,7 @@ html, body {
 a {
   color: @primary-color;
   text-decoration: none;
+
   &:hover {
     color: darken(@primary-color, 10%);
   }
