@@ -30,7 +30,7 @@
       <div class="main-header-logo-area__content container">
         <div class="logo-section">
           <div class="logo-link">
-            <img src="@/assets/images/home/banner.png" alt="LOGO" class="logo-image" />
+            <img src="@/assets/images/logo.png" alt="LOGO" class="logo-image" />
             <span class="logo-text">爱芯享信息共享平台</span>
           </div>
         </div>
