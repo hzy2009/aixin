@@ -306,6 +306,7 @@ watch(() => props.loop, () => {
 @import '@/assets/styles/_variables.less'; // Adjust path as needed
 
 .scrolling-news-list-wrapper {
+  border: 1px solid #EAEAEA;
   background-color: #fff;
   overflow: hidden;
   position: relative;

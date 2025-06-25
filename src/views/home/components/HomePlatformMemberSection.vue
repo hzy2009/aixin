@@ -208,6 +208,7 @@ onMounted(() => {
   width: 100%;
   overflow: hidden;
   background-color: #fff;
+  border: 1px solid #EAEAEA;
   padding: 10px 0;
   // min-height: 110px; // (logo_height * 2) + vertical_gap
   @media (prefers-reduced-motion: reduce) {

@@ -100,6 +100,7 @@ watch(() => [props.autoCycleInterval, props.loop], () => { if (actualTotalPages.
 @min-list-height: (38px * 7) + @spacing-sm + 20px; // Approximate based on 7 items
 
 .horizontal-sliding-items-wrapper {
+  border: 1px solid #EAEAEA;
   overflow: hidden;
   position: relative;
   width: 100%;

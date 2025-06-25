@@ -103,6 +103,7 @@ watch(() => props.number, (newVal, oldVal) => {
 @import '@/assets/styles/_variables.less';
 
 .stat-item {
+  border: 1px solid #EAEAEA;
   width: 100%; // Make it take the width of its parent in a grid
   height: 180px;
   background-color: @background-color-base;
@@ -187,7 +188,7 @@ watch(() => props.number, (newVal, oldVal) => {
   }
   &:hover {
     background-color: @primary-color;
-
+    border-color: @primary-color;
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.08); // Add a subtle shadow
     transform: translateY(-4px); // Optional: slight lift effect
 
