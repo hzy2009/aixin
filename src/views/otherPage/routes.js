@@ -3,6 +3,7 @@ import UserCenterCommonLayout from './layouts/UserCenterCommonLayout.vue'; // �
 
 const membershipGuide = () => import('./membershipGuide/index.vue'); 
 const platformMember = () => import('./platformMember/index.vue');
+const tongyongcaiji = () => import('./tongyongcaiji/index.vue');
 
 const userCenterRoutes = [
   {
@@ -20,6 +21,11 @@ const userCenterRoutes = [
         path: 'platformMember', 
         component: platformMember, 
         meta: { title: '平台会员', breadcrumb: ['平台会员'] }
+      },
+       {
+        path: 'tongyongcaiji', 
+        component: tongyongcaiji, 
+        meta: { title: '通用件集采', breadcrumb: ['通用件集采'] }
       },
     ]
   },

@@ -16,10 +16,12 @@ const defaultTabsConfig = {
     defaultSubTabKey: 'platformMember',
     path: '/other/platformMember',
   },
-  // userCenter: {
-  //   key: 'userCenter',
-  //   label: '账号管理',
-  // }
+ tongyongcaiji: {
+    key: 'tongyongcaiji',
+    label: '平台会员',
+    defaultSubTabKey: 'tongyongcaiji',
+    path: '/other/tongyongcaiji',
+  },
 };
 
 export function useUserCenterTabs(tabsConfig = defaultTabsConfig) {

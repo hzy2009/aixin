@@ -28,11 +28,17 @@ export function useNavigation() {
         { key: 'createOEMPartsSourcing', label: '创建原厂件寻源', path: '/user/published/OEMPartsSourcing/create', basePath: '/demand' },
       ] 
     },
-    { key: 'tongyongcaiji', label: '通用采集', fn: (router, message) => { 
-      // const v = router
-      // v.push({path: '/tech-forum'})
-      message.info('网站建设中，敬请期待')
-    } },
+    { key: 'tongyongcaiji', label: '通用采集', path: '/other/tongyongcaiji', queryParams: { type: 'tongyongcaiji'}, basePath: '/demand',
+      subItems: [
+        { key: 'aiante', label: '爱安特', path: 'https://www.ant-fa.com', basePath: '/demand', fn:(router, message) => { 
+          // 打开一个新窗口
+          window.open('https://www.ant-fa.com', '_blank');
+        } },
+        { key: 'jingdongqiyegou', label: '京东企业购', path: 'https://b.jd.com', basePath: '/demand', fn: (router, message) => { 
+          // 打开一个新窗口
+          window.open('https://b.jd.com', '_blank');
+        } },
+    ]},
     { key: 'rndCollaboration', label: '研发攻关', path: '/demands/PublicRelations', queryParams: { type: 'PublicRelations'}, basePath: '/demand',
       subItems: [
         { key: 'demand_squarePublicRelations', label: '需求广场', path: '/demands/PublicRelations', basePath: '/demand' },
