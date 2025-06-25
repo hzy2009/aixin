@@ -427,7 +427,7 @@ defineExpose({
     line-height: 28px;
     letter-spacing: 0%;
     line-height: 1.6;
-    padding: @spacing-md;
+    padding: 24px;
     background-color: @background-color-base;
   // border: 1px solid @border-color-light;
 
