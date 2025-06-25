@@ -38,7 +38,6 @@ const dataSource = ref(props.data);
 // 【新增】创建两个 ref 对象，用于按行ID存储子组件的实例
 const firstInquiryListRefs = ref({});
 const secondInquiryListRefs = ref({});
-
 // 处理 vxe-table 的行展开/折叠事件
 const handleToggleExpand = ({ row, expanded }) => {
     const key = row.id;
@@ -183,10 +182,9 @@ const columns = [
                     isSecondInquiryEnable={parentRecord.isSecondInquiryEnable}
                     isFinished={parentRecord.isFinished}
                     isDetail={props.isDetail}
+                    sucessSecond={parentRecord.sucessSecond}
                     onSelect-winner={payload => handleSelectWinner(payload)}
                     onUpdate:data={newData => parentRecord.secondInquiryList = newData}
-                    style="margin-bottom: 16px;"
-                    v-show={parentRecord.secondInquiryList && parentRecord.secondInquiryList.length > 0}
                     // 关键改动：绑定 ref
                     ref={el => { if (el) secondInquiryListRefs.value[parentRecord.id] = el; }}
                 />
@@ -304,6 +302,12 @@ const save = async (record, actionType) => {
     try {
         const res = await defHttp.post({ url: '/apm/apmSourcingOriginSubstitute/apmSourcingMaterial/edit', data: finalRecordData });
         if (res.success) {
+            if (actionType === 'start_second_round') {
+                record.isSecondInquiryEnable = 1
+                record.sucessSecond = true
+            } else {
+                record.isFinished = 1
+            }
             message.success(res.message || '操作成功');
             emit('success');
         } else {

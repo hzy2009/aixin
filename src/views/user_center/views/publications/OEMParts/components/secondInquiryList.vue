@@ -1,5 +1,4 @@
 <template>
-  <div v-show="props.data && props.data.length > 0">
     <div>第二轮报价</div>
     <!-- 使用 vxe-grid 替代 a-table -->
     <vxe-grid
@@ -12,7 +11,6 @@
       size="small"
     >
     </vxe-grid>
-  </div>
 </template>
 
 <script setup lang='jsx'>
@@ -34,6 +32,10 @@ const props = defineProps({
     default: 0
   },
   isDetail: {
+    type: Boolean,
+    default: false
+  },
+  sucessSecond: {
     type: Boolean,
     default: false
   }
@@ -147,6 +149,7 @@ const columns = [
             if (props.isFinished === 1) return true;
             if (!priceIncludingTax || !priceExcludingTax) return true;
             if (props.isDetail) return true
+            if (props.sucessSecond) return true
             return false;
           }
           return (
