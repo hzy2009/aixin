@@ -68,7 +68,7 @@
 <script setup>
 import { ref, watch } from 'vue';
 import operationResultPage from '@/components/template/operationResultPage.vue';
-import defaultThumbnailPlaceholder from '@/assets/images/home/banner.png'; // Reusing placeholder
+import defaultThumbnailPlaceholder from '@/assets/images/home/report-thumb-3.png'; // Reusing placeholder
 import defHttp from '@/utils/http/axios'
 import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore';
