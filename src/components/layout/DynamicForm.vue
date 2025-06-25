@@ -304,6 +304,7 @@ const disabledDate = (current) => {
 const handleSelectProductMainTypeChange = (v, field, option) => {
   internalFormModel['productMainTypeName'] = option.label
   internalFormModel['productType'] = ''
+  internalFormModel['productTypeName'] = ''
 }
 const handleSelectProductTypeChange = (v, field, option) => {
   internalFormModel['productTypeName'] = option.label
