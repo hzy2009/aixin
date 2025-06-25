@@ -61,10 +61,10 @@
           <div class="event-action-center">
 						<a-button @click="handleToList" class="action-button cancel-button">返回</a-button>
 
-            <a-button type="primary"  size="large" class="main-action-cta-button" @click="handleActionClick">
+            <!-- <a-button type="primary"  size="large" class="main-action-cta-button" @click="handleActionClick">
               {{ eventDetail.actionButtonText || '一键敲门' }}
             </a-button>
-            <p class="action-cta-note">一键敲门后，客服人员将在<span class="text">30分钟内</span>与您联系</p>
+            <p class="action-cta-note">一键敲门后，客服人员将在<span class="text">30分钟内</span>与您联系</p> -->
           </div>
 
         </div>
