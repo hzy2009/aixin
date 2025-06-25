@@ -84,7 +84,7 @@ import {
 
 } from 'ant-design-vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
-import { getFileAccessHttpUrl } from "@/utils/index";
+import { getFileAccessHttpUrl, getRandom } from "@/utils/index";
 import dayjs from 'dayjs';
 const uploadUrl = `${import.meta.env.VITE_API_BASE_URL}sys/common/upload` || '/api';
 const auth = useAuthStore(); // For dictionary options
@@ -108,9 +108,7 @@ const emit = defineEmits(['submit', 'validationFailed', 'fieldChange']);
 
 const formRef = ref(null);
 const internalFormModel = reactive({});
-const getRandom = (length = 1) => {
-  return '-' + parseInt(String(Math.random() * 10000 + 1), length);
-};
+
 const getFileName = (path) => {
   if (path.lastIndexOf('\\') >= 0) {
     let reg = new RegExp('\\\\', 'g');

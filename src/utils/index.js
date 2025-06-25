@@ -29,3 +29,6 @@ export function selectOptions  (dictKey) {
 export function formatDate (date, format) {
   return dayjs(date).format(format || 'YYYY-MM-DD');
 }
+export const getRandom = (length = 1) => {
+  return '-' + parseInt(String(Math.random() * 10000 + 1), length);
+};
