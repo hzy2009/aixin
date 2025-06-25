@@ -72,6 +72,7 @@ const columns = [
                     v-model:value={row.priceIncludingTax}
                     min={0}
                     precision={2}
+                    max={9999999999999}
                     formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
                     style={{ width: '100%' }}
@@ -94,6 +95,7 @@ const columns = [
                     v-model:value={row.priceExcludingTax}
                     min={0}
                     precision={2}
+                    max={9999999999999}
                     formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
                     style={{ width: '100%' }}
