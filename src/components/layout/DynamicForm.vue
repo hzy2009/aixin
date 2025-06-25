@@ -60,6 +60,21 @@
               </a-upload>
               <div v-if="field.uploadHint" class="upload-hint">{{ field.uploadHint }}</div>
             </div>
+            <div v-else-if="field.fieldType === 'erjisb'">
+              <a-select v-model:value="internalFormModel['productMainTypeCode']" :placeholder="`请选择`" 
+                style="width: 48%; margin-right: 4%"
+                :options="selectOptions('product_main_type')" 
+                :disabled="field.disabled" @change="(v, option) => handleSelectProductMainTypeChange(v, field, option)" allow-clear />
+
+              <a-select v-model:value="internalFormModel['productType']" :placeholder="`请选择`" 
+                :disabled="!internalFormModel['productMainTypeCode']"
+                style="width: 48%;"
+                :options="internalFormModel['productMainTypeCode'] == 'product_type' ? selectOptions('product_type') : selectOptions('product_type_material')" 
+                 @change="(v, option) => handleSelectProductTypeChange(v, field, option)" allow-clear />
+            </div>
+            <span v-else-if="field.fieldType === 'slot'">
+              <slot :name="field.field" :dataSource="internalFormModel"></slot>
+            </span>
             <!-- Add more field types as needed -->
           </a-form-item>
         </a-col>
@@ -285,6 +300,15 @@ const disabledDate = (current) => {
   // 不能选择上个月的日期
   return current && current < dayjs().subtract(1, 'month');
 }
+//特殊代码不复用的烂代码，赶时间
+const handleSelectProductMainTypeChange = (v, field, option) => {
+  internalFormModel['productMainTypeName'] = option.label
+  internalFormModel['productType'] = ''
+}
+const handleSelectProductTypeChange = (v, field, option) => {
+  internalFormModel['productTypeName'] = option.label
+}
+
 
 defineExpose({ validate, resetFields, clearValidate, getAllData, formModel: internalFormModel,formRef });
 </script>

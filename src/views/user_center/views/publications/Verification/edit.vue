@@ -1,6 +1,6 @@
 <template>
   <div>
-    <edit :pageData="pageData" @goBack="goBack"></edit>
+    <edit :pageData="pageData" @goBack="goBack"/>
   </div>
 </template>
 
@@ -27,8 +27,11 @@ const formConfigs = [
   {
     label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true,
   },
-  {
-    label: '产品类别', field: 'productType', fieldType: 'select', dictKey: 'product_type', span: 24,
+  // {
+  //   label: '产品类别', field: 'productType', fieldType: 'select', dictKey: 'product_type', span: 24,
+  // },
+   {
+    label: '产品类别', field: 'productType', fieldType: 'erjisb', span: 24,
   },
   {
     label: '检测验证类别', field: 'projectType', fieldType: 'select', dictKey: 'project_type', span: 24,
