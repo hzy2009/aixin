@@ -31,7 +31,7 @@ const pageData = ref({
         overview: 'apm/apmTalent/overview/front'
     },
     filterConfigForPage,
-    pageTitle: '行业人才',
+    pageTitle: '专家人才',
     showBanner: true,
     listPageisPadding: false
 })

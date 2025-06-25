@@ -1,7 +1,7 @@
 <template>
   <div class="page-section-title-bar container">
     <span class="decorator"></span>
-    <h2 class="title-text">行业人才</h2>
+    <h2 class="title-text">专家人才</h2>
   </div>
   <ContentWithSidebarLayout>
     <template #main>
@@ -102,7 +102,7 @@ const pageData = reactive({
     detail: 'apm/apmTalent/queryById/front',
   },
   formConfigs,
-  pageTitle: '行业人才',
+  pageTitle: '专家人才',
   showLogList: false,
   canSubmit: true,
   submitTpe: 'emit',

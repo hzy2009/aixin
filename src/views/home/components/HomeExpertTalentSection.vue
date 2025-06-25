@@ -1,7 +1,7 @@
 <template>
   <section class="home-expert-talent-section section-padding">
     <div class="container">
-      <SectionHeader title-ch="行业人才" title-en="EXPERT TALENT" more-link="/experts" />
+      <SectionHeader title-ch="专家人才" title-en="EXPERT TALENT" more-link="/experts" />
       <div class="expert-grid">
         <a-card v-for="expert in experts" :key="expert.id" class="expert-card" :body-style="{ padding: '20px' }">
           <div class="expert-card__top-line">

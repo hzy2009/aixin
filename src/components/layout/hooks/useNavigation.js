@@ -64,7 +64,7 @@ export function useNavigation() {
       ]
     },
     { key: 'industryReport', label: '行研报告', path: '/demands/IndustryReport', queryParams: { type: 'industryReport'}, basePath: '/demand' },
-    { key: 'industryTalent', label: '行业人才', path: '/demands/Talent', queryParams: { type: 'industryTalent'}, basePath: '/demand' },
+    { key: 'industryTalent', label: '专家人才', path: '/demands/Talent', queryParams: { type: 'industryTalent'}, basePath: '/demand' },
     { key: 'techForum', label: '技术论坛', fn: (router, message) => { 
       // const v = router
       // v.push({path: '/tech-forum'})
