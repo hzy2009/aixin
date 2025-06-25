@@ -49,6 +49,7 @@ const pageData = reactive({
   detailPath: '/user/published/OfflineEventDetail',
   listPath: '/user/published/OfflineEvent',
   canSubmit: true,
+  submitTpe: 'emit',
   actionNote: '报名',
   tableSections: [
     {
@@ -75,6 +76,7 @@ const pageData = reactive({
 const submit = async () => {
   const response = await defHttp.post({ url: `/apm/apmOfflineActivityRegister/newTodo/${props.IdProp}` });
   if (response && response.success) {
+	  window.scrollTo({ top: 0, behavior: 'smooth' });
     detailRef.value.isCreating = false
   } else {
     message.error(response.message);

@@ -24,10 +24,10 @@ const router = useRouter();
 const formConfigs = [
   { label: '研发攻关编号', field: 'code', span: 24},
   {
-    label: '研发攻关类型', field: 'rdType', dictKey: 'rd_type', span: 24,
+    label: '研发攻关类型', field: 'rdCode', dictKey: 'rd_type', span: 24, fieldType: 'select',
   },
   {
-    label: '期望匹配周期', field: 'matchPeriodName', dictKey: 'rd_breakthrough_period', span: 24,
+    label: '期望匹配周期', field: 'matchPeriodCode', dictKey: 'rd_breakthrough_period', span: 24, fieldType: 'select'
   },
   // { label: '需求有效期', field: 'expireDate', span: 24 },
   { label: '需求提出方', field: 'tenantName', span: 24, },
@@ -50,6 +50,10 @@ const pageData = reactive({
   formConfigs,
   statusHistoryColumns: STATUS_HISTORY_COLUMNS,
   pageTitle,
+  canSubmit: true,
+  isUseDelete: true,
+  detailPath: '/user/published/PublicRelations/detail',
+  listPath: '/user/published/PublicRelations',
   tableSections: [
     {
       title: '研发攻关承接方',

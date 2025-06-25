@@ -44,7 +44,9 @@ const queryAfter = (data) => {
 const pageData = reactive({
   IdProp: props.IdProp,
   apiMap: {
+    submit: 'apm/apmSourcingOriginSubstitute/submit',
     detail: 'apm/apmSourcingOriginSubstitute/queryById/owner',
+    delete: 'apm/apmSourcingOriginSubstitute/delete',
   },
   otherParams: {
     sourcingType: '原厂件寻源',
@@ -53,6 +55,10 @@ const pageData = reactive({
   statusHistoryColumns: STATUS_HISTORY_COLUMNS,
   pageTitle,
   queryAfter,
+  canSubmit: true,
+  isUseDelete: true,
+  detailPath: '/user/published/OEMPartsSourcing/detail',
+  listPath: '/user/published/OEMPartsSourcing',
   statusDictKey: 'sourcing_status',
 })
 const success = () => {

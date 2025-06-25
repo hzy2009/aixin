@@ -105,6 +105,7 @@ const pageData = reactive({
   pageTitle: '行业人才',
   showLogList: false,
   canSubmit: true,
+  submitTpe: 'emit',
   showPageTitle: false,
   actionNote: '联系平台获取专家信息',
   listPath: '/demands/Talent',
@@ -113,6 +114,7 @@ const pageData = reactive({
 const submit = async () => {
   const response = await defHttp.post({ url: `/apm/apmTalent/newTodo/${props.IdProp}` });
   if (response && response.success) {
+	  window.scrollTo({ top: 0, behavior: 'smooth' });
     detailRef.value.isCreating = false
   } else {
     message.error(response.message);

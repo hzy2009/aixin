@@ -19,11 +19,11 @@ const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
   { label: '活动编号', field: 'code', span: 24 },
-  { label: '活动类型', field: 'activityTypeName', dictKey: 'activity_type', span: 24 },
-  { label: '活动内容', field: 'activityName', span: 24 },
-  { label: '活动结果', field: 'description', span: 24 },
-  { label: '活动名称', field: 'activityName', span: 24 },
-  { label: '活动日期', field: 'activityDate', span: 24 },
+  { label: '活动名称', field: 'activityName', span: 24, fieldType: 'input' },
+  { label: '活动类型', field: 'activityTypeCode', dictKey: 'activity_type', fieldType: 'select', span: 24 },
+  { label: '活动内容', field: 'description', span: 24, fieldType: 'textarea' },
+  { label: '活动结果', field: 'activityResult ', span: 24},
+  { label: '活动日期', field: 'activityDate', span: 24, fieldType: 'date' },
   { label: '封面图片', field: 'imageUrl', fieldType: 'imageUpload', span: 24 },
 ]
 
@@ -54,6 +54,8 @@ const pageData = reactive({
       ...BUSINESS_REF_LIST,
     }
   ],
+  canSubmit: true,
+  isUseDelete: true
 })
 
 const goBack = () => {

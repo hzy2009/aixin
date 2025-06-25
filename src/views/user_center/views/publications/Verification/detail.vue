@@ -25,7 +25,7 @@ const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
   {
-    label: '检测验证编号', field: 'code', fieldType: 'input', span: 24,
+    label: '检测验证编号', field: 'code', span: 24,
   },
   { label: '期望完成日期', field: 'expireDate', fieldType: 'date', span: 24, fieldType: 'date' },
   {
@@ -38,7 +38,7 @@ const formConfigs = [
   //   label: '验证项目', field: 'projectName', fieldType: 'input', span: 24,
   // },
   {
-    label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true,
+    label: '需求提出方', field: 'tenantName', span: 24, disabled: true,
   },
   // {
   //   label: '检测验证状态', field: 'statusName', detailField: 'statusName', fieldType: 'select', span: 24, disabled: true,
@@ -60,6 +60,10 @@ const pageData = reactive({
   formConfigs,
   statusHistoryColumns: STATUS_HISTORY_COLUMNS,
   pageTitle,
+  canSubmit: true,
+  isUseDelete: true,
+  detailPath: '/user/published/Verification/detail',
+  listPath: '/user/published/Verification',
   tableSections: [
     {
       title: '检查验证方',

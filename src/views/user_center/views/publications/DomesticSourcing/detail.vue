@@ -55,26 +55,11 @@ const pageData = reactive({
   formConfigs,
   statusHistoryColumns: STATUS_HISTORY_COLUMNS,
   pageTitle,
+  canSubmit: true,
+  isUseDelete: true,
   queryAfter,
-  // tableSections: [
-  //   {
-  //     title: '物料清单',
-  //     groupCode: 'materialList',
-  //     columns: [
-  //       { title: '序号', type: 'seq', key: 'index', width: 60, align: 'center', align: 'center' },
-  //       { title: '物料名称', field: 'materialName', key: 'materialName' },
-  //       { title: '物料数量', field: 'materialCount', key: 'materialCount' },
-  //       { title: '物料单位', field: 'materialUnit', key: 'materialUnit' },
-  //     ]
-  //   },
-  //   {
-  //     title: '已寻到厂商',
-  //     ...TENANT_REF_LIST,
-  //   },
-  //   {
-  //     ...BUSINESS_REF_LIST
-  //   }
-  // ],
+  detailPath: '/user/published/DomesticSourcing/detail',
+  listPath: '/user/published/DomesticSourcing',
   statusDictKey: 'sourcing_status',
 })
 
