@@ -123,7 +123,7 @@ export function useDemandDetail({IdProp, mode, url, otherParams, queryAfter, han
       const payload = { ...formData }; // 可以根据需要调整 payload 结构
       response = await defHttp.post({ url: url.submit, data: payload });
       if (response && response.success) {
-        message.success(response.message);
+        // message.success(response.message);
         return response.result;
       } else {
         throw new Error(response.message || '操作失败');
