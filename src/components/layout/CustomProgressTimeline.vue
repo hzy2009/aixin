@@ -201,12 +201,12 @@ const formattedSteps = computed(() => {
 
   .milestone-title {
     font-family: PingFang SC;
-    font-weight: 400;
+    font-weight: 500;
     font-size: 14px;
     line-height: 22px;
     letter-spacing: 0px;
 
-    color: @title-inactive-final;
+    // color: @title-inactive-final;
     margin-bottom: 2px;
     white-space: nowrap;
   }
@@ -217,7 +217,7 @@ const formattedSteps = computed(() => {
     font-size: 12px;
     line-height: 22px;
     letter-spacing: 0px;
-    color: @date-inactive-final;
+    // color: @date-inactive-final;
     white-space: nowrap;
   }
 
