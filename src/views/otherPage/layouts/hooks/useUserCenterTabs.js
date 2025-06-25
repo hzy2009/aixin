@@ -18,7 +18,7 @@ const defaultTabsConfig = {
   },
  tongyongcaiji: {
     key: 'tongyongcaiji',
-    label: '平台会员',
+    label: '通用件集采',
     defaultSubTabKey: 'tongyongcaiji',
     path: '/other/tongyongcaiji',
   },
