@@ -14,7 +14,7 @@ import { DOMESTIC_SOURCING_COLUMNS } from '@/utils/const';
 
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
-  { id: 'statusCode', label: '寻源结果', maxVisibleWithoutMore: 7, dictKey: 'sourcing_status' }
+  // { id: 'statusCode', label: '寻源结果', maxVisibleWithoutMore: 7, dictKey: 'sourcing_status' }
 ]);
 
 // --- Table Columns (remains in component as it's UI specific) ---
