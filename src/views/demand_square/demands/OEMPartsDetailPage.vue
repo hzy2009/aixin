@@ -7,7 +7,7 @@
     <template #main>
       <detail :pageData="pageData" @goBack="goBack">
          <template #inquiryList="{ dataSource }">
-          <inquiryList :data="dataSource.inquiryList" @success="success" v-if="dataSource.inquiryList && dataSource.inquiryList.length > 0"></inquiryList>
+          <inquiryList :data="dataSource.inquiryList" :isDetail="true" @success="success" v-if="dataSource.inquiryList && dataSource.inquiryList.length > 0"></inquiryList>
           <span v-else>暂无结果</span>
         </template>
       </detail>

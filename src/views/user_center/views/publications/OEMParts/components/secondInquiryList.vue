@@ -32,6 +32,10 @@ const props = defineProps({
   isFinished: {
     type: Number,
     default: 0
+  },
+  isDetail: {
+    type: Boolean,
+    default: false
   }
 });
 const emit = defineEmits(['select-winner', 'update:data']);
@@ -116,7 +120,7 @@ const columns = [
       // Use slots.default for rendering complex components like a-date-picker
       slots: {
         default: ({ row, $rowIndex }) => { // vxe-table uses { row, $rowIndex }
-          const disabled = props.isFinished == 1 || props.isSecondInquiryEnable == 1;
+          const disabled = props.isFinished == 1 || props.isSecondInquiryEnable == 1 || props.isDetail;
           return (
             disabled ?
               <span>{row.expireDate ? Dayjs(row.expireDate).format('YYYY-MM-DD') : ''}</span> : 
@@ -142,6 +146,7 @@ const columns = [
           const isDisabled = () => {
             if (props.isFinished === 1) return true;
             if (!priceIncludingTax || !priceExcludingTax) return true;
+            if (props.isDetail) return true
             return false;
           }
           return (

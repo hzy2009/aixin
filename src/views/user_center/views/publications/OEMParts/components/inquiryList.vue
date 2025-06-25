@@ -31,7 +31,7 @@ import { message } from 'ant-design-vue';
 const emit = defineEmits(['success']);
 const expandedRowKeys = ref([]); // 控制展开行的 key 数组
 
-const props = defineProps(['data']);
+const props = defineProps(['data', 'isDetail']);
 
 const dataSource = ref(props.data);
 
@@ -172,6 +172,7 @@ const columns = [
                     data={parentRecord.firstInquiryList}
                     isSecondInquiryEnable={parentRecord.isSecondInquiryEnable}
                     isFinished={parentRecord.isFinished}
+                    isDetail={props.isDetail}
                     onToggle-selection={payload => handleToggleSelection(parentRecord, payload)}
                     onSelect-winner={payload => handleSelectWinner(payload)}
                     // 关键改动：绑定 ref，将组件实例存入 ref 对象，以行 id 为 key
@@ -181,6 +182,7 @@ const columns = [
                     data={parentRecord.secondInquiryList}
                     isSecondInquiryEnable={parentRecord.isSecondInquiryEnable}
                     isFinished={parentRecord.isFinished}
+                    isDetail={props.isDetail}
                     onSelect-winner={payload => handleSelectWinner(payload)}
                     onUpdate:data={newData => parentRecord.secondInquiryList = newData}
                     style="margin-bottom: 16px;"
@@ -208,7 +210,7 @@ const columns = [
       slots: {
         default: ({ row }) => {
             const { winnerName } = getRowState(row);
-            return <span>{winnerName || '--'}</span>;
+            return <span>{winnerName || ''}</span>;
         }
       }
     },
@@ -220,7 +222,7 @@ const columns = [
             const { isWinnerSelected } = getRowState(row);
             const options = selectOptions('trade_type');
             return (
-                row.isFinished === 1 ? <span>{row.tradeTypeName}</span> :
+                row.isFinished === 1 || props.isDetail ? <span>{row.tradeTypeName}</span> :
                 <a-select
                     v-model:value={row.tradeTypeCode}
                     style={{ width: '100%' }}
@@ -250,6 +252,7 @@ const columns = [
                 buttonText = '进入第二轮报价';
                 actionType = 'start_second_round';
             }
+            if (props.isDetail) return <span>''</span>;
             return (
                 row.isFinished === 1 ? <span>已完成</span> :
                 <a-button

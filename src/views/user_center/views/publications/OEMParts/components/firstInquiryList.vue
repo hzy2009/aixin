@@ -31,6 +31,10 @@ const props = defineProps({
   isFinished: {
     type: Number,
     default: 0
+  },
+  isDetail: {
+    type: Boolean,
+    default: false
   }
 });
 const emit = defineEmits(['toggle-selection', 'select-winner']);
@@ -116,6 +120,7 @@ const columns = [
           const disabled = () => {
             if (props.isSecondInquiryEnable === 1 || props.isFinished === 1) return true
             if (!priceIncludingTax || !priceExcludingTax) return true
+            if (props.isDetail) return true
             return false
           }
           return (
@@ -139,6 +144,7 @@ const columns = [
           const disabled = () => {
             if (props.isSecondInquiryEnable === 1 || props.isFinished === 1) return true
             if (!priceIncludingTax || !priceExcludingTax) return true
+            if (props.isDetail) return true
             return false
           }
           return (
