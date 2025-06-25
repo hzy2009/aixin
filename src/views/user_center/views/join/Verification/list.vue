@@ -70,7 +70,7 @@ const pageData = ref({
 
 
 function viewDetails({ id }) {
-    router.push(`/user/published/Verification/detail/${id}`);
+    router.push(`/user/join/Verification/detail/${id}`);
 };
 function createNewSourcing() {
     router.push(`/user/published/Verification/create`);

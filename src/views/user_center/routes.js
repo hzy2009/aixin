@@ -32,6 +32,7 @@ const OfflineEventEditPage = () => import('./views/publications/OfflineEvent/edi
 
 
 const joinDomesticSourcing = () => import('./views/join/DomesticSourcing/list.vue'); 
+const joinDomesticSourcingDetailPage = () => import('./views/join/DomesticSourcing/detail.vue'); 
 
 
 const joinOEMPartsSourcing = () =>import('./views/join/OEMParts/list.vue'); 
@@ -39,10 +40,12 @@ const joinOEMPartsDetailPage = () =>import('./views/join/OEMParts/detail.vue');
 
 
 const joinPublicRelations = () =>import('./views/join/PublicRelations/list.vue'); 
+const joinPublicRelationsDetailPage = () =>import('./views/join/PublicRelations/detail.vue'); 
 
 
 
 const joinVerification = () =>import('./views/join/Verification/list.vue'); 
+const joinVerificationDetailPage = () =>import('./views/join/Verification/detail.vue'); 
 
 
 
@@ -158,7 +161,7 @@ const userCenterRoutes = [
       },
       {
         path: 'DomesticSourcing/detail/:id', 
-        component: DomesticDetailPage, 
+        component: joinDomesticSourcingDetailPage, 
         props: route => ({ IdProp: route.params.id }), // 通过 props 传递 mode 和 id
         meta: { title: '国产替代寻源详情', breadcrumb: ['国产替代寻源'] }
       },
@@ -180,7 +183,7 @@ const userCenterRoutes = [
       },
       {
         path: 'PublicRelations/detail/:id', 
-        component: PublicRelationsDetailPage, 
+        component: joinPublicRelationsDetailPage, 
         props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
         meta: { title: '研发攻关需求详情', breadcrumb: [ '研发攻关需求详情'] }
       },
@@ -191,7 +194,7 @@ const userCenterRoutes = [
       },
       {
         path: 'Verification/detail/:id', 
-        component: VerificationDetailPage, 
+        component: joinVerificationDetailPage, 
         props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
         meta: { title: '检测验证需求详情', breadcrumb: [ '检测验证需求详情'] }
       },
