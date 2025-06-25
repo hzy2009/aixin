@@ -35,7 +35,7 @@
                     <span>清空筛选条件</span>
                 </div>
             </div>
-            <div class="results-count-wrapper">
+            <div class="results-count-wrapper" v-if="userSearchTitle">
                 <span>为您找到</span>
                 <span class="results-count"> {{ pagination.total }} </span>
                 <span>个{{ searchTitle }}</span>
@@ -113,6 +113,7 @@ const {
     url, filterConfigForPage, tableColumns, actions, otherParams,
     statusDictKey, userStatCardVisible, showBanner = false, pageTitle,
     tableOperations = [], dateRangeConfig = [], searchTitle, listPageisPadding = true,
+    userSearchTitle = true
 } = props.pageData;
 
 const {

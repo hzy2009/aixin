@@ -31,10 +31,7 @@ const tableColumns = reactive([
 ]);
 
 
-const addButton = reactive({
-  text: '创建国产替代寻源',
-  clickFn: createNewSourcing
-})
+
 
 const actions = reactive([
   {
@@ -51,7 +48,7 @@ const pageData = ref({
   },
   filterConfigForPage,
   tableColumns,
-  addButton,
+  searchTitle: '待办事项',
   actions,
   tableOperations: [
   ],
