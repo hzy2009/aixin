@@ -83,12 +83,10 @@ const columns = [
     {
       title: '爱芯享单据号',
       field: 'materialCode',
-      width: 120,
     },
 	{
       title: '操作',
       field: 'action',
-      width: 150,
 	  slots: {
         default: ({ row }) => {
             const {isSecondInquiryEnable, firstInquiryList, secondInquiryList} = row
