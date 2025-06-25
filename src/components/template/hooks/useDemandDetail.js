@@ -137,6 +137,30 @@ export function useDemandDetail({IdProp, mode, url, otherParams, queryAfter, han
       isLoading.value = false;
     }
   }
+  async function handleDelete({id}) {
+    isLoading.value = true;
+    error.value = null;
+    let response;
+    try {
+      if (url.delete === undefined) {
+        throw new Error('url.delete 未定义');
+      }
+      response = await defHttp.delete({ url: url.delete, params: { id } });
+      if (response && response.success) {
+        message.success(response.message);
+        return response;
+      } else {
+        throw new Error(response.message || '操作失败');
+      }
+    } catch (err) {
+      console.error("提交需求失败:", err);
+      error.value = err.message || "操作失败，请重试。";
+      message.error(error.value);
+      return false;
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   onMounted(() => {
       fetchDemandDetail(); // 会根据 operationMode 判断是加载还是设置默认值
@@ -152,5 +176,6 @@ export function useDemandDetail({IdProp, mode, url, otherParams, queryAfter, han
     handleSave,
     handleSubmit,
     internalDemandId, // 可以暴露供父组件在某些情况下使用
+    handleDelete,
   };
 }
