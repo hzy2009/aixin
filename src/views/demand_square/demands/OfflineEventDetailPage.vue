@@ -241,7 +241,7 @@ watch(() => route.params.id, (newId, oldId) => {
       line-height: 22px;
       letter-spacing: 0%;
       text-align: justify;
-      color: #000000; // Darker value
+      color: #272A30; // Darker value
     }
 
     .status-text {
