@@ -238,7 +238,7 @@ const viewReportDetails = (id) => {
 
 .report-item__actions {
   display: flex;
-  flex-direction: column;
+  // flex-direction: column;
   align-items: flex-end;
   justify-content: space-between; // Pushes views to top, arrow to bottom (relative to this column)
   margin-left: @spacing-lg;
