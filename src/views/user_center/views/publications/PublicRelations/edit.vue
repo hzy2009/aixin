@@ -30,12 +30,13 @@ const formConfigs = [
       form.rdType = option.label || '';
     }
   },
-  {
-    label: '期望匹配周期', field: 'matchPeriodCode', fieldType: 'select', dictKey: 'rd_breakthrough_period', span: 24,
-    onChange: ({ value, form, option }) => {
-      form.matchPeriodName = option.label || '';
-    }
-  },
+  { label: '期望完成日期', field: 'expireDate', fieldType: 'date', span: 24 },
+  // {
+  //   label: '期望匹配周期', field: 'matchPeriodCode', fieldType: 'select', dictKey: 'rd_breakthrough_period', span: 24,
+  //   onChange: ({ value, form, option }) => {
+  //     form.matchPeriodName = option.label || '';
+  //   }
+  // },
 ]
 
 const statusHistoryColumns = [
