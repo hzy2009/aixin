@@ -12,7 +12,7 @@
                 <template #icon><img src="@/assets/images/user_center/icon-pending.png" alt="未响应" /></template>
             </UserStatCardSm>
         </div> -->
-        <UserStatCardSm :stats=stats.list @statsChanged="(item) => handleStatClick(item)"></UserStatCardSm>
+        <UserStatCardSm :stats=stats.list @statsChanged="(item) => handleStatClick(item)" v-if="userStatCardVisible"></UserStatCardSm>
         <UserFilterAccordion :filter-groups="filterConfigForPage" :initial-filters="currentFilters" v-if="filterConfigForPage && filterConfigForPage.length > 0"
             @filters-changed="handleFiltersChange" class="filter-accordion-section" ref="userFilterAccordionRef" />
 
@@ -145,8 +145,6 @@ const vxeTableColumns = computed(() => {
         };
         if (col.dictKey && col.fieldType === 'select') {
             vxeCol.formatter = ({ cellValue }) => {
-                console.log('cellValue', cellValue);
-                console.log('cellValue', getDictOptions(col.dictKey));
                 if (getDictOptions(col.dictKey)) {
                     return getDictOptions(col.dictKey).find(option => option.value === cellValue)?.label;
                 } else {

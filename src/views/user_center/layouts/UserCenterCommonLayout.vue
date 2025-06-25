@@ -37,7 +37,7 @@
     </section>
 
     <!-- Sub Tabs Section -->
-    <section class="uc-sub-tabs-wrapper container">
+    <section class="uc-sub-tabs-wrapper container" v-if="currentSubTabs && currentSubTabs.length > 0">
       <div class="">
         <!-- <div class="uc-sub-tabs">
           <div

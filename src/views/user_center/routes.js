@@ -55,6 +55,8 @@ const JoinOfflineEventDetailPage = () => import('./views/join/OfflineEvent/detai
 
 const MemberInfoPage = () => import('./views/userInfo/MemberInfoPage/index.vue');
 const passWordPage = () => import('./views/userInfo/passWord/index.vue');
+const todoList = () => import('./views/todo/index.vue');
+
 
 const userCenterRoutes = [
   {
@@ -226,6 +228,19 @@ const userCenterRoutes = [
         component: passWordPage,
         meta: { title: '修改密码' }
       }
+    ]
+  },
+  {
+    path: '/todo',
+    component: UserCenterCommonLayout,
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: 'list',
+        component: todoList,
+        meta: { title: '我待办的' }
+      },
+    
     ]
   }
   // ... 其他顶层用户中心路由 ...
