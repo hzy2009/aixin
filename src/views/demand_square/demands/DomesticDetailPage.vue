@@ -13,7 +13,7 @@
         </detail>
     </template>
     <template #sidebar>
-      <DomesticSidebar />
+      <DomesticSidebar :count="5"/>
     </template>
   </ContentWithSidebarLayout>
 </template>

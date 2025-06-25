@@ -13,7 +13,7 @@
       </detail>
     </template>
     <template #sidebar>
-      <OEMPartsSidebar />
+      <OEMPartsSidebar  :count="5"/>
     </template>
   </ContentWithSidebarLayout>
 </template>
