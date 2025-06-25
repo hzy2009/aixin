@@ -271,8 +271,8 @@ defineExpose({
 :deep(.status-tag) {
     // Add any specific styles for the tag here
 }
-.action-item{
-    cuorsor: pointer;
+:deep(.action-item){
+    cursor: pointer;
 }
 :deep(.action-link) {
     font-family: PingFang SC;
