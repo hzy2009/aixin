@@ -41,6 +41,7 @@ const handlePaymentTermChange = (value, record, options) => {
         record.paymentTermsName = selectedOption.label;
     }
 };
+const gridRef = ref(null);
 
 // Columns are converted to vxe-table format
 const columns = [
