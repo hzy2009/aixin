@@ -13,8 +13,7 @@
       </detail>
     </template>
     <template #sidebar>
-      <RelatedItemsSidebar title="其他" :items="relatedEvents" :is-loading="isLoadingRelated" empty-description="暂无其他推荐"
-        @item-click="navigateToRelatedEvent" />
+      <OEMPartsSidebar />
     </template>
   </ContentWithSidebarLayout>
 </template>
@@ -24,7 +23,7 @@ import { ref, computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import detail from '@/components/template/detail.vue';
 import { useAuthStore } from '@/store/authStore';
-import RelatedItemsSidebar from '@/components/common/RelatedItemsSidebar.vue'; // Adjust path if needed
+import OEMPartsSidebar from './components/OEMPartsSidebar.vue'; // Adjust path if needed
 import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue'; // Adjust path if needed
 import inquiryList from '@/views/user_center/views/publications/OEMParts/components/inquiryList.vue'
 const authStore = useAuthStore();
