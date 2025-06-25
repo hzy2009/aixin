@@ -238,6 +238,7 @@ defineExpose({ isCreating, handleToDetail, fetchDemandDetail });
 	padding: @spacing-lg @spacing-xl;
 	background-color: @background-color-base;
 	border-radius: @border-radius-sm;
+	margin-bottom: 20px;
 }
 
 .page-title-header {
