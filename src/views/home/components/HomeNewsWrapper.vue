@@ -4,21 +4,25 @@
         <div class="news-columns-wrapper">
           <div class="news-column">
             <SectionHeader title-ch="平台动态" title-en="ICSHARE NEWS" />
-            <ScrollingNewsList
-              :items="platformNews"
-              :items-per-page="5"
-              :auto-cycle-interval="5000"
-              @item-click="handleNewsItemClick"
-            />
+            <div class="news-list-wrapper">
+              <ScrollingNewsList
+                :items="platformNews"
+                :items-per-page="5"
+                :auto-cycle-interval="5000"
+                @item-click="handleNewsItemClick"
+              />
+            </div>
           </div>
           <div class="news-column">
             <SectionHeader title-ch="会员动态" title-en="MEMBER NEWS" />
-            <ScrollingNewsList
-              :items="memberNews"
-              :items-per-page="5"
-              :auto-cycle-interval="5500"
-              @item-click="handleNewsItemClick"
-            />
+            <div class="news-list-wrapper">
+              <ScrollingNewsList
+                :items="memberNews"
+                :items-per-page="5"
+                :auto-cycle-interval="5500"
+                @item-click="handleNewsItemClick"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -69,4 +73,5 @@ const handleNewsItemClick = (item) => {
 .section-padding { padding: 0 0 10px; }
 .news-columns-wrapper { display: flex; gap: @spacing-xxl; @media (max-width: 992px) { flex-direction: column; gap: @spacing-xl; } }
 .news-column { flex: 1; min-width: 0; }
+.news-list-wrapper{ padding: 15px 0; background: #fff; border: 1px solid #EAEAEA;}
 </style>
