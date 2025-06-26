@@ -24,20 +24,21 @@
     <div class="card-body">
       <div class="section">
         <h5 class="section-title">主要研究方向:</h5>
-        <ul v-if="talent.researchAreas && talent.researchAreas.length" class="research-list">
+        <ul v-if=" formatSkillDescLsit.length && formatSkillDescLsit.length > 1" class="research-list">
           <li
-            v-for="(area, index) in talent.researchAreas"
+            v-for="(area, index) in formatSkillDescLsit"
             :key="index"
             class="research-item"
           >
-            {{ index + 1 }}. {{ area }}
+            {{ area }}
           </li>
         </ul>
+        <div v-else-if="formatSkillDescLsit.length === 1" class="skill-desc">{{ formatSkillDescLsit[0] }}></div>
         <p v-else class="empty-text">暂无研究方向</p>
       </div>
       <div class="section">
         <h5 class="section-title">合作意向:</h5>
-        <p class="cooperation-intention">{{ talent.cooperationIntention || '暂无合作意向' }}</p>
+        <p class="cooperation-intention">{{ talent.desiredCooperationDirection || '暂无合作意向' }}</p>
       </div>
     </div>
 
@@ -63,6 +64,7 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
 import { Avatar as AAvatar, Button as AButton } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
@@ -137,9 +139,12 @@ const maskEmail = (email) => {
 
   return `${maskedUsername}@${domain}`;
 };
+const formatSkillDescLsit = computed(() => {
+  return props.talent.skillDesc.split('\n');
+})
 
 const viewExpertProfile = (item) => {
-emit('handleDetail', item);
+  emit('handleDetail', item);
   // router.push({ name: 'TalentProfile', params: { id } });
 };
 </script>
@@ -249,6 +254,8 @@ emit('handleDetail', item);
       list-style: none;
       padding-left: 0;
       margin: 0;
+      height: 66px;
+      overflow: hidden;
       .research-item {
         font-family: PingFang SC;
         font-weight: 400;
@@ -258,6 +265,20 @@ emit('handleDetail', item);
         text-align: justify;
         color: #656C74;
       }
+    }
+    .skill-desc{
+      font-family: PingFang SC;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 22px;
+      letter-spacing: 0%;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+    - webkit-box-orient: vertical;
+      overflow: hidden;
+      // text-align: justify;
+      color: #656C74;
     }
     .cooperation-intention {
         color: #656C74;

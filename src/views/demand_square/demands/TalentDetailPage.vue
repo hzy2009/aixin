@@ -67,12 +67,12 @@ const reportData = ref({});
 
 const formConfigs = [
   { label: '人才编号', field: 'code', span: 24 },
-  { label: '现工作单位', field: 'xx', span: 24, },
-  { label: '现任职务', field: 'xx', span: 24, },
+  { label: '现工作单位', field: 'company', span: 24, },
+  { label: '现任职务', field: 'job', span: 24, },
   { label: '研究领域', field: 'skillAreaName', span: 24 },
-  { label: '意愿合作方向', field: 'xx', span: 24, },
+  { label: '意愿合作方向', field: 'desiredCooperationDirection', span: 24, },
   { label: '主要研究方向', field: 'skillDesc', span: 24, },
-  { label: '论文成果', field: 'xx', span: 24, },
+  { label: '论文成果', field: 'paperAchievement', span: 24, },
 ]
 
 // --- Columns are now defined in vxe-table format ---
