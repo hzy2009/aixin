@@ -61,7 +61,7 @@ const onItemClick = (item) => {
 .related-items-sidebar {
   width: 384px;
   background-color: @background-color-base;
-  padding: 10px 20px;
+  padding: 10px 20px 30px;
   border-radius: @border-radius-base;
   box-shadow: 0 1px 4px rgba(0,0,0,0.05); // Consistent with other user center panels
   height: fit-content; // So it doesn't stretch unnecessarily if content is short
