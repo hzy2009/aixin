@@ -5,12 +5,17 @@
       <router-view />
     </main>
     <AppFooter />
+     <FixedActionButtons
+      contact-phone-number="021-55698507"
+      :back-to-top-visibility-threshold="50"
+    />
   </div>
 </template>
 
 <script setup>
 import AppHeader from './AppHeader.vue';
 import AppFooter from './AppFooter.vue';
+import FixedActionButtons from '@/components/common/FixedActionButtons.vue'; // Adjust path
 </script>
 
 <style scoped lang="less">
