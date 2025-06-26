@@ -6,10 +6,10 @@
         <span class="welcome-text">欢迎来到爱芯享信息共享平台！</span>
         <div class="user-actions-group">
           <template v-if="auth.isLogin">
-             <!-- <span :count="unreadMessagesCount" :overflow-count="99" class="action-item notification-badge" @click="navigateToMessages">
+             <span :count="unreadMessagesCount" :overflow-count="99" class="action-item notification-badge" @click="navigateToMessages">
               <BellOutlined />
               <span class="action-text">您有{{ unreadMessagesCount }}条待办事项</span>
-             </span> -->
+             </span>
             <router-link to="/user/setting/userCenterInfo" class="action-item action-link"> 
               会员中心
             </router-link>
@@ -71,19 +71,20 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/store/authStore';
 import { useNavigation } from './hooks/useNavigation';
 import { BellOutlined } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
+import defHttp from '@/utils/http/axios';
 
 const route = useRoute();
 const router = useRouter();
 const auth = useAuthStore();
 const { navigationItems, isActiveNavItem } = useNavigation();
 
-const unreadMessagesCount = computed(() => 9);
+const unreadMessagesCount = ref(0);
 
 const showTopWelcomeBar = computed(() => true);
 
@@ -104,6 +105,21 @@ const handleMenuClick = (item) => {
     router.push(item.path);
   }
 }
+const getUnreadMessagesCount = async () => {
+  try {
+    const res = await defHttp.get({ url: '/apm/apmTodo/join/newTodo/list', params: { page: 1, pageSize: 99 } });
+    unreadMessagesCount.value = res.result.total;
+  } catch (error) {
+    console.error('Error fetching unread messages count:', error);
+  }
+}
+const navigateToMessages = () => {
+  router.push('todo/list');
+}
+
+onMounted(() => {
+  getUnreadMessagesCount();
+});
 </script>
 
 <style scoped lang="less">
@@ -148,7 +164,7 @@ const handleMenuClick = (item) => {
   .user-actions-group {
   display: flex;
   align-items: center;
-  gap: 24px; // Space between action items
+  gap: 20px; // Space between action items
 
   .action-item {
     display: flex;
@@ -167,7 +183,6 @@ const handleMenuClick = (item) => {
       font-size: 16px; // Icon size
     }
     .action-text {
-      // For "您有32条待办事项"
     }
   }
   .notification-badge {
@@ -176,7 +191,12 @@ const handleMenuClick = (item) => {
       color: @primary-color; // Bell icon is red
     }
     .action-text{
-      color: #646A73;
+      font-family: PingFang SC;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 14px;
+      letter-spacing: 0%;
+      color: @primary-color; // Red on hover
       text-decoration: none;
       &:hover{
       color: @primary-color; // Bell icon is red
