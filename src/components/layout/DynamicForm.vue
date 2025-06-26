@@ -98,17 +98,13 @@ import {
   RangePicker as ARangePicker, Upload as AUpload, Modal as AModal, message
 
 } from 'ant-design-vue';
+import { selectOptions } from '@/utils/index';
 import { PlusOutlined } from '@ant-design/icons-vue';
 import { getFileAccessHttpUrl, getRandom } from "@/utils/index";
 import dayjs from 'dayjs';
 const uploadUrl = `${import.meta.env.VITE_API_BASE_URL}sys/common/upload` || '/api';
 const auth = useAuthStore(); // For dictionary options
 
-const selectOptions = (dictKey) => {
-  if (!dictKey) return [];
-  if (!auth.sysAllDictItems || !auth.sysAllDictItems[dictKey]) return [];
-  return auth.sysAllDictItems[dictKey].map(({ label, value }) => ({ label, value })) || [];
-};
 
 const props = defineProps({
   formConfig: { type: Array, required: true },
@@ -302,12 +298,12 @@ const disabledDate = (current) => {
 }
 //特殊代码不复用的烂代码，赶时间
 const handleSelectProductMainTypeChange = (v, field, option) => {
-  internalFormModel['productMainTypeName'] = option.label
+  internalFormModel['productMainTypeName'] = option?.label
   internalFormModel['productType'] = ''
   internalFormModel['productTypeName'] = ''
 }
 const handleSelectProductTypeChange = (v, field, option) => {
-  internalFormModel['productTypeName'] = option.label
+  internalFormModel['productTypeName'] = option?.label
 }
 
 

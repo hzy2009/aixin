@@ -2,7 +2,19 @@
   <div>
     <detail :pageData="pageData" @goBack="goBack">
       <template #productType="{ dataSource }">
-        <div><span>{{ dataSource.productMainTypeName }}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ dataSource.productTypeName }}</span></div>
+        <div v-if='dataSource.statusCode !== "submit"'><span>{{ dataSource.productMainTypeName }}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ dataSource.productTypeName }}</span></div>
+        <div>
+         <a-select v-model:value="dataSource['productMainTypeCode']" :placeholder="`请选择`" 
+            style="width: 185px; margin-right: 16px"
+            :options="selectOptions('product_main_type')" 
+            @change="(v, option) => handleSelectProductMainTypeChange(v, field, option, dataSource)" allow-clear />
+
+          <a-select v-model:value="dataSource['productType']" :placeholder="`请选择`" 
+            :disabled="!dataSource['productMainTypeCode']"
+            style="width: 185px"
+            :options="dataSource['productMainTypeCode'] == 'product_type' ? selectOptions('product_type') : selectOptions('product_type_material')" 
+              @change="(v, option) => handleSelectProductTypeChange(v, field, option, dataSource)" allow-clear />
+        </div>
       </template>
     </detail>
   </div>
@@ -14,7 +26,7 @@ import { useRouter } from 'vue-router';
 import detail from '@/components/template/detail.vue';
 import { useAuthStore } from '@/store/authStore';
 import { BUSINESS_REF_LIST, STATUS_HISTORY_COLUMNS, TENANT_REF_LIST } from '@/utils/const';
-
+import { selectOptions } from '@/utils/index';
 
 
 const props = defineProps({
@@ -87,4 +99,13 @@ const goBack = () => {
   // router.push('/user/published/verification');
 };
 
+//特殊代码不复用的烂代码，赶时间
+const handleSelectProductMainTypeChange = (v, field, option, dataSource) => {
+  dataSource['productMainTypeName'] = option?.label
+  dataSource['productType'] = ''
+  dataSource['productTypeName'] = ''
+}
+const handleSelectProductTypeChange = (v, field, option, dataSource) => {
+  dataSource['productTypeName'] = option?.label
+}
 </script>
