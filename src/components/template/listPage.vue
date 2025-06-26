@@ -41,7 +41,7 @@
                 <span>个{{ searchTitle }}</span>
             </div>
         </div>
-        <div class="table-operations">
+        <div class="table-operations" v-if="tableOperations && tableOperations.length > 0">
             <a-button
                 v-for="(Operations, index) in tableOperations"
                 :key="index"
