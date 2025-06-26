@@ -64,7 +64,7 @@ const columns = [
       width: '160px',
       slots: {
         default: ({ row }) => { // customRender -> slots.default, {record} -> {row}
-            const expire = dayjs(row.expireDate);
+            const expire = dayjs(row?.expireDate);
             const disabled = dayjs().isAfter(expire, 'day');
             return (
                 isSecondRound.value || disabled ? <span>{row.priceIncludingTax}</span> :
@@ -87,7 +87,7 @@ const columns = [
       width: '160px',
       slots: {
         default: ({ row }) => { // customRender -> slots.default, {record} -> {row}
-            const expire = dayjs(row.expireDate);
+            const expire = dayjs(row?.expireDate);
             const disabled = dayjs().isAfter(expire, 'day');
             return (
                 isSecondRound.value || disabled ? <span>{row.priceExcludingTax}</span> :
@@ -110,10 +110,10 @@ const columns = [
       width: 140,
       slots: {
         default: ({ row }) => { // customRender -> slots.default, {record} -> {row}
-            const expire = dayjs(row.expireDate);
+            const expire = dayjs(row?.expireDate);
             const disabled = dayjs().isAfter(expire, 'day');
             return (
-                isSecondRound.value || disabled ? <span>{row.deliveryDate ? row.deliveryDate.split(' ')[0] : '--'}</span> :
+                isSecondRound.value || disabled ? <span>{row.deliveryDate ? row.deliveryDate.split(' ')[0] : ''}</span> :
                 <a-date-picker v-model:value={row.deliveryDate} format="YYYY-MM-DD" valueFormat="YYYY-MM-DD HH:mm:ss" style={{ width: '100%' }}></a-date-picker>
             );
         }
@@ -126,7 +126,7 @@ const columns = [
       slots: {
         default: ({ row }) => { // customRender -> slots.default, {record} -> {row}
             const options = selectOptions('paymentTerms_type');
-            const expire = dayjs(row.expireDate);
+            const expire = dayjs(row?.expireDate);
             const disabled = dayjs().isAfter(expire, 'day');
             return (
                 isSecondRound.value || disabled ? <span>{row.paymentTermsName}</span> :
@@ -147,7 +147,7 @@ const columns = [
       width: '120px',
       slots: {
         default: ({ row }) => { // customRender -> slots.default, {record} -> {row}
-            const expire = dayjs(row.expireDate);
+            const expire = dayjs(row?.expireDate);
             const disabled = dayjs().isAfter(expire, 'day');
             return (
                 isSecondRound.value || disabled ? <span>{row.guaranteePeriod}</span> :
@@ -162,7 +162,7 @@ const columns = [
       width: '160px',
       slots: {
         default: ({ row }) => { // customRender -> slots.default, {record} -> {row}
-            const expire = dayjs(row.expireDate);
+            const expire = dayjs(row?.expireDate);
             const disabled = dayjs().isAfter(expire, 'day');
             return (
                 isSecondRound.value || disabled ? <span>{row.guaranteeDesc}</span> : // Corrected: was guaranteePeriod
@@ -178,7 +178,7 @@ const columns = [
       fixed: 'right',
       // Using formatter for simple text transformation is cleaner
       formatter: ({ cellValue }) => {
-        return cellValue ? cellValue.split(' ')[0] : '--';
+        return cellValue ? cellValue.split(' ')[0] : '';
       }
     },
 ]

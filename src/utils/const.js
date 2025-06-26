@@ -41,7 +41,7 @@ export const TENANT_REF_LIST = {
     groupCode: 'tenantRefList',
     columns: [
         { title: '序号', type: 'seq', width: 74, align: 'center' },
-        { title: '寻源承接方', field: 'refUserName', align: 'center' },
+        { title: '研发攻关承接方', field: 'refUserName', align: 'center' },
     ]
 }
 

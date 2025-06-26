@@ -64,12 +64,12 @@ const pageData = ref({
 
 function viewDetails({businessName, id }) {
     const map = {
-        '原厂件寻源': '/user/join/OEMPartsSourcing',
-        '线下活动': '/user/join/OfflineEvent',
+        '原厂件寻源': '/user/join/OEMPartsSourcing/detail',
+        '线下活动': '/user/join/OfflineEvent/detail',
     };
-    const path = map[row.businessName];
-    console.log(map[row.businessName]);
-  router.push(`${path}/${id}`);
+    const path = map[businessName];
+    console.log(map[businessName]);
+    router.push(`${path}/${id}`);
 };
 function createNewSourcing() {
   router.push(`/user/published/DomesticSourcing/create`);

@@ -63,7 +63,7 @@ const columns = [
       width: '160px',
       slots: {
         default: ({ row }) => { // customRender -> slots.default, {record} -> {row}
-            const expire = dayjs(row.expireDate);
+            const expire = dayjs(row?.expireDate);
             const disabled = dayjs().isAfter(expire, 'day');
             return (
                 isDisabled.value || disabled ? <span>{row.priceIncludingTax}</span> :
@@ -86,7 +86,7 @@ const columns = [
       width: '160px',
       slots: {
         default: ({ row }) => { // customRender -> slots.default, {record} -> {row}
-            const expire = dayjs(row.expireDate);
+            const expire = dayjs(row?.expireDate);
             const disabled = dayjs().isAfter(expire, 'day');
             return (
                 isDisabled.value || disabled ? <span>{row.priceExcludingTax}</span> :
@@ -109,7 +109,7 @@ const columns = [
       width: 140,
       slots: {
         default: ({ row }) => { // customRender -> slots.default, {record} -> {row}
-            const expire = dayjs(row.expireDate);
+            const expire = dayjs(row?.expireDate);
             const disabled = dayjs().isAfter(expire, 'day');
             return (
                 isDisabled.value || disabled ? <span>{row.deliveryDate ? row.deliveryDate.split(' ')[0] : '--'}</span> :
@@ -125,7 +125,7 @@ const columns = [
       slots: {
         default: ({ row }) => { // customRender -> slots.default, {record} -> {row}
             const options = selectOptions('paymentTerms_type');
-            const expire = dayjs(row.expireDate);
+            const expire = dayjs(row?.expireDate);
             const disabled = dayjs().isAfter(expire, 'day');
             return (
                 isDisabled.value || disabled ? <span>{row.paymentTermsName}</span> :
@@ -146,7 +146,7 @@ const columns = [
       width: '120px',
       slots: {
         default: ({ row }) => { // customRender -> slots.default, {record} -> {row}
-            const expire = dayjs(row.expireDate);
+            const expire = dayjs(row?.expireDate);
             const disabled = dayjs().isAfter(expire, 'day');
             return (
                 isDisabled.value || disabled ? <span>{row.guaranteePeriod}</span> :
@@ -161,7 +161,7 @@ const columns = [
       width: '160px',
       slots: {
         default: ({ row }) => { // customRender -> slots.default, {record} -> {row}
-            const expire = dayjs(row.expireDate);
+            const expire = dayjs(row?.expireDate);
             const disabled = dayjs().isAfter(expire, 'day');
             return (
                 isDisabled.value || disabled ? <span>{row.guaranteeDesc}</span> : // Corrected: was guaranteePeriod

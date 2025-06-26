@@ -66,7 +66,6 @@ const columns = [
                     data={parentRecord.secondInquiryList}
                     isFinished={parentRecord.isFinished}
                     style="margin-bottom: 16px;"
-                    v-show={parentRecord.secondInquiryList && parentRecord.secondInquiryList.length > 0}
                     // 将组件实例存入 ref 对象，以行 id 为 key
                     ref={el => { if (el) secondInquiryListRefs.value[parentRecord.id] = el; }}
                 />
@@ -92,9 +91,9 @@ const columns = [
             const {isSecondInquiryEnable, firstInquiryList, secondInquiryList} = row
             let expireDate = ''
             if (isSecondInquiryEnable == 1) {
-                expireDate = secondInquiryList && secondInquiryList[0].expireDate
+                expireDate = secondInquiryList && secondInquiryList[0]?.expireDate
             } else {
-                expireDate = firstInquiryList && firstInquiryList[0].expireDate
+                expireDate = firstInquiryList && firstInquiryList[0]?.expireDate
             }
             const disabled = dayjs().isAfter(expireDate, 'day')
 
