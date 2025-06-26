@@ -154,15 +154,15 @@ onMounted(() => {
 
 .members-logo-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); // 4 columns as per image
+  grid-template-columns: repeat(6, 1fr); // 4 columns as per image
   // Gap between items - calculated based on image (items are close)
-  gap: 50px; // row-gap column-gap (e.g., 16px vertical, 24px horizontal)
+  gap: 10px; // row-gap column-gap (e.g., 16px vertical, 24px horizontal)
                               // From image, vertical gap is larger than horizontal. Let's try:
                               // gap: 24px 16px; // row-gap (vertical) column-gap (horizontal)
 
   // More precise gap control to match image:
   // row-gap: 28px; // Vertical space between rows of logos
-  column-gap: 30px; // Horizontal space between logos in a row
+  column-gap: 10px; // Horizontal space between logos in a row
 
   @media (max-width: 992px) { // Tablet: 3 columns
     grid-template-columns: repeat(3, 1fr);
@@ -181,7 +181,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   height: 110px; // Fixed height for the logo container to align rows
-  width: 250px;
+  // width: 250px;
   background-color: transparent; // No background per item, just image on page bg
   // border: 1px solid @border-color-light; // Image does not show individual borders
   // padding: @spacing-sm; // Padding inside the item wrapper
