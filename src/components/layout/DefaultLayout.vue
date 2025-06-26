@@ -7,7 +7,6 @@
     <AppFooter />
      <FixedActionButtons
       contact-phone-number="021-55698507"
-      :back-to-top-visibility-threshold="50"
     />
   </div>
 </template>
