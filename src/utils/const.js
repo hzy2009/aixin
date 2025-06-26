@@ -59,7 +59,7 @@ export const DOMESTIC_SOURCING_COLUMNS = [
     { title: '需求提出日期', field: 'createTime', align: 'center', fieldType: 'date' },
     { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date'},
     { title: '爱芯享单据号', field: 'xx', align: 'center' },
-    { title: '期望完成日期', field: 'xx', align: 'center' },
+    { title: '选定厂商', field: 'xx', align: 'center' },
     { title: '需求状态', field: 'statusName', align: 'center' },
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
@@ -72,7 +72,7 @@ export const OEM_PARTS_SOURCING_COLUMNS = [
     { title: '需求提出日期', field: 'createTime', align: 'center', fieldType: 'date'},
     { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date'},
     { title: '爱芯享单据号', field: 'xx', align: 'center' },
-    { title: '期望完成日期', field: 'xx', align: 'center' },
+    { title: '选定厂商', field: 'xx', align: 'center' },
     { title: '需求状态', field: 'statusName', align: 'center' },
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },

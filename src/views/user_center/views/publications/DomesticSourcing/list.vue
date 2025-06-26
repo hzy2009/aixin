@@ -44,7 +44,7 @@ const actions = reactive([
 
 const pageData = ref({
   url: {
-    list: 'apm/apmSourcing/list/owner',
+    list: 'apm/apmSourcing/material/list/owner',
     delete: 'apm/apmSourcing/delete',
     overview: 'apm/apmSourcing/overview?referer=owner',
   },
@@ -83,12 +83,12 @@ const pageData = ref({
   dateRangeConfig: [
     {
       field: 'createTime', // Unique key for this date range
-      label: '提出需求日期',
+      label: '需求提出日期',
       // placeholder: ['需求开始', '需求结束'] // Optional: custom placeholder
     },
     {
       field: 'expireDate',
-      label: '计划完成日期',
+      label: '期望完成日期',
     }
   ],
 })
