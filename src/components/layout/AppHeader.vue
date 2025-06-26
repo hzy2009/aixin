@@ -53,6 +53,7 @@
             :to="item.path"
             @click="handleMenuClick(item)"
             class="unified-nav-link"
+            :class="{ 'is-active': isActiveNavItem(item) }"
           >
             {{ item.label }}
           </div>
@@ -270,6 +271,7 @@ const handleMenuClick = (item) => {
     flex: 1;
     text-align: center;
   .unified-nav-link {
+    cursor: pointer;
     font-family: PingFang SC;
     font-weight: 400;
     font-size: 18px;
@@ -327,6 +329,7 @@ const handleMenuClick = (item) => {
     border-top: 1px solid darken(@primary-color, 10%); // Separator from main nav
 
     .css-submenu-item {
+      cursor: pointer;
       // No specific styling needed if link takes full space
     }
 
@@ -360,6 +363,11 @@ const handleMenuClick = (item) => {
     .unified-nav-link .nav-arrow-icon { // Rotate arrow on hover
         transform: rotate(180deg);
     }
+  }
+  .is-active {
+    color: @text-color-light;
+    background-color: darken(@primary-color, 10%);
+    font-weight: 500;
   }
 }
 </style>
