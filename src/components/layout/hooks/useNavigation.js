@@ -38,11 +38,11 @@ export function useNavigation() {
       key: 'alternativeSourcing', 
       label: '国产替代寻源', 
       path: '/demands/DomesticSourcing', 
-      queryParams: { type: 'DomesticSourcing' },
       matchPaths: [
         '/demands/DomesticSourcing',
         '/user/published/DomesticSourcing',
-        '/user/join/DomesticSourcing'
+        '/user/join/DomesticSourcing',
+        '/user/published/DomesticSourcing/create'
       ],
       subItems: [
         { key: 'demand_squareDomesticSourcing', label: '需求广场', path: '/demands/DomesticSourcing' },
@@ -55,11 +55,11 @@ export function useNavigation() {
       key: 'originalSourcing', 
       label: '原厂件寻源', 
       path: '/demands/OEMPartsSourcing', 
-      queryParams: { type: 'OEMPartsSourcing' },
       matchPaths: [
         '/demands/OEMPartsSourcing',
         '/user/published/OEMPartsSourcing',
-        '/user/join/OEMPartsSourcing'
+        '/user/join/OEMPartsSourcing',
+        '/user/published/OEMPartsSourcing/create'
       ],
       subItems: [
         { key: 'demand_squareOEMPartsSourcing', label: '需求广场', path: '/demands/OEMPartsSourcing' },
@@ -84,11 +84,11 @@ export function useNavigation() {
       key: 'rndCollaboration', 
       label: '研发攻关', 
       path: '/demands/PublicRelations', 
-      queryParams: { type: 'PublicRelations' },
       matchPaths: [
         '/demands/PublicRelations',
         '/user/published/PublicRelations',
-        '/user/join/PublicRelations'
+        '/user/join/PublicRelations',
+        '/user/published/PublicRelations/create'
       ],
       subItems: [
         { key: 'demand_squarePublicRelations', label: '需求广场', path: '/demands/PublicRelations' },
@@ -101,11 +101,11 @@ export function useNavigation() {
       key: 'testingValidation', 
       label: '检测验证', 
       path: '/demands/Verification', 
-      queryParams: { type: 'Verification' },
       matchPaths: [
         '/demands/Verification',
         '/user/published/Verification',
-        '/user/join/Verification'
+        '/user/join/Verification',
+        '/user/published/Verification/create'
       ],
       subItems: [
         { key: 'demand_squareVerification', label: '需求广场', path: '/demands/Verification' },
@@ -118,11 +118,11 @@ export function useNavigation() {
       key: 'offlineEvents', 
       label: '线下活动', 
       path: '/demands/OfflineEvent', 
-      queryParams: { type: 'offlineEvents' },
       matchPaths: [
         '/demands/OfflineEvent',
         '/user/published/OfflineEvent',
-        '/user/join/OfflineEvent'
+        '/user/join/OfflineEvent',
+        '/user/published/OfflineEvent/create'
       ],
       subItems: [
         { key: 'demand_squareOfflineEvent', label: '需求广场', path: '/demands/OfflineEvent' },
@@ -135,14 +135,12 @@ export function useNavigation() {
       key: 'industryReport', 
       label: '行研报告', 
       path: '/demands/IndustryReport', 
-      queryParams: { type: 'industryReport' }, 
       matchPaths: ['/demands/IndustryReport'] 
     },
     { 
       key: 'industryTalent', 
       label: '专家人才', 
       path: '/demands/Talent', 
-      queryParams: { type: 'industryTalent' }, 
       matchPaths: ['/demands/Talent'] 
     },
     { 
