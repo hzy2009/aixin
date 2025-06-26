@@ -49,6 +49,7 @@ const actions = reactive([
 const pageData = ref({
     url: {
         list: 'apm/apmSourcingOriginSubstitute/list/owner',
+    delete: 'apm/apmSourcingOriginSubstitute/delete',
         overview: 'apm/apmSourcingOriginSubstitute/overview?referer=owner'
     },
     otherParams: {
