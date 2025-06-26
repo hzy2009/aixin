@@ -1,6 +1,6 @@
 <template>
   <div>
-    <HomeHeroSection :height="200"/>
+    <HomeHeroSection :height="160"/>
     <div class="page-title-header container" >
         <span class="title-decorator-bar"></span>
         <h2 class="page-main-heading">行业热点</h2>
@@ -64,7 +64,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { Spin as ASpin, Empty as AEmpty } from 'ant-design-vue';
 import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue'; // Adjust path if needed
 import RelatedItemsSidebar from '@/components/common/RelatedItemsSidebar.vue'; // Adjust path if needed
-import defaultNewsBannerPlaceholder from '@/assets/images/home/banner.png'; // Create placeholder
+import defaultNewsBannerPlaceholder from '@/assets/images/home/ddda.png'; // Create placeholder
 import { useDemandDetail } from '@/components/template/hooks/useDemandDetail.js';
 import { useUserDemandList } from '@/components/template/hooks/useUserDemandList.js'; // Adjust path
 import { getFileAccessHttpUrl } from '@/utils/index';

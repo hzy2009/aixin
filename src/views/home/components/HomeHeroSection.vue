@@ -1,89 +1,138 @@
 <template>
-  <section class="home-hero-section" :style="{ height: height + 'px' }">
-    <div class="home-hero-section__background-image container"></div> <!-- New div for bg image -->
-    <!-- <div class="home-hero-section__content container">
-      <h1>致力于为半导体行业提供专业的信息服务</h1>
-      <h2>连接产业链上下游，促进产业协同发展</h2>
-      <p>
-        汇聚国产替代资源，精准对接原厂直供，赋能研发设计协同创新，汇集权威产业数据，打通芯片设计、制造、封装、测试环节，助力企业快速匹配优质国产供应商，降低供应链风险；优化创新协作生态，共享技术方案与攻关经验，加速核心器件自主化进程；数据驱动价值创造，赋能行业生态共创未来，携手突破“卡脖子”难题，共襄中国芯竞争力！
-      </p>
-    </div> -->
+  <section class="home-hero-section-banner" :style="{ height: height + 'px' }">
+    <div class="hero-banner-content container"> 
+      <div class="text-overlay-block">
+        <p class="hero-title" v-if="height == 200">
+          打通产业链上下游，为会员提供寻源、攻关、贸易、
+          验证、行研、人才等一站式解决方案
+        </p>
+        <p class="hero-title"  v-if="height == 160">
+          致力于为产业链上下游提供准确、可靠的供应链信息支持
+          促进行业的信息互通与资源共享
+        </p>
+        <div class="hero-divider" v-if="height == 200"></div>
+        <p class="hero-description" v-if="height == 200">
+          打破信息孤岛，构建共享生态，汇聚全球洞察，赋能行业决策，让每一次交流，都成为价值的传递。
+        </p>
+      </div>
+    </div>
   </section>
 </template>
 
 <script setup>
 defineProps({
   height: {
-    type: Number,
-    default: 200
+    type: [Number, String],
+    default: 160
   }
 })
-// No specific script logic for this static section yet
+// No specific script logic needed for this static hero section
+// Data would typically be static or come from a CMS/props if dynamic
 </script>
 
 <style scoped lang="less">
-@import '@/assets/styles/_variables.less';
+@import '@/assets/styles/_variables.less'; // Your global LESS variables
 
-.home-hero-section {
-  background-image: url('@/assets/images/home/banner.png'); // Moved to child div
-  background-size: cover;
-  background-position: center;
-  color: @text-color-light;
-  text-align: center;
-  position: relative; // Needed for absolute positioning of bg and z-index context
-  // min-height: 500px; // Ensure it has some height even before image loads
-  // padding-top: 80px; // Space for content from top
-  // padding-bottom: 130px; // << INCREASED PADDING BOTTOM to make space for the overlapping stats. Adjust as needed.
+.home-hero-section-banner {
+  width: 100%;
+  height: 420px; // Adjust height to match your design or image aspect ratio
+  background-image: url('@/assets/images/home/banner-big.jpg'); // <<--- YOUR ACTUAL BANNER IMAGE PATH HERE
+  background-size: cover; // Cover the entire area
+  background-position: center center; // Center the image
+  background-repeat: no-repeat;
+  position: relative; // For positioning the text overlay content
+  display: flex; // To help center the .container if needed, or align items
+  align-items: center; // Vertically center content within the banner height
 
-  // &__background-image {
+  // Optional: Add a very subtle dark overlay on the image if text contrast is an issue
+  // &::before {
+  //   content: '';
   //   position: absolute;
   //   top: 0;
   //   left: 0;
-  //   width: 100%;
-  //   height: 100%;
-  //   background-image: url('@/assets/images/home/hero-bg.jpg'); // YOUR HERO BACKGROUND IMAGE
-  //   background-size: cover;
-  //   background-position: center bottom; // Adjust position, bottom might be good if it cuts off
-  //   z-index: 1; // Behind content
-  //    &::after { // Optional: Dark overlay for better text readability
-  //       content: '';
-  //       position: absolute;
-  //       top: 0;
-  //       left: 0;
-  //       right: 0;
-  //       bottom: 0;
-  //       background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%); // Example gradient
-  //       // background-color: rgba(0, 0, 0, 0.5); // Simpler overlay
-  //   }
+  //   right: 0;
+  //   bottom: 0;
+  //   background-color: rgba(0, 0, 0, 0.15); // Adjust opacity as needed
+  //   z-index: 1;
   // }
+}
 
-  &__content {
-    position: relative;
-    z-index: 2; // Above background
-    padding-left: @content-padding-horizontal;
-    padding-right: @content-padding-horizontal;
+.hero-banner-content { // This is the .container
+  position: relative; // To be above the optional ::before overlay
+  z-index: 2;
+  display: flex;
+  // justifyContent: flex-start; // Default, aligns .text-overlay-block to the left
+  // The .container class already handles max-width and margin: auto for centering the block.
+}
 
-    h1 {
-      font-size: 38px;
-      margin-bottom: @spacing-sm;
-      font-weight: 600;
-      text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+.text-overlay-block {
+  color: @text-color-light; // White text
+  text-align: left; // Text is left-aligned
+  max-width: 600px; // Max width for the text block itself, adjust as needed
+                    // This prevents text from spanning too wide on large screens within the container
+
+  // Optional: Add a subtle text shadow for better readability on complex backgrounds
+  // text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+
+  .hero-title {
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 28px;
+    letter-spacing: 0%;
+    margin: 0;
+    // text-transform: uppercase; // If needed
+  }
+  .hero-divider{
+    width: 88px;
+    height: 1px;
+    top: 289px;
+    left: 360px;
+    background-color: #fff;
+    margin: 11px 0;
+  }
+  .hero-subtitle {
+    font-size: 36px; // Same size as title, as per image
+    font-weight: 500; // Same weight
+    line-height: 1.3;
+    margin-bottom: @spacing-lg; // More space below subtitle
+    opacity: 0.9; // Slightly less prominent than title if desired
+  }
+
+  .hero-description {
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0%;
+    text-align: justify;
+    // If you use <br> tags for line breaks, they will be respected.
+    // white-space: pre-line; // Use this if you want to respect newline characters (\n) in the string itself
+  }
+}
+
+// Responsive adjustments if needed
+@media (max-width: 768px) {
+  .home-hero-section-banner {
+    height: 350px; // Shorter banner on mobile
+    align-items: center; // Keep content centered
+    text-align: center; // Center text on mobile for better readability
+  }
+  .hero-banner-content {
+    justify-content: center; // Center text block on mobile
+  }
+  .text-overlay-block {
+    padding: @spacing-lg; // Add some padding on mobile
+    max-width: 90%; // Allow text block to be wider relative to screen
+    text-align: center; // Center text within its block
+    background-color: rgba(0,0,0,0.3); // Add a slight background for mobile text contrast
+    border-radius: @border-radius-base;
+
+    .hero-title, .hero-subtitle {
+      font-size: 28px; // Slightly smaller titles on mobile
     }
-
-    h2 {
-      font-size: 30px;
-      margin-bottom: @spacing-md;
-      font-weight: 500;
-      color: #f0f0f0;
-      text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);
-    }
-
-    p {
-      font-size: 15px;
-      line-height: 1.8;
-      max-width: 850px;
-      margin: 0 auto @spacing-lg;
-      color: #e0e0e0;
+    .hero-description {
+      font-size: 14px;
     }
   }
 }

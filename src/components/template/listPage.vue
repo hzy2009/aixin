@@ -1,5 +1,5 @@
 <template>
-    <HomeHeroSection :height="200" v-if="showBanner" />
+    <HomeHeroSection :height="160" v-if="showBanner" />
     <div class="page-title-header container" v-if="pageTitle">
         <span class="title-decorator-bar"></span>
         <h2 class="page-main-heading">{{ pageTitle }}</h2>
