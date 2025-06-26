@@ -6,7 +6,7 @@ const Api = {
     queryById: 'apm/apmSourcing/queryById',
     submit: 'apm/apmSourcing/submit',
     delete: 'apm/apmSourcing/delete',
-    list: 'apm/apmSourcing/list',
+    list: 'apm/apmSourcing/material/list',
 }
 
 export function getList(params) {

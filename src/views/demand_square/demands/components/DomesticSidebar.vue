@@ -42,7 +42,7 @@ const {
   
 } = useUserDemandList({
   url: {
-    list: '/apm/apmSourcing/list/front',
+    list: '/apm/apmSourcing/material/list/front',
   },
   otherParams: {
     sourcingType: '国产替代寻源'

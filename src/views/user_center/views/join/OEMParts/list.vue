@@ -34,7 +34,7 @@ const actions = reactive([
 
 const pageData = ref({
     url: {
-        list: 'apm/apmSourcingOriginSubstitute/list/join',
+        list: 'apm/apmSourcingOriginSubstitute/material/list/join',
         overview: 'apm/apmSourcingOriginSubstitute/overview?referer=join'
     },
     otherParams: {

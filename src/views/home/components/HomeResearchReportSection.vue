@@ -1,7 +1,7 @@
 <template>
   <section class="home-research-report-section section-padding">
     <div class="container">
-      <SectionHeader title-ch="行研报告" title-en="INDUSTRY RESEARCH REPORT" more-link="/demands/IndustryReport" />
+      <SectionHeader title-ch="行研报告" title-en="SECTOR DEEP DIVE REPORT" more-link="/demands/IndustryReport" />
       <div class="report-grid">
         <div
           v-for="report in reports"
