@@ -61,7 +61,7 @@ const onItemClick = (item) => {
 .related-items-sidebar {
   width: 384px;
   background-color: @background-color-base;
-  padding: @spacing-lg;
+  padding: 10px 20px;
   border-radius: @border-radius-base;
   box-shadow: 0 1px 4px rgba(0,0,0,0.05); // Consistent with other user center panels
   height: fit-content; // So it doesn't stretch unnecessarily if content is short
@@ -71,7 +71,7 @@ const onItemClick = (item) => {
   font-size: 17px;
   font-weight: 600;
   color: #000000;
-  margin-bottom: 16px;
+  margin-bottom: 15px;
   font-family: PingFang SC;
   font-weight: 400;
   font-size: 18px;
@@ -131,7 +131,7 @@ const onItemClick = (item) => {
     text-align: justify;
     
     color: #656C74;
-    margin-bottom: @spacing-xs;
+    margin-bottom: 6px;
     line-height: 1.4;
     // Ellipsis for 2 lines
     display: -webkit-box;

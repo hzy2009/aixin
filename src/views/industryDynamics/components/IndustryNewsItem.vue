@@ -5,8 +5,8 @@
       <span class="date-year">{{ formatDate(news.createTime, 'YYYY') }}</span>
     </div>
     <div class="news-item-content">
-      <h3 class="news-title">{{ news.title }}</h3>
-      <p class="news-summary">{{ news.content }}</p>
+      <div class="news-title">{{ news.title }}</div>
+      <p class="news-summary" v-html="news.content"></p>
     </div>
   </div>
 </template>
@@ -83,7 +83,7 @@ const navigateToDetail = ({id}) => {
   .date-day-month {
     color: #999999;
     font-family: PingFang SC;
-    font-weight: 540;
+    font-weight: 500;
     font-size: 26px;
     line-height: 26px;
     letter-spacing: 0%;
@@ -102,10 +102,10 @@ const navigateToDetail = ({id}) => {
 .news-item-content {
   flex-grow: 1;
   min-width: 0; // For text truncation to work
-  padding-left: 10px;
+  padding-left: 20px;
   .news-title {
     color: #333333;
-    margin-bottom: @spacing-md;
+    margin-bottom: 12px;
     transition: color 0.3s ease;
     font-family: PingFang SC;
     font-weight: 400;

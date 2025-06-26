@@ -15,9 +15,11 @@
             <h1 class="article-main-title">{{ formModel.title }}</h1>
 
             <div class="article-meta-info-bar">
-              <span v-if="formModel.categoryName" class="meta-category">{{ formModel.categoryName }}</span>
-              <span class="meta-publish-time">发布时间：{{ formModel.createTime }}</span>
-              <span v-if="formModel.source" class="meta-source">新闻来源：{{ formModel.source }}</span>
+              <span>
+                <span v-if="formModel.categoryName" class="meta-category">{{ formModel.categoryName }}</span>
+                <span class="meta-publish-time">发布时间：{{ formModel.createTime }}</span>
+              </span>
+              <span class="meta-source">新闻来源：{{ formModel.source }}</span>
             </div>
 
             <div v-if="formModel.imageUrl" class="article-banner-image-container">
@@ -176,6 +178,7 @@ watch(() => route.params.id, (newId, oldId) => {
 }
 
 .article-meta-info-bar {
+  justify-content: space-between;
   display: flex;
   align-items: center;
   gap: @spacing-lg; // Space between meta items
@@ -194,7 +197,8 @@ watch(() => route.params.id, (newId, oldId) => {
     // padding: 2px 6px;
     // background-color: #f0f0f0;
     // border-radius: @border-radius-sm;
-    color: @text-color-secondary; // Same gray as other meta text
+    // color: @text-color-secondary; // Same gray as other meta text
+    margin-right: @spacing-md;
   }
   .meta-publish-time {
     
@@ -251,8 +255,8 @@ watch(() => route.params.id, (newId, oldId) => {
 }
 
 .article-navigation-links {
-  margin-top: @spacing-xl;
-  padding-top: @spacing-lg;
+  margin-top: 65px;
+  // padding-top: @spacing-lg;
   font-size: 14px;
 
   .nav-link-item {
@@ -312,5 +316,8 @@ watch(() => route.params.id, (newId, oldId) => {
         text-transform: uppercase;
 
     }
+}
+.rich-text-format{
+
 }
 </style>
