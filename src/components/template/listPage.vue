@@ -169,8 +169,20 @@ const vxeTableColumns = computed(() => {
             vxeCol.slots = {
                 default: ({ row }) => (
                     actions.map((action, i) => (
+                        action.type == 'del' ? 
+                        <a-popconfirm title="是否确认删除" ok-text="是" cancel-text="否" onConfirm={()=> {
+                                handleDelete(row)
+                            }} >
+                            <span class="action-item">
+                                <span><img src={ delIcon} alt="" class="action-icon" /></span>
+                                <AButton type="link"  class="action-link" key={i}>
+                                    {action.text}
+                                </AButton>
+                            </span>
+                         </a-popconfirm>
+                         : 
                         <span class="action-item" onClick={() => handleActionClick(row, action)}>
-                            <span><img src={ action.type =='detail' ? detailIcon : delIcon} alt="" class="action-icon" /></span>
+                            <span><img src={ detailIcon } alt="" class="action-icon" /></span>
                             <AButton type="link"  class="action-link" key={i}>
                                 {action.text}
                             </AButton>
@@ -228,11 +240,7 @@ const handleDateValuesUpdate = (values) => {
 
 const handleActionClick = (record, action) => {
     if (authStore?.token) {
-        if (action.type == 'del') {
-            handleDelete(record);
-        } else {
-            action?.clickFn(record);
-        }
+        action?.clickFn(record);
     } else {
         modalStore.showLogin();
     }

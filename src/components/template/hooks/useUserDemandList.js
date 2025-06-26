@@ -189,7 +189,8 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     pagination.current = 1;
     loadTableData();
   }
-  const handleDelete = ({id, statusCode}) => {
+  const handleDelete = ({id, statusCode, statusName}) => {
+    debugger 
     if (statusCode !== 'submit') {
       message.error(`${statusName} 状态的需求无法删除`);
       return;
