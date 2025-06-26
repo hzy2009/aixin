@@ -52,7 +52,7 @@
                 {{ Operations.title }}
             </a-button>
         </div>
-        
+        <slot v-if="$slots['tableCustomOperations']" name="tableCustomOperations" :url="url" :dataSource="tableData" :loadTableData="loadTableData"></slot>
         <slot name="content" :dataSource="tableData" :paginationConfig="pagination" :handleTablePaginationChange="handleTablePaginationChange">
             <div class="results-table-section">
                 <!-- VXE-GRID REPLACEMENT -->
@@ -119,7 +119,7 @@ const {
 const {
     selectOptions, stats, currentFilters, search, isLoading, tableData,
     pagination, handleFiltersChange, triggerSearch, handleTablePaginationChange,
-    getStatusTagColor, handleStatClick, handleExportXls, clearfilters, isVIP,handleDelete
+    getStatusTagColor, handleStatClick, handleExportXls, clearfilters, isVIP,handleDelete, loadTableData
 } = useUserDemandList({
     otherParams, url, statusDictKey, userStatCardVisible
 });
