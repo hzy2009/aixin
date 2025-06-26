@@ -189,7 +189,11 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     pagination.current = 1;
     loadTableData();
   }
-  const handleDelete = ({id}) => {
+  const handleDelete = ({id, statusCode}) => {
+    if (statusCode !== 'submit') {
+      message.error(`${statusName} 状态的需求无法删除`);
+      return;
+    }
     isLoading.value = true;
     defHttp.delete({ url: url.delete, params: { id } }).then(() => {
       message.success('删除成功');
