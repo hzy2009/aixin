@@ -71,7 +71,9 @@ watch(() => route.params.id, (newId, oldId) => {
 
 <style scoped lang="less">
 @import '@/assets/styles/_variables.less';
-
+.page-section-title-bar{
+  margin: 20px auto;
+}
 .detail-view-page {
   min-width: 600px;
 }

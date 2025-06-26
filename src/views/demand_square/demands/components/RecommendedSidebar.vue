@@ -11,7 +11,7 @@
           <p class="report-item-meta">领域：{{ report.reportTypeName }}</p>
           <p class="report-item-summary">摘要：{{ report.description }}</p>
           <div class="report-item-footer">
-            <span class="report-item-price">¥ {{ report.unitPrice }}</span>
+            <span class="report-item-price"><span class="currency-symbol">¥</span> {{ report.unitPrice }}</span>
             <ArrowRightOutlined class="arrow-icon" />
           </div>
         </div>
@@ -70,8 +70,8 @@ const handleReportClick = () => {
   color: inherit;
   text-decoration: none;
   background-color: @background-color-base; // Each item has a white background
-  padding: @spacing-lg;
-  margin-bottom: @spacing-lg; // Space between items
+  padding: 17px 20px;
+  margin-bottom: 20px; // Space between items
   border-radius: @border-radius-sm; // Slight rounding for each item
   transition: box-shadow 0.3s ease, border-color 0.3s ease;
 
@@ -100,10 +100,14 @@ const handleReportClick = () => {
 }
 
 .report-item-title {
+  margin-bottom: 10px;
+  font-family: PingFang SC;
+  font-weight: 400;
   font-size: 16px;
-  font-weight: 500;
-  color: @text-color-base;
-  line-height: 1.5;
+  line-height: 22px;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+  color: #272A30;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
@@ -113,10 +117,14 @@ const handleReportClick = () => {
 }
 
 .report-item-meta {
-  font-size: 13px;
-  color: @text-color-secondary;
-  line-height: 1.6;
-  margin-bottom: @spacing-xs;
+  font-family: PingFang SC;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 22px;
+  letter-spacing: 0%;
+  text-align: justify;
+  color: #656C74;
+  margin-bottom: 0;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
@@ -125,8 +133,14 @@ const handleReportClick = () => {
 }
 
 .report-item-summary {
-  font-size: 13px;
-  color: @text-color-secondary;
+  font-family: PingFang SC;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 22px;
+  letter-spacing: 0%;
+  text-align: justify;
+  color: #656C74;
+  color: #656C74;
   line-height: 1.6;
   margin-bottom: @spacing-sm;
   display: -webkit-box;
@@ -145,9 +159,22 @@ const handleReportClick = () => {
 }
 
 .report-item-price {
-  font-size: 18px;
-  font-weight: bold;
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+
   color: @primary-color;
+  .currency-symbol{
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 12px;
+    letter-spacing: 0%;
+    text-transform: uppercase;
+  }
 }
 
 .arrow-icon {

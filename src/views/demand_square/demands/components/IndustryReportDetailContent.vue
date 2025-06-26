@@ -7,19 +7,25 @@
       </div>
       <div class="report-header__details">
         <h1 class="report-main-title-header">{{ report.reportName }}</h1>
+        <div><span>报告来源：</span><span>{{ report.source }}</span></div>
         <div class="report-summary-header">
           <span class="summary-label">摘要：</span>
           <p class="summary-text">{{ report.description }}</p>
         </div>
         <div class="report-meta-info-header">
-          <span>领域：{{ report.reportTypeName }}</span>
-          <span>报告编号：{{ report.code || '未知字段' }}</span>
+          <!-- <span>领域：{{ report.reportTypeName }}</span> -->
+          <span>报告编号：<span class="report-code">{{ report.code || '未知字段' }}</span></span>
         </div>
         <div class="report-action-block">
           <div class="report-price-header">
             <p class="original-price">原价: {{ report.unitPrice }}元</p>
             <p class="member-price">会员价: {{ report.memberUnitPrice || 198 }}元</p>
-            <p class="vip-price">VIP价: <span class="vip-price-value">{{ report.vipUnitPrice || 198 }}</span>元</p>
+            <p class="vip-price">
+              <div>
+                VIP会员价: <span class="vip-price-value">{{ report.vipUnitPrice || 198 }}</span>元
+              </div>
+              <div class="vip-price-tips"> (可分章节单独购买)</div>
+            </p>
           </div>
           <a-button type="primary" danger @click="handlePurchase" :loading="isPurchasing"
             class="purchase-button-header">
@@ -155,14 +161,15 @@ defineExpose({
 
 .report-header-block {
   display: flex;
-  gap: @spacing-xl; // Space between image and details
+  gap: 20px; // Space between image and details
   padding: @spacing-lg;
   background-color: @background-color-base; // White background for this block
   // border: 1px solid @border-color-light;
 }
 
 .report-header__image-wrapper {
-  width: 280px; // Width of the image in the design
+  width: 328px;
+  height: 340px;
   //height: 185px;
   flex-shrink: 0;
   overflow: hidden;
@@ -189,30 +196,43 @@ defineExpose({
     line-height: 30px;
     letter-spacing: 0%;
     text-transform: uppercase;
+    min-height: calc(30px * 2); // Ensure space for 3 lines
 
     color: #656C74;
-    margin-bottom: @spacing-sm;
-    line-height: 1.4;
+    margin-bottom: 0;
     // For 2-line ellipsis if needed
     display: -webkit-box;
-    -webkit-line-clamp: 1;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
   .report-summary-header {
-    margin-bottom: @spacing-xs;
+    margin-top: 16px;
+    margin-bottom: 0;
     font-size: 14px;
     line-height: 1.7;
     color: @text-color-secondary;
 
     .summary-label {
-      font-weight: 500; // "摘要：" slightly bolder
-      color: @text-color-base; // Matches "领域" and "报告编号" color
+      font-family: PingFang SC;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 22px;
+      letter-spacing: 0%;
+      text-align: justify;
+      color: #656C74; // Matches "领域" and "报告编号" color
     }
 
     .summary-text {
+      font-family: PingFang SC;
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: 0%;
+      text-align: justify;
+      color: #272A30;
+      margin: 0;
       // Standard text, no extra styling needed unless different from paragraph default
       display: -webkit-box; // For multi-line ellipsis
       -webkit-line-clamp: 3; // Show 3 lines for summary
@@ -224,12 +244,21 @@ defineExpose({
   }
 
   .report-meta-info-header {
-    font-size: 13px;
-    color: @text-color-secondary;
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0%;
+    text-align: justify;
+
+    color: #656C74;
     margin-bottom: @spacing-lg; // Space above price/button block
     display: flex;
     flex-direction: column; // Stack domain and report number
     gap: 3px; // Small gap between domain and report number
+  }
+  .report-code{
+    color: #272A30;
   }
 
   .report-action-block {
@@ -246,29 +275,40 @@ defineExpose({
       font-weight: 400;
 
       .original-price {
-        font-size: 12px;
+        font-family: PingFang SC;
+        font-weight: 400;
+        font-size: 14px;
         line-height: 12px;
         letter-spacing: 0%;
         text-align: justify;
         text-decoration: line-through;
         color: #272A30;
+        margin-bottom: 7px;
       }
 
       .member-price {
+        font-family: PingFang SC;
+        font-weight: 400;
         font-size: 16px;
         line-height: 16px;
         letter-spacing: 0%;
+        text-transform: uppercase;
         color: @primary-color;
+        margin-bottom: 10px;
       }
 
       .vip-price {
+        font-family: PingFang SC;
+        font-weight: 400;
         font-size: 16px;
         line-height: 16px;
         letter-spacing: 0%;
+        text-transform: uppercase;
+        margin-bottom: 0px;
         color: @primary-color;
 
         .vip-price-value {
-          font-weight: 600;
+          font-weight: 500;
           font-size: 38px;
           line-height: 30px;
           letter-spacing: 0%;
@@ -446,5 +486,15 @@ defineExpose({
       text-decoration: underline;
     }
   }
+}
+.vip-price-tips{
+  font-family: PingFang SC;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 12px;
+  letter-spacing: 0%;
+  text-align: justify;
+  color: @primary-color;
+  margin-top: 10px;
 }
 </style>
