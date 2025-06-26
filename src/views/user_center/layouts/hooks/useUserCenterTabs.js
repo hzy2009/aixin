@@ -4,10 +4,10 @@ import { useRoute, useRouter } from 'vue-router';
 // 页签配置: key 应该与路由名称或路径片段相关联，方便同步
 // path 是点击页签后要跳转的完整路径
 const defaultTabsConfig = {
-  todoLsit: {
-    key: 'todoLsit',
+  todoList: {
+    key: 'todoList',
     label: '我待办的',
-    defaultSubTabKey: 'todoLsit',
+    defaultSubTabKey: 'todoList',
     path: '/todo/list'
   },
   published: {
@@ -68,6 +68,7 @@ export function useUserCenterTabs(tabsConfig = defaultTabsConfig) {
   const selectMainTab = (mainKey) => {
     if (activeMainTabKey.value !== mainKey) {
       if (tabsConfig[mainKey]?.path) {
+        activeMainTabKey.value = mainKey;
         router.push(tabsConfig[mainKey]?.path);
       }
       activeMainTabKey.value = mainKey;
