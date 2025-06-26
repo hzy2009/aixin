@@ -114,7 +114,7 @@ const getUnreadMessagesCount = async () => {
   }
 }
 const navigateToMessages = () => {
-  router.push('todo/list');
+  router.push('/todo/list');
 }
 
 onMounted(() => {
