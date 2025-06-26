@@ -38,6 +38,13 @@
             </vxe-grid>
 					</div>
         </template>
+        <template #actions='{handleDefaultCancel, handleDefaultSubmit}'>
+            <div class="page-actions-footer">
+						  <a-button @click="handleDefaultCancel" class="action-button cancel-button">返回</a-button>
+              <a-button type="primary" danger @click="handleDefaultSubmit" class="action-button submit-button">联系平台获取专家信息</a-button>
+            </div>
+            <p class="action-submit-note">一键敲门后，客服人员将在<span class="text">30分钟内</span>与您联系</p>
+        </template>
       </detail>
     </template>
     <template #sidebar>
@@ -202,5 +209,38 @@ const goBack = () => {
 }
 .mr-r{
   margin-right:120px;
+}
+.action-button {
+	// min-width: 88px;
+	height: 42px;
+	padding: 0 28px;
+	font-family: PingFang SC;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 22px;
+	letter-spacing: 0%;
+
+	border-radius: 4px;
+	margin-right: @spacing-md;
+	&.cancel-button {
+		background-color: @background-color-base;
+		border: 1px solid #D9D9D9;
+		color: #C3CBCF;
+			&:hover {
+			color: @primary-color;
+			border-color: @primary-color;
+		}
+	}
+
+	&.submit-button {
+		// type="primary" danger for red
+	}
+}
+.page-actions-footer {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: @spacing-xl;
+	padding-top: @spacing-lg;
+	// border-top: 1px solid @border-color-light;
 }
 </style>
