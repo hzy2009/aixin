@@ -43,7 +43,6 @@ const formConfigs = [
   { label: '提出需求日期', field: 'createTime', span: 24, fieldType: 'date' },
   { label: '计划完成日期', field: 'expireDate', span: 24, fieldType: 'date' },
   { label: '寻源结果', field: 'materialVoList', span: 24 , fieldType: 'slot'},
-  { label: '贸易商/晶链慧采：', field: 'xxx', span: 24 },
   { label: '寻源结果', field: 'statusName', span: 24 },
 ]
 
