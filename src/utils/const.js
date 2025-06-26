@@ -118,7 +118,6 @@ export const VERIFICATION_COLUMNS = [
     { title: '承接方', field: 'refUserName', align: 'center' },
     { title: '创建日期', field: 'createTime', align: 'center', fieldType: 'date'},
     { title: '需求状态', field: 'statusName', align: 'center', width: 80 },
-,
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
 ]
