@@ -32,6 +32,7 @@ const pageData = ref({
     },
     filterConfigForPage,
     pageTitle: '专家人才',
+    searchTitle: '专家人才',
     showBanner: true,
     listPageisPadding: false
 })
