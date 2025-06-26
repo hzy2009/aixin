@@ -144,7 +144,7 @@ const vxeTableColumns = computed(() => {
         const vxeCol = {
             ...col
         };
-        if (col.dictKey && col.fieldType === 'select') {
+        if (col.fieldType === 'select' && col.dictKey) {
             vxeCol.formatter = ({ cellValue }) => {
                 if (getDictOptions(col.dictKey)) {
                     return getDictOptions(col.dictKey).find(option => option.value === cellValue)?.label;

@@ -72,9 +72,12 @@ onMounted(() => {
   position: relative; // For the red accent line
 
   .page-title {
-    font-size: 24px; // Large title
-    font-weight: 500; // Semi-bold
-    color: @text-color-base;
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 24px;
+    letter-spacing: 0%;
+
+    color: #656C74;
     margin: 0;
     display: inline-block; // For the accent to fit text width
     position: relative; // For the ::after pseudo-element

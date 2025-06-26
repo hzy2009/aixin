@@ -4,8 +4,29 @@
       <div class="page-title-section">
         <h1 class="page-title">通用件集采</h1>
       </div>
-
-      <div v-if="isLoading && members.length === 0" class="loading-placeholder">
+      <div class="members-logo-grid">
+        <!-- <div
+          v-for="(member, index) in members"
+          :key="member.id || `member-${index}`"
+          class="member-logo-item-wrapper"
+        >
+          <a :href="member.companyUrl || '#'" target="_blank" rel="noopener noreferrer" class="logo-link">
+            <img
+              :src="member.companyLogo ? getFileAccessHttpUrl(member.companyLogo) : defaultFallbackLogo"
+              :alt="member.companyName || '通用件集采'"
+              class="member-logo-image"
+              @error="handleImageError"
+            />
+          </a>
+        </div> -->
+        <div class="member-logo-item-wrapper" @click="xxx">
+            <img src="@/assets/images/home/PromoCard2.png" alt="通用件集采" class="member-logo-image" />
+        </div>
+        <div class="member-logo-item-wrapper" @click="xxx">
+            <img src="@/assets/images/home/PromoCard1.png" alt="通用件集采" class="member-logo-image" />
+        </div>
+      </div>
+      <!-- <div v-if="isLoading && members.length === 0" class="loading-placeholder">
         <a-spin size="large" />
       </div>
       <div v-else-if="members.length > 0" class="members-logo-grid">
@@ -22,12 +43,11 @@
               @error="handleImageError"
             />
           </a>
-          <!-- The image doesn't show company names below logos for this page -->
         </div>
       </div>
       <div v-else class="empty-placeholder">
         <a-empty description="暂无通用件集采信息" />
-      </div>
+      </div> -->
        <!-- Optional: Pagination if pageSize is not 999 -->
        <!-- <div v-if="!isLoading && totalMembers > pageSize" class="pagination-container">
         <a-pagination
@@ -44,7 +64,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import { Spin as ASpin, Empty as AEmpty, Pagination as APagination } from 'ant-design-vue';
+import { Spin as ASpin, Empty as AEmpty, Pagination as APagination, message } from 'ant-design-vue';
 import defHttp from '@/utils/http/axios'; // Your Axios instance
 import { getFileAccessHttpUrl } from '@/utils/index'; // Your utility for image URLs
 import defaultFallbackLogo from '@/assets/images/home/dosilicon-logo.png'; // Fallback logo
@@ -98,6 +118,9 @@ const handleImageError = (event) => {
     // Fallback to placeholder if the primary logo fails to load
     event.target.src = defaultFallbackLogo;
 };
+const xxx = () => {
+    message.info('网站建设中,敬请期待');
+}
 
 
 onMounted(() => {
@@ -125,9 +148,11 @@ onMounted(() => {
   position: relative; // For the red accent line
 
   .page-title {
+    font-family: PingFang SC;
+    font-weight: 400;
     font-size: 24px;
-    font-weight: 500;
-    color: @text-color-base;
+    letter-spacing: 0%;
+    color: #656C74;
     margin: 0;
     display: inline-block;
     position: relative;
@@ -154,7 +179,7 @@ onMounted(() => {
 
 .members-logo-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); // 4 columns as per image
+  grid-template-columns: repeat(2, 1fr); // 4 columns as per image
   // Gap between items - calculated based on image (items are close)
   gap: 50px; // row-gap column-gap (e.g., 16px vertical, 24px horizontal)
                               // From image, vertical gap is larger than horizontal. Let's try:
@@ -181,7 +206,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   height: 110px; // Fixed height for the logo container to align rows
-  width: 250px;
+  // width: 250px;
   background-color: transparent; // No background per item, just image on page bg
   // border: 1px solid @border-color-light; // Image does not show individual borders
   // padding: @spacing-sm; // Padding inside the item wrapper
@@ -198,7 +223,7 @@ onMounted(() => {
 
   .member-logo-image {
     max-width: 100%; // Max width relative to its container (1/4 of grid width - gap)
-    max-height: 110px; // Max height for the logo image itself (as per prev examples)
+    // max-height: 110px; // Max height for the logo image itself (as per prev examples)
     object-fit: contain; // Scale down to fit, maintain aspect ratio
     // filter: grayscale(100%); // Grayscale as per image
     // opacity: 0.7; // Slightly faded

@@ -8,6 +8,7 @@ import demandsRoutes from '@/views/demand_square/demands/routes/index'; // Impor
 import industryDynamicsRoutes from '@/views/industryDynamics/routes'; // <-- Import
 import userCenterRoutes from '@/views/user_center/routes';
 import otherPageRoutes from '@/views/otherPage/routes';
+const tongyongcaiji = () => import('@/views/otherPage/tongyongcaiji/index.vue');
 
 import { useAuthStore } from '@/store/authStore'; // Import for navigation guard
 
@@ -22,6 +23,11 @@ const routes = [
       ...otherPageRoutes,
       // publicationsRoutes,
       ...industryDynamicsRoutes,
+      {
+        path: 'other/tongyongcaiji', 
+        component: tongyongcaiji, 
+        meta: { title: '通用件集采', breadcrumb: ['通用件集采'] }
+      },
       // ... other feature routes that use DefaultLayout
     ],
   },

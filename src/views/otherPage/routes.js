@@ -22,11 +22,11 @@ const userCenterRoutes = [
         component: platformMember, 
         meta: { title: '平台会员', breadcrumb: ['平台会员'] }
       },
-       {
-        path: 'tongyongcaiji', 
-        component: tongyongcaiji, 
-        meta: { title: '通用件集采', breadcrumb: ['通用件集采'] }
-      },
+      //  {
+      //   path: 'tongyongcaiji', 
+      //   component: tongyongcaiji, 
+      //   meta: { title: '通用件集采', breadcrumb: ['通用件集采'] }
+      // },
     ]
   },
   
