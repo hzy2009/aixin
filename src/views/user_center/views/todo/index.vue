@@ -1,6 +1,15 @@
 <template>
   <div>
-    <listPage :pageData="pageData" />
+    <listPage :pageData="pageData" >
+      <template #tableCustomOperations="{ url, loadTableData }">
+        <div class="table-operations">
+          <a-tabs v-model:activeKey="activeKey" @change="(v) => handleTabChange(v, loadTableData)">
+            <a-tab-pane key="1" tab="全部待办"></a-tab-pane>
+            <a-tab-pane key="2" tab="已办理"></a-tab-pane>
+          </a-tabs>
+        </div>
+      </template>
+    </listPage>
   </div>
 </template>
 
@@ -29,7 +38,7 @@ const tableColumns = reactive([
  { title: '操作历史', field: 'xxx', align: 'center' },
  { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
 ]);
-
+const activeKey = ref('1');
 
 
 
@@ -42,7 +51,7 @@ const actions = reactive([
   }
 ]);
 
-const pageData = ref({
+const pageData = reactive({
   url: {
     list: 'apm/apmTodo/join/newTodo/list',
   },
@@ -74,4 +83,17 @@ function viewDetails({businessName, id }) {
 function createNewSourcing() {
   router.push(`/user/published/DomesticSourcing/create`);
 };
+const handleTabChange = (key, loadTableData) => {
+  if (key === '1') {
+    pageData.url.list = 'apm/apmTodo/join/newTodo/list';
+  } else {
+    pageData.url.list = 'apm/apmTodo/join/newTodo/finish/list';
+  }
+  loadTableData()
+}
 </script>
+<style scoped lang="less">
+.table-operations{
+  margin-left: 20px;
+}
+</style>

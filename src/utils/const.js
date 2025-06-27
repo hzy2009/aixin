@@ -58,9 +58,9 @@ export const DOMESTIC_SOURCING_COLUMNS = [
     { title: '需求者', field: 'createUserName', align: 'center' },
     { title: '需求提出日期', field: 'createTime', align: 'center', fieldType: 'date' },
     { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date'},
-    { title: '爱芯享单据号', field: 'xx', align: 'center' },
-    { title: '期望完成日期', field: 'xx', align: 'center' },
-    { title: '需求状态', field: 'statusName', align: 'center' },
+    { title: '爱芯享单据号', field: 'materialCode', align: 'center', width: 160  },
+    { title: '选定厂商', field: 'refUserCode', align: 'center', width: 160  },
+    { title: '需求状态', field: 'statusName', align: 'center', width: 80 },
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
 ]
@@ -71,9 +71,9 @@ export const OEM_PARTS_SOURCING_COLUMNS = [
     { title: '需求者', field: 'createUserName', align: 'center' },
     { title: '需求提出日期', field: 'createTime', align: 'center', fieldType: 'date'},
     { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date'},
-    { title: '爱芯享单据号', field: 'xx', align: 'center' },
-    { title: '期望完成日期', field: 'xx', align: 'center' },
-    { title: '需求状态', field: 'statusName', align: 'center' },
+    { title: '爱芯享单据号', field: 'materialCode', align: 'center', width: 160  },
+    { title: '选定厂商', field: 'refUserCode', align: 'center', width: 180  },
+    { title: '需求状态', field: 'statusName', align: 'center', width: 80 },
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
 ]
@@ -101,7 +101,7 @@ export const PUBLIC_RELATIONS_COLUMNS = [
     { title: '期望匹配周期', field: 'matchPeriodName', align: 'center' },
     { title: '需求提出方', field: 'createUserName', align: 'center' },
     { title: '承接方', field: 'refUserName', align: 'center' },
-    { title: '需求状态', field: 'statusName', align: 'center' },
+    { title: '需求状态', field: 'statusName', align: 'center', width: 80 },
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
 ]
@@ -115,7 +115,7 @@ export const VERIFICATION_COLUMNS = [
     { title: '需求方', field: 'createUserName', align: 'center' },
     { title: '承接方', field: 'refUserName', align: 'center' },
     { title: '创建日期', field: 'createTime', align: 'center', fieldType: 'date'},
-    { title: '需求状态', field: 'statusName', align: 'center' },
+    { title: '需求状态', field: 'statusName', align: 'center', width: 80 },
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
 ]

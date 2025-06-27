@@ -125,9 +125,11 @@ onMounted(() => {
   position: relative; // For the red accent line
 
   .page-title {
+    font-family: PingFang SC;
+    font-weight: 400;
     font-size: 24px;
-    font-weight: 500;
-    color: @text-color-base;
+    letter-spacing: 0%;
+    color: #656C74;
     margin: 0;
     display: inline-block;
     position: relative;

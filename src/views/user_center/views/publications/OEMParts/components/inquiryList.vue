@@ -6,6 +6,7 @@
         :data="dataSource"
         :columns="columns"
         border
+        resizable
         :row-config="{ keyField: 'id' }"
         :expand-config="{ expandRowKeys: expandedRowKeys, trigger: 'default' }"
         @toggle-row-expand="handleToggleExpand"
@@ -96,55 +97,46 @@ const handleSelectWinner = ({ record: winningItem, checked, type }) => {
     dataSource.value.forEach(mainRecord => {
         if (type === 'first') {
             mainRecord.firstInquiryList.forEach(item => {
-                if (checked) {
-                    item.isSelected = 0;
-                    item.isWinner = item.id === winningItem.id ? 1 : 0;
-                } else {
-                    if (item.id === winningItem.id) item.isWinner = 0;
-                }
+                if (checked) item.isSelected = 0
+                if (item.id === winningItem.id) item.isWinner = checked ? 1 : 0;
             });
         }
         if (type === 'second' && mainRecord.secondInquiryList) {
             mainRecord.secondInquiryList.forEach(item => {
-                if (checked) {
-                    if (winningItem.id) {
-                        item.isWinner = item.id === winningItem.id ? 1 : 0;
-                    } else {
-                        item.isWinner = item.key === winningItem.key ? 1 : 0;
-                    }
-                } else {
-                    if (winningItem.id) {
-                        if (item.id === winningItem.id) item.isWinner = 0;
-                    } else {
-                        if (item.key === winningItem.key) item.isWinner = 0;
-                    }
-                }
+                if (item?.id === winningItem?.id) item.isWinner = checked ? 1 : 0;
+                if (item?.key === winningItem?.key) item.isWinner = checked ? 1 : 0;
             });
         }
-        if (checked && type === 'first') {
-            if (mainRecord.secondInquiryList) {
-                mainRecord.secondInquiryList = mainRecord.secondInquiryList.filter(item => item.isWinner === 1);
-            }
-        }
-        if (!checked) {
-            const isAnyWinnerLeft = mainRecord.firstInquiryList.some(i => i.isWinner === 1) || (mainRecord.secondInquiryList && mainRecord.secondInquiryList.some(i => i.isWinner === 1));
-            if (!isAnyWinnerLeft) {
-                mainRecord.tradeTypeCode = undefined;
-                mainRecord.tradeTypeName = '';
-            }
-        }
+        // if (checked && type === 'first') {
+        //     if (mainRecord.secondInquiryList) {
+        //         mainRecord.secondInquiryList = mainRecord.secondInquiryList.filter(item => item.isWinner === 1);
+        //     }
+        // }
+        // if (!checked) {
+        //     const isAnyWinnerLeft = mainRecord.firstInquiryList.some(i => i.isWinner === 1) || (mainRecord.secondInquiryList && mainRecord.secondInquiryList.some(i => i.isWinner === 1));
+        //     if (!isAnyWinnerLeft) {
+        //         mainRecord.tradeTypeCode = undefined;
+        //         mainRecord.tradeTypeName = '';
+        //     }
+        // }
     });
 };
 
 const getRowState = (record) => {
     let winnerName = null;
     let isWinnerSelected = false;
-    const winnerInFirst = record.firstInquiryList.find(item => item.isWinner === 1);
-    const winnerInSecond = record.secondInquiryList ? record.secondInquiryList.find(item => item.isWinner === 1) : null;
-    const winner = winnerInFirst || winnerInSecond;
+    let winner = null;
+    if (record.isSecondInquiryEnable === 1) {
+        winner = record.secondInquiryList ? record.secondInquiryList.filter(item => item.isWinner == 1) : null;
+    } else {
+        winner = record.firstInquiryList.filter(item => item.isWinner  == 1);
+    }
+    // const winnerInFirst = record.firstInquiryList.filter(item => item.isWinner  == 1);
+    // const winnerInSecond = record.secondInquiryList ? record.secondInquiryList.filter(item => item.isWinner == 1) : null;
+    // winner = winnerInFirst && winnerInFirst.length > 0 ? winnerInFirst : winnerInSecond;
     if (winner) {
         isWinnerSelected = true;
-        winnerName = winner.refUserCode;
+        winnerName = winner.map(item => item.refUserCode).join(',');
     }
     const isSecondRoundSelected = record.firstInquiryList.some(item => item.isSelected === 1);
     return { winnerName, isWinnerSelected, isSecondRoundSelected };

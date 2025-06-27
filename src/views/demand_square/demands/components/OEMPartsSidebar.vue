@@ -41,7 +41,7 @@ const {
   tableData,
 } = useUserDemandList({
   url: {
-    list: '/apm/apmSourcing/list/front',
+    list: '/apm/apmSourcingOriginSubstitute/material/list/front',
   },
   otherParams: {
       sourcingType: '原厂件寻源'

@@ -44,6 +44,7 @@ const actions = reactive([
 const pageData = ref({
     url: {
         list: 'apm/apmOfflineActivity/list/owner',
+    delete: 'apm/apmOfflineActivity/delete',
         overview: 'apm/apmOfflineActivity/overview?referer=owner'
     },
     filterConfigForPage,

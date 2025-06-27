@@ -52,7 +52,7 @@
                 {{ Operations.title }}
             </a-button>
         </div>
-        
+        <slot v-if="$slots['tableCustomOperations']" name="tableCustomOperations" :url="url" :dataSource="tableData" :loadTableData="loadTableData"></slot>
         <slot name="content" :dataSource="tableData" :paginationConfig="pagination" :handleTablePaginationChange="handleTablePaginationChange">
             <div class="results-table-section">
                 <!-- VXE-GRID REPLACEMENT -->
@@ -119,7 +119,7 @@ const {
 const {
     selectOptions, stats, currentFilters, search, isLoading, tableData,
     pagination, handleFiltersChange, triggerSearch, handleTablePaginationChange,
-    getStatusTagColor, handleStatClick, handleExportXls, clearfilters, isVIP,handleDelete
+    getStatusTagColor, handleStatClick, handleExportXls, clearfilters, isVIP,handleDelete, loadTableData
 } = useUserDemandList({
     otherParams, url, statusDictKey, userStatCardVisible
 });
@@ -144,7 +144,7 @@ const vxeTableColumns = computed(() => {
         const vxeCol = {
             ...col
         };
-        if (col.dictKey && col.fieldType === 'select') {
+        if (col.fieldType === 'select' && col.dictKey) {
             vxeCol.formatter = ({ cellValue }) => {
                 if (getDictOptions(col.dictKey)) {
                     return getDictOptions(col.dictKey).find(option => option.value === cellValue)?.label;
@@ -169,8 +169,20 @@ const vxeTableColumns = computed(() => {
             vxeCol.slots = {
                 default: ({ row }) => (
                     actions.map((action, i) => (
+                        action.type == 'del' ? 
+                        <a-popconfirm title="是否确认删除" ok-text="是" cancel-text="否" onConfirm={()=> {
+                                handleDelete(row)
+                            }} >
+                            <span class="action-item">
+                                <span><img src={ delIcon} alt="" class="action-icon" /></span>
+                                <AButton type="link"  class="action-link" key={i}>
+                                    {action.text}
+                                </AButton>
+                            </span>
+                         </a-popconfirm>
+                         : 
                         <span class="action-item" onClick={() => handleActionClick(row, action)}>
-                            <span><img src={ action.type =='detail' ? detailIcon : delIcon} alt="" class="action-icon" /></span>
+                            <span><img src={ detailIcon } alt="" class="action-icon" /></span>
                             <AButton type="link"  class="action-link" key={i}>
                                 {action.text}
                             </AButton>
@@ -228,11 +240,7 @@ const handleDateValuesUpdate = (values) => {
 
 const handleActionClick = (record, action) => {
     if (authStore?.token) {
-        if (action.type == 'del') {
-            handleDelete(record);
-        } else {
-            action?.clickFn(record);
-        }
+        action?.clickFn(record);
     } else {
         modalStore.showLogin();
     }

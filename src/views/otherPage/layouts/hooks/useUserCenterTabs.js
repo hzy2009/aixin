@@ -16,12 +16,12 @@ const defaultTabsConfig = {
     defaultSubTabKey: 'platformMember',
     path: '/other/platformMember',
   },
- tongyongcaiji: {
-    key: 'tongyongcaiji',
-    label: '通用件集采',
-    defaultSubTabKey: 'tongyongcaiji',
-    path: '/other/tongyongcaiji',
-  },
+//  tongyongcaiji: {
+//     key: 'tongyongcaiji',
+//     label: '通用件集采',
+//     defaultSubTabKey: 'tongyongcaiji',
+//     path: '/other/tongyongcaiji',
+//   },
 };
 
 export function useUserCenterTabs(tabsConfig = defaultTabsConfig) {
