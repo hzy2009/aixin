@@ -42,5 +42,9 @@ const columns = [
       title: '内部管理单号',
       field: 'materialCode', // field -> field
     },
+    {
+      title: '状态',
+      field: 'statusName', // field -> field
+    },
 ]
 </script>
