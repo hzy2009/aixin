@@ -11,13 +11,19 @@ import listPage from '@/components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 import { useAuthStore } from '@/store/authStore';
 import {VERIFICATION_COLUMNS} from '@/utils/const';
+import { selectOptions } from '@/utils/index';
 const authStore = useAuthStore();
 const router = useRouter();
 
+const getALLProductTypes = () => {
+   const allProductTypes = selectOptions('product_type')  
+   const allProductTypeMaterials = selectOptions('product_type_material')
+   return [...allProductTypes, ...allProductTypeMaterials]
+}
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
     { id: 'projectType', label: '验证验证类型', maxVisibleWithoutMore: 7, dictKey: 'project_type' },
-    { id: 'productType', label: '产品类别', maxVisibleWithoutMore: 9, dictKey: 'product_type' },
+    { id: 'productMainTypeCode', label: '产品类别', maxVisibleWithoutMore: 10, dictKey: 'product_type', options: getALLProductTypes() },
 ]);
 
 // --- Table Columns (remains in component as it's UI specific) ---
