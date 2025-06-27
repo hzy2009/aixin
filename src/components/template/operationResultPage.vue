@@ -81,7 +81,7 @@ const {
   title = '一键敲门成功',
   subtitle = '客服人员将在30分钟内与您联系',
     // E-MAIL: chenjingwei@icshare.com
-  contactInfo = '联系人：陈靖玮 座机：021-55698507',
+  contactInfo = '联系电话：021-55698507',
   emilt = 'E-MAIL: chenjingwei@icshare.com',
   primaryActionText = '查看详情',
   primaryActionPayload,
