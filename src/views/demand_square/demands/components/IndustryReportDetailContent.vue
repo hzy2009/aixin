@@ -10,7 +10,8 @@
         <div><span>报告来源：</span><span>{{ report.source }}</span></div>
         <div class="report-summary-header">
           <span class="summary-label">摘要：</span>
-          <p class="summary-text">{{ report.description }}</p>
+          <!-- <p class="summary-text">{{ report.description }}</p> -->
+          <div class="summary-text" v-html="report.description"></div>
         </div>
         <div class="report-meta-info-header">
           <!-- <span>领域：{{ report.reportTypeName }}</span> -->
@@ -40,8 +41,7 @@
 					<div class="section-title-wrapper">
 						<h3 class="section-title-text">大纲/目录</h3>
 					</div>
-          <div class="outline-list">
-            {{ report.outline }}
+          <div class="outline-list" v-html="report.outline">
           </div>
     </section>
 
