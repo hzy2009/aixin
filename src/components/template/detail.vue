@@ -112,9 +112,9 @@
 				<slot name="actions" :handleDefaultSubmit=handleDefaultSubmit :handleDefaultCancel=handleDefaultCancel>
 					<div class="page-actions-footer">
 						<a-button @click="handleDefaultCancel" class="action-button cancel-button" v-if="isUseBack">返回</a-button>
-						<a-button @click="handleDefaultdelete" class="action-button cancel-button" v-if="isUseDelete">删除</a-button>
+						<a-button @click="handleDefaultdelete" class="action-button cancel-button" v-if="formModel.statusCode === 'submit' && isUseDelete ">删除</a-button>
 						<a-button v-for="(item, i) in actionNotes" :key="i" class="action-button cancel-button" @click="handleActionNoteClick(item)" :type="item.type">{{ item.title }}</a-button>
-						<a-button type="primary" danger @click="handleDefaultSubmit" v-if='canSubmit'
+						<a-button type="primary" danger @click="handleDefaultSubmit" v-if='formModel.statusCode === "submit" && canSubmit'
 							class="action-button submit-button">{{ actionNote }}</a-button>
 					</div>
 				</slot>
