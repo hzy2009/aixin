@@ -22,7 +22,7 @@
 
     <!-- 主要内容 -->
     <div class="card-body">
-      <div class="section">
+      <div class="section skill-section">
         <h5 class="section-title">主要研究方向:</h5>
         <ul v-if=" formatSkillDescLsit.length && formatSkillDescLsit.length > 1" class="research-list">
           <li
@@ -237,6 +237,10 @@ const viewExpertProfile = (item) => {
 
 .card-body {
   margin-bottom: 20px;
+  .skill-section{
+    height: 90px;
+    overflow: hidden;
+  }
   .section {
     margin-bottom: 16px;
     &:last-child { margin-bottom: 0; }
@@ -282,14 +286,18 @@ const viewExpertProfile = (item) => {
     }
     .cooperation-intention {
         color: #656C74;
-      font-family: PingFang SC;
+        font-family: PingFang SC;
         font-weight: 400;
         font-size: 14px;
         line-height: 22px;
         letter-spacing: 0%;
         text-align: justify;
-
-      margin: 0;
+         margin: 0;
+         overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
     }
     .empty-text {
       font-size: 14px;
