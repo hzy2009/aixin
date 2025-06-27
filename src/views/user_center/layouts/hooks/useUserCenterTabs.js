@@ -122,11 +122,11 @@ export function useUserCenterTabs(tabsConfig = defaultTabsConfig) {
         }
       }
       // 如果主页签本身有路径且匹配 (不常见于这种两级结构)
-      // else if (mainTabData.path && currentPath.startsWith(mainTabData.path)) {
-      //   activeMainTabKey.value = mainKey;
-      //   activeSubTabKey.value = ''; // 没有子页签被激活
-      //   return;
-      // }
+      else if (mainTabData.path && currentPath.startsWith(mainTabData.path)) {
+        activeMainTabKey.value = mainKey;
+        activeSubTabKey.value = ''; // 没有子页签被激活
+        return;
+      }
     }
     console.log('没有匹配的子页签');
     // 如果没有子页签匹配，但路径可能属于某个主页签的根 (例如 /user/published/)
