@@ -149,7 +149,6 @@ watch(
   height: calc(v-bind('props.visibleItemCount') * @estimated-item-total-height);
   overflow: hidden;
   position: relative;
-  border: 1px solid #EAEAEA;
   background-color: #fff;
   padding: 0 30px;
   box-sizing: border-box;
