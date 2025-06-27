@@ -240,6 +240,12 @@ const viewReportDetails = (id) => {
     margin-bottom: 4px;
   }
   .report-description-short{
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 14px;
+    line-height:22px;
+    letter-spacing: 0%;
+    text-align: justify;
     color: #656C74;
     height: 66px;
     overflow: hidden;
