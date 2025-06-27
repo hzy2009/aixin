@@ -165,7 +165,7 @@ const {
 	actionNotes = [], statusTrackingTitle, isUseBack = true, localeGetDetail = null,submitTpe = 'fn', handleBeforeSubmit, isUseDelete= false
 } = props.pageData;
 
-const uploadUrl = `${import.meta.env.VITE_API_BASE_URL}sys/common/upload` || '/api';
+const uploadUrl = `${import.meta.env.VITE_GLOB_UPLOAD_URL}sys/common/upload` || '/api';
 const getHeaders = () => {
   return reactive({
     'X-Access-Token': auth.token,

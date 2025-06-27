@@ -6,7 +6,7 @@ import { message as AntMessage, Modal } from 'ant-design-vue';
 
 console.log('import.meta.env.VITE_API_BASE_URL', import.meta.env.VITE_API_BASE_URL)
 const defaultConfig = {
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL || '/jeecgboot',
   timeout: 10000,
   headers: {
     'Accept': 'application/json, text/plain, */*',
