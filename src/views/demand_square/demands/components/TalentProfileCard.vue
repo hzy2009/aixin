@@ -10,7 +10,7 @@
       <!-- 右侧：信息 -->
       <div class="header-info">
         <!-- 上方：姓名 -->
-        <h4 class="expert-name">{{ talent.realname ? formatName(talent.realname) : '暂无' }}</h4>
+        <h4 class="expert-name">{{ talent.realname}}</h4>
         <!-- 下方：联系方式 (已应用打码) -->
         <div class="contact-details">
           <p class="expert-contact">电话:{{ maskPhone(talent.phone) }}</p>

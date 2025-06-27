@@ -6,7 +6,7 @@
       </a-avatar>
       <div> </div>
       <div class="expert-info">
-        <h4 class="expert-name">{{expert.realname ? formatName(expert.realname) : '无'  }}</h4>
+        <h4 class="expert-name">{{expert.realname}}</h4>
         <p class="expert-contact">电话: {{ expert.phone }}</p>
       </div>
     </div>
@@ -72,7 +72,7 @@ const viewExpertProfile = (id) => {
 
 .expert-talent-card {
   background-color: #fff; // Light gray background for card
-  padding: 20px 15px;
+  padding: 22px 15px;
   border-radius: @border-radius-sm; // Slight rounding
   border: 1px solid transparent; // For hover effect
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
