@@ -12,9 +12,12 @@
         <div class="uc-banner__info">
           <!-- <h2 class="user-name">{{ userInfo?.realname || '会员用户' }}</h2> -->
           <div class="user-name">{{ '爱芯享信息共享平台' }}</div>
-          <div class="user-membership-info">
-            <span class="membership-level">{{ userInfo?.memberLevel || '普通会员' }}</span>
-            <a-button type="link" class="upgrade-link" v-if="!isHighestLevel(userInfo?.memberLevel)">升级会员</a-button>
+          <div class="user-membership-info" v-if="userData?.role == '普通会员'">
+            <span class="membership-level">{{ userData?.role || '普通会员' }}</span>
+            <a-button type="link" class="upgrade-link" v-if="userData?.role == '普通会员'" @click="upgradeMembership">升级会员</a-button>
+          </div>
+          <div class="user-membership-info" v-else>
+            <img src="@/assets/images/auth/vip.png" alt="">
           </div>
           <p class="user-id">ID: {{ userInfo?.workNo || '加载中...' }}</p>
         </div>
@@ -77,27 +80,24 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { computed, ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { Avatar as AAvatar } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { useUserCenterTabs } from './hooks/useUserCenterTabs'; // 调整路径
 import { useAuthStore } from '@/store/authStore'; // 用于获取用户信息
 import baipng from '@/assets/images/auth/bai.png';
+import defHttp from '@/utils/http/axios';
 const route = useRoute();
+const router = useRouter();
 const authStore = useAuthStore();
 const userInfo = computed(() => authStore.userInfo);
 const isHighestLevel = (level) => {
     // TODO: 实现判断是否为最高等级会员的逻辑
     return level === '高级会员'; // 示例
 };
-// TODO: 从 authStore 或特定用户 profile hook 获取更详细的用户信息
-// const userInfo = computed(() => ({
-//   name: authStore.userInfo?.name || '爱芯享信息共享平台', // 示例名称
-//   memberId: authStore.user?.id || '16278962361-1456489', // 示例 ID
-//   avatarUrl: authStore.user?.avatar || null, // 从 authStore 获取头像
-// }));
 
+const userData = ref({})
 // 页签配置 (可以从外部传入或在这里定义更复杂的结构)
 // 我们将使用 Hook 内部的 defaultTabsConfig
 const {
@@ -116,6 +116,18 @@ const handleMainTabClick = (key) => {
 const handleSubTabClick = (key) => {
   selectSubTab(key);
 };
+const getUerDetail = async () => {
+  const { result } = await defHttp.get({ url: '/apm/apmTodo/vipUpgrade/userInfo' });
+  userData.value = result
+  console.log('Upgrade membership clicked', userData.value);
+}
+const upgradeMembership = () => {
+  router.push('/user/setting/userCenterInfo');
+}
+onMounted(() => {
+  getUerDetail()
+})
+
 </script>
 
 <style scoped lang="less">
