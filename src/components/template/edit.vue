@@ -37,27 +37,28 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue';
-import { Button as AButton, Spin as ASpin, Alert as AAlert, Empty as AEmpty, Table as ATable, message } from 'ant-design-vue';
+import { ref, computed, watch } from 'vue';
+import { Button as AButton, Spin as ASpin, message } from 'ant-design-vue';
 import DynamicForm from '@/components/layout/DynamicForm.vue';
 import operationResultPage from './operationResultPage.vue';
 import { useDemandDetail } from './hooks/useDemandDetail.js';
-import { useRouter, useRoute } from 'vue-router'; // 用于新建成功后跳转
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
 const props = defineProps({
     pageData: {
         type: Object,
-        default: {},
+        default: () => ({}), // 推荐为 props 的 object/array 类型提供工厂函数默认值
     },
 });
+
 const {
     IdProp,
     mode,
     pageTitle,
     apiMap,
-    statusHistoryColumns,
+    statusHistoryColumns, // 此变量在模板中未使用，可考虑移除
     otherParams,
     formConfigs,
     handleBeforeSubmit,
@@ -66,13 +67,15 @@ const {
     listPath,
     useFooterAction = true,
 } = props.pageData;
+
 const emit = defineEmits(['goBack']);
+
 const {
     demandDetail: demandDetailData,
     isLoading,
-    error,
-    operationMode, // 现在从 hook 中获取
-    canEditThisDemand,
+    error, // 此变量在模板中未使用，可考虑添加错误状态展示
+    operationMode,
+    canEditThisDemand, // 此变量在模板中未使用
     fetchDemandDetail,
     handleSave,
     handleSubmit,
@@ -82,85 +85,88 @@ const {
     url: apiMap,
     otherParams
 });
+
 const dynamicFormRef = ref(null);
-const isSubmitting = ref(false); // 用于提交按钮的 loading 状态
+const isSubmitting = ref(false);
 const formModel = ref({});
-
 const isCreating = ref(true);
-const resultPageData = ref({
-
-});
+const resultPageData = ref({});
 
 // 监听从 hook 获取的原始数据，用于初始化/更新表单模型
 watch(demandDetailData, (newDetail) => {
     if (newDetail) {
-        formModel.value = JSON.parse(JSON.stringify(newDetail)); // 深拷贝以编辑
-    } else if (operationMode.value === 'create') {
-        // 如果是新建模式且 newDetail 为 null（例如 hook 初始化时），确保 formModel 有基础结构
-        formModel.value = {
-            // expireDate: null,
-            // ... 其他类型需要的默认字段 ...
-        };
+        // 使用深拷贝，防止表单修改意外影响原始数据
+        formModel.value = JSON.parse(JSON.stringify(newDetail));
     } else {
-        formModel.value = {
-        };
+        // 为创建模式或无数据时提供一个空对象
+        formModel.value = {};
     }
 }, { deep: true, immediate: true });
 
-const currentFormConfig = computed(() => {
-    const baseConfig = formConfigs || [];
-    return baseConfig.map(field => ({
-        ...field,
-        rules: field.rules ? field.rules.map(rule => ({
-            ...rule,
-            required: rule.required
-        })) : []
-    }));
-});
+// 直接使用从 props 传入的 formConfigs，如果不存在则给一个空数组。
+// 校验规则的生成和处理已封装在 DynamicForm 组件内部，此处无需再次处理。
+const currentFormConfig = computed(() => formConfigs || []);
 
-const save = async () => {
+/**
+ * 处理表单动作（保存、提交等）的通用函数
+ * @param {Function} actionApi - 实际要调用的 API 函数 (如 handleSave, handleSubmit)
+ * @param {Function} beforeActionHook - 调用 API 前的预处理钩子
+ */
+const handleFormAction = async (actionApi, beforeActionHook) => {
+    if (!dynamicFormRef.value) return;
+
     try {
-        await dynamicFormRef.value?.validate();
-        const params = dynamicFormRef.value?.getAllData()
-        isSubmitting.value = true;
-        if (handleBeforeSave && typeof handleBeforeSave === 'function') {
-            handleBeforeSave(params)
+        // 1. 校验表单
+        await dynamicFormRef.value.validate();
+
+        // 2. 获取表单数据
+        const params = dynamicFormRef.value.getAllData();
+        
+        // 3. 执行前置钩子（如果存在）
+        if (beforeActionHook && typeof beforeActionHook === 'function') {
+            const modifiedParams = beforeActionHook(params);
+            // 如果钩子返回了新参数，则使用新参数
+            if (modifiedParams) {
+                params = modifiedParams;
+            }
         }
-        const result = await handleSave(params);
+        
+        isSubmitting.value = true;
+        
+        // 4. 调用实际的 API
+        const result = await actionApi(params);
+
+        // 5. 处理结果
         if (result) {
             demandDetailData.value = result;
-            isCreating.value = false;
+            isCreating.value = false; // 切换到结果页
+            // resultPageData.value = {
+            //     status: 'success',
+            //     title: '提交成功',
+            //     subTitle: '我们已收到您的请求，客服将尽快与您联系。'
+            // };
         }
     } catch (validationError) {
-        console.log('表单校验失败:', validationError);
+        // 捕获校验失败或其他错误
+        console.error('表单操作失败:', validationError);
+        // 只在校验失败时提示用户，避免将API错误直接暴露
+        // if (validationError && validationError.errorFields) {
+        //    message.error('请检查表单，有未填写或格式不正确的项目！');
+        // }
     } finally {
         isSubmitting.value = false;
     }
 };
 
-const handleSubmitForm = async () => {
-    try {
-        dynamicFormRef.value?.validate().then(
-            console.log('33333')
-        ).catch(
-            console.log('44444')
-        );
-        // const params = dynamicFormRef.value?.getAllData()
-        // if (handleBeforeSubmit && typeof handleBeforeSubmit === 'function') {
-        //     handleBeforeSubmit(params)
-        // }
-        // isSubmitting.value = true;
-        // const result = await handleSubmit(params);
-        // if (result) {
-        //     demandDetailData.value = result;
-        //     isCreating.value = false;
-        // }
-    } catch (validationError) {
-        console.log('表单校验失败:', validationError);
-    } finally {
-        isSubmitting.value = false;
-    }
+// **: 使用通用函数简化 save 和 handleSubmitForm**
+const save = () => {
+    handleFormAction(handleSave, handleBeforeSave);
 };
+
+const handleSubmitForm = () => {
+    handleFormAction(handleSubmit, handleBeforeSubmit);
+};
+
 
 const goBack = () => {
     emit('goBack');
@@ -168,37 +174,36 @@ const goBack = () => {
 
 const handleToDetail = () => {
     isCreating.value = true;
-    router.push({ path: `detail/${demandDetailData.value.id}` });
+    router.push({ path: `${detailPath}/${demandDetailData.value.id}` }); // 假设 detailPath 是基础路径
 }
+
 const handleToList = () => {
     isCreating.value = true;
     router.push({ path: listPath });
 }
-// 当路由参数（尤其是 IdProp）实际发生变化时，重新加载数据
-// 这主要用于：用户在详情页A，通过某种方式（非浏览器前进后退）直接导航到详情页B
+
+// 监听 ID 变化以重新加载数据
 watch(() => props.IdProp, (newId) => {
-    if (newId && operationMode.value !== 'create') { // 仅在非新建模式下，ID变化才触发重新加载
-        // 更新 hook 内部的 ID (如果 hook 设计为可重用实例，否则 hook 会在路由切换时重新创建)
-        // useDemandDetail 每次路由组件渲染时都会重新执行，所以这里主要是确保 props 更新后 hook 能拿到新ID
+    if (newId && operationMode.value !== 'create') {
         fetchDemandDetail();
-    } else if (!newId && operationMode.value !== 'create') {
-        // 如果从有ID的路由变到没有ID的路由（理论上不应直接发生，应走/new），则清空
-        demandDetailData.value = null;
     }
 });
+
+// 暴露给父组件的方法
 const getAllData = async() => {
-    const params = dynamicFormRef.value?.getAllData()
-    return params
+    return dynamicFormRef.value?.getAllData();
 }
 const validate = async() => {
-  const d =  await dynamicFormRef.value?.validate();
-  return d
+  return await dynamicFormRef.value?.validate();
 }
 
 defineExpose({
     getAllData,
     validate,
-    formRef: dynamicFormRef
+    formRef: dynamicFormRef,
+    // 如果父组件需要手动触发保存，也可以暴露
+    // save,
+    // handleSubmitForm,
 });
 
 </script>
