@@ -107,6 +107,7 @@ const handleMenuClick = (item) => {
 }
 const getUnreadMessagesCount = async () => {
   try {
+    if (!auth.isLogin) return
     const res = await defHttp.get({ url: '/apm/apmTodo/join/newTodo/list', params: { page: 1, pageSize: 99 } });
     unreadMessagesCount.value = res.result.total;
   } catch (error) {
