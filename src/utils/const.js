@@ -80,7 +80,7 @@ export const OEM_PARTS_SOURCING_COLUMNS = [
 
 export const OFFLINE_EVENT_COLUMNS = [
     { title: '序号', type: 'seq', width: 74, align: 'center' },
-    { title: '单号', field: 'code', align: 'center', width: 180 },
+    { title: '活动单号', field: 'code', align: 'center', width: 180 },
     { title: '活动类型', field: 'activityTypeName', align: 'center'},
     { title: '发起人', field: 'createUserName', align: 'center'},
     { title: '参与者', field: 'registerList ', align: 'center', formatter: ({ cellValue }) => {
@@ -88,7 +88,7 @@ export const OFFLINE_EVENT_COLUMNS = [
         return text || ''
     }},
     { title: '内容', field: 'description', align: 'center', showOverflow: true},
-    { title: '结论', field: 'xxx', align: 'center' },
+    { title: '结论', field: 'activityAddress', align: 'center' },
     { title: '创建日期', field: 'createTime', align: 'center', fieldType: 'date'},
     { title: '活动状态', field: 'statusName', align: 'center'},
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
@@ -98,7 +98,7 @@ export const PUBLIC_RELATIONS_COLUMNS = [
     { title: '序号', type: 'seq', width: 74, align: 'center' },
     { title: '研发攻关单号', field: 'code', align: 'center', width: 180 },
     { title: '研发攻关类型', field: 'rdType', align: 'center'},
-    { title: '期望匹配周期', field: 'matchPeriodName', align: 'center' },
+    { title: '期望完成日期', field: 'expireDate', align: 'center' },
     { title: '需求提出方', field: 'createUserName', align: 'center' },
     { title: '承接方', field: 'refUserName', align: 'center' },
     { title: '需求状态', field: 'statusName', align: 'center', width: 80 },
@@ -108,9 +108,17 @@ export const PUBLIC_RELATIONS_COLUMNS = [
 
 export const VERIFICATION_COLUMNS = [
     { title: '序号', type: 'seq', width: 74, align: 'center' },
-    { title: '单号', field: 'code', align: 'center', width: 180 },
+    { title: '检测验证单号', field: 'code', align: 'center', width: 180 },
     { title: '检测验证类别', field: 'projectType', align: 'center', fieldType: 'select', dictKey: 'project_type' },
-    { title: '产品类别', field: 'productType', align: 'center', fieldType: 'select', dictKey: 'product_type' },
+    { title: '产品类别', field: 'productType', align: 'center', 
+        formatter: ({ cellValue }) => {
+            let txt = cellValue.productMainTypeName
+            if (cellValue.productTypeName) {
+                txt += '-' + cellValue.productTypeName
+            }
+            return txt
+        } 
+    },
     { title: '期望匹配周期', field: 'matchPeriodName', align: 'center' },
     { title: '需求方', field: 'createUserName', align: 'center' },
     { title: '承接方', field: 'refUserName', align: 'center' },
