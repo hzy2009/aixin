@@ -62,7 +62,7 @@ const pageData = ref({
     dateRangeConfig: [
         {
         field: 'createTime', // Unique key for this date range
-        label: '提出需求日期',
+        label: '需求提出日期',
         // placeholder: ['需求开始', '需求结束'] // Optional: custom placeholder
         },
         {

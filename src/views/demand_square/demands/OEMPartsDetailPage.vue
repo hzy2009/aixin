@@ -38,7 +38,7 @@ const router = useRouter();
 const formConfigs = [
   { label: '寻源编号', field: 'code', span: 24, },
   { label: '需求提出方', field: 'tenantName', span: 24, },
-  { label: '提出需求日期', field: 'createTime', span: 24, fieldType: 'date' },
+  { label: '需求提出日期', field: 'createTime', span: 24, fieldType: 'date' },
   { label: '计划完成日期', field: 'expireDate', span: 24, fieldType: 'date' },
   { label: '寻源结果', field: 'inquiryList', span: 24 },
   { label: '贸易商/晶链慧采：', field: 'xxx', span: 24 },
