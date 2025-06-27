@@ -2,7 +2,8 @@
   <div>
     <detail :pageData="pageData" @goBack="goBack">
       <template #materialVoList="{ dataSource }">
-        <materialVoList :data="dataSource.materialVoList"></materialVoList>
+        <materialVoList :data="dataSource.materialVoList" v-if="dataSource.materialVoList && dataSource.materialVoList.length > 0"></materialVoList>
+        <span v-else>暂无结果</span>
       </template>
     </detail>
   </div>
