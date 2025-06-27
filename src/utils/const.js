@@ -98,31 +98,36 @@ export const PUBLIC_RELATIONS_COLUMNS = [
     { title: '序号', type: 'seq', width: 74, align: 'center' },
     { title: '研发攻关单号', field: 'code', align: 'center', width: 180 },
     { title: '研发攻关类型', field: 'rdType', align: 'center'},
-    { title: '期望完成日期', field: 'expireDate', align: 'center' },
+    { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date'},
     { title: '需求提出方', field: 'createUserName', align: 'center' },
     { title: '承接方', field: 'refUserName', align: 'center' },
     { title: '需求状态', field: 'statusName', align: 'center', width: 80 },
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
 ]
-
+const getALLProductTypes = () => {
+   const allProductTypes = selectOptions('product_type')  
+   const allProductTypeMaterials = selectOptions('product_type_material')
+   return [...allProductTypes, ...allProductTypeMaterials]
+}
 export const VERIFICATION_COLUMNS = [
     { title: '序号', type: 'seq', width: 74, align: 'center' },
     { title: '检测验证单号', field: 'code', align: 'center', width: 180 },
-    { title: '检测验证类别', field: 'projectType', align: 'center', fieldType: 'select', dictKey: 'project_type' },
-    { title: '产品类别', field: 'productType', align: 'center', 
-        formatter: ({ cellValue }) => {
-            let txt = cellValue.productMainTypeName
-            if (cellValue.productTypeName) {
-                txt += '-' + cellValue.productTypeName
-            }
-            return txt
-        } 
+    { title: '检测验证类别', field: 'projectType', align: 'center', fieldType: 'select', width: 110, dictKey: 'project_type' },
+    { title: '产品类别', field: 'productTypeName', align: 'center', width: 180,
+        // formatter: ({row}) => {
+        //     let txt = row?.productMainTypeName
+        //     const spaces = '\u00A0'.repeat(4); // 4个空格的间距
+        //     if (row?.productTypeName) {
+        //         txt = `${txt} ${spaces} ${row?.productTypeName}`
+        //     }
+        //     return txt
+        // } 
     },
-    { title: '期望匹配周期', field: 'matchPeriodName', align: 'center' },
-    { title: '需求方', field: 'createUserName', align: 'center' },
-    { title: '承接方', field: 'refUserName', align: 'center' },
-    { title: '创建日期', field: 'createTime', align: 'center', fieldType: 'date'},
+    { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date', width: 100},
+    { title: '需求方', field: 'createUserName', align: 'center', width: 120 },
+    { title: '承接方', field: 'refUserName', align: 'center' , width: 120},
+    { title: '创建日期', field: 'createTime', align: 'center', fieldType: 'date', width: 100},
     { title: '需求状态', field: 'statusName', align: 'center', width: 80 },
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
