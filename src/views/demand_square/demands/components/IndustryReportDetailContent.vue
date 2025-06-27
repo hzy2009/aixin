@@ -226,6 +226,8 @@ defineExpose({
     }
 
     .summary-text {
+      height: 66px;
+      margin-bottom: 4px;
       font-family: PingFang SC;
       font-weight: 400;
       font-size: 14px;
@@ -252,7 +254,7 @@ defineExpose({
     text-align: justify;
 
     color: #656C74;
-    margin-bottom: @spacing-lg; // Space above price/button block
+    margin-bottom: 18px; // Space above price/button block
     display: flex;
     flex-direction: column; // Stack domain and report number
     gap: 3px; // Small gap between domain and report number
@@ -262,7 +264,6 @@ defineExpose({
   }
 
   .report-action-block {
-    margin-top: auto; // Pushes this block to the bottom of the flex column
     // padding-top: @spacing-md; // Space above it
     display: flex;
     justify-content: space-between;

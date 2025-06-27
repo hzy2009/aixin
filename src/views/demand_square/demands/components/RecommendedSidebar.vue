@@ -9,7 +9,10 @@
         <div class="report-item-content">
           <h4 class="report-item-title">{{ report.reportName }}</h4>
           <p class="report-item-meta">领域：{{ report.reportTypeName }}</p>
-          <p class="report-item-summary">摘要：{{ report.description }}</p>
+          <p class="report-item-meta">摘要：{{ report.description }}</p>
+          <div class="report-item-description">
+            <div v-html="report.description"></div>
+          </div>
           <div class="report-item-footer">
             <span class="report-item-price"><span class="currency-symbol">¥</span> {{ report.unitPrice }}</span>
             <ArrowRightOutlined class="arrow-icon" />
@@ -140,8 +143,6 @@ const handleReportClick = () => {
   letter-spacing: 0%;
   text-align: justify;
   color: #656C74;
-  color: #656C74;
-  line-height: 1.6;
   margin-bottom: @spacing-sm;
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -149,6 +150,20 @@ const handleReportClick = () => {
   overflow: hidden;
   text-overflow: ellipsis;
   min-height: calc(1.6em * 2);
+}
+.report-item-description{
+  font-family: PingFang SC;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 22px;
+  letter-spacing: 0%;
+  text-align: justify;
+  color: #656C74;
+  height: 66px;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
 }
 
 .report-item-footer {
