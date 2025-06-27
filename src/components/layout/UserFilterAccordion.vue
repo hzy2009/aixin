@@ -186,11 +186,15 @@ defineExpose({ resetAllFilters });
   border: 1px solid transparent;
 
   &:hover {
-    color: @primary-color;
+    // color: @primary-color;
+    background: @primary-color;
+    color: #fff;
   }
 
   &--active {
-    color: @primary-color;
+    // color: @primary-color;
+    background: @primary-color;
+    color: #fff;
     font-weight: 500;
   }
 }
