@@ -24,7 +24,12 @@ import { DOMESTIC_SOURCING_COLUMNS } from '@/utils/const';
 
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
-//   { id: 'businessType', label: '业务类型', maxVisibleWithoutMore: 9, dictKey: 'business_type' }
+  { id: 'businessType', label: '业务类型', maxVisibleWithoutMore: 9, dictKey: 'business_type', options: 
+    [
+      { label: '原厂件寻源', value: '原厂件寻源' },
+      { label: '线下活动', value: '线下活动' },
+    ]
+   },
 ]);
 
 const tableColumns = reactive([
