@@ -235,7 +235,7 @@ defineExpose({ resetAllFilters });
 
       .anticon-down {
         margin-left: 3px;
-        font-size: 12px;
+        font-size: 14px;
         transition: transform 0.2s;
       }
 

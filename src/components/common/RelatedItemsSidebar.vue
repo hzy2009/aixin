@@ -159,7 +159,7 @@ const onItemClick = (item) => {
     // display: flex;
     // align-items: right;
     text-align: right;
-    font-size: 12px;
+    font-size: 14px;
     color: @text-color-tertiary;
   }
 
@@ -171,7 +171,7 @@ const onItemClick = (item) => {
     }
   }
   .item-arrow {
-      font-size: 12px;
+      font-size: 14px;
       transition: color 0.3s, transform 0.3s;
   }
 }

@@ -284,7 +284,7 @@ defineExpose({
 :deep(.action-link) {
     font-family: PingFang SC;
     font-weight: 400;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 12px;
     letter-spacing: 0px;
     color: #656C74;

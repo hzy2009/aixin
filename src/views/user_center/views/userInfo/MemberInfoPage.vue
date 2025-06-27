@@ -257,7 +257,7 @@ const toggleEditMode = () => {
         align-items: center;
       }
       .membership-level-tag {
-        font-size: 12px;
+        font-size: 14px;
         padding: 2px 10px; // Slightly more padding for the tag
         background-color: #383838; // Dark grey/black tag
         color: #E7C089; // Gold-ish text
@@ -298,7 +298,7 @@ const toggleEditMode = () => {
       justify-content: center;
       align-items: center;
       color: @text-color-tertiary; // Lighter text for placeholder
-      font-size: 12px;
+      font-size: 14px;
       // If using an actual image:
       // img { width: 100%; height: 100%; object-fit: contain; border-radius: @border-radius-base;}
     }

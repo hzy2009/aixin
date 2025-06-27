@@ -109,7 +109,7 @@ const viewDetails = (id) => {
 }
 
 .category-tag {
-  font-size: 12px;
+  font-size: 14px;
   padding: 2px 8px;
   border-radius: @border-radius-sm;
   border: 1px solid v-bind("getCategoryFontColor(item.category)"); // Use JS variable for border

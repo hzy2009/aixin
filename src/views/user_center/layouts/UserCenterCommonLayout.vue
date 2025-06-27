@@ -173,7 +173,7 @@ const handleSubTabClick = (key) => {
         height: 22px;
         width: 72px;
         border-radius: 4px;
-        font-size: 12px;
+        font-size: 14px;
         text-align: center;
         font-weight: 350;
         line-height: 22px;
@@ -183,7 +183,7 @@ const handleSubTabClick = (key) => {
       .upgrade-link {
         font-family: PingFang SC;
         font-weight: 400;
-        font-size: 12px;
+        font-size: 14px;
         line-height: 12px;
         letter-spacing: 0%;
         color: @text-color-light; // 白色文字
@@ -197,7 +197,7 @@ const handleSubTabClick = (key) => {
     .user-id {
       font-family: PingFang SC;
       font-weight: 400;
-      font-size: 12px;
+      font-size: 14px;
       line-height: 12px;
       letter-spacing: 0%;
       text-transform: uppercase;

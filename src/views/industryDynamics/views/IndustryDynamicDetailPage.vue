@@ -188,7 +188,7 @@ watch(() => route.params.id, (newId, oldId) => {
   border-bottom: 1px solid @border-color-light; // Separator line below meta
   font-family: PingFang SC;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 14px;
   letter-spacing: 0%;
 
@@ -228,7 +228,7 @@ watch(() => route.params.id, (newId, oldId) => {
   margin-bottom: @spacing-xl;
   font-family: PingFang SC;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 24px;
   text-indent: 24px;
   letter-spacing: 0%;

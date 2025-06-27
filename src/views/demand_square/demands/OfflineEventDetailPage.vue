@@ -350,7 +350,7 @@ watch(() => route.params.id, (newId, oldId) => {
   }
 
   .action-cta-note {
-    font-size: 12px; // Smaller note text
+    font-size: 14px; // Smaller note text
     color: @text-color-tertiary; // Light gray for note
     margin-top: @spacing-sm;
   }

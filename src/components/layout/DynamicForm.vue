@@ -425,7 +425,7 @@ defineExpose({ validate, resetFields, clearValidate, getAllData, formModel: inte
     }
 
     .upload-hint {
-      font-size: 12px;
+      font-size: 14px;
       color: @text-color-tertiary;
       margin-top: @spacing-xs;
       line-height: 1.5;

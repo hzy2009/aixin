@@ -54,13 +54,16 @@ const formatName = (name) =>{
       newName += '*';
     }
   }
+  if (name.length == 2) {
+    newName += '*';
+  }
   return newName;
 }
 
 const viewExpertProfile = (id) => {
   // TODO: Navigate to expert's detail page
   // router.push({ name: 'ExpertProfile', params: { id } });
-  console.log('View expert profile:', id);
+  router.push({ path: `/demands/TalentDetailPage/${id}`});
 };
 </script>
 
@@ -113,7 +116,7 @@ const viewExpertProfile = (id) => {
     margin-bottom: 2px;
   }
   .expert-contact {
-    font-size: 12px;
+    font-size: 14px;
     color: @text-color-tertiary; // Lightest gray for phone
     margin: 0;
   }
@@ -124,7 +127,7 @@ const viewExpertProfile = (id) => {
     margin-bottom: 9.5px; // 6px space between lines
     font-family: PingFang SC;
     font-weight: 400;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 16px;
     letter-spacing: 0%;
     // color: #656C74;
@@ -133,7 +136,12 @@ const viewExpertProfile = (id) => {
     &:last-child {
       margin-bottom: 0;
     }
-
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-line-clamp: 1; 
+    -webkit-box-orient: vertical;
     .info-label {
       color: @text-color-secondary; // Gray label
       margin-right: 4px;
@@ -141,6 +149,14 @@ const viewExpertProfile = (id) => {
     .info-value {
       // color: #4E5969; // Darker gray value
       color: @text-color-secondary; // Gray label
+      // overflow: hidden;
+      // text-overflow: ellipsis;
+      // white-space: nowrap;
+      // display: -webkit-box;
+      // -webkit-line-clamp: 1; 
+      // -webkit-box-orient: vertical;
+      // overflow: hidden;
+      // text-overflow: ellipsis;
     }
   }
 

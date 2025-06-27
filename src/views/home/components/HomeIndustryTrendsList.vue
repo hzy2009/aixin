@@ -127,7 +127,7 @@ const trends = ref([
 .trend-item__description {
   font-family: 'PingFang SC', sans-serif;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 18px; // As per spec
   letter-spacing: 0%;
   color: @trends-description-color;
@@ -146,7 +146,7 @@ const trends = ref([
 .trend-item__date {
   font-family: 'PingFang SC', sans-serif; // Assuming date also uses PingFang SC
   font-weight: 400;
-  font-size: 12px; // Match description font size
+  font-size: 14px; // Match description font size
   line-height: 18px; // Match description line height for alignment
   color: @trends-date-color;
   white-space: nowrap;

@@ -220,7 +220,7 @@ const viewExpertProfile = (item) => {
     color: #656C74;
   font-family: PingFang SC;
     font-weight: 400;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 14px;
     letter-spacing: 0%;
     text-align: justify;
@@ -259,7 +259,7 @@ const viewExpertProfile = (item) => {
       .research-item {
         font-family: PingFang SC;
         font-weight: 400;
-        font-size: 12px;
+        font-size: 14px;
         line-height: 22px;
         letter-spacing: 0%;
         text-align: justify;
@@ -269,7 +269,7 @@ const viewExpertProfile = (item) => {
     .skill-desc{
       font-family: PingFang SC;
       font-weight: 400;
-      font-size: 12px;
+      font-size: 14px;
       line-height: 22px;
       letter-spacing: 0%;
       text-overflow: ellipsis;
@@ -284,7 +284,7 @@ const viewExpertProfile = (item) => {
         color: #656C74;
       font-family: PingFang SC;
         font-weight: 400;
-        font-size: 12px;
+        font-size: 14px;
         line-height: 22px;
         letter-spacing: 0%;
         text-align: justify;
@@ -312,10 +312,10 @@ const viewExpertProfile = (item) => {
       color: @text-secondary;
       padding: 2px 8px;
       border-radius: 2px;
-      font-size: 12px;
+      font-size: 14px;
     }
     .empty-text {
-      font-size: 12px;
+      font-size: 14px;
       color: @text-tertiary;
     }
   }

@@ -170,7 +170,7 @@ const contactSupport = () => {
   left: 0; right: 0;
   text-align: center;
   color: fade(@text-color-light, 60%);
-  font-size: 12px;
+  font-size: 14px;
   z-index: 1;
   p { margin: 3px 0; }
 }

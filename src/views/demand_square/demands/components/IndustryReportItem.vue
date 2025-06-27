@@ -176,7 +176,7 @@ const viewReportDetails = (id) => {
   }
 
   .category-tag {
-    font-size: 12px;
+    font-size: 14px;
     padding: 1px 6px;
     border-radius: @border-radius-sm;
     background-color: fade(@primary-color, 10%);

@@ -214,7 +214,7 @@ const formattedSteps = computed(() => {
   .milestone-date {
     font-family: PingFang SC;
     font-weight: 400;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 22px;
     letter-spacing: 0px;
     // color: @date-inactive-final;

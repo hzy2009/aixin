@@ -102,7 +102,7 @@ defineProps({
   .hero-description {
     font-family: PingFang SC;
     font-weight: 400;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 18px;
     letter-spacing: 0%;
     text-align: justify;

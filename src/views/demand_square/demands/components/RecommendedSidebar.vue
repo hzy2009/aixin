@@ -122,7 +122,7 @@ const handleReportClick = () => {
 .report-item-meta {
   font-family: PingFang SC;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 22px;
   letter-spacing: 0%;
   text-align: justify;
@@ -138,7 +138,7 @@ const handleReportClick = () => {
 .report-item-summary {
   font-family: PingFang SC;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 22px;
   letter-spacing: 0%;
   text-align: justify;
@@ -154,7 +154,7 @@ const handleReportClick = () => {
 .report-item-description{
   font-family: PingFang SC;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 22px;
   letter-spacing: 0%;
   text-align: justify;
@@ -185,7 +185,7 @@ const handleReportClick = () => {
   .currency-symbol{
     font-family: PingFang SC;
     font-weight: 400;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 12px;
     letter-spacing: 0%;
     text-transform: uppercase;

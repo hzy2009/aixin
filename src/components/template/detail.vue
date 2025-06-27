@@ -571,7 +571,7 @@ defineExpose({ isCreating, handleToDetail, fetchDemandDetail });
 	}
 
 	:deep(.ant-steps-item-description) {
-		font-size: 12px;
+		font-size: 14px;
 		color: @text-color-tertiary;
 	}
 
@@ -636,7 +636,7 @@ defineExpose({ isCreating, handleToDetail, fetchDemandDetail });
 .action-submit-note {
 	text-align: right;
 	margin-top: @spacing-xs;
-	font-size: 12px;
+	font-size: 14px;
 	color: @text-color-tertiary;
 }
 

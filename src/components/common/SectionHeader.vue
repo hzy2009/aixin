@@ -107,7 +107,7 @@ const handleToMore =  () => {
 
     .anticon-right {
       margin-left: @spacing-xs;
-      font-size: 12px;
+      font-size: 14px;
     }
   }
 }

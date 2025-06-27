@@ -109,7 +109,7 @@ const getImgUrl = (url) => {
     left: @spacing-sm + 2px; // 距离左侧
     background-color: rgba(0, 0, 0, 0.4); // 半透明黑色背景
     color: @text-color-light;
-    font-size: 12px;
+    font-size: 14px;
     padding: 3px 8px 3px 6px; // 细微调整padding
     border-radius: @border-radius-sm;
     display: inline-flex; // 使其内容内联排列
@@ -163,7 +163,7 @@ const getImgUrl = (url) => {
   color: @text-color-secondary;
 
   .event-type-tag {
-    font-size: 12px;
+    font-size: 14px;
     color: @text-color-secondary; // 标签文字颜色
     background-color: #f5f5f5; // 标签背景色
     border-color: @border-color-light; // 标签边框颜色
