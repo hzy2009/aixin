@@ -11,7 +11,7 @@
               点击采购，享受爱芯享会员折扣
             </a-button>
           </div> -->
-           <div class="block-hover-overlay" @click="handlePurchaseClick('jd_overlay')">
+           <div class="block-hover-overlay" @click="handlePurchaseClick('aian')">
             <span class="hover-action-text">点击采购，享受爱芯享会员折扣</span>
           </div>
         </div>
