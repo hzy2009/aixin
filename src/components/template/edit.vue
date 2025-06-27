@@ -140,17 +140,21 @@ const save = async () => {
 
 const handleSubmitForm = async () => {
     try {
-        await dynamicFormRef.value?.validate();
-        const params = dynamicFormRef.value?.getAllData()
-        if (handleBeforeSubmit && typeof handleBeforeSubmit === 'function') {
-            handleBeforeSubmit(params)
-        }
-        isSubmitting.value = true;
-        const result = await handleSubmit(params);
-        if (result) {
-            demandDetailData.value = result;
-            isCreating.value = false;
-        }
+        dynamicFormRef.value?.validate().then(
+            console.log('33333')
+        ).catch(
+            console.log('44444')
+        );
+        // const params = dynamicFormRef.value?.getAllData()
+        // if (handleBeforeSubmit && typeof handleBeforeSubmit === 'function') {
+        //     handleBeforeSubmit(params)
+        // }
+        // isSubmitting.value = true;
+        // const result = await handleSubmit(params);
+        // if (result) {
+        //     demandDetailData.value = result;
+        //     isCreating.value = false;
+        // }
     } catch (validationError) {
         console.log('表单校验失败:', validationError);
     } finally {

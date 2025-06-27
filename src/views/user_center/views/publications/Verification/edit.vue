@@ -40,6 +40,8 @@ const formConfigs = [
   //   label: '验证项目', field: 'projectName', fieldType: 'input', span: 24,
   // },
   { label: '期望完成日期', field: 'expireDate', fieldType: 'date', span: 24 },
+  { label: '电话', field: 'phone', fieldType: 'phone', span: 24 },
+  { label: '邮箱', field: 'email', fieldType: 'email', span: 24 },
   // {
   //   label: '需求状态', field: 'statusName', detailField: 'statusName', fieldType: 'select', span: 24, disabled: true,
   // },

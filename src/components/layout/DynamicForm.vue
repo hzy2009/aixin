@@ -4,8 +4,9 @@
     <a-row :gutter="[16, 0]">
       <template v-for="field in formConfig" :key="field.field">
         <a-col :span="field.span || defaultSpan" v-if="!field.hidden">
-          <a-form-item :label="field.label" :name="field.field" :rules="field.rules" class="form-item-custom"
-            :class="{ 'form-item-full-width-input': field.fieldType === 'textarea' || field.fullWidthInput }">
+          <!-- 关键修改点：将 allRules(field.rules) 修改为 allRules(field)，以便函数能获取到 fieldType -->
+          <a-form-item :label="field.label" :name="field.field" :rules="allRules(field)" class="form-item-custom"
+            :class="{ 'form-item-full-width-input': field.fieldType === 'textarea' || field.fullWidthInput, 'phoneOrEmail': field.fieldType === 'phone' || field.fieldType === 'email' }">
             <a-input v-if="field.fieldType === 'input'" v-model:value="internalFormModel[field.field]"
               :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear />
             <a-input-password v-else-if="field.fieldType === 'password'" v-model:value="internalFormModel[field.field]"
@@ -13,7 +14,7 @@
 
             <a-input-number v-else-if="field.fieldType === 'number'" v-model:value="internalFormModel[field.field]"
               :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" style="width: 100%;"
-              :min="field.min" :max="field.max" />  
+              :min="field.min" :max="field.max" />
 
             <a-select v-else-if="field.fieldType === 'select'" v-model:value="internalFormModel[field.field]"
               :placeholder="field.placeholder || `请选择${field.label}`"
@@ -61,16 +62,23 @@
               <div v-if="field.uploadHint" class="upload-hint">{{ field.uploadHint }}</div>
             </div>
             <div v-else-if="field.fieldType === 'erjisb'">
-              <a-select v-model:value="internalFormModel['productMainTypeCode']" :placeholder="`请选择`" 
-                style="width: 48%; margin-right: 4%"
-                :options="selectOptions('product_main_type')" 
-                :disabled="field.disabled" @change="(v, option) => handleSelectProductMainTypeChange(v, field, option)" allow-clear />
+              <a-select v-model:value="internalFormModel['productMainTypeCode']" :placeholder="`请选择`"
+                style="width: 48%; margin-right: 4%" :options="selectOptions('product_main_type')"
+                :disabled="field.disabled" @change="(v, option) => handleSelectProductMainTypeChange(v, field, option)"
+                allow-clear />
 
-              <a-select v-model:value="internalFormModel['productType']" :placeholder="`请选择`" 
-                :disabled="!internalFormModel['productMainTypeCode']"
-                style="width: 48%;"
-                :options="internalFormModel['productMainTypeCode'] == 'product_type' ? selectOptions('product_type') : selectOptions('product_type_material')" 
-                 @change="(v, option) => handleSelectProductTypeChange(v, field, option)" allow-clear />
+              <a-select v-model:value="internalFormModel['productType']" :placeholder="`请选择`"
+                :disabled="!internalFormModel['productMainTypeCode']" style="width: 48%;"
+                :options="internalFormModel['productMainTypeCode'] == 'product_type' ? selectOptions('product_type') : selectOptions('product_type_material')"
+                @change="(v, option) => handleSelectProductTypeChange(v, field, option)" allow-clear />
+            </div>
+            <div v-else-if="field.fieldType === 'email'" class="tips">
+              <a-input v-model:value="internalFormModel[field.field]" :placeholder="field.placeholder || `请输入${field.label}`"
+                :disabled="field.disabled" allow-clear />
+            </div>
+            <div v-else-if="field.fieldType === 'phone'" class="tips">
+              <a-input v-model:value="internalFormModel[field.field]" :placeholder="field.placeholder || `请输入${field.label}`"
+                :disabled="field.disabled" allow-clear />
             </div>
             <span v-else-if="field.fieldType === 'slot'">
               <slot :name="field.field" :dataSource="internalFormModel"></slot>
@@ -230,21 +238,17 @@ const handleImageUploadChange = (info, fieldConfig) => {
   if (info.file.status === 'done') {
     if (info.file.response.success === false) {
       message.error(info.file.response.message);
-      const failIndex = internalFormModel[fieldConfig.field].findIndex((item) => item.uid === file.uid);
+      const failIndex = internalFormModel[fieldConfig.field].findIndex((item) => item.uid === info.file.uid); // Corrected 'file' to 'info.file'
       if (failIndex != -1) {
         internalFormModel[fieldConfig.field].splice(failIndex, 1);
       }
+    } else { // Only show success if response is not an error
+      message.success(`${info.file.name} 上传成功`);
     }
-    // fieldConfig.loading = false;
-    message.success(`${info.file.name} 上传成功`);
-    // if ((fieldConfig.maxCount || 1) === 1 && info.file.response?.message) {
-    //   internalFormModel[fieldConfig.field] = [info.file.response.message];
-    // }
   } else if (info.file.status === 'error') {
     // fieldConfig.loading = false;
     message.error(`${info.file.name} 上传失败.`);
   }
-  // emit('fieldChange', { field: fieldConfig.field, value: info.fileList, formModel: internalFormModel });
 };
 // --- End Image Upload Logic ---
 
@@ -282,10 +286,12 @@ const getAllData = () => {
 const beforeUpload = (file) => {
   let fileType = file.type;
   if (fileType.indexOf('image') < 0) {
-    createMessage.info('请上传图片');
+    message.info('请上传图片'); // Corrected to use AntD's message
     return false;
   }
+  return true; // Return true to allow upload
 };
+
 const getHeaders = () => {
   return reactive({
     'X-Access-Token': auth.token,
@@ -306,11 +312,58 @@ const handleSelectProductTypeChange = (v, field, option) => {
   internalFormModel['productTypeName'] = option?.label
 }
 
+// --- 核心修改：校验逻辑 ---
 
-defineExpose({ validate, resetFields, clearValidate, getAllData, formModel: internalFormModel,formRef });
+/**
+ * 校验邮箱地址格式
+ */
+const validateEmail = async (_rule, value) => {
+  if (value && !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
+    return Promise.reject('请输入有效的邮箱地址！');
+  }
+  return Promise.resolve();
+};
+
+/**
+ * 校验手机号码格式（内地11位）
+ */
+// const validatePhone = async (_rule, value) => {
+//   if (value && !/^1[3-9]\d{9}$/.test(value)) {
+//     return Promise.reject('请输入有效的11位手机号码！');
+//   }
+//   return Promise.resolve();
+// };
+
+// 创建一个包含特殊校验规则的预设对象
+const rulePresets = {
+  email: [{ validator: validateEmail, trigger: 'change', required: true }],
+  phone: [{  trigger: 'change', required: true }],
+  // 未来可以扩展更多，如身份证号等
+};
+
+/**
+ * 动态生成最终的校验规则数组
+ * @param {object} field - 当前字段的完整配置对象
+ * @returns {Array} - 返回给 a-form-item 使用的规则数组
+ */
+const allRules = (field) => {
+  // 1. 获取从外部 formConfig 传入的基础规则 (如 required, min, max 等)
+  const baseRules = field.rules || [];
+
+  // 2. 根据 field.fieldType 从预设中查找额外的格式校验规则
+  const presetRules = rulePresets[field.fieldType] || [];
+
+  // 3. 合并两种规则，返回一个扁平化的数组
+  return [...baseRules, ...presetRules];
+};
+
+// --- 校验逻辑修改结束 ---
+
+defineExpose({ validate, resetFields, clearValidate, getAllData, formModel: internalFormModel, formRef });
 </script>
 
 <style scoped lang="less">
+// ... 您的样式代码保持不变，此处省略 ...
 @import '@/assets/styles/_variables.less';
 
 .dynamic-form {
@@ -440,5 +493,27 @@ defineExpose({ validate, resetFields, clearValidate, getAllData, formModel: inte
     //   max-width: 600px; // Example max width
     // }
   }
+}
+
+.phoneOrEmail{
+    margin-bottom: @spacing-lg + 16px; 
+}
+.tips{
+  &::before {
+    content: '仅供内部联络使用，不对外展示';
+    color: #656C74;
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 12px;
+    letter-spacing: 0%;
+    text-align: right;
+    display: block;
+    width: 100%; // Underline width matches text
+    height: 2px;
+    position: absolute;
+    bottom: 0; // (padding-bottom of container + border-width)
+    right: 0;
+  }
+  
 }
 </style>

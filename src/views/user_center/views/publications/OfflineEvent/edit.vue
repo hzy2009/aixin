@@ -29,6 +29,8 @@ const formConfigs = [
   },
   { label: '活动内容', field: 'description', fieldType: 'textarea', span: 24 },
   { label: '活动日期', field: 'activityDate', fieldType: 'date', span: 24 },
+  { label: '电话', field: 'phone', fieldType: 'phone', span: 24 },
+  { label: '邮箱', field: 'email', fieldType: 'email', span: 24 },
 ]
 
 const statusHistoryColumns = [

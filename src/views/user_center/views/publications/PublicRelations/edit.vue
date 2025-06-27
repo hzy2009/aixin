@@ -44,6 +44,8 @@ const statusHistoryColumns = [
   { title: '状态', field: 'operateName', key: 'operateName' },
   { title: '完成日期', field: 'createTime', key: 'createTime' },
   { title: '备注', field: 'remark', key: 'remark' },
+  { label: '电话', field: 'phone', fieldType: 'phone', span: 24 },
+  { label: '邮箱', field: 'email', fieldType: 'email', span: 24 },
 ]
 
 // const demandTypeDisplayName = '研发攻关';
