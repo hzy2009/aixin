@@ -8,62 +8,23 @@
       <div v-else-if="members.length === 0 && !isLoading" class="empty-placeholder">
         <a-empty description="暂无会员信息" :image-style="{ height: '60px' }" />
       </div>
-      <!-- Two-row Marquee-style Logo Wall -->
-      <div
-        v-else
-        class="marquee-wrapper"
-        @mouseenter="isPaused = true"
-        @mouseleave="isPaused = false"
-      >
+      <!-- Two-row Marquee-style Logo Wall -->  
+      <div v-else class="marquee-wrapper-container">
         <div
-          class="marquee-track"
-          :class="{ 'is-scrolling': canScroll }"
-          :style="trackStyle"
+          class="marquee-wrapper"
+          @mouseenter="isPaused = true"
+          @mouseleave="isPaused = false"
         >
-          <!-- Render the columns of logos once -->
           <div
-            v-for="column in logoColumns"
-            :key="`col1-${column.top.id}`"
-            class="logo-column"
+            class="marquee-track"
+            :class="{ 'is-scrolling': canScroll }"
+            :style="trackStyle"
           >
-            <!-- Top Row Logo -->
-            <a
-              :href="column.top.companyUrl || '#'"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="logo-item-link"
-            >
-              <img
-                :src="column.top.companyLogo ? getFileAccessHttpUrl(column.top.companyLogo) : defaultFallbackLogo"
-                :alt="column.top.companyName"
-                class="logo-image"
-              />
-            </a>
-            <!-- Bottom Row Logo (only if it exists) -->
-            <a
-              v-if="column.bottom"
-              :href="column.bottom.companyUrl || '#'"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="logo-item-link"
-            >
-              <img
-                :src="column.bottom.companyLogo ? getFileAccessHttpUrl(column.bottom.companyLogo) : defaultFallbackLogo"
-                :alt="column.bottom.companyName"
-                class="logo-image"
-              />
-            </a>
-            <!-- Placeholder for alignment if bottom logo doesn't exist -->
-            <div v-else class="logo-item-placeholder"></div>
-          </div>
-
-          <!-- Render the same columns again ONLY if scrolling, for the seamless loop -->
-          <template v-if="canScroll">
+            <!-- Render the columns of logos once -->
             <div
               v-for="column in logoColumns"
-              :key="`col2-${column.top.id}`"
+              :key="`col1-${column.top.id}`"
               class="logo-column"
-              aria-hidden="true"
             >
               <!-- Top Row Logo -->
               <a
@@ -92,10 +53,50 @@
                   class="logo-image"
                 />
               </a>
-              <!-- Placeholder for alignment -->
+              <!-- Placeholder for alignment if bottom logo doesn't exist -->
               <div v-else class="logo-item-placeholder"></div>
             </div>
-          </template>
+
+            <!-- Render the same columns again ONLY if scrolling, for the seamless loop -->
+            <template v-if="canScroll">
+              <div
+                v-for="column in logoColumns"
+                :key="`col2-${column.top.id}`"
+                class="logo-column"
+                aria-hidden="true"
+              >
+                <!-- Top Row Logo -->
+                <a
+                  :href="column.top.companyUrl || '#'"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="logo-item-link"
+                >
+                  <img
+                    :src="column.top.companyLogo ? getFileAccessHttpUrl(column.top.companyLogo) : defaultFallbackLogo"
+                    :alt="column.top.companyName"
+                    class="logo-image"
+                  />
+                </a>
+                <!-- Bottom Row Logo (only if it exists) -->
+                <a
+                  v-if="column.bottom"
+                  :href="column.bottom.companyUrl || '#'"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="logo-item-link"
+                >
+                  <img
+                    :src="column.bottom.companyLogo ? getFileAccessHttpUrl(column.bottom.companyLogo) : defaultFallbackLogo"
+                    :alt="column.bottom.companyName"
+                    class="logo-image"
+                  />
+                </a>
+                <!-- Placeholder for alignment -->
+                <div v-else class="logo-item-placeholder"></div>
+              </div>
+            </template>
+          </div>
         </div>
       </div>
     </div>
@@ -207,8 +208,7 @@ onMounted(() => {
 .marquee-wrapper {
   width: 100%;
   overflow: hidden;
-  background-color: #fff;
-  border: 1px solid #EAEAEA;
+
   padding: 10px 0;
   // min-height: 110px; // (logo_height * 2) + vertical_gap
   @media (prefers-reduced-motion: reduce) {
@@ -264,5 +264,10 @@ onMounted(() => {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+}
+.marquee-wrapper-container{
+  padding: 0 15px;
+  background-color: #fff;
+  border: 1px solid #EAEAEA;
 }
 </style>
