@@ -262,7 +262,13 @@ const formatAmount = (value) => {
 	return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
 
-const handleDefaultCancel = () => { emit('goBack'); };
+const handleDefaultCancel = () => { 
+	if (listPath) {
+		handleToList();
+	} else {
+		emit('goBack');
+	}
+ };
 const handleDefaultdelete = async() => { 
 	const result = await handleDelete(formModel.value);
 	console.log('result', result);
