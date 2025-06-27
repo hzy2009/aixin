@@ -39,7 +39,7 @@ const columns = [
       width: 80,
     },
     {
-      title: '爱芯享单据号',
+      title: '内部管理单号',
       field: 'materialCode', // field -> field
     },
 ]

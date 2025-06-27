@@ -54,7 +54,7 @@ export const STATUS_HISTORY_COLUMNS = [
 
 export const DOMESTIC_SOURCING_COLUMNS = [
     { title: '序号', type: 'seq', width: 74, align: 'center' },
-    { title: '寻源单号', field: 'code', align: 'center', width: 180 },
+    { title: '爱心享寻源单号', field: 'code', align: 'center', width: 180 },
     { title: '需求者', field: 'createUserName', align: 'center' },
     { title: '需求提出日期', field: 'createTime', align: 'center', fieldType: 'date' },
     { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date'},
@@ -67,7 +67,7 @@ export const DOMESTIC_SOURCING_COLUMNS = [
 
 export const OEM_PARTS_SOURCING_COLUMNS = [
     { title: '序号', type: 'seq', width: 74, align: 'center' },
-    { title: '寻源单号', field: 'code', align: 'center', width: 180 },
+    { title: '爱心享寻源单号', field: 'code', align: 'center', width: 180 },
     { title: '需求者', field: 'createUserName', align: 'center' },
     { title: '需求提出日期', field: 'createTime', align: 'center', fieldType: 'date'},
     { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date'},
