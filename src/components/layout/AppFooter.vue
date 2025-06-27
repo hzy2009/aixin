@@ -14,6 +14,10 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
 const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
@@ -22,6 +26,7 @@ const scrollToContact = () => {
   // TODO: Implement navigation or scroll to contact section if you have one
   // Example: document.getElementById('contact-section')?.scrollIntoView({ behavior: 'smooth' });
   console.log('Navigate to contact or scroll to contact section');
+  router.push('/other/membershipGuide');
 };
 </script>
 
