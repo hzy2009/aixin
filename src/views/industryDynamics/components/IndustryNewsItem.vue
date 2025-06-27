@@ -6,7 +6,10 @@
     </div>
     <div class="news-item-content">
       <div class="news-title">{{ news.title }}</div>
-      <p class="news-summary" v-html="news.content"></p>
+      <!-- <p class="news-summary" v-html="news.content"></p> -->
+       <div class="news-summary">
+          <div v-html="news.content"></div>
+       </div>
     </div>
   </div>
 </template>
@@ -118,7 +121,6 @@ const navigateToDetail = ({id}) => {
     // text-overflow: ellipsis;
     // white-space: nowrap;
   }
-
   .news-summary {
     color: #656C74;
     font-family: PingFang SC;
@@ -136,6 +138,11 @@ const navigateToDetail = ({id}) => {
     overflow: hidden;
     text-overflow: ellipsis;
     // min-height: calc(1.7em * 2); // Ensure space for 2 lines if content varies
+    h1, h2, h3, h4, h5, h6 {
+      margin: 0;
+      padding: 0;
+      font-weight: 400px;
+    }
   }
 }
 </style>
