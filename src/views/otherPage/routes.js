@@ -9,7 +9,6 @@ const userCenterRoutes = [
   {
     path: '/other', // “我发布的” 的父路由
     component: UserCenterCommonLayout, // 使用新的通用顶部布局
-    meta: { requiresAuth: true },
     redirect: '/membershipGuide', // 默认跳转到第一个子页签
     children: [
       {

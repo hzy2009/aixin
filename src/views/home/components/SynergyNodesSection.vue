@@ -40,9 +40,9 @@ const linkColumns = ref([
     id: 'associations',
     // title: '行业协会',
     links: [
-      { id: 'assoc1', name: '北京半导体行业协会', url: '#' },
-      { id: 'assoc2', name: '上海市集成电路行业协会', url: '#' },
-      { id: 'assoc3', name: '广东省集成电路行业协会', url: '#' },
+      { id: 'assoc1', name: '上海市集成电路行业协会', url: 'https://www.sica.org.cn/#/overview' },
+      { id: 'assoc2', name: '大半导体产业网', url: 'https://www.semi.org.cn' },
+      { id: 'assoc3', name: '求是缘半导体联盟', url: 'https://www.truthsemi.com' },
       { id: 'assoc4', name: '深圳市半导体行业协会', url: '#' },
       { id: 'assoc5', name: '天津市集成电路行业协会', url: '#' },
     ]
