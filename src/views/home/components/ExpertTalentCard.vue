@@ -34,6 +34,9 @@ import { UserOutlined } from '@ant-design/icons-vue'; // For fallback avatar
 import { useRouter } from 'vue-router';
 import ManImg from '@/assets/images/auth/m.png';
 import WomanImg from '@/assets/images/auth/w.png';
+import { useAuthStore } from '@/store/authStore';
+const authStore = useAuthStore();
+
 const props = defineProps({
   expert: {
     type: Object,
@@ -63,7 +66,8 @@ const formatName = (name) =>{
 const viewExpertProfile = (id) => {
   // TODO: Navigate to expert's detail page
   // router.push({ name: 'ExpertProfile', params: { id } });
-  router.push({ path: `/demands/TalentDetailPage/${id}`});
+  const path = authStore.islogin ? '`/demands/TalentDetailPage/${id}`' : '/demands/Talent';
+  router.push({ path});
 };
 </script>
 

@@ -10,13 +10,13 @@
           class="report-card"
         >
           <div >
-            <router-link :to="`/demands/IndustryReport`" class="report-card__cover-link">
+            <router-link :to="authStore.isLogin ? `/demands/IndustryReportDetailPage/${report.id}` : `/demands/IndustryReport`" class="report-card__cover-link">
               <img :alt="report.reportName" :src="report.imageUrl ? getFileAccessHttpUrl(report.imageUrl) : reportImg1" class="report-card__image" />
             </router-link>
           </div>
 
           <div class="report-card__content">
-            <router-link :to="`/demands/IndustryReport`" class="report-card__title-link">
+            <router-link :to="authStore.isLogin ? `/demands/IndustryReportDetailPage/${report.id}` : `/demands/IndustryReport`" class="report-card__title-link">
               <h3 class="report-card__title">{{ report.reportName }}</h3>
             </router-link>
             <div class="report-card__description"><div v-html="report.description"></div></div>
@@ -35,6 +35,8 @@ import defHttp from '@/utils/http/axios'
 import {getFileAccessHttpUrl} from '@/utils/index'
 // Placeholder images
 import reportImg1 from '@/assets/images/home/report-thumb-1.png';
+import { useAuthStore } from '@/store/authStore';
+const authStore = useAuthStore();
 
 const reports = ref([]);
 
