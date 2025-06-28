@@ -140,7 +140,7 @@ const columns = [
       title: '选定中标方',
       field: 'isWinner',
       fixed: 'right',
-      width: 110,
+      width: 220,
       // Use slots.default for rendering a-checkbox
       slots: {
         default: ({ row }) => { // vxe-table uses { row }

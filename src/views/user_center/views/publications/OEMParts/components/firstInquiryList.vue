@@ -137,7 +137,7 @@ const columns = [
       title: '选定中标方',
       field: 'isWinner',
       fixed: 'right',
-      width: '110px', // vxe-table 要求固定列有明确宽度
+      width: '100px', // vxe-table 要求固定列有明确宽度
       slots: {
         default: ({ row }) => { // vxe-table 作用域变量是 row
           const { priceIncludingTax, priceExcludingTax } = row
