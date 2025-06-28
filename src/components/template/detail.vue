@@ -20,7 +20,7 @@
 							:style="{ gridColumn: item.span ? `span ${item.span}` : 'span 1' }">
 							<span class="info-grid-label">{{ item.label }}：</span>
 							<span class="info-grid-value" v-if="item.fieldType === 'input'">
-								<a-input v-if="formModel.statusCode == 'submit' && canSubmit" v-model:value="formModel[item.field]"
+								<a-input v-if="formModel.statusCode == 'submit' && canSubmit" style="width: 386px;" v-model:value="formModel[item.field]"
               					:placeholder="item.placeholder || `请输入${item.label}`" :disabled="item.disabled" allow-clear />
 								<span v-else>{{ formModel[item.field] }}</span>
 							</span>
