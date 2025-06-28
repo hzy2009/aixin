@@ -12,9 +12,9 @@
         <div class="uc-banner__info">
           <!-- <h2 class="user-name">{{ userInfo?.realname || '会员用户' }}</h2> -->
           <div class="user-name">{{ '爱芯享信息共享平台' }}</div>
-          <div class="user-membership-info" v-if="userData?.role == '普通会员'">
-            <span class="membership-level">{{ userData?.role || '普通会员' }}</span>
-            <a-button type="link" class="upgrade-link" v-if="userData?.role == '普通会员'" @click="upgradeMembership">升级会员</a-button>
+          <div class="user-membership-info" v-if="userRole?.role == '普通会员'">
+            <span class="membership-level">{{ userRole?.role || '普通会员' }}</span>
+            <a-button type="link" class="upgrade-link" v-if="userRole?.role == '普通会员'" @click="upgradeMembership">升级会员</a-button>
           </div>
           <div class="user-membership-info" v-else>
             <img src="@/assets/images/auth/vip.png" alt="">
@@ -97,7 +97,7 @@ const isHighestLevel = (level) => {
     return level === '高级会员'; // 示例
 };
 
-const userData = ref({})
+const userRole = ref(authStore.userRole)
 // 页签配置 (可以从外部传入或在这里定义更复杂的结构)
 // 我们将使用 Hook 内部的 defaultTabsConfig
 const {
@@ -117,9 +117,9 @@ const handleSubTabClick = (key) => {
   selectSubTab(key);
 };
 const getUerDetail = async () => {
+  if (userRole.value) return
   const { result } = await defHttp.get({ url: '/apm/apmTodo/vipUpgrade/userInfo' });
-  userData.value = result
-  console.log('Upgrade membership clicked', userData.value);
+  userRole.value = result
 }
 const upgradeMembership = () => {
   router.push('/user/setting/userCenterInfo');
