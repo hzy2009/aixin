@@ -11,6 +11,8 @@ import userCenterRoutes from '@/views/user_center/routes';
 import otherPageRoutes from '@/views/otherPage/routes';
 const tongyongcaiji = () => import('@/views/otherPage/tongyongcaiji/index.vue');
 import { useAuthStore } from '@/store/authStore';
+import { useModalStore } from '@/store/modalStore';
+
 import { message } from 'ant-design-vue';
 const routes = [
   {
@@ -56,47 +58,47 @@ router.beforeEach((to, from, next) => {
 
   // 设置页面标题
   document.title = to.meta.title || '爱芯享信息共享平台';
-  next();
-
   // 检查目标路由是否需要认证
-  // if (to.meta.requiresAuth) {
-  //   if (isLogin) {
-  //     // 用户已登录，检查角色权限
-  //     const {roleCode} = authStore.userRole;
-  //     const requiredRoles = [
-  //       ...to?.meta?.roles || [],
-  //       'apm-super-vip-free',
-  //       'apm-super-vip'
-  //     ];
+  if (to.meta.requiresAuth) {
+    if (isLogin) {
+      // 用户已登录，检查角色权限
+      const {roleCode} = authStore.userRole;
+      const requiredRoles = [
+        ...to?.meta?.roles || [],
+        'apm-super-vip-free',
+        'apm-super-vip'
+      ];
 
-  //     if (requiredRoles && requiredRoles.length > 0) {
-  //       // 页面需要特定角色
-  //       const hasPermission = requiredRoles.includes(roleCode);
-  //       if (hasPermission) {
-  //         next(); // 角色匹配，放行
-  //       } else {
-  //         message.error('您没有权限访问此页面');
-  //       }
-  //     } else {
-  //       // 页面只需登录，不限角色
-  //       next();
-  //     }
-  //   } else {
-  //     // 用户未登录，重定向到登录页
-  //     next({
-  //       name: 'Login', // 确保你的登录页路由 name 是 'Login'
-  //       query: { redirect: to.fullPath }, // 登录后可以重定向回来
-  //     });
-  //   }
-  // } else {
-  //    // 如果用户已登录，且尝试访问“仅访客”页面（如登录页），则重定向到首页
-  //   if (to.meta.guestOnly && isLogin) {
-  //       next({ name: 'Home' }); // 假设首页 name 是 'Home'
-  //   } else {
-  //       // 页面无需认证，直接放行
-  //       next();
-  //   }
-  // }
+      if (requiredRoles && requiredRoles.length > 0) {
+        // 页面需要特定角色
+        const hasPermission = requiredRoles.includes(roleCode);
+        if (hasPermission) {
+          next(); // 角色匹配，放行
+        } else {
+          message.error('您没有权限访问此页面');
+        }
+      } else {
+        // 页面只需登录，不限角色
+        next();
+      }
+    } else {
+      // 用户未登录，重定向到登录页
+      // next({
+      //   name: 'Login', // 确保你的登录页路由 name 是 'Login'
+      //   query: { redirect: to.fullPath }, // 登录后可以重定向回来
+      // });
+      const modalStore = useModalStore();
+      modalStore.showLogin();
+    }
+  } else {
+     // 如果用户已登录，且尝试访问“仅访客”页面（如登录页），则重定向到首页
+    if (to.meta.guestOnly && isLogin) {
+        next({ name: 'Home' }); // 假设首页 name 是 'Home'
+    } else {
+        // 页面无需认证，直接放行
+        next();
+    }
+  }
 });
 
 export default router;

@@ -10,13 +10,13 @@
           class="report-card"
         >
           <div >
-            <router-link :to="`/demands/IndustryReportDetailPage/${report.id}`" class="report-card__cover-link">
+            <router-link :to="`/demands/IndustryReport`" class="report-card__cover-link">
               <img :alt="report.reportName" :src="report.imageUrl ? getFileAccessHttpUrl(report.imageUrl) : reportImg1" class="report-card__image" />
             </router-link>
           </div>
 
           <div class="report-card__content">
-            <router-link :to="`/demands/IndustryReportDetailPage/${report.id}`" class="report-card__title-link">
+            <router-link :to="`/demands/IndustryReport`" class="report-card__title-link">
               <h3 class="report-card__title">{{ report.reportName }}</h3>
             </router-link>
             <div class="report-card__description"><div v-html="report.description"></div></div>
