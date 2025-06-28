@@ -14,7 +14,7 @@ export function getFileAccessHttpUrl(fileUrl, prefix = 'http') {
         // 判断是否已包含前缀
         if (!fileUrl.startsWith(prefix)) {
           const loaction = window.location;
-          let result = `${loaction.origin}${fileUrl}`;
+          result = `${loaction.origin}${fileUrl}`;
           // result = `${prefix}${fileUrl}`;
         }
       }
