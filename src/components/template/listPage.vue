@@ -119,7 +119,7 @@ const {
 const {
     selectOptions, stats, currentFilters, search, isLoading, tableData,
     pagination, handleFiltersChange, triggerSearch, handleTablePaginationChange,
-    getStatusTagColor, handleStatClick, handleExportXls, clearfilters, isVIP,handleDelete, loadTableData
+    getStatusTagColor, handleStatClick, handleExportXls, clearfilters,handleDelete, loadTableData
 } = useUserDemandList({
     otherParams, url, statusDictKey, userStatCardVisible
 });

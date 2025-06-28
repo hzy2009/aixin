@@ -75,7 +75,6 @@ const {
     isLoading,
     error, // 此变量在模板中未使用，可考虑添加错误状态展示
     operationMode,
-    canEditThisDemand, // 此变量在模板中未使用
     fetchDemandDetail,
     handleSave,
     handleSubmit,

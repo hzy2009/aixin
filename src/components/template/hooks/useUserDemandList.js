@@ -123,9 +123,6 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
 
   const getStatusTagColor = (statusKey) => statusMapping[statusKey]?.color || 'default';
   
-  const isVIP = computed(() => {
-    return authStore.isVip || false;
-  });
 
   const XLSX_MIME_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
   const XLSX_FILE_SUFFIX = '.xlsx';
@@ -225,7 +222,6 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     handleTablePaginationChange,
     getStatusTagColor,
     selectOptions,
-    isVIP,
     handleExportXls,
     clearfilters,
     handleDelete,

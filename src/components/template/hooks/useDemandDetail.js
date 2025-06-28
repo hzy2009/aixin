@@ -16,18 +16,6 @@ export function useDemandDetail({IdProp, mode, url, otherParams, queryAfter, han
   const operationMode = ref(mode || (IdProp ? 'view' : 'create')); // 'create', 'view'
   const internalDemandId = ref(IdProp); // 用于内部追踪ID
 
-  // --- 权限计算 ---
-  const canEditThisDemand = computed(() => {
-    if (demandDetail.value?.statusCode) {
-      if (!['draft'].includes(demandDetail.value.statusCode)) {
-        return false;
-      }
-    }
-    return authStore.isVip && authStore.userInfo?.username === demandDetail.value?.createUserName
-  });
-
-  // --- 权限计算结束 ---
-
   async function fetchDemandDetail() {
     if (localeGetDetail) {
       isLoading.value = true;
@@ -171,7 +159,6 @@ export function useDemandDetail({IdProp, mode, url, otherParams, queryAfter, han
     isLoading,
     error,
     operationMode, // 'create' or 'view'
-    canEditThisDemand,
     fetchDemandDetail, // 允许外部刷新
     handleSave,
     handleSubmit,

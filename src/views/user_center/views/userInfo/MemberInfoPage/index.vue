@@ -33,7 +33,6 @@ const modalStore = useModalStore();
 const props = defineProps({
   IdProp: { type: String, default: null },
 });
-console.log('authStore.isVip', authStore.isVip)
 
 const router = useRouter();
 // // --- 表单配置 ---

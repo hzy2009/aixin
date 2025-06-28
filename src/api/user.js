@@ -5,7 +5,7 @@ const Api = {
   phoneLogin :'/sys/phoneLogin',
   Logout :'/sys/logout',
   GetUserInfo :'/sys/user/getUserInfo',
-  GetUserRole: '/sys/api/queryUserRolesById',
+  GetUserRole: '/apm/apmTodo/vipUpgrade/userInfo',
   // 获取系统权限
   // 1、查询用户拥有的按钮/表单访问权限
   // 2、所有权限
@@ -54,8 +54,8 @@ export function logoutApi() {
 
 
 // Get user information
-export function getUserRoleApi(userId) {
-  return defHttp.get({url:Api.GetUserRole, params: {userId}});
+export function getUserRoleApi() {
+  return defHttp.get({url:Api.GetUserRole});
 }
 
 // Get dictionary

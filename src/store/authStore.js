@@ -7,13 +7,11 @@ export const useAuthStore = defineStore('auth', {
     userInfo: null,
     token: null,
     sysAllDictItems: [],
-    userRole: [],
+    userRole: {},
     isLoginModalVisible: false
   }),
   getters: {
     isAuthenticated: (state) => !!state.token && !!state.user,
-    isVip: (state) => state.userRole && state.userRole.includes('apm-vip'),
-    isManagerAdmin: (state) => state.userRole && state.userRole.includes('apm-manager'),
     isLogin: (state) => !!state.userInfo,
   },
   actions: {
@@ -25,8 +23,9 @@ export const useAuthStore = defineStore('auth', {
       this.setSysAllDictItems(sysAllDictItems);
       return data;
     },
-    async getUserRole(userId) {
-      const data = await getUserRoleApi(userId);
+    async getUserRole() {
+      const data = await getUserRoleApi();
+      console.log('data', data);
       this.setUserRose(data);
       return data;
     },
@@ -36,7 +35,7 @@ export const useAuthStore = defineStore('auth', {
       this.setToken(null);
       this.setUserInof(null);
       this.setSysAllDictItems([]);
-      this.setUserRose([]);
+      this.setUserRose({});
       // Optionally, clear other stores or redirect
     },
     async getDictItems() {
@@ -52,7 +51,7 @@ export const useAuthStore = defineStore('auth', {
       // setAuthCache(TOKEN_KEY, info);
     },
     setUserRose(info) {
-      this.userRole = info ? info : []; // for null or undefined value
+      this.userRole = info ? info : {}; // for null or undefined value
     },
     setSysAllDictItems(info) {
       this.sysAllDictItems = info ? info : []; // for null or undefined value

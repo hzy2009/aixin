@@ -178,7 +178,7 @@ const onLoginFinish = async values => {
     // 登录
     let res = await authStore.login(data);
     // 获取用户角色
-    await authStore.getUserRole(res?.result?.userInfo?.id);
+    await authStore.getUserRole();
     message.success('登录成功!');
     // const redirectPath = router.currentRoute.value.query.redirect || '/';
     router.push('/user/published/DomesticSourcing');
