@@ -120,7 +120,7 @@ const handleFormAction = async (actionApi, beforeActionHook) => {
         await dynamicFormRef.value.validate();
 
         // 2. 获取表单数据
-        const params = dynamicFormRef.value.getAllData();
+        let params = dynamicFormRef.value.getAllData();
         
         // 3. 执行前置钩子（如果存在）
         if (beforeActionHook && typeof beforeActionHook === 'function') {
