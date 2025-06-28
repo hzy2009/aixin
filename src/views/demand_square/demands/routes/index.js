@@ -23,34 +23,34 @@ const TalentDetailPage = () => import('../TalentDetailPage.vue');
 
 export default [{
   path: 'demands', // Parent path for this group
-  meta: { breadcrumbBase: ['需求广场'] }, // Base for breadcrumbs in this group
+  meta: { breadcrumbBase: ['需求广场'], requiresAuth: true }, // Base for breadcrumbs in this group
   children: [
     {
       path: 'DomesticSourcing',
       component: DomesticSourcing,
-      meta: { title: '国产替代寻源', breadcrumb: ['国产替代寻源'] } // Appends to base
+      meta: { title: '国产替代寻源', breadcrumb: ['国产替代寻源'], requiresAuth: false } // Appends to base
     },
     {
       path: 'DomesticDetailPage/:id',
       component: DomesticDetailPage,
       props: route => ({ IdProp: route.params.id}),
-      meta: { title: '国产替代寻源详情', breadcrumb: ['国产替代寻源详情'] } // Appends to base
+      meta: { title: '国产替代寻源详情', breadcrumb: ['国产替代寻源详情']} // Appends to base
     },
     {
       path: 'OEMPartsSourcing',
       component: OEMPartsSourcing,
-      meta: { title: '原厂件寻源', breadcrumb: ['原厂件寻源'] } // Appends to base
+      meta: { title: '原厂件寻源', breadcrumb: ['原厂件寻源'], requiresAuth: false } // Appends to base
     },
     {
       path: 'OEMPartsDetailPage/:id',
       component: OEMPartsDetailPage,
       props: route => ({ IdProp: route.params.id}),
-      meta: { title: '原厂件寻源详情', breadcrumb: ['原厂件寻源详情'] } // Appends to base
+      meta: { title: '原厂件寻源详情', breadcrumb: ['原厂件寻源详情'], roles: ['apm-vip', 'apm-vip-inspection', 'apm-register']  } // Appends to base
     },
     {
       path: 'PublicRelations',
       component: PublicRelations,
-      meta: { title: '研发攻关', breadcrumb: ['研发攻关'] } // Appends to base
+      meta: { title: '研发攻关', breadcrumb: ['研发攻关'], roles: ['apm-vip', 'apm-register', 'apm-register-expert'] } // Appends to base
     },
     {
       path: 'PublicRelationsDetailPage/:id',
@@ -61,18 +61,18 @@ export default [{
     {
       path: 'Verification',
       component: Verification,
-      meta: { title: '检测验证', breadcrumb: ['检测验证需求'] } // Appends to base
+      meta: { title: '检测验证', breadcrumb: ['检测验证需求'], requiresAuth: false } // Appends to base
     },
     {
       path: 'VerificationDetailPage/:id',
       component: VerificationDetailPage,
       props: route => ({ IdProp: route.params.id}),
-      meta: { title: '检测验证详情', breadcrumb: ['检测验证详情'] } // Appends to base
+      meta: { title: '检测验证详情', breadcrumb: ['检测验证详情'], roles: ['apm-vip', 'apm-vip-inspection']  } // Appends to base
     },
     {
       path: 'IndustryReport',
       component: IndustryReport,
-      meta: { title: '行研报告', breadcrumb: ['行研报告'] } // Appends to base
+      meta: { title: '行研报告', breadcrumb: ['行研报告'], requiresAuth: false } // Appends to base
     },
     {
       path: 'IndustryReportDetailPage/:id',
@@ -83,18 +83,18 @@ export default [{
     {
       path: 'OfflineEvent',
       component: OfflineEvent,
-      meta: { title: '线下活动', breadcrumb: ['线下活动'] } // Appends to base
+      meta: { title: '线下活动', breadcrumb: ['线下活动'], requiresAuth: false } // Appends to base
     },
     {
       path: 'OfflineEventDetailPage/:id',
       component: OfflineEventDetailPage,
       props: route => ({ IdProp: route.params.id}),
-      meta: { title: '线下活动详情', breadcrumb: ['线下活动详情'] } // Appends to base
+      meta: { title: '线下活动详情', breadcrumb: ['线下活动详情'], roles: ['apm-vip', 'apm-vip-inspection', 'apm-register'] } // Appends to base
     },
     {
       path: 'Talent',
       component: Talent,
-      meta: { title: '专家人才', breadcrumb: ['专家人才'] } // Appends to base
+      meta: { title: '专家人才', breadcrumb: ['专家人才'], requiresAuth: false } // Appends to base
     },
      {
       path: 'TalentDetailPage/:id',
