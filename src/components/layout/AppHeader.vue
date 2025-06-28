@@ -59,7 +59,7 @@
           </div>
 
           <!-- Pure CSS Hover Submenu -->
-          <ul v-if="auth.isLogin && item.subItems && item.subItems.length > 0" class="css-submenu">
+          <ul v-if="item.subItems && item.subItems.length > 0" class="css-submenu">
             <li v-for="subItem in item.subItems" :key="subItem.key" class="css-submenu-item">
               <span :to="subItem.path" class="css-submenu-link" @click="handleMenuClick(subItem)">{{ subItem.label }}</span >
             </li>

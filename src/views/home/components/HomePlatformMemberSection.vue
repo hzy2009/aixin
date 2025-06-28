@@ -28,8 +28,7 @@
             >
               <!-- Top Row Logo -->
               <a
-                :href="column.top.companyUrl || '#'"
-                target="_blank"
+                :href="column.top.companyUrl || '/other/platformMember'"
                 rel="noopener noreferrer"
                 class="logo-item-link"
               >
@@ -42,8 +41,7 @@
               <!-- Bottom Row Logo (only if it exists) -->
               <a
                 v-if="column.bottom"
-                :href="column.bottom.companyUrl || '#'"
-                target="_blank"
+                :href="column.bottom.companyUrl || '/other/platformMember'"
                 rel="noopener noreferrer"
                 class="logo-item-link"
               >
@@ -67,8 +65,7 @@
               >
                 <!-- Top Row Logo -->
                 <a
-                  :href="column.top.companyUrl || '#'"
-                  target="_blank"
+                  :href="column.top.companyUrl || '/other/platformMember'"
                   rel="noopener noreferrer"
                   class="logo-item-link"
                 >
@@ -163,7 +160,7 @@ const fetchMembers = async () => {
         id: m.id || `tenant-${Math.random().toString(36).substr(2, 9)}`,
         companyName: m.companyName || m.name || '未知公司',
         companyLogo: m.companyLogo,
-        companyUrl: m.companyUrl || '#',
+        companyUrl: m.companyUrl || '/other/platformMember',
       }));
     } else {
       members.value = [];
