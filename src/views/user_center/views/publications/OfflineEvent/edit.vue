@@ -58,7 +58,7 @@ const pageData = reactive({
   handleBeforeSave: (data) => {
     data.imageUrl = data.imageUrl.join(',');
   },
-  detailPath: '/user/published/OfflineEventDetail',
+  detailPath: '/user/published/OfflineEvent/detail',
   listPath: '/user/published/OfflineEvent',
 })
 

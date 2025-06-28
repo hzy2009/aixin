@@ -173,7 +173,7 @@ const goBack = () => {
 
 const handleToDetail = () => {
     isCreating.value = true;
-    router.push({ path: `${detailPath}/${demandDetailData.value.id}` }); // 假设 detailPath 是基础路径
+    router.push({ path: `${detailPath}/${formModel.value.id}` }); // 假设 detailPath 是基础路径
 }
 
 const handleToList = () => {
