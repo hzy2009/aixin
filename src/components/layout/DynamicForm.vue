@@ -320,6 +320,8 @@ const handleSelectProductTypeChange = (v, field, option) => {
 const validateEmail = async (_rule, value) => {
   if (value && !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
     return Promise.reject('请输入有效的邮箱地址！');
+  } else if (!value) {
+    return Promise.reject('请输入邮箱地址！');
   }
   return Promise.resolve();
 };
@@ -336,7 +338,7 @@ const validateEmail = async (_rule, value) => {
 
 // 创建一个包含特殊校验规则的预设对象
 const rulePresets = {
-  email: [{ validator: validateEmail, trigger: 'change', required: true }],
+  email: [{ validator: validateEmail, trigger: 'change', required: true}],
   phone: [{  trigger: 'change', required: true }],
   // 未来可以扩展更多，如身份证号等
 };
