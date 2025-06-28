@@ -199,7 +199,7 @@ defineExpose({
     min-height: calc(30px * 2); // Ensure space for 3 lines
 
     color: #656C74;
-    margin-bottom: 0;
+    margin-bottom: 4px;
     // For 2-line ellipsis if needed
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -210,7 +210,7 @@ defineExpose({
 
   .report-summary-header {
     margin-top: 16px;
-    margin-bottom: 0;
+    margin-bottom: 4px;
     font-size: 14px;
     line-height: 1.7;
     color: @text-color-secondary;
@@ -223,6 +223,7 @@ defineExpose({
       letter-spacing: 0%;
       text-align: justify;
       color: #656C74; // Matches "领域" and "报告编号" color
+      display: inline;
     }
 
     .summary-text {
@@ -242,6 +243,10 @@ defineExpose({
       overflow: hidden;
       text-overflow: ellipsis;
       min-height: calc(1.7em * 3); // Ensure space for 3 lines
+      display: inline;
+      :deep(p){
+        display: inline;
+      }
     }
   }
 
