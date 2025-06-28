@@ -199,7 +199,7 @@ defineExpose({
     min-height: calc(30px * 2); // Ensure space for 3 lines
 
     color: #656C74;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
     // For 2-line ellipsis if needed
     display: -webkit-box;
     -webkit-line-clamp: 2;
