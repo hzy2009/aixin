@@ -9,10 +9,12 @@
         <div class="report-item-content">
           <h4 class="report-item-title">{{ report.reportName }}</h4>
           <p class="report-item-meta">领域：{{ report.reportTypeName }}</p>
-          <p class="report-item-meta">摘要：{{ report.description }}</p>
-          <div class="report-item-description">
-            <div v-html="report.description"></div>
-          </div>
+          <p class="report-item-meta">
+            <div class="report-item-description">
+              <span>摘要：</span>
+              <p v-html="report.description"></p>
+            </div>
+          </p>
           <div class="report-item-footer">
             <span class="report-item-price"><span class="currency-symbol">¥</span> {{ report.unitPrice }}</span>
             <ArrowRightOutlined class="arrow-icon" />
@@ -161,9 +163,19 @@ const handleReportClick = () => {
   color: #656C74;
   height: 66px;
   overflow: hidden;
+  display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
+  span{
+    display: inline;
+  }
+  p{
+    display: inline;
+  }
+  :deep(p){
+    display: inline;
+  }
 }
 
 .report-item-footer {
