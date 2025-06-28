@@ -68,7 +68,7 @@ defineProps({
 .text-overlay-block {
   color: @text-color-light; // White text
   text-align: left; // Text is left-aligned
-  max-width: 600px; // Max width for the text block itself, adjust as needed
+  max-width: 610px; // Max width for the text block itself, adjust as needed
                     // This prevents text from spanning too wide on large screens within the container
 
   // Optional: Add a subtle text shadow for better readability on complex backgrounds
