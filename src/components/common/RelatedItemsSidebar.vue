@@ -126,13 +126,11 @@ const onItemClick = (item) => {
     font-family: PingFang SC;
     font-weight: 400;
     font-size: 14px;
-    line-height: 22px;
     letter-spacing: 0%;
     text-align: justify;
     
     color: #656C74;
     margin-bottom: 6px;
-    line-height: 1.4;
     // Ellipsis for 2 lines
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -140,6 +138,7 @@ const onItemClick = (item) => {
     overflow: hidden;
     text-overflow: ellipsis;
     transition: color 0.3s;
+    min-height: calc(1.5em * 2);
   }
 
   .item-summary {
