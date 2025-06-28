@@ -242,7 +242,7 @@ const operationsClick = (btn) => {
 
 const handleDateValuesUpdate = withPermission(
   // 第一个参数: 权限要求 (数组)
-    props.requiredRoles,
+    requiredRoles,
 
   // 第二个参数: 有权限时要执行的回调函数
   // 我们直接将 `triggerSearch` 函数本身作为回调传递进去
@@ -253,7 +253,7 @@ const handleDateValuesUpdate = withPermission(
 );
 const handleSearch = withPermission(
   // 第一个参数: 权限要求 (数组)
-  props.requiredRoles,
+  requiredRoles,
   // 第二个参数: 有权限时要执行的回调函数
   // 我们直接将 `triggerSearch` 函数本身作为回调传递进去
   triggerSearch,
@@ -264,7 +264,7 @@ const handleSearch = withPermission(
 
 const handleStatMimixin = withPermission(
   // 第一个参数: 权限要求 (数组)
-    props.requiredRoles,
+    requiredRoles,
   // 第二个参数: 有权限时要执行的回调函数
   // 我们直接将 `triggerSearch` 函数本身作为回调传递进去
   handleStatClick,

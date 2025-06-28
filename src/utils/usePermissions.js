@@ -26,7 +26,7 @@ export function usePermissions() {
     // if (!requiredRoles || requiredRoles.length === 0) {
     //   return false;
     // }
-    if (requiredRoles.length === 1 && requiredRoles[0] === 'all') {
+    if (requiredRoles.length > 0 && requiredRoles[0] === 'all') {
       return true;
     }
     const d = [
@@ -62,7 +62,11 @@ export function usePermissions() {
           message.error(noPermissionMessage);
         }
       } else {
-        modalStore.showLogin();
+        if (requiredRoles.length > 0 && requiredRoles[0] == 'all') {
+          callback(...args);
+        } else {
+          modalStore.showLogin();
+        }
       }
     };
   };
