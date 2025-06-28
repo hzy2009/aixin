@@ -33,7 +33,7 @@
             {{ area }}
           </li>
         </ul>
-        <div v-else-if="formatSkillDescLsit.length === 1" class="skill-desc">{{ formatSkillDescLsit[0] }}></div>
+        <div v-else-if="formatSkillDescLsit.length === 1" class="skill-desc">{{ talent.skillDesc }}</div>
         <p v-else class="empty-text">暂无研究方向</p>
       </div>
       <div class="section">
@@ -45,7 +45,7 @@
     <!-- 底部 -->
     <div class="card-footer">
       <div class="tags-container">
-        <template v-if="talent.tags && talent.tags.length">
+        <!-- <template v-if="talent.tags && talent.tags.length">
             <span
               v-for="tag in talent.tags"
               :key="tag"
@@ -53,7 +53,8 @@
             >
               {{ tag }}
             </span>
-        </template>
+        </template> -->
+        <span v-if="talent.skillAreaName">{{ talent.skillAreaName }}</span>
         <span v-else class="empty-text">暂无标签</span>
       </div>
       <a-button class="view-details-btn" @click.stop="viewExpertProfile(talent)">
