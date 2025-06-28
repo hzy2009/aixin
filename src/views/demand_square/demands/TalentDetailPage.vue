@@ -80,6 +80,7 @@ const formConfigs = [
   { label: '意愿合作方向', field: 'desiredCooperationDirection', span: 24, },
   { label: '主要研究方向', field: 'skillDesc', span: 24, },
   { label: '论文成果', field: 'paperAchievement', span: 24, },
+  { label: '专利数量', field: 'patentCount', span: 24, },
 ]
 
 // --- Columns are now defined in vxe-table format ---
@@ -89,6 +90,11 @@ const columns = [
 		title: '序号',
 		key: 'seq', // Using a unique key is good practice
 	},
+  {
+    title: '授予单位',
+    field: 'awardingUnit', // field -> field
+    key: 'awardingUnit',
+  },
   {
     title: '荣誉',
     field: 'achievement', // field -> field
