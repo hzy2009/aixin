@@ -64,7 +64,6 @@ const pageData = ref({
         }
     ],
     dateRangeConfig: [
-        dateRangeConfig: [
         {
             field: 'createTime', // Unique key for this date range
             label: '需求提出日期',
@@ -73,7 +72,6 @@ const pageData = ref({
             field: 'expireDate', // Unique key for this date range
             label: '期望完成日期',
         }
-    ],
     ],
 })
 
