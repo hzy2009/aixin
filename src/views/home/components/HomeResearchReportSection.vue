@@ -19,7 +19,7 @@
             <router-link :to="`/demands/IndustryReportDetailPage/${report.id}`" class="report-card__title-link">
               <h3 class="report-card__title">{{ report.reportName }}</h3>
             </router-link>
-            <div class="report-card__description">{{ report.description }}</div>
+            <div class="report-card__description"><div v-html="report.description"></div></div>
             <p class="report-card__date">{{ report.date }}</p>
           </div>
         </div>
