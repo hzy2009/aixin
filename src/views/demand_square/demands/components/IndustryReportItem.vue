@@ -28,7 +28,7 @@
 <script setup>
 import { EyeOutlined, ArrowRightOutlined } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
-import defaultThumbnailPlaceholder from '@/assets/images/fallback/首页行研报告缺省图.jpg'; // Create a placeholder
+import defaultThumbnailPlaceholder from '@/assets/images/fallback/bannerreport.jpg'; // Create a placeholder
 import { getFileAccessHttpUrl } from '@/utils/index';
 
 const props = defineProps({
