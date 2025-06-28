@@ -99,7 +99,7 @@ const getImgUrl = (url) => {
   }
 }
 
-const baseImgUrl = import.meta.env.VITE_GLOB_DOMAIN_URL;
+const baseImgUrl = import.meta.env.VITE_GLOB_UPLOAD_URL;
 
 const route = useRoute();
 const router = useRouter();

@@ -66,7 +66,7 @@ const formatDate = (dateString, format) => {
     return dateString; // Return original if parsing fails
   }
 };
-const baseImgUrl = import.meta.env.VITE_GLOB_DOMAIN_URL;
+const baseImgUrl = import.meta.env.VITE_GLOB_UPLOAD_URL;
 const getImgUrl = (url) => {
   if (url) {
     return getFileAccessHttpUrl(url);

@@ -10,7 +10,7 @@ export function getFileAccessHttpUrl(fileUrl, prefix = 'http') {
       let isArray = fileUrl.indexOf('[') != -1;
       if (!isArray) {
         // let prefix = `${import.meta.env.VITE_GLOB_UPLOAD_URL}/sys/common/static/`;
-        let prefix = `${import.meta.env.VITE_GLOB_DOMAIN_URL}`;
+        let prefix = `${import.meta.env.VITE_GLOB_UPLOAD_URL}`;
         // 判断是否已包含前缀
         if (!fileUrl.startsWith(prefix)) {
           result = `${prefix}${fileUrl}`;
