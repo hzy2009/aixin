@@ -6,7 +6,7 @@ import { useRoute, useRouter } from 'vue-router';
 const defaultTabsConfig = {
   todoList: {
     key: 'todoList',
-    label: '我待办的',
+    label: '我的待办',
     defaultSubTabKey: 'todoList',
     path: '/todo/list'
   },
