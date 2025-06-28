@@ -24,10 +24,9 @@ export const useAuthStore = defineStore('auth', {
       return data;
     },
     async getUserRole() {
-      const data = await getUserRoleApi();
-      console.log('data', data);
-      this.setUserRose(data);
-      return data;
+      const {result} = await getUserRoleApi();
+      this.setUserRose(result);
+      return result;
     },
 
     async logout() {
