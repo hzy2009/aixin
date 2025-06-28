@@ -13,7 +13,9 @@ export function getFileAccessHttpUrl(fileUrl, prefix = 'http') {
         let prefix = `${import.meta.env.VITE_GLOB_UPLOAD_URL}`;
         // 判断是否已包含前缀
         if (!fileUrl.startsWith(prefix)) {
-          result = `${prefix}${fileUrl}`;
+          const loaction = window.location;
+          let result = `${loaction.origin}${fileUrl}`;
+          // result = `${prefix}${fileUrl}`;
         }
       }
     }
