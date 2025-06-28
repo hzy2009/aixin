@@ -4,7 +4,7 @@ const industryDynamicsRoutes = [
     path: '/industry-dynamics', // Main page for the list
     name: 'IndustryDynamics',
     component: () => import('@/views/industryDynamics/views/IndustryDynamicsPage.vue'),
-    meta: { title: '行业热点 - 爱芯享信息共享平台' }
+    meta: { title: '行业热点 - 爱芯享信息共享平台', requiresAuth: false }
   },
   {
     path: '/industry-dynamics/:id',

@@ -1,5 +1,5 @@
 <template>
-  <a :href="authStore.isLogin ? `/industry-dynamics/${hotspot.id}`: `industry-dynamics`" target="_blank" class="hotspot-item" @click.prevent="onItemClick">
+  <a :href="`/industry-dynamics/${hotspot.id}`" target="_blank" class="hotspot-item" @click.prevent="onItemClick">
     <span class="hotspot-title">{{ hotspot.title }}</span>
     <span class="hotspot-date">{{ hotspot.createTime ? formatDate(hotspot.createTime) : '' }}</span>
   </a>
@@ -19,7 +19,6 @@ const props = defineProps({
   }
 });
 const router = useRouter();
-
 const onItemClick = () => {
   // if (props.hotspot.link && props.hotspot.link !== '#') {
     // If it's an external link, let the browser handle it (or use window.open)
@@ -28,7 +27,8 @@ const onItemClick = () => {
     // If you have internal detail pages:
     // router.push({ paht: `/industry-dynamics/${hotspot.id}`});
   // }
-    router.push({ path: `/industry-dynamics/${props.hotspot.id}`});
+  const path = authStore.isLogin ? `/industry-dynamics/${hotspot.id}`: `/industry-dynamics`
+  router.push({ path});
 
 };
 </script>

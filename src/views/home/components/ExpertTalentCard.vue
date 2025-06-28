@@ -66,7 +66,7 @@ const formatName = (name) =>{
 const viewExpertProfile = (id) => {
   // TODO: Navigate to expert's detail page
   // router.push({ name: 'ExpertProfile', params: { id } });
-  const path = authStore.islogin ? '`/demands/TalentDetailPage/${id}`' : '/demands/Talent';
+  const path = authStore.islogin ? `/demands/TalentDetailPage/${id}` : '/demands/Talent';
   router.push({ path});
 };
 </script>
