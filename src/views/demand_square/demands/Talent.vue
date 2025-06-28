@@ -34,7 +34,8 @@ const pageData = ref({
     pageTitle: '专家人才',
     searchTitle: '专家人才',
     showBanner: true,
-    listPageisPadding: false
+    listPageisPadding: false,
+    requiredRoles: ['all']
 })
 const handleChagePage = (page, handleTablePaginationChange, paginationConfig) => {
     window.scrollTo({

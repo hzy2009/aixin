@@ -86,6 +86,7 @@ const pageData = ref({
         //     label: '需求提出日期',
         // }
     ],
+    requiredRoles: ['apm-vip', 'apm-vip-inspection']
 })
 
 

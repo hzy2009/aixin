@@ -69,7 +69,8 @@ const pageData = ref({
         field: 'expireDate',
         label: '计划完成日期',
         }
-  ],
+    ],
+    requiredRoles: ['apm-vip', 'apm-vip-inspection', 'apm-register']
 })
 
 

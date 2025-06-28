@@ -12,7 +12,7 @@
                 <template #icon><img src="@/assets/images/user_center/icon-pending.png" alt="未响应" /></template>
             </UserStatCardSm>
         </div> -->
-        <UserStatCardSm :stats=stats.list @statsChanged="(item) => handleStatClick(item)" v-if="userStatCardVisible"></UserStatCardSm>
+        <UserStatCardSm :stats=stats.list @statsChanged="handleStatMimixin" v-if="userStatCardVisible"></UserStatCardSm>
         <UserFilterAccordion :filter-groups="filterConfigForPage" :initial-filters="currentFilters" v-if="filterConfigForPage && filterConfigForPage.length > 0"
             @filters-changed="handleFiltersChange" class="filter-accordion-section" ref="userFilterAccordionRef" />
 
@@ -25,7 +25,7 @@
 
         <div class="search-action-bar">
             <div class="search-input-wrapper">
-                <a-input v-model:value="search" placeholder="请输入关键字" allow-clear @pressEnter="triggerSearch">
+                <a-input v-model:value="search" placeholder="请输入关键字" allow-clear @pressEnter="handleSearch">
                     <template #prefix>
                         <SearchOutlined />
                     </template>
@@ -85,7 +85,6 @@ import { useRouter } from 'vue-router';
 // Ant Design components can still be used elsewhere on the page
 import { Button as AButton, Input as AInput, Tag as ATag } from 'ant-design-vue';
 import { SearchOutlined, DeleteOutlined } from '@ant-design/icons-vue';
-
 // Your components and hooks remain the same
 import HomeHeroSection from '@/views/home/components/HomeHeroSection.vue';
 import UserStatCardSm from '@/components/layout/UserStatCardSm.vue';
@@ -95,8 +94,14 @@ import { useUserDemandList } from './hooks/useUserDemandList.js';
 import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore';
 import { selectOptions as getDictOptions, formatDate } from '@/utils/index';
+
+
 import detailIcon from '@/assets/images/icon-detail.png';
 import delIcon from '@/assets/images/icon-delete.png';
+
+import { usePermissions } from '@/utils/usePermissions';
+const { withPermission, hasPermission } = usePermissions();
+
 const authStore = useAuthStore();
 const modalStore = useModalStore();
 const router = useRouter();
@@ -113,7 +118,7 @@ const {
     url, filterConfigForPage, tableColumns, actions, otherParams,
     statusDictKey, userStatCardVisible, showBanner = false, pageTitle,
     tableOperations = [], dateRangeConfig = [], searchTitle, listPageisPadding = true,
-    userSearchTitle = true
+    userSearchTitle = true, requiredRoles = []
 } = props.pageData;
 
 const {
@@ -219,6 +224,7 @@ const handleCheckboxChange = ({ records }) => {
 
 const operationsClick = (btn) => {
     if (authStore?.token) {
+        if (!hasPermission(props.requiredRoles)) return
         if (btn.btnType == 'exportXls') {
             handleExportXls(btn.fileName, btn.url, {
                 selections: selectedRowKeys.value.join(','),
@@ -234,9 +240,38 @@ const operationsClick = (btn) => {
     }
 };
 
-const handleDateValuesUpdate = (values) => {
-    triggerSearch(values);
-};
+const handleDateValuesUpdate = withPermission(
+  // 第一个参数: 权限要求 (数组)
+    props.requiredRoles,
+
+  // 第二个参数: 有权限时要执行的回调函数
+  // 我们直接将 `triggerSearch` 函数本身作为回调传递进去
+  triggerSearch,
+
+  // 第三个参数: 无权限时的提示信息 (可选，有默认值)
+  '抱歉，您没有权限执行此搜索操作'
+);
+const handleSearch = withPermission(
+  // 第一个参数: 权限要求 (数组)
+  props.requiredRoles,
+  // 第二个参数: 有权限时要执行的回调函数
+  // 我们直接将 `triggerSearch` 函数本身作为回调传递进去
+  triggerSearch,
+
+  // 第三个参数: 无权限时的提示信息 (可选，有默认值)
+  '抱歉，您没有权限执行此搜索操作'
+);
+
+const handleStatMimixin = withPermission(
+  // 第一个参数: 权限要求 (数组)
+    props.requiredRoles,
+  // 第二个参数: 有权限时要执行的回调函数
+  // 我们直接将 `triggerSearch` 函数本身作为回调传递进去
+  handleStatClick,
+
+  // 第三个参数: 无权限时的提示信息 (可选，有默认值)
+  '抱歉，您没有权限执行此搜索操作'
+);
 
 const handleActionClick = (record, action) => {
     if (authStore?.token) {

@@ -67,7 +67,8 @@ const pageData = ref({
         //     label: '需求提出日期',
         // }
     ],
-    searchTitle: '检测验证'
+    searchTitle: '检测验证',
+    requiredRoles: ['apm-vip', 'apm-vip-inspection']
 })
 
 

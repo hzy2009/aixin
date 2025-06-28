@@ -52,7 +52,8 @@ const pageData = ref({
   ],
   pageTitle: '线下活动',
   searchTitle: '线下活动',
-  listPageisPadding: false
+  listPageisPadding: false,
+  requiredRoles: ['apm-vip', 'apm-vip-inspection']
 })
 
 const currentPage = ref(1);

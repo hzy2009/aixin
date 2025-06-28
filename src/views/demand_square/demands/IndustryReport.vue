@@ -36,7 +36,8 @@ const pageData = ref({
   showBanner: true,
   searchTitle: '行研报告',
   pageTitle: '行研报告',
-  listPageisPadding: false
+  listPageisPadding: false,
+  requiredRoles: ['all']
 })
 const onChange = (page, pageSize) => {
   window.scrollTo({

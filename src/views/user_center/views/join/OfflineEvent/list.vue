@@ -56,7 +56,8 @@ const pageData = ref({
             fileName: '线下活动',
             url: 'apm/apmOfflineActivity/exportXls',
         }
-    ]
+    ],
+    requiredRoles: ['apm-vip', 'apm-vip-inspection']
 })
 
 

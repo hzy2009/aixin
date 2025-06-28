@@ -71,7 +71,8 @@ const pageData = ref({
             type: 'delete',
             btnType: 'delete',
         },
-    ]
+    ],
+    requiredRoles: ['apm-vip', 'apm-vip-inspection']
 })
 
 

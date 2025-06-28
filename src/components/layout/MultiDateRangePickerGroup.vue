@@ -82,7 +82,6 @@ const onDateChange = () => {
 
 watch(() => props.config, (newConfig) => {
   initializeOrUpdateDateRanges(newConfig);
-  onDateChange();
 }, {
   deep: true,
   immediate: true
