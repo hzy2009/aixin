@@ -1,27 +1,26 @@
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
+
 import DefaultLayout from '@/components/layout/DefaultLayout.vue';
+
 import homeRoutes from '@/views/home/routes';
-import authRoutes from '@/views/auth/routes'; // <-- Import
-import demandsRoutes from '@/views/demand_square/demands/routes/index'; // Import new routes
-// import publicationsRoutes from '@/views/demand_square/publications/routes/index'; // Import new routes
-import industryDynamicsRoutes from '@/views/industryDynamics/routes'; // <-- Import
+import authRoutes from '@/views/auth/routes';
+import demandsRoutes from '@/views/demand_square/demands/routes/index';
+import industryDynamicsRoutes from '@/views/industryDynamics/routes';
 import userCenterRoutes from '@/views/user_center/routes';
 import otherPageRoutes from '@/views/otherPage/routes';
 const tongyongcaiji = () => import('@/views/otherPage/tongyongcaiji/index.vue');
-
-import { useAuthStore } from '@/store/authStore'; // Import for navigation guard
-
+import { useAuthStore } from '@/store/authStore';
+import { message } from 'ant-design-vue';
 const routes = [
   {
     path: '/',
     component: DefaultLayout,
     children: [
       ...homeRoutes,
-      demandsRoutes,
-      ...userCenterRoutes, 
+      ...demandsRoutes, // 推荐所有路由模块都导出数组
+      ...userCenterRoutes,
       ...otherPageRoutes,
-      // publicationsRoutes,
       ...industryDynamicsRoutes,
       {
         path: 'other/tongyongcaiji', 
@@ -31,11 +30,13 @@ const routes = [
       // ... other feature routes that use DefaultLayout
     ],
   },
-  ...authRoutes, // <-- Add auth routes (they don't use DefaultLayout)
+  ...authRoutes,
+  // 404 页面
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import('@/views/NotFoundPage.vue'),
+    meta: { title: '页面未找到' }
   },
 ];
 
@@ -48,25 +49,52 @@ const router = createRouter({
   },
 });
 
-// Example Navigation Guard
+// 全局导航守卫
 router.beforeEach((to, from, next) => {
-  const authStore = useAuthStore(); // Get store instance here
+  const authStore = useAuthStore();
+  const isLogin = authStore.isLogin;
 
-  // Set document title
-  if (to.meta.title) {
-    document.title = to.meta.title;
+  // 设置页面标题
+  document.title = to.meta.title || '爱芯享信息共享平台';
+  // 检查目标路由是否需要认证
+  if (to.meta.requiresAuth) {
+    if (isLogin) {
+      // 用户已登录，检查角色权限
+      const {roleCode} = authStore.userRole;
+      const requiredRoles = [
+        ...to?.meta?.roles || [],
+        'apm-super-vip-free',
+        'apm-super-vip'
+      ];
+
+      if (requiredRoles && requiredRoles.length > 0) {
+        // 页面需要特定角色
+        const hasPermission = requiredRoles.includes(roleCode);
+        if (hasPermission) {
+          next(); // 角色匹配，放行
+        } else {
+          message.error('您没有权限访问此页面');
+        }
+      } else {
+        // 页面只需登录，不限角色
+        next();
+      }
+    } else {
+      // 用户未登录，重定向到登录页
+      next({
+        name: 'Login', // 确保你的登录页路由 name 是 'Login'
+        query: { redirect: to.fullPath }, // 登录后可以重定向回来
+      });
+    }
   } else {
-    document.title = '爱芯享信息共享平台'; // Default title
+     // 如果用户已登录，且尝试访问“仅访客”页面（如登录页），则重定向到首页
+    if (to.meta.guestOnly && isLogin) {
+        next({ name: 'Home' }); // 假设首页 name 是 'Home'
+    } else {
+        // 页面无需认证，直接放行
+        next();
+    }
   }
-    next();
-
-  // if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-  //   next({ name: 'Login', query: { redirect: to.fullPath } });
-  // } else if (to.meta.guestOnly && authStore.isAuthenticated) {
-  //   next({ name: 'Home' }); // Or dashboard if they are admin/member
-  // } else {
-  //   next();
-  // }
 });
 
 export default router;

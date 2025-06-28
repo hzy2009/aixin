@@ -86,18 +86,18 @@ const userCenterRoutes = [
       {
         path: 'OEMPartsSourcing',
         component: OEMPartsSourcing, 
-        meta: { title: '我发布的 - 原厂件寻源' }
+        meta: { title: '我发布的 - 原厂件寻源', roles: ['apm-vip', 'apm-vip-inspection'] }
       },
       {
         path: 'OEMPartsSourcing/create', 
         component: OEMPartsEditPage, 
-        meta: { title: '创建原厂件寻源需求', breadcrumb: ['创建原厂件寻源需求'] }
+        meta: { title: '创建原厂件寻源需求', breadcrumb: ['创建原厂件寻源需求'], roles: ['apm-vip', 'apm-vip-inspection'] }
       },
       {
         path: 'OEMPartsSourcing/detail/:id', 
         component: OEMPartsDetailPage, 
         props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
-        meta: { title: '原厂件寻源详情', breadcrumb: ['原厂件寻源详情'] }
+        meta: { title: '原厂件寻源详情', breadcrumb: ['原厂件寻源详情'], roles: ['apm-vip', 'apm-vip-inspection'] }
       },
 
       {
@@ -119,97 +119,97 @@ const userCenterRoutes = [
       {
         path: 'Verification',
         component: Verification,
-        meta: { title: '我发布的 - 检测验证' }
+        meta: { title: '我发布的 - 检测验证', roles: ['apm-vip'] }
       },
        {
         path: 'Verification/create', 
         component: VerificationEditPage, 
-        meta: { title: '创建检测验证需求', breadcrumb: [ '创建检测验证需求'] }
+        meta: { title: '创建检测验证需求', breadcrumb: [ '创建检测验证需求'], roles: ['apm-vip'] }
       },
       {
         path: 'Verification/detail/:id', 
         component: VerificationDetailPage, 
         props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
-        meta: { title: '检测验证需求详情', breadcrumb: [ '检测验证需求详情'] }
+        meta: { title: '检测验证需求详情', breadcrumb: [ '检测验证需求详情'], roles: ['apm-vip'] }
       },
       {
         path: 'OfflineEvent',
         component: OfflineEvent,
-        meta: { title: '我发布的 - 线下活动' }
+        meta: { title: '我发布的 - 线下活动', roles: ['apm-vip', 'apm-vip-inspection'] }
       },
       {
         path: 'OfflineEvent/create',
         component: OfflineEventEditPage,
-        meta: { title: '创建线下活动' }
+        meta: { title: '创建线下活动', roles: ['apm-vip', 'apm-vip-inspection'] }
       },
       {
         path: 'OfflineEvent/detail/:id',
         props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
         component: OfflineEventDetailPage,
-        meta: { title: '线下活动详情' }
+        meta: { title: '线下活动详情', roles: ['apm-vip', 'apm-vip-inspection'] }
       },
     ]
   },
   {
     path: '/user/join', // “我参与的” 的父路由
     component: UserCenterCommonLayout, // 使用新的通用顶部布局
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, },
     redirect: '/user/join/DomesticSourcing', // 默认跳转到第一个子页签
     children: [
      {
         path: 'DomesticSourcing', // 相对路径
         component: joinDomesticSourcing, // 这个页面现在是子路由
-        meta: { title: '我参与的 - 国产替代寻源' }
+        meta: { title: '我参与的 - 国产替代寻源', roles: ['apm-vip']  }
       },
       {
         path: 'DomesticSourcing/detail/:id', 
         component: joinDomesticSourcingDetailPage, 
         props: route => ({ IdProp: route.params.id }), // 通过 props 传递 mode 和 id
-        meta: { title: '国产替代寻源详情', breadcrumb: ['国产替代寻源'] }
+        meta: { title: '国产替代寻源详情', breadcrumb: ['国产替代寻源'], roles: ['apm-vip'] }
       },
       {
         path: 'OEMPartsSourcing',
         component: joinOEMPartsSourcing, 
-        meta: { title: '我参与的 - 原厂件寻源' }
+        meta: { title: '我参与的 - 原厂件寻源', roles: ['apm-vip', 'apm-vip-inspection', 'apm-register', 'apm-register-expert'] }
       },
       {
         path: 'OEMPartsSourcing/detail/:id', 
         component: joinOEMPartsDetailPage, 
         props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
-        meta: { title: '原厂件寻源详情', breadcrumb: ['原厂件寻源详情'] }
+        meta: { title: '原厂件寻源详情', breadcrumb: ['原厂件寻源详情'], roles: ['apm-vip', 'apm-vip-inspection', 'apm-register', 'apm-register-expert'] }
       },
       {
         path: 'PublicRelations',
         component: joinPublicRelations,
-        meta: { title: '我参与的 - 研发攻关' }
+        meta: { title: '我参与的 - 研发攻关', roles: ['apm-vip'] }
       },
       {
         path: 'PublicRelations/detail/:id', 
         component: joinPublicRelationsDetailPage, 
         props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
-        meta: { title: '研发攻关需求详情', breadcrumb: [ '研发攻关需求详情'] }
+        meta: { title: '研发攻关需求详情', breadcrumb: [ '研发攻关需求详情'], roles: ['apm-vip'] }
       },
       {
         path: 'Verification',
         component: joinVerification,
-        meta: { title: '我参与的 - 检测验证' }
+        meta: { title: '我参与的 - 检测验证', roles: ['apm-vip', 'apm-vip-inspection'] }
       },
       {
         path: 'Verification/detail/:id', 
         component: joinVerificationDetailPage, 
         props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
-        meta: { title: '检测验证需求详情', breadcrumb: [ '检测验证需求详情'] }
+        meta: { title: '检测验证需求详情', breadcrumb: [ '检测验证需求详情'], roles: ['apm-vip', 'apm-vip-inspection'] }
       },
       {
         path: 'OfflineEvent',
         component: joinOfflineEvent,
-        meta: { title: '我参与的 - 线下活动' }
+        meta: { title: '我参与的 - 线下活动', roles: ['apm-vip', 'apm-vip-inspection', 'apm-register', 'apm-register-expert'] }
       },
       {
         path: 'OfflineEvent/detail/:id',
         props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
         component: JoinOfflineEventDetailPage,
-        meta: { title: '线下活动详情' }
+        meta: { title: '线下活动详情', roles: ['apm-vip', 'apm-vip-inspection', 'apm-register', 'apm-register-expert'] }
       },
     ]
   },
@@ -238,7 +238,7 @@ const userCenterRoutes = [
       {
         path: 'list',
         component: todoList,
-        meta: { title: '我待办的' }
+        meta: { title: '我待办的', roles: ['apm-vip'] }
       },
     
     ]

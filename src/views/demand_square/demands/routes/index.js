@@ -21,7 +21,7 @@ const Talent = () => import('../Talent.vue');
 const TalentDetailPage = () => import('../TalentDetailPage.vue');
 // ... other demand related imports
 
-export default {
+export default [{
   path: 'demands', // Parent path for this group
   meta: { breadcrumbBase: ['需求广场'] }, // Base for breadcrumbs in this group
   children: [
@@ -103,4 +103,4 @@ export default {
       meta: { title: '专家人才详情', breadcrumb: ['专家人才详情'] } // Appends to base
     },
   ]
-};
+}];

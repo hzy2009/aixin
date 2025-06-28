@@ -176,12 +176,12 @@ const onLoginFinish = async values => {
       captcha: values.captcha
     };
     // 登录
-    let res = await authStore.login(data);
+    await authStore.login(data)
     // 获取用户角色
     await authStore.getUserRole();
     message.success('登录成功!');
-    // const redirectPath = router.currentRoute.value.query.redirect || '/';
-    router.push('/user/published/DomesticSourcing');
+    const redirectPath = router.currentRoute.value.query.redirect || '/';
+    router.push(redirectPath);
   } catch (error) {
     message.error(error?.response?.data?.message || error?.message || '登录失败!');
   } finally {
