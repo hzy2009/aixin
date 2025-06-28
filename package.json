@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "cross-env NODE_ENV=development vite",
-    "build:prod": "cross-env NODE_ENV=production vite build",
-    "build:test": "cross-env NODE_ENV=test vite build",
-    "build": "cross-env NODE_ENV=test vite build",
+    "build:prod": "cross-env NODE_ENV=production vite build  --mode production",
+    "build:test": "cross-env NODE_ENV=test vite build  --mode test",
+    "build": "cross-env NODE_ENV=test vite build  --mode test",
     "preview": "vite preview"
   },
   "dependencies": {
