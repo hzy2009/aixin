@@ -216,7 +216,7 @@ const userCenterRoutes = [
   {
     path: '/user/setting',
     component: UserCenterCommonLayout,
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: ['apm-vip', 'apm-vip-inspection', 'apm-register', 'apm-register-expert'] },
     children: [
       {
         path: 'userCenterInfo',
