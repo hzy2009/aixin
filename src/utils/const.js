@@ -1,7 +1,7 @@
 import { selectOptions, formatDate } from '@/utils/index';
 
 export const BUSINESS_REF_LIST = {
-    title: '关联业务',
+    title: '与此单关联的平台其他业务',
     groupCode: 'businessRefList',
     columns: [
         { title: '序号', type: 'seq', width: 74, align: 'center' },
