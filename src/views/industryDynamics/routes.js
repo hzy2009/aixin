@@ -11,7 +11,7 @@ const industryDynamicsRoutes = [
     name: 'IndustryDynamicDetail',
     props: route => ({ id: route.params.id}),
     component: () => import('@/views/industryDynamics/views/IndustryDynamicDetailPage.vue'),
-    meta: { title: '动态详情 - 爱芯享信息共享平台' }
+    meta: { title: '动态详情 - 爱芯享信息共享平台', requiresAuth: true, roles: ['apm-vip', 'apm-vip-inspection', 'apm-register', 'apm-register-expert'] }
   }
 ];
 

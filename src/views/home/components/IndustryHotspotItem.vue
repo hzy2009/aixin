@@ -1,5 +1,5 @@
 <template>
-  <a :href="`/industry-dynamics/${hotspot.id}` || '#'" target="_blank" class="hotspot-item" @click.prevent="onItemClick">
+  <a :href="authStore.isLogin ? `/industry-dynamics/${hotspot.id}`: `industry-dynamics`" target="_blank" class="hotspot-item" @click.prevent="onItemClick">
     <span class="hotspot-title">{{ hotspot.title }}</span>
     <span class="hotspot-date">{{ hotspot.createTime ? formatDate(hotspot.createTime) : '' }}</span>
   </a>
@@ -8,6 +8,8 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import {formatDate} from '@/utils';
+import { useAuthStore } from '@/store/authStore';
+const authStore = useAuthStore();
 const props = defineProps({
   hotspot: {
     type: Object,
