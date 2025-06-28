@@ -22,7 +22,7 @@ const isManagerAdmin = computed(() => {
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
-  { label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true, },
+  { label: '需求提出方', field: 'createUserName', fieldType: 'input', span: 24, disabled: true, },
   { label: '需求提出日期', field: 'createTime', fieldType: 'date', span: 24},
   { label: '期望完成日期', field: 'expireDate', fieldType: 'date', span: 24 },
   { label: '电话', field: 'phone', fieldType: 'phone', span: 24 },

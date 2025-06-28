@@ -25,7 +25,7 @@ const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
   {
-    label: '需求提出方', field: 'tenantName', fieldType: 'input', span: 24, disabled: true,
+    label: '需求提出方', field: 'createUserName', fieldType: 'input', span: 24, disabled: true,
   },
   // {
   //   label: '产品类别', field: 'productType', fieldType: 'select', dictKey: 'product_type', span: 24,

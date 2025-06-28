@@ -44,7 +44,7 @@ const formConfigs = [
   },
   
   // { label: '需求有效期', field: 'expireDate', span: 24 },
-  { label: '需求提出方', field: 'tenantName', span: 24, },
+  { label: '需求提出方', field: 'createUserName', span: 24, },
   { label: '研发攻关方状态', field: 'statusName', span: 24, },
 ]
 
