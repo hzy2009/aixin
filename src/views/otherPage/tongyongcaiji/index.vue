@@ -20,10 +20,10 @@
           </a>
         </div> -->
         <div class="member-logo-item-wrapper" @click="xxx">
-            <img src="@/assets/images/home/PromoCard2.png" alt="通用件集采" class="member-logo-image" />
-        </div>
-        <div class="member-logo-item-wrapper" @click="xxx">
             <img src="@/assets/images/home/PromoCard1.png" alt="通用件集采" class="member-logo-image" />
+        </div>
+          <div class="member-logo-item-wrapper" @click="xxx">
+            <img src="@/assets/images/home/PromoCard2.png" alt="通用件集采" class="member-logo-image" />
         </div>
       </div>
       <!-- <div v-if="isLoading && members.length === 0" class="loading-placeholder">
