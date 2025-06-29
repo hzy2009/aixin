@@ -13,6 +13,7 @@
 <script setup lang="jsx">
 import userRefList from '@/views/user_center/views/components/userRefList.vue'
 import businessRefList from '@/views/user_center/views/components/businessRefList.vue'
+import { selectOptions } from '@/utils/index';
 
 const props = defineProps(['data'])
 
@@ -46,6 +47,10 @@ const columns = [
     {
       title: '状态',
       field: 'statusName', // field -> field
+      formatter: ({ cellValue }) => {
+          const option = selectOptions('material_code').find(item => item.value == cellValue);
+          return option ? option.label : '';
+      }
     },
 ]
 </script>
