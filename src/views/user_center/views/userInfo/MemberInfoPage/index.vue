@@ -2,7 +2,7 @@
   <div>
     <detail :pageData="pageData" @goBack="goBack">
       <template v-slot:role="{ dataSource }">
-        <span>{{ dataSource.role }}</span>
+        <span>{{ formatName(dataSource.roleCode) }}</span>
         <a-button class='upgrade-button upgrade-button-vip' @click="upgradeVip" v-if="dataSource.role == '普通会员' && (!dataSource.progressList || dataSource.progressList.length == 0)">升级VIP</a-button>
         <span v-if="dataSource.role == '普通会员' && (!dataSource.progressList || dataSource.progressList.length == 0)">提交升级VIP申请后，管理员将在30分钟内与您联系</span>
       </template>
@@ -48,7 +48,9 @@ const formConfigs = [
   { label: '在籍天数', field: 'onlineDays', span: 24, },
 ]
 
-
+const formatName = (code) => {
+  return ['apm-super-vip-free', 'apm-super-vip'].includes(code) ? 'VIP会员' : '普通会员'
+}
 // const demandTypeDisplayName = '研发攻关';
 
 const pageTitle = '爱芯享信息共享平台'
