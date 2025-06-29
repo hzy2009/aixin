@@ -82,7 +82,7 @@ const initializeFilters = () => {
 onMounted(initializeFilters);
 
 // 监听 initialFilters 的变化
-watch(() => props.initialFilters, initializeFilters, { deep: true });
+// watch(() => props.initialFilters, initializeFilters, { deep: true });
 
 /**
  * 切换筛选选项，并处理“全部”选项的特殊逻辑
