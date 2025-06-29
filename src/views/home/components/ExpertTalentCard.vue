@@ -13,12 +13,12 @@
     <div class="card-body">
       <div class="info-line">
         <span class="info-label">合作方向:</span>
-        <span class="info-value">{{ expert.skillDesc }}</span>
+        <span class="info-value">{{ expert.desiredCooperationDirection }}</span>
       </div>
       <div class="info-line research-areas">
-        <span class="info-label">研究领域:</span>
+        <span class="info-label">研究方向:</span>
         <ul class="areas-list">
-          <li class="area-item"> {{ expert.skillAreaName }}</li>
+          <li class="area-item"> {{ expert.skillDesc }}</li>
           <!-- <li v-for="(area, index) in expert.researchAreas" :key="index" class="area-item">
             {{ index + 1 }}. {{ area }}
           </li> -->
