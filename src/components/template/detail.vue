@@ -144,6 +144,7 @@ import operationResultPage from './operationResultPage.vue';
 import CustomProgressTimeline from '@/components/layout/CustomProgressTimeline.vue';
 import { getFileAccessHttpUrl, formatDate, getRandom } from '@/utils/index';
 import { PlusOutlined } from '@ant-design/icons-vue';
+import defaultImg from '@/assets/images/default.png';
 import dayjs from 'dayjs';
 
 // --- ALL OTHER SCRIPT LOGIC IS UNCHANGED ---
@@ -290,7 +291,7 @@ const handleToList = () => {
     isCreating.value = true;
     router.push({ path: listPath });
 };
-const getImgUrl = (url) => url ? getFileAccessHttpUrl(url) : '';
+const getImgUrl = (url) => url ? getFileAccessHttpUrl(url) : defaultImg;
 const handleActionNoteClick = (actionNote) => { if (actionNote.fn) actionNote.fn(demandDetailData); };
 const showProgressList = computed(() => {
 	if (showLogList) {
