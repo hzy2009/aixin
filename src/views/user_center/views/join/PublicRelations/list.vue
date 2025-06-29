@@ -73,6 +73,13 @@ const pageData = ref({
             label: '期望完成日期',
         }
     ],
+     tableOperations: [
+        {
+            title: '已删除',
+            type: 'delete',
+            btnType: 'delete',
+        },
+    ],
 })
 
 

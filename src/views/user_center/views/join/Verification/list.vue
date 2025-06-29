@@ -72,6 +72,13 @@ const pageData = ref({
         //     label: '需求提出日期',
         // }
     ],
+     tableOperations: [
+        {
+            title: '已删除',
+            type: 'delete',
+            btnType: 'delete',
+        },
+    ],
     requiredRoles: ['apm-vip', 'apm-vip-inspection']
 })
 

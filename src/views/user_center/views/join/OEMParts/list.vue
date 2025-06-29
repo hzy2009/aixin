@@ -70,6 +70,13 @@ const pageData = ref({
         label: '计划完成日期',
         }
     ],
+    tableOperations: [
+        {
+            title: '已删除',
+            type: 'delete',
+            btnType: 'delete',
+        },
+    ],
     requiredRoles: ['apm-vip', 'apm-vip-inspection', 'apm-register']
 })
 

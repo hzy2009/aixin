@@ -57,6 +57,13 @@ const pageData = ref({
             url: 'apm/apmOfflineActivity/exportXls',
         }
     ],
+     tableOperations: [
+        {
+            title: '已删除',
+            type: 'delete',
+            btnType: 'delete',
+        },
+    ],
     requiredRoles: ['apm-vip', 'apm-vip-inspection']
 })
 
