@@ -45,7 +45,7 @@ const handleBreakthroughActionBtnClick = async (item) => {
     const defaultConfig = {
       title: '一键敲门成功',
       message: '一键敲门后后，客服人员将在30分钟内与您联系',
-      contactInfo: { name: '陈靖玮', phone: '010-55698507', email: 'chenjingwei@icshare.com' },
+      contactInfo: { name: '陈靖玮', phone: '020-55698507', email: 'chenjingwei@icshare.com' },
       buttonText: '返回首页',
       showButton: false,
       onAction: null, // Default onAction is handled in store to go home
