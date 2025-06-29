@@ -176,6 +176,9 @@ onMounted(() => {
       display: flex;
       align-items: center;
       margin-bottom: 5px;
+      img {
+        height: 22px;
+      }
       .membership-level {
         display: inline-block;
         border-radius: 4px;
