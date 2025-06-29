@@ -114,8 +114,8 @@ onMounted(() => {
 
   &__title {
     font-family: PingFang SC;
-    font-weight: 400;
-    font-size: 14px;
+    font-weight: 500;
+    font-size: 16px;
     line-height: 14px;
     letter-spacing: 0%;
     text-transform: uppercase;
