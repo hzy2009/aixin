@@ -313,9 +313,18 @@ const viewExpertProfile = (item) => {
   align-items: center;
 
   .tags-container {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
+    // display: flex;
+    // gap: 8px;
+    // flex-wrap: wrap;
+    padding-right: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    
+
     .tag-item {
       background-color: @bg-light-gray;
       color: @text-secondary;
@@ -327,6 +336,7 @@ const viewExpertProfile = (item) => {
       font-size: 14px;
       color: @text-tertiary;
     }
+    
   }
 
   .view-details-btn {
