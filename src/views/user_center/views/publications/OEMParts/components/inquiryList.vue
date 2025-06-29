@@ -153,7 +153,8 @@ const handleTradeTypeChange = (value, record, options) => {
 const columns = [
     {
       type: 'expand',
-      width: 50,
+      width: 100,
+      title: '点击查看详情',
       slots: {
         // 【关键修改】在渲染子组件时，通过 ref 函数将其存入我们的 ref 容器中
         content: ({ row: parentRecord }) => {

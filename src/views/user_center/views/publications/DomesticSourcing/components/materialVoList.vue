@@ -20,7 +20,8 @@ const props = defineProps(['data'])
 const columns = [
     {
       type: 'expand', // 这是 vxe-table 的展开列，会显示 +/- 图标
-      width: 50,
+      width: 100,
+      title: '点击查看详情',
       // 展开行的内容在这里通过 JSX 定义
       slots: {
         content: ({ row }) => { // vxe-table 的作用域变量是 { row }

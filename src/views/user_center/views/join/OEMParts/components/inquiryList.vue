@@ -50,7 +50,8 @@ const handleToggleExpand = ({ row, expanded }) => {
 const columns = [
     {
       type: 'expand',
-      width: 50,
+      width: 100,
+      title: '点击查看详情',
       slots: {
         // 【关键修改】在渲染子组件时，绑定 ref
         content: ({ row: parentRecord }) => {
