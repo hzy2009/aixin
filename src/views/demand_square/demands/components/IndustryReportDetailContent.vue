@@ -20,10 +20,10 @@
         <div class="report-action-block">
           <div class="report-price-header">
             <p class="original-price">原价: {{ report.unitPrice }}元</p>
-            <p class="member-price">会员价: {{ report.memberUnitPrice || 198 }}元</p>
+            <p class="member-price">会员价: {{ report.memberUnitPrice  }}元</p>
             <p class="vip-price">
               <div>
-                VIP会员价: <span class="vip-price-value">{{ report.vipUnitPrice || 198 }}</span>元
+                VIP会员价: <span class="vip-price-value">{{ report.vipUnitPrice  }}</span>元
               </div>
               <div class="vip-price-tips"> (可分章节单独购买)</div>
             </p>
