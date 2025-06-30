@@ -81,6 +81,7 @@ const formConfigs = [
   { label: '主要研究方向', field: 'skillDesc', span: 24, },
   { label: '论文成果', field: 'paperAchievement', span: 24, },
   { label: '专利数量', field: 'patentCount', span: 24, },
+  { label: '专家人才来源', field: 'sourcing', span: 24, },
 ]
 
 // --- Columns are now defined in vxe-table format ---
