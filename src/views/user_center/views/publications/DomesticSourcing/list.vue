@@ -46,7 +46,7 @@ const pageData = ref({
   url: {
     list: 'apm/apmSourcing/material/list/owner',
     delete: 'apm/apmSourcing/delete',
-    overview: 'apm/apmSourcing/material/overview?referer=owner',
+    overview: 'apm/apmSourcing/overview?referer=owner',
   },
   otherParams: {
     sourcingType: '国产替代寻源'

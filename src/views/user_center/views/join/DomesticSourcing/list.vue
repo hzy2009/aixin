@@ -38,7 +38,7 @@ const actions = reactive([
 const pageData = ref({
   url: {
     list: 'apm/apmSourcing/material/list/join',
-    overview: 'apm/apmSourcing/material/overview?referer=join',
+    overview: 'apm/apmSourcing/overview?referer=join',
   },
   otherParams: {
     sourcingType: '国产替代寻源'
