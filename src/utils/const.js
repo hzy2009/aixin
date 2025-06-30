@@ -58,7 +58,7 @@ export const DOMESTIC_SOURCING_COLUMNS = [
     { title: '需求者', field: 'createUserName', align: 'center' },
     { title: '需求提出日期', field: 'createTime', align: 'center', fieldType: 'date' },
     { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date'},
-    { title: '爱芯享单据号', field: 'materialCode', align: 'center', width: 160  },
+    { title: '内部管理系统单号', field: 'materialCode', align: 'center', width: 160  },
     { title: '选定厂商', field: 'refUserCode', align: 'center', width: 160  },
     { title: '需求状态', field: 'statusName', align: 'center', width: 80 },
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
@@ -71,7 +71,7 @@ export const OEM_PARTS_SOURCING_COLUMNS = [
     { title: '需求者', field: 'createUserName', align: 'center' },
     { title: '需求提出日期', field: 'createTime', align: 'center', fieldType: 'date'},
     { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date'},
-    { title: '爱芯享单据号', field: 'materialCode', align: 'center', width: 160  },
+    { title: '内部管理系统单号', field: 'materialCode', align: 'center', width: 160  },
     { title: '选定厂商', field: 'refUserCode', align: 'center', width: 180  },
     { title: '需求状态', field: 'statusName', align: 'center', width: 80 },
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
