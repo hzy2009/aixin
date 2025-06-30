@@ -19,11 +19,17 @@
             />
           </a>
         </div> -->
-        <div class="member-logo-item-wrapper" @click="xxx">
+        <div class="member-logo-item-wrapper special-hover-effect" >
             <img src="@/assets/images/home/PromoCard1.png" alt="通用件集采" class="member-logo-image" />
+            <div class="block-hover-overlay" @click="xxx">
+            <span class="hover-action-text">点击采购，享受爱芯享会员折扣</span>
+          </div>
         </div>
-          <div class="member-logo-item-wrapper" @click="xxx">
+          <div class="member-logo-item-wrapper special-hover-effect" >
             <img src="@/assets/images/home/PromoCard2.png" alt="通用件集采" class="member-logo-image" />
+            <div class="block-hover-overlay" @click="xxx">
+            <span class="hover-action-text">点击采购，享受爱芯享会员折扣</span>
+          </div>
         </div>
       </div>
       <!-- <div v-if="isLoading && members.length === 0" class="loading-placeholder">
@@ -205,7 +211,6 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 110px; // Fixed height for the logo container to align rows
   // width: 250px;
   background-color: transparent; // No background per item, just image on page bg
   // border: 1px solid @border-color-light; // Image does not show individual borders
@@ -213,31 +218,74 @@ onMounted(() => {
   box-sizing: border-box;
   overflow: hidden; // Ensure image doesn't overflow its container
 
-  .logo-link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%; // Link takes full space of the item wrapper
-      height: 100%;
-  }
+  flex: 1; // Each block takes equal space
+  min-width: 0; // For flex responsiveness
+  position: relative; // For absolute positioning of content and button
+  border-radius: @border-radius-base; // Slight rounding for the block
+  overflow: hidden; // Keep content within rounded corners and hide overflowing image parts
+  // aspect-ratio: 16 / 7; // Optional: Enforce an aspect ratio for the blocks
+  height: 120px; // Or a fixed height, adjust to match image
+  // .logo-link {
+  //     display: flex;
+  //     align-items: center;
+  //     justify-content: center;
+  //     width: 100%; // Link takes full space of the item wrapper
+  //     height: 100%;
+  // }
 
   .member-logo-image {
-    max-width: 100%; // Max width relative to its container (1/4 of grid width - gap)
-    // max-height: 110px; // Max height for the logo image itself (as per prev examples)
-    object-fit: contain; // Scale down to fit, maintain aspect ratio
-    // filter: grayscale(100%); // Grayscale as per image
-    // opacity: 0.7; // Slightly faded
-    transition: filter 0.3s ease, opacity 0.3s ease, transform 0.2s ease;
-
-    &:hover {
-      filter: grayscale(0%);
-      opacity: 1;
-      transform: scale(1.05); // Slight zoom on hover
-    }
+    width: 100%;
+    height: 100%;
+    object-fit: cover; // Ensure image covers the block
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    transition: transform 0.4s ease-out;
   }
 }
 .pagination-container {
     margin-top: @spacing-xl;
     text-align: center;
+}
+.hover-action-text{
+      color: #fff;
+
+}
+.special-hover-effect:hover {
+    .block-background-image {
+      // transform: scale(1.05); // Still zoom background
+    }
+    .block-hover-overlay {
+      opacity: 1;
+      pointer-events: auto; // Make overlay interactive on hover
+    }
+    .hover-action-text {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .original-button.small-initial-button { // Hide the initial small button
+        opacity: 0;
+        transform: scale(0.9); // Optional: shrink it out
+        pointer-events: none;
+    }
+}
+.block-hover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.45); // Semi-transparent dark overlay from image
+  z-index: 3; // Overlay on top of .block-content
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  opacity: 0; // Hidden by default
+  pointer-events: none; // Not interactive by default
+  transition: opacity 0.3s ease-in-out;
+  cursor: pointer; // Overlay itself is clickable
 }
 </style>
