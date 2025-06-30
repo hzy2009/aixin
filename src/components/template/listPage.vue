@@ -94,7 +94,7 @@ import { useUserDemandList } from './hooks/useUserDemandList.js';
 import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore';
 import { selectOptions as getDictOptions, formatDate } from '@/utils/index';
-
+import { message } from 'ant-design-vue';
 
 import detailIcon from '@/assets/images/icon-detail.png';
 import delIcon from '@/assets/images/icon-delete.png';
@@ -224,7 +224,9 @@ const handleCheckboxChange = ({ records }) => {
 
 const operationsClick = (btn) => {
     if (authStore?.token) {
-        if (!hasPermission(props.requiredRoles)) return
+        if (!hasPermission(props.requiredRoles)) {
+            return message.error('抱歉，您没有权限执行此操作');
+        }
         if (btn.btnType == 'exportXls') {
             handleExportXls(btn.fileName, btn.url, {
                 selections: selectedRowKeys.value.join(','),
