@@ -33,7 +33,7 @@ const actions = reactive([
 const pageData = ref({
   url: {
     list: 'apm/apmSourcing/material/list/front',
-    overview: 'apm/apmSourcing/overview/front'
+    overview: 'apm/apmSourcing/material/overview/front'
   },
   otherParams: {
     sourcingType: '国产替代寻源'
