@@ -46,7 +46,7 @@ const columns = [
     },
     {
       title: '状态',
-      field: 'statusName', // field -> field
+      field: 'statusCode', // field -> field
       formatter: ({ cellValue }) => {
           const option = selectOptions('material_code').find(item => item.value == cellValue);
           return option ? option.label : '';
