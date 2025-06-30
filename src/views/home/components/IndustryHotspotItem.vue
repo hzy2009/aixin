@@ -1,5 +1,5 @@
 <template>
-  <a :href="`/industry-dynamics/${hotspot.id}`" target="_blank" class="hotspot-item" @click.prevent="onItemClick">
+  <a :href="`/industry-dynamics/${hotspot.id}`" target="_blank" class="hotspot-item" @click.prevent="onItemClick(hotspot)">
     <span class="hotspot-title">{{ hotspot.title }}</span>
     <span class="hotspot-date">{{ hotspot.createTime ? formatDate(hotspot.createTime) : '' }}</span>
   </a>
@@ -19,7 +19,7 @@ const props = defineProps({
   }
 });
 const router = useRouter();
-const onItemClick = () => {
+const onItemClick = (hotspot) => {
   // if (props.hotspot.link && props.hotspot.link !== '#') {
     // If it's an external link, let the browser handle it (or use window.open)
     // If it's an internal route, use router.push
