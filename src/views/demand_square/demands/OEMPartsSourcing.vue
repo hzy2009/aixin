@@ -14,7 +14,7 @@ const router = useRouter();
 
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
-    { id: 'statusCode', label: '寻源结果', maxVisibleWithoutMore: 7, dictKey: 'sourcing_status' }
+    { id: 'statusCode', label: '寻源结果', maxVisibleWithoutMore: 7, dictKey: 'origin_substitute_sourcing_status' }
 ]);
 
 // --- Table Columns (remains in component as it's UI specific) ---
@@ -44,7 +44,7 @@ const pageData = ref({
     showBanner: true,
     userStatCardVisible: true,
     pageTitle: '原厂件寻源',
-    statusDictKey: 'sourcing_status',
+    statusDictKey: 'origin_substitute_sourcing_status',
     tableOperations: [
         {
         title: '创建原厂件寻源',
