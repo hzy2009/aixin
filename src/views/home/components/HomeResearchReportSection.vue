@@ -34,7 +34,7 @@ import SectionHeader from '@/components/common/SectionHeader.vue';
 import defHttp from '@/utils/http/axios'
 import {getFileAccessHttpUrl} from '@/utils/index'
 // Placeholder images
-import reportImg1 from '@/assets/images/home/report-thumb-1.png';
+import reportImg1 from '@/assets/images/fallback/bannerreport.jpg';
 import { useAuthStore } from '@/store/authStore';
 const authStore = useAuthStore();
 
