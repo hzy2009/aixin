@@ -181,7 +181,7 @@ const vxeTableColumns = computed(() => {
                             <span class="action-item">
                                 <span><img src={ delIcon} alt="" class="action-icon" /></span>
                                 <AButton type="link"  class="action-link" key={i}>
-                                    {action.text}
+                                    {action.formatText ? action.formatText(row) : action.text}
                                 </AButton>
                             </span>
                          </a-popconfirm>
@@ -189,7 +189,7 @@ const vxeTableColumns = computed(() => {
                         <span class="action-item" onClick={() => handleActionClick(row, action)}>
                             <span><img src={ detailIcon } alt="" class="action-icon" /></span>
                             <AButton type="link"  class="action-link" key={i}>
-                                {action.text}
+                                {action.formatText ? action.formatText(row) : action.text}
                             </AButton>
                         </span>
                     ))

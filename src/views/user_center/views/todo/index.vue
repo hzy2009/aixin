@@ -52,6 +52,13 @@ const actions = reactive([
     text: '编辑',
     icon: FileTextOutlined,
     clickFn: viewDetails,
+    formatText: (record) => {
+      if (record.businessName === '原厂件寻源') {
+        return '报价';
+      } else {
+        return '报名';
+      }
+    }
     // isVisible: (record) => record.statusCode !== '已完成' // Example condition
   }
 ]);
