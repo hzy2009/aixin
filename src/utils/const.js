@@ -83,7 +83,7 @@ export const OFFLINE_EVENT_COLUMNS = [
     { title: '活动单号', field: 'code', align: 'center', width: 180 },
     { title: '活动类型', field: 'activityTypeName', align: 'center'},
     { title: '发起人', field: 'createUserName', align: 'center'},
-    { title: '参与者', field: 'registerList ', align: 'center', formatter: ({ cellValue }) => {
+    { title: '参与者', field: 'registerList', align: 'center', formatter: ({ cellValue }) => {
         const text = cellValue && cellValue.length > 0 && cellValue.map(item => item.registerUserWorkNo).join(',');
         return text || ''
     }},
