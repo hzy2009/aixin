@@ -25,7 +25,9 @@
 
         <div class="search-action-bar">
             <div class="search-input-wrapper">
-                <a-input v-model:value="search" placeholder="请输入关键字" allow-clear @pressEnter="handleSearch">
+                <a-input v-model:value="search" placeholder="请输入关键字" allow-clear @pressEnter="handleSearch" @blur="(e) => {
+                    if (e.target.value === '') handleSearch();
+                }">
                     <template #prefix>
                         <SearchOutlined />
                     </template>

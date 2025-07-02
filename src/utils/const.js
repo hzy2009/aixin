@@ -4,7 +4,7 @@ export const BUSINESS_REF_LIST = {
     title: '与此单关联的平台其他业务',
     groupCode: 'businessRefList',
     columns: [
-        { title: '序号', type: 'seq', width: 74, align: 'center' },
+        { title: '序号', type: 'seq', width: 48, align: 'center' },
         { 
             title: '单据类型', 
             field: 'refBusinessType', 
@@ -23,7 +23,7 @@ export const REGISTER_LIST = {
     title: '参与者',
     groupCode: 'registerList',
     columns: [
-        { title: '序号', type: 'seq', width: 74, align: 'center' },
+        { title: '序号', type: 'seq', width: 48, align: 'center' },
         { 
             title: '类型', 
             field: 'registerType',
@@ -40,46 +40,46 @@ export const REGISTER_LIST = {
 export const TENANT_REF_LIST = {
     groupCode: 'tenantRefList',
     columns: [
-        { title: '序号', type: 'seq', width: 74, align: 'center' },
-        { title: '研发攻关承接方', field: 'refUserName', align: 'center' },
+        { title: '序号', type: 'seq', width: 48, align: 'center' },
+        { title: '检测验证承接方', field: 'refUserName', align: 'center' },
     ]
 }
 
 export const STATUS_HISTORY_COLUMNS = [
-    { title: '序号', type: 'seq', width: 74, align: 'center' },
+    { title: '序号', type: 'seq', width: 48, align: 'center' },
     { title: '状态', field: 'operateName', align: 'center' },
     { title: '完成日期', field: 'createTime', align: 'center' },
     { title: '备注', field: 'remark', align: 'center' },
 ]
 
 export const DOMESTIC_SOURCING_COLUMNS = [
-    { title: '序号', type: 'seq', width: 74, align: 'center' },
+    { title: '序号', type: 'seq', width: 48, align: 'center' },
     { title: '爱芯享寻源单号', field: 'code', align: 'center', width: 180 },
     { title: '需求者', field: 'createUserName', align: 'center' },
     { title: '需求提出日期', field: 'createTime', align: 'center', fieldType: 'date' },
     { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date'},
     { title: '内部管理单号', field: 'materialCode', align: 'center', width: 160  },
     { title: '选定厂商', field: 'refUserCode', align: 'center', width: 160  },
-    { title: '需求状态', field: 'statusName', align: 'center', width: 80 },
+    { title: '需求状态', field: 'statusName', align: 'center', width: 100 },
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
 ]
 
 export const OEM_PARTS_SOURCING_COLUMNS = [
-    { title: '序号', type: 'seq', width: 74, align: 'center' },
+    { title: '序号', type: 'seq', width: 48, align: 'center' },
     { title: '爱芯享寻源单号', field: 'code', align: 'center', width: 180 },
     { title: '需求者', field: 'createUserName', align: 'center' },
     { title: '需求提出日期', field: 'createTime', align: 'center', fieldType: 'date'},
     { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date'},
     { title: '内部管理单号', field: 'materialCode', align: 'center', width: 160  },
     { title: '选定厂商', field: 'refUserCode', align: 'center', width: 180  },
-    { title: '需求状态', field: 'statusName', align: 'center', width: 80 },
+    { title: '需求状态', field: 'statusName', align: 'center', width: 100 },
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
 ]
 
 export const OFFLINE_EVENT_COLUMNS = [
-    { title: '序号', type: 'seq', width: 74, align: 'center' },
+    { title: '序号', type: 'seq', width: 48, align: 'center' },
     { title: '活动单号', field: 'code', align: 'center', width: 180 },
     { title: '活动类型', field: 'activityTypeName', align: 'center'},
     { title: '发起人', field: 'createUserName', align: 'center'},
@@ -95,13 +95,13 @@ export const OFFLINE_EVENT_COLUMNS = [
 ]
 
 export const PUBLIC_RELATIONS_COLUMNS = [
-    { title: '序号', type: 'seq', width: 74, align: 'center' },
+    { title: '序号', type: 'seq', width: 48, align: 'center' },
     { title: '研发攻关单号', field: 'code', align: 'center', width: 180 },
     { title: '研发攻关类型', field: 'rdType', align: 'center'},
     { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date'},
     { title: '需求提出方', field: 'createUserName', align: 'center' },
     { title: '承接方', field: 'refUserName', align: 'center' },
-    { title: '需求状态', field: 'statusName', align: 'center', width: 80 },
+    { title: '需求状态', field: 'statusName', align: 'center', width: 100 },
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
 ]
@@ -111,10 +111,10 @@ const getALLProductTypes = () => {
    return [...allProductTypes, ...allProductTypeMaterials]
 }
 export const VERIFICATION_COLUMNS = [
-    { title: '序号', type: 'seq', width: 74, align: 'center' },
-    { title: '检测验证单号', field: 'code', align: 'center', width: 180 },
-    { title: '检测验证类别', field: 'projectType', align: 'center', fieldType: 'select', width: 110, dictKey: 'project_type' },
-    { title: '产品类别', field: 'productTypeName', align: 'center', width: 180,
+    { title: '序号', type: 'seq', width: 48, align: 'center' },
+    { title: '检测验证单号', field: 'code', align: 'center', width: 160 },
+    { title: '检测验证类别', field: 'projectType', align: 'center', fieldType: 'select', width: 100, dictKey: 'project_type' },
+    { title: '产品类别', field: 'productTypeName', align: 'center', width: 100,
         // formatter: ({row}) => {
         //     let txt = row?.productMainTypeName
         //     const spaces = '\u00A0'.repeat(4); // 4个空格的间距
@@ -124,11 +124,11 @@ export const VERIFICATION_COLUMNS = [
         //     return txt
         // } 
     },
-    { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date', width: 100},
-    { title: '需求方', field: 'createUserName', align: 'center', width: 120 },
-    { title: '承接方', field: 'refUserName', align: 'center' , width: 120},
+    { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date', width: 120},
+    { title: '需求方', field: 'createUserName', align: 'center' },
+    { title: '承接方', field: 'refUserName', align: 'center' },
     { title: '创建日期', field: 'createTime', align: 'center', fieldType: 'date', width: 100},
-    { title: '需求状态', field: 'statusName', align: 'center', width: 80 },
+    { title: '需求状态', field: 'statusName', align: 'center', width: 100 },
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
 ]

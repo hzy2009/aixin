@@ -87,7 +87,7 @@ const pageData = reactive({
   pageTitle,
   tableSections: [
     {
-      title: '检查验证承接方',
+      title: '检测验证承接方',
       ...TENANT_REF_LIST,
     },
     {

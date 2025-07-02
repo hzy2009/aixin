@@ -178,7 +178,7 @@ defineExpose({ resetAllFilters });
 
 .filter-tag {
   cursor: pointer;
-  padding: 3px 10px;
+  padding: 3px 6px;
   border-radius: @border-radius-sm;
   background-color: transparent;
   color: @text-color-secondary;
@@ -217,7 +217,7 @@ defineExpose({ resetAllFilters });
     flex-grow: 1;
     display: flex;
     flex-wrap: wrap;
-    gap: @spacing-sm @spacing-md;
+    gap: 0px;
     align-items: center;
   }
 
@@ -274,7 +274,7 @@ defineExpose({ resetAllFilters });
 .expanded-options {
   display: flex;
   flex-wrap: wrap;
-  gap: @spacing-sm @spacing-md;
+  gap: 0;
   align-items: center;
 }
 </style>

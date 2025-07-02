@@ -54,7 +54,7 @@ const pageData = reactive({
   listPath: '/user/published/PublicRelations',
   tableSections: [
     {
-      title: '研发攻关承接方',
+      title: '检测验证承接方',
       ...TENANT_REF_LIST
     },
     {
