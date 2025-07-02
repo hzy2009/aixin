@@ -183,8 +183,8 @@ const onLoginFinish = async values => {
     const redirectPath = router.currentRoute.value.query.redirect || '/';
     router.push(redirectPath);
   } catch (error) {
-    handleChangeCheckCode();
-    message.error(error?.response?.data?.message || error?.message || '登录失败!');
+    if (error == '验证码错误') handleChangeCheckCode();
+    // message.error(error?.response?.data?.message || error?.message || '登录失败!');
   } finally {
     loginLoading.value = false;
   }
