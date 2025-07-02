@@ -112,7 +112,7 @@ const getALLProductTypes = () => {
 }
 export const VERIFICATION_COLUMNS = [
     { title: '序号', type: 'seq', width: 48, align: 'center' },
-    { title: '检测验证单号', field: 'code', align: 'center', width: 160 },
+    { title: '爱芯享检测验证单号', field: 'code', align: 'center', width: 160 },
     { title: '检测验证类别', field: 'projectType', align: 'center', fieldType: 'select', width: 100, dictKey: 'project_type' },
     { title: '产品类别', field: 'productTypeName', align: 'center', width: 100,
         // formatter: ({row}) => {
@@ -128,7 +128,7 @@ export const VERIFICATION_COLUMNS = [
     { title: '需求方', field: 'createBy', align: 'center' },
     { title: '承接方', field: 'refUserName', align: 'center' },
     { title: '创建日期', field: 'createTime', align: 'center', fieldType: 'date', width: 100},
-    { title: '需求状态', field: 'statusName', align: 'center', width: 100 },
+    { title: '需求状态', field: 'statusName', align: 'center', width: 80 },
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
-    { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
+    { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 90 },
 ]
