@@ -2,7 +2,7 @@
     <section class="home-breakthroughs-section section-padding">
       <div class="container">
         <div class="breakthroughs-column">
-          <SectionHeader title-ch="最新国产化研发成果" title-en="LATEST BREAKTHROUGHS IN PARTS&MATERIALS LOCALIZATION"  />
+          <SectionHeader title-ch="研发动态" title-en="R&D DYNAMICS"  />
           <!-- Use the new SpecificPagedList component -->
           <SpecificPagedList
             :items="breakthroughItems"

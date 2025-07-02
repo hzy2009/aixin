@@ -27,7 +27,7 @@
 
             <a-date-picker v-else-if="field.fieldType === 'date'" v-model:value="internalFormModel[field.field]"
               :placeholder="field.placeholder || `请选择${field.label}`"
-              :disabled-date="disabledDate"
+              :disabled-date="field.disabledDate || function(e) {return disabledDate(e, field)}"
               :value-format="field.valueFormat || 'YYYY-MM-DD HH:mm:ss'" :show-time="field.showTime"
               style="width: 100%;" :disabled="field.disabled" />
 
@@ -298,9 +298,12 @@ const getHeaders = () => {
     'X-Tenant-Id': auth.userInfo.id || '0',
   });
 }
-const disabledDate = (current) => {
+const disabledDate = (current, field) => {
+  if (field.field == 'expireDate' && current) {
+    return current < dayjs(internalFormModel['createTime']).subtract(-1, 'day');
+  }
   // 不能选择上个月的日期
-  return current && current < dayjs().subtract(1, 'month');
+  return current && current < dayjs().subtract(1, 'day');
 }
 //特殊代码不复用的烂代码，赶时间
 const handleSelectProductMainTypeChange = (v, field, option) => {

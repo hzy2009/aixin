@@ -35,23 +35,6 @@ export function useNavigation() {
       matchPaths: ['/industry-dynamics'] 
     },
     { 
-      key: 'alternativeSourcing', 
-      label: '国产替代寻源', 
-      path: '/demands/DomesticSourcing', 
-      matchPaths: [
-        '/demands/DomesticSourcing',
-        '/user/published/DomesticSourcing',
-        '/user/join/DomesticSourcing',
-        '/user/published/DomesticSourcing/create'
-      ],
-      subItems: [
-        { key: 'demand_squareDomesticSourcing', label: '需求广场', path: '/demands/DomesticSourcing' },
-        { key: 'publishedDomesticSourcing', label: '我发布的', path: '/user/published/DomesticSourcing' },
-        { key: 'joinDomesticSourcing', label: '我参与的', path: '/user/join/DomesticSourcing' },
-        { key: 'createDomesticSourcing', label: '创建国产替代寻源', path: '/user/published/DomesticSourcing/create' },
-      ] 
-    },
-    { 
       key: 'originalSourcing', 
       label: '原厂件寻源', 
       path: '/demands/OEMPartsSourcing', 
@@ -69,15 +52,32 @@ export function useNavigation() {
       ] 
     },
     { 
+      key: 'alternativeSourcing', 
+      label: '国产替代寻源', 
+      path: '/demands/DomesticSourcing', 
+      matchPaths: [
+        '/demands/DomesticSourcing',
+        '/user/published/DomesticSourcing',
+        '/user/join/DomesticSourcing',
+        '/user/published/DomesticSourcing/create'
+      ],
+      subItems: [
+        { key: 'demand_squareDomesticSourcing', label: '需求广场', path: '/demands/DomesticSourcing' },
+        { key: 'publishedDomesticSourcing', label: '我发布的', path: '/user/published/DomesticSourcing' },
+        { key: 'joinDomesticSourcing', label: '我参与的', path: '/user/join/DomesticSourcing' },
+        { key: 'createDomesticSourcing', label: '创建国产替代寻源', path: '/user/published/DomesticSourcing/create' },
+      ] 
+    },
+    { 
       key: 'tongyongcaiji', 
-      label: '通用采集',
+      label: '通用件集采',
       path: '/other/tongyongcaiji', 
       matchPaths: [
         '/other/tongyongcaiji',
       ],
       subItems: [
         { key: 'aiante', label: '爱安特', path: 'https://www.ant-fa.com', fn:() => window.open('https://www.ant-fa.com', '_blank') },
-        { key: 'jingdongqiyegou', label: '京东企业购', path: 'https://b.jd.com', fn: () => window.open('https://b.jd.com', '_blank') },
+        { key: 'jingdongqiyegou', label: '京东工业', path: 'https://b.jd.com', fn: () => window.open('https://b.jd.com', '_blank') },
       ]
     },
     { 
