@@ -1,8 +1,8 @@
 <template>
   <div class="industry-report-item" @click="viewReportDetails(report.id)">
     <div class="report-item__date-badge">
-      <div class="date-month-day">{{ formatDate(report.updateTime, 'MM/DD') }}</div>
-      <div class="date-year">{{ formatDate(report.updateTime, 'YYYY') }}</div>
+      <div class="date-month-day">{{ formatDate(report.createTime, 'MM/DD') }}</div>
+      <div class="date-year">{{ formatDate(report.createTime, 'YYYY') }}</div>
     </div>
     <div class="report-item__image-container">
       <img :src="getImgUrl(report.imageUrl)" :alt="report.title"
