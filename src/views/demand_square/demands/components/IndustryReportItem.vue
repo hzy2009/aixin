@@ -16,7 +16,7 @@
       <!-- <p v-if="report.author" class="report-author">作者：{{ report.author }}</p> -->
       <p class="report-number">报告编号：{{ report.code }}</p>
       <p class="report-number report-summary"><span>摘要：</span></p>
-      <p class="report-description-short" v-html="report.description"></p>
+      <div class="report-description-short" v-html="report.description"></div>
     </div>
     <div class="report-item__actions">
       <!-- <span class="report-views"><EyeOutlined /> {{ report.views || 0 }}</span> -->
@@ -193,7 +193,7 @@ const viewReportDetails = (id) => {
     line-height: 24px;
     letter-spacing: 0%;
     margin-bottom: 10px;
-    color: #656C74;
+    color: #333;
     line-height: 1.4;
     transition: color 0.3s ease;
     overflow: hidden;
@@ -247,12 +247,15 @@ const viewReportDetails = (id) => {
     letter-spacing: 0%;
     text-align: justify;
     color: #656C74;
-    height: 66px;
+    height: 88px;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 3; // Show 2 lines for description
+    -webkit-line-clamp: 4; // Show 2 lines for description
     -webkit-box-orient: vertical;
+    :deep(p){
+      margin-bottom: 0;
+    }
   }
 }
 
