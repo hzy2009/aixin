@@ -91,6 +91,10 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
 
   const handleFiltersChange = (newFilters) => {
     currentFilters.value = { ...newFilters };
+    if(currentFilters.value.skillAreaCode_MultiString){
+      currentFilters.value['skillAreaCode'] = `,${currentFilters.value.skillAreaCode_MultiString},`
+      delete currentFilters.value.skillAreaCode_MultiString
+    }
     pagination.current = 1; 
     loadTableData();
   };
