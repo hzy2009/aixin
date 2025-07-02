@@ -45,7 +45,8 @@ import SectionHeader from '@/components/common/SectionHeader.vue'; // Assuming y
 const handlePurchaseClick = (partnerKey) => {
   // TODO: Implement actual navigation or action for purchase
   console.log(`Purchase button clicked for partner: ${partnerKey}`);
-  message.info(`即将跳转到 ${partnerKey === 'aian' ? '爱安特' : '京东工业'} 采购页面... (功能开发中)`);
+  // message.info(`即将跳转到 ${partnerKey === 'aian' ? '爱安特' : '京东工业'} 采购页面... (功能开发中)`);
+  message.info(`业务即将上线，敬请期待`);
   // Example: window.open('https://partner-url.com', '_blank');
 };
 </script>

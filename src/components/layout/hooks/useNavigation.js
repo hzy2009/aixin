@@ -147,7 +147,7 @@ export function useNavigation() {
       key: 'techForum', 
       label: '技术论坛', 
       fn: (router, message) => { 
-        message.info('网站建设中，敬请期待');
+        message.info('业务即将上线，敬请期待');
       } 
     },
   ]);
