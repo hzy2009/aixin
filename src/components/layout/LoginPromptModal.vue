@@ -145,8 +145,9 @@ const handleLogin = async values => {
     emit('loginSuccess', res);
     emit('close'); // Close modal on success
   } catch (error) {
-    console.error('Login failed:', error);
-    message.error(error.message || '登录失败，请检查您的凭据。');
+    // console.error('Login failed:', error);
+    if(error == '验证码错误') handleChangeCheckCode();
+    // message.error(error.message || '登录失败，请检查您的凭据。');
   } finally {
     isLoading.value = false;
   }
