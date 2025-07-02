@@ -29,6 +29,7 @@
               :placeholder="field.placeholder || `请选择${field.label}`"
               :disabled-date="field.disabledDate || function(e) {return disabledDate(e, field)}"
               :value-format="field.valueFormat || 'YYYY-MM-DD HH:mm:ss'" :show-time="field.showTime"
+              @change="(v) => handleDateChange(v, field)"
               style="width: 100%;" :disabled="field.disabled" />
 
             <a-range-picker v-else-if="field.fieldType === 'dateRange'" v-model:value="internalFormModel[field.field]"
@@ -200,6 +201,15 @@ const handleSelectChange = (value, fieldConfig, option) => {
     fieldConfig.onChange({ value, field: fieldConfig, form: internalFormModel, option });
   }
 };
+const handleDateChange = (value, fieldConfig) => {
+  emit('fieldChange', { field: fieldConfig.field, value, formModel: internalFormModel });
+  if (fieldConfig.field == 'createTime') {
+    internalFormModel['expireDate'] = '';
+  }
+  if (fieldConfig.onChange) {
+    fieldConfig.onChange({ value, field: fieldConfig, form: internalFormModel });
+  }
+}
 
 // --- Image Upload Specific Logic ---
 const previewVisible = ref(false);
@@ -300,7 +310,7 @@ const getHeaders = () => {
 }
 const disabledDate = (current, field) => {
   if (field.field == 'expireDate' && current) {
-    return current < dayjs(internalFormModel['createTime']).subtract(-1, 'day');
+    return current < dayjs(internalFormModel['createTime']).subtract(0, 'day');
   }
   // 不能选择上个月的日期
   return current && current < dayjs().subtract(1, 'day');
