@@ -53,9 +53,13 @@ const pageData = reactive({
   detailPath: '/user/published/PublicRelations/detail',
   listPath: '/user/published/PublicRelations',
   tableSections: [
-    {
-      title: '检测验证承接方',
-      ...TENANT_REF_LIST
+   {
+      title: '研发攻关承接方',
+      groupCode: 'tenantRefList',
+      columns: [
+          { title: '序号', type: 'seq', width: 48, align: 'center' },
+          { title: '研发攻关承接方', field: 'refUserName', align: 'center' },
+      ]
     },
     {
       ...BUSINESS_REF_LIST
