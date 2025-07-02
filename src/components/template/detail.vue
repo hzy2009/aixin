@@ -183,7 +183,7 @@ const emit = defineEmits(['goBack', 'cancel', 'submit']);
 const handleformConfigsAfter = (data) => {
 	if (auth.userInfo.loginTenantId == data.tenantId) {
 		baseFormConfigs.value = formConfigs.filter(item => {
-			return item.field !== 'createUserName'
+			return item.field !== 'createBy'
 		})
 	}
 };

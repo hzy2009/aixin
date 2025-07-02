@@ -30,7 +30,7 @@ const formConfigs = [
     label: '期望匹配周期', field: 'matchPeriodCode', dictKey: 'rd_breakthrough_period', span: 24, fieldType: 'select'
   },
   // { label: '需求有效期', field: 'expireDate', span: 24 },
-  { label: '需求提出方', field: 'createUserName', span: 24, },
+  { label: '需求提出方', field: 'createBy', span: 24, },
 ]
 
 

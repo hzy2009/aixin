@@ -26,7 +26,7 @@ const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
   { label: '寻源编号', field: 'code', span: 24, },
-  { label: '需求提出方', field: 'createUserName', span: 24, },
+  { label: '需求提出方', field: 'createBy', span: 24, },
   { label: '需求提出日期', field: 'createTime', span: 24 , fieldType: 'date'},
   { label: '期望完成日期', field: 'expireDate', span: 24 , fieldType: 'date'},
   { label: '寻源结果', field: 'materialVoList', span: 24 , fieldType: 'slot'},

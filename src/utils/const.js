@@ -55,7 +55,7 @@ export const STATUS_HISTORY_COLUMNS = [
 export const DOMESTIC_SOURCING_COLUMNS = [
     { title: '序号', type: 'seq', width: 48, align: 'center' },
     { title: '爱芯享寻源单号', field: 'code', align: 'center', width: 180 },
-    { title: '需求者', field: 'createUserName', align: 'center' },
+    { title: '需求者', field: 'createBy', align: 'center' },
     { title: '需求提出日期', field: 'createTime', align: 'center', fieldType: 'date' },
     { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date'},
     { title: '内部管理单号', field: 'materialCode', align: 'center', width: 160  },
@@ -68,7 +68,7 @@ export const DOMESTIC_SOURCING_COLUMNS = [
 export const OEM_PARTS_SOURCING_COLUMNS = [
     { title: '序号', type: 'seq', width: 48, align: 'center' },
     { title: '爱芯享寻源单号', field: 'code', align: 'center', width: 180 },
-    { title: '需求者', field: 'createUserName', align: 'center' },
+    { title: '需求者', field: 'createBy', align: 'center' },
     { title: '需求提出日期', field: 'createTime', align: 'center', fieldType: 'date'},
     { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date'},
     { title: '内部管理单号', field: 'materialCode', align: 'center', width: 160  },
@@ -82,7 +82,7 @@ export const OFFLINE_EVENT_COLUMNS = [
     { title: '序号', type: 'seq', width: 48, align: 'center' },
     { title: '活动单号', field: 'code', align: 'center', width: 180 },
     { title: '活动类型', field: 'activityTypeName', align: 'center'},
-    { title: '发起人', field: 'createUserName', align: 'center'},
+    { title: '发起人', field: 'createBy', align: 'center'},
     { title: '参与者', field: 'registerList', align: 'center', formatter: ({ cellValue }) => {
         const text = cellValue && cellValue.length > 0 && cellValue.map(item => item.registerUserWorkNo).join(',');
         return text || ''
@@ -99,7 +99,7 @@ export const PUBLIC_RELATIONS_COLUMNS = [
     { title: '研发攻关单号', field: 'code', align: 'center', width: 180 },
     { title: '研发攻关类型', field: 'rdType', align: 'center'},
     { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date'},
-    { title: '需求提出方', field: 'createUserName', align: 'center' },
+    { title: '需求提出方', field: 'createBy', align: 'center' },
     { title: '承接方', field: 'refUserName', align: 'center' },
     { title: '需求状态', field: 'statusName', align: 'center', width: 100 },
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
@@ -125,7 +125,7 @@ export const VERIFICATION_COLUMNS = [
         // } 
     },
     { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date', width: 120},
-    { title: '需求方', field: 'createUserName', align: 'center' },
+    { title: '需求方', field: 'createBy', align: 'center' },
     { title: '承接方', field: 'refUserName', align: 'center' },
     { title: '创建日期', field: 'createTime', align: 'center', fieldType: 'date', width: 100},
     { title: '需求状态', field: 'statusName', align: 'center', width: 100 },

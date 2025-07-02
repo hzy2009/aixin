@@ -23,7 +23,7 @@ const isManagerAdmin = computed(() => {
 const router = useRouter();
 // --- 表单配置 ---
 const formConfigs = [
-  { label: '需求提出方', field: 'createUserName', fieldType: 'input', span: 24, disabled: true, },
+  { label: '需求提出方', field: 'createBy', fieldType: 'input', span: 24, disabled: true, },
   {
     label: '研发攻关类型', field: 'rdCode', fieldType: 'select', detailField: 'rdType', dictKey: 'rd_type', span: 24,
     onChange: ({ value, form, option }) => {
