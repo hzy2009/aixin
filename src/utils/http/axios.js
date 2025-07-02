@@ -146,7 +146,7 @@ class AxiosHttpClient {
         onOk: () => {
           authStore.logout();
           router.push({
-            name: 'Login',
+            path: 'login',
           }).finally(() => { Modal._hasPromise = false; });
         },
         onCancel: () => {
@@ -159,7 +159,7 @@ class AxiosHttpClient {
       });
     } else {
        router.push({
-          name: 'Login',
+          path: 'login',
           query: { redirect: router.currentRoute.value.fullPath }
        }).finally(() => { Modal._hasPromise = false; });
     }
