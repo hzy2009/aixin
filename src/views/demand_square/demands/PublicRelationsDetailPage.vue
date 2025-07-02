@@ -35,7 +35,7 @@ const internalDemandId = ref(props.IdProp);
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
-  { label: '研发攻关编号', field: 'code', span: 24 },
+  { label: '爱芯享研发攻关单号', field: 'code', span: 24 },
   {
     label: '研发攻关类型', field: 'rdType', dictKey: 'rd_type', span: 24,
   },

@@ -96,7 +96,7 @@ export const OFFLINE_EVENT_COLUMNS = [
 
 export const PUBLIC_RELATIONS_COLUMNS = [
     { title: '序号', type: 'seq', width: 48, align: 'center' },
-    { title: '研发攻关单号', field: 'code', align: 'center', width: 180 },
+    { title: '爱芯享研发攻关单号', field: 'code', align: 'center', width: 180 },
     { title: '研发攻关类型', field: 'rdType', align: 'center'},
     { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date'},
     { title: '需求提出方', field: 'createBy', align: 'center' },
