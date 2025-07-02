@@ -41,7 +41,7 @@ const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
   {
-    label: '检测验证编号', field: 'code', span: 24,
+    label: '爱芯享检测验证单号', field: 'code', span: 24,
   },
   { label: '期望完成日期', field: 'expireDate', fieldType: 'date', span: 24, fieldType: 'date' },
   // {
