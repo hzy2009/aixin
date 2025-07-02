@@ -36,7 +36,7 @@ const formConfigs = [
   {
     label: '检测验证类别', field: 'projectType', fieldType: 'select', dictKey: 'project_type', span: 24,
     onChange: ({form, option}) => {
-      form.projectTypeName = option.label || '';
+      form.projectName = option.label || '';
     }
   },
   // {
