@@ -53,7 +53,7 @@ export function useNavigation() {
     },
     { 
       key: 'alternativeSourcing', 
-      label: '国产替代寻源', 
+      label: '多元化寻源', 
       path: '/demands/DomesticSourcing', 
       matchPaths: [
         '/demands/DomesticSourcing',
@@ -65,7 +65,7 @@ export function useNavigation() {
         { key: 'demand_squareDomesticSourcing', label: '需求广场', path: '/demands/DomesticSourcing' },
         { key: 'publishedDomesticSourcing', label: '我发布的', path: '/user/published/DomesticSourcing' },
         { key: 'joinDomesticSourcing', label: '我参与的', path: '/user/join/DomesticSourcing' },
-        { key: 'createDomesticSourcing', label: '创建国产替代寻源', path: '/user/published/DomesticSourcing/create' },
+        { key: 'createDomesticSourcing', label: '创建多元化寻源', path: '/user/published/DomesticSourcing/create' },
       ] 
     },
     { 

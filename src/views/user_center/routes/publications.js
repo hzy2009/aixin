@@ -13,7 +13,7 @@ export const publicationsRoutes = {
     {
       path: 'DomesticSourcing',
       component: DomesticSourcing,
-      meta: { title: '国产替代寻源', breadcrumb: ['国产替代寻源'] } // Appends to base
+      meta: { title: '多元化寻源', breadcrumb: ['多元化寻源'] } // Appends to base
     },
     {
       path: 'OEMPartsSourcing',

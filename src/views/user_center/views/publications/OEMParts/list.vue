@@ -26,7 +26,7 @@ const tableColumns = reactive([
 ]);
 
 const addButton = reactive({
-    text: '创建国产替代寻源',
+    text: '创建多元化寻源',
     clickFn: createNewSourcing
 })
 

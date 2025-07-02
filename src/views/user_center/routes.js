@@ -68,18 +68,18 @@ const userCenterRoutes = [
       {
         path: 'DomesticSourcing', // 相对路径
         component: DomesticSourcing, // 这个页面现在是子路由
-        meta: { title: '我发布的 - 国产替代寻源' }
+        meta: { title: '我发布的 - 多元化寻源' }
       },
       {
         path: 'DomesticSourcing/detail/:id', 
         component: DomesticDetailPage, 
         props: route => ({ IdProp: route.params.id }), // 通过 props 传递 mode 和 id
-        meta: { title: '国产替代寻源', breadcrumb: ['国产替代寻源'] }
+        meta: { title: '多元化寻源', breadcrumb: ['多元化寻源'] }
       },
       {
         path: 'DomesticSourcing/create', 
         component: DomesticEditPage, 
-        meta: { title: '创建国产替代寻源需求', breadcrumb: ['创建国产替代寻源需求'] }
+        meta: { title: '创建多元化寻源需求', breadcrumb: ['创建多元化寻源需求'] }
       },
 
 
@@ -159,13 +159,13 @@ const userCenterRoutes = [
      {
         path: 'DomesticSourcing', // 相对路径
         component: joinDomesticSourcing, // 这个页面现在是子路由
-        meta: { title: '我参与的 - 国产替代寻源', roles: ['apm-vip']  }
+        meta: { title: '我参与的 - 多元化寻源', roles: ['apm-vip']  }
       },
       {
         path: 'DomesticSourcing/detail/:id', 
         component: joinDomesticSourcingDetailPage, 
         props: route => ({ IdProp: route.params.id }), // 通过 props 传递 mode 和 id
-        meta: { title: '国产替代寻源详情', breadcrumb: ['国产替代寻源'], roles: ['apm-vip'] }
+        meta: { title: '多元化寻源详情', breadcrumb: ['多元化寻源'], roles: ['apm-vip'] }
       },
       {
         path: 'OEMPartsSourcing',

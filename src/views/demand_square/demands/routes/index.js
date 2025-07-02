@@ -28,13 +28,13 @@ export default [{
     {
       path: 'DomesticSourcing',
       component: DomesticSourcing,
-      meta: { title: '国产替代寻源', breadcrumb: ['国产替代寻源'], requiresAuth: false } // Appends to base
+      meta: { title: '多元化寻源', breadcrumb: ['多元化寻源'], requiresAuth: false } // Appends to base
     },
     {
       path: 'DomesticDetailPage/:id',
       component: DomesticDetailPage,
       props: route => ({ IdProp: route.params.id}),
-      meta: { title: '国产替代寻源详情', breadcrumb: ['国产替代寻源详情']} // Appends to base
+      meta: { title: '多元化寻源详情', breadcrumb: ['多元化寻源详情']} // Appends to base
     },
     {
       path: 'OEMPartsSourcing',

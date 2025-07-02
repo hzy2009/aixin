@@ -45,7 +45,7 @@ const menuItems = computed(() => [
     label: '需求广场',
     icon: () => h(AppstoreOutlined), // Or relevant icon
     children: [
-      { key: 'DomesticSourcing', label: '国产替代寻源', path: '/user/published/DomesticSourcing' },
+      { key: 'DomesticSourcing', label: '多元化寻源', path: '/user/published/DomesticSourcing' },
       { key: 'OEMPartsSourcing', label: '原厂件寻源', path: '/user/published/OEMPartsSourcing' },
       { key: 'PublicRelations', label: '研发攻关', path: '/user/published/PublicRelations' },
       { key: 'Verification', label: '检测验证', path: '/user/published/Verification' },
@@ -56,7 +56,7 @@ const menuItems = computed(() => [
     label: '我发布的',
     icon: () => h(FileTextOutlined),
     children: [
-      { key: 'MyDomesticSourcing', label: '国产替代寻源', path: '/user/publications/MyDomesticSourcing' },
+      { key: 'MyDomesticSourcing', label: '多元化寻源', path: '/user/publications/MyDomesticSourcing' },
       { key: 'MyOEMPartsSourcing', label: '原厂件寻源', path: '/user/publications/MyOEMPartsSourcing' },
       { key: 'MyPublicRelations', label: '研发攻关', path: '/user/publications/MyPublicRelations' },
       { key: 'MyVerification', label: '检测验证', path: '/user/publications/MyVerification' },

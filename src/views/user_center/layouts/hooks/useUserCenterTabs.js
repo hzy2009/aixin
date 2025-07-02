@@ -15,7 +15,7 @@ const defaultTabsConfig = {
     label: '我发布的',
     defaultSubTabKey: 'publishedAlternativeSourcing', // 第一个子页签作为默认
     subTabs: [
-      { key: 'AlternativeSourcing', label: '国产替代寻源', path: '/user/published/DomesticSourcing' },
+      { key: 'AlternativeSourcing', label: '多元化寻源', path: '/user/published/DomesticSourcing' },
       { key: 'OriginalSourcing', label: '原厂件寻源', path: '/user/published/OEMPartsSourcing' },
       { key: 'RndCollaboration', label: '研发攻关', path: '/user/published/PublicRelations' },
       { key: 'TestingValidation', label: '检测验证', path: '/user/published/Verification' },
@@ -28,7 +28,7 @@ const defaultTabsConfig = {
     label: '我参与的',
     defaultSubTabKey: 'joinAlternativeSourcing',
     subTabs: [
-      { key: 'AlternativeSourcing', label: '国产替代寻源', path: '/user/join/DomesticSourcing' },
+      { key: 'AlternativeSourcing', label: '多元化寻源', path: '/user/join/DomesticSourcing' },
       { key: 'OriginalSourcing', label: '原厂件寻源', path: '/user/join/OEMPartsSourcing' },
       { key: 'RndCollaboration', label: '研发攻关', path: '/user/join/PublicRelations' },
       { key: 'TestingValidation', label: '检测验证', path: '/user/join/Verification' },
