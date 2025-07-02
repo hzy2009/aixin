@@ -288,6 +288,9 @@ const save = async (record, actionType) => {
         }
         finalRecordData.isFinished = 1;
     } else { // 'start_second_round'
+        if (finalRecordData.secondInquiryList.length === 0) {
+           return message.error('请请勾选贸易商');
+        }
         finalRecordData.isSecondInquiryEnable = 1;
     }
 
