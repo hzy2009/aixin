@@ -7,7 +7,7 @@
           <!-- “更多”之前可见的选项 -->
           <a-tag v-for="option in group.options.slice(0, group.maxVisibleWithoutMore || group.options.length)"
             :key="option.value"
-            :class="['filter-tag', { 'filter-tag--active': selectedFilters[group.id]?.includes(option.value) && option.value !== '' }]"
+            :class="['filter-tag', { 'filter-tag--active': selectedFilters[group.id]?.includes(option.value) }]"
             @click="toggleFilter(group.id, option.value)">
             {{ option.label }}
           </a-tag>
@@ -28,7 +28,7 @@
           <div class="expanded-options">
             <!-- 折叠区域内的选项 -->
             <a-tag v-for="option in group.options.slice(group.maxVisibleWithoutMore || 0)" :key="option.value"
-              :class="['filter-tag', { 'filter-tag--active': selectedFilters[group.id]?.includes(option.value) && option.value !== '' }]"
+              :class="['filter-tag', { 'filter-tag--active': selectedFilters[group.id]?.includes(option.value) }]"
               @click="toggleFilter(group.id, option.value)">
               {{ option.label }}
             </a-tag>
@@ -187,8 +187,8 @@ defineExpose({ resetAllFilters });
 
   &:hover {
     // color: @primary-color;
-    background: @primary-color;
-    color: #fff;
+    // background: @primary-color;
+    // color: #fff;
   }
 
   &--active {
