@@ -85,7 +85,7 @@ const pageData = reactive({
   listPath: '/user/published/Verification',
   tableSections: [
     {
-      title: '检查验证方',
+      title: '检测验证承接方',
       ...TENANT_REF_LIST
     },
     {
