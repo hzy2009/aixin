@@ -1,9 +1,8 @@
 // src/utils/http/axios.js
 import axios from 'axios';
 import { useAuthStore } from '@/store/authStore';
-import { useRouter } from 'vue-router';
+import router  from '@/router';
 import { message as AntMessage, Modal } from 'ant-design-vue';
-const router = useRouter();
 console.log('import.meta.env.VITE_API_BASE_URL', import.meta.env.VITE_API_BASE_URL)
 const defaultConfig = {
   baseURL: import.meta.env.VITE_API_BASE_URL || '/jeecgboot',
@@ -146,7 +145,7 @@ class AxiosHttpClient {
         onOk: () => {
           authStore.logout();
           router.push({
-            path: 'login',
+            path: '/login',
           }).finally(() => { Modal._hasPromise = false; });
         },
         onCancel: () => {
@@ -159,7 +158,7 @@ class AxiosHttpClient {
       });
     } else {
        router.push({
-          path: 'login',
+          path: '/login',
           query: { redirect: router.currentRoute.value.fullPath }
        }).finally(() => { Modal._hasPromise = false; });
     }
