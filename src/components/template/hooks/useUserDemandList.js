@@ -118,7 +118,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
   const handleTablePaginationChange = (pageInfo) => {
     pagination.current = pageInfo.current;
     pagination.pageSize = pageInfo.pageSize;
-    loadTableData();
+    return loadTableData();
   };
 
   const getStatusTagColor = (statusKey) => statusMapping[statusKey]?.color || 'default';

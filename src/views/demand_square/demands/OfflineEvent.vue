@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="jsx">
-import { ref, reactive } from 'vue'; // onMounted removed as hook handles it
+import { ref, reactive, nextTick } from 'vue'; // onMounted removed as hook handles it
 import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import OfflineEventCard from './components/OfflineEventCard.vue';
@@ -72,14 +72,17 @@ function create() {
   router.push(`/user/published/OfflineEvent/create`);
 };
 const onChange = (page, pageSize) => {
-  // window.scrollTo({
-  //   top: 500,
-  //   behavior: 'smooth'
-  // });
-  refListPage.value.handleTablePaginationChange({
+  const res = refListPage.value.handleTablePaginationChange({
     current: page,
     pageSize
   });
+  res.then(() => {
+    nextTick(() => {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+      });
+    })
+  })
 }
 </script>
 
