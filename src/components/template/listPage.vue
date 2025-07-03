@@ -288,6 +288,7 @@ const handleActionClick = (record, action) => {
 
 const handleReset = () => {
     clearfilters();
+    userFilterAccordionRef.value?.resetAllFilters()
     multiDateRangePickerRef.value?.resetAllDates();
 };
 
