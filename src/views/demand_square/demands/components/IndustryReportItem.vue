@@ -116,7 +116,7 @@ const viewReportDetails = (id) => {
   // flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  text-align: right;
   // padding-right: @spacing-lg;
   // border-right: 1px solid @border-color-light;
   margin-right: 18px;
