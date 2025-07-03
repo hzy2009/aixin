@@ -1,7 +1,7 @@
 // src/utils/http/axios.js
 import axios from 'axios';
 import { useAuthStore } from '@/store/authStore';
-import router  from '@/router';
+import router  from '@/router/index.js';
 import { message as AntMessage, Modal } from 'ant-design-vue';
 console.log('import.meta.env.VITE_API_BASE_URL', import.meta.env.VITE_API_BASE_URL)
 const defaultConfig = {
