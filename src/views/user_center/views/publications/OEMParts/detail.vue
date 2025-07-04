@@ -29,8 +29,8 @@ const router = useRouter();
 const formConfigs = [
   { label: '爱芯寻源单号', field: 'code', span: 24, },
   { label: '需求提出方', field: 'createBy', span: 24, },
-  { label: '需求提出日期', field: 'createTime', span: 24, fieldType: 'date'},
-  { label: '计划完成日期', field: 'expireDate', span: 24 , fieldType: 'date'},
+  { label: '需求创建日期', field: 'createTime', span: 24, fieldType: 'date'},
+  { label: '期望完成日期', field: 'expireDate', span: 24 , fieldType: 'date'},
   { label: '寻源结果', field: 'inquiryList', span: 24 , fieldType: 'slot'},
 ]
 // const demandTypeDisplayName = '国产替代寻源需求';

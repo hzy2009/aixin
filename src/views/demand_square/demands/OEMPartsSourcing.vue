@@ -55,11 +55,11 @@ const pageData = ref({
     dateRangeConfig: [
         {
             field: 'createTime', // Unique key for this date range
-            label: '需求提出日期',
+            label: '需求创建日期',
         },
         {
             field: 'expireDate',
-            label: '计划完成日期',
+            label: '期望完成日期',
         }
     ],
     searchTitle: '原厂件寻源',

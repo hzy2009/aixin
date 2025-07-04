@@ -19,7 +19,14 @@ const filterConfigForPage = reactive([
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = reactive([
   {type: 'checkbox', width: 34},
-  ...DOMESTIC_SOURCING_COLUMNS.filter(column => column.key !== 'actions'),
+  { title: '序号', type: 'seq', fixed: 'left', width: 50, align: 'center' },
+  { title: '爱芯享寻源单号', field: 'code', align: 'center', width: 170 },
+  { title: '需求方', field: 'createBy', align: 'center', width: 170 },
+  { title: '需求创建日期', field: 'createTime', align: 'center', fieldType: 'date', width: 100},
+  { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date', width: 100},
+  { title: '内部管理单号', field: 'materialCode', align: 'center', width: 130 },
+  { title: '选定厂商', field: 'refUserCode', align: 'center', width: 156  },
+  { title: '需求状态', field: 'statusName', align: 'center', width: 90 },
   { title: '操作', width: '160px', align: 'center', fixed: 'right', key: 'actions' },
 ]);
 
@@ -83,7 +90,7 @@ const pageData = ref({
   dateRangeConfig: [
     {
       field: 'createTime', // Unique key for this date range
-      label: '需求提出日期',
+      label: '需求创建日期',
       // placeholder: ['需求开始', '需求结束'] // Optional: custom placeholder
     },
     {

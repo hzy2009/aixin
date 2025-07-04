@@ -267,7 +267,7 @@ defineExpose({ resetAllFilters });
   }
 
   :deep(.ant-collapse-content-box) {
-    padding: @spacing-sm 0 @spacing-md (@spacing-sm + 115px);
+    padding: @spacing-sm 0 @spacing-md 178px
   }
 }
 

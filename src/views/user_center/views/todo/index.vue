@@ -37,7 +37,7 @@ const tableColumns = reactive([
   {type: 'seq', title: '序号', width: 74, align: 'center'},
  { title: '单号', field: 'code', align: 'center', width: 180 },
  { title: '业务类型', field: 'businessName', align: 'center', width: 180},
- { title: '需求提出日期', field: 'createTime', align: 'center', fieldType: 'date' },
+ { title: '需求创建日期', field: 'createTime', align: 'center', fieldType: 'date' },
  { title: '需求状态', field: 'statusName', align: 'center' },
  { title: '操作类型', field: 'remark', align: 'center' },
  { title: '操作历史', field: 'xxx', align: 'center' },
@@ -76,7 +76,7 @@ const pageData = reactive({
   dateRangeConfig: [
     {
       field: 'createTime', // Unique key for this date range
-      label: '需求提出日期',
+      label: '需求创建日期',
       // placeholder: ['需求开始', '需求结束'] // Optional: custom placeholder
     },
   ],

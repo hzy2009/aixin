@@ -19,7 +19,6 @@ const filterConfigForPage = reactive([
 ]);
 
 const tableColumns = reactive([
-    {type: 'checkbox', width: 34},
     ...OEM_PARTS_SOURCING_COLUMNS
 ]);
 
@@ -62,12 +61,12 @@ const pageData = ref({
     dateRangeConfig: [
         {
         field: 'createTime', // Unique key for this date range
-        label: '需求提出日期',
+        label: '需求创建日期',
         // placeholder: ['需求开始', '需求结束'] // Optional: custom placeholder
         },
         {
         field: 'expireDate',
-        label: '计划完成日期',
+        label: '期望完成日期',
         }
     ],
     tableOperations: [
