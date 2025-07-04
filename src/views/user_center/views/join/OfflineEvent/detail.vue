@@ -20,7 +20,7 @@ const props = defineProps({
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
-  { label: '活动编号', field: 'code', span: 24 },
+  { label: '爱芯活动单号', field: 'code', span: 24 },
   { label: '活动类型', field: 'activityTypeName', dictKey: 'activity_type', span: 24 },
   { label: '活动内容', field: 'activityName', span: 24,  },
   { label: '活动结果', field: 'description', span: 24 },
