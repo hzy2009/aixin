@@ -8,7 +8,7 @@
       </template>
       <template v-slot:endTime="{ dataSource }">
         <span>{{ dataSource.endTime ? formatDate(dataSource.endTime) : ''}}</span>
-        <a-button class='upgrade-button' @click="renewVip">会员续费</a-button>
+        <a-button class='upgrade-button' @click="renewVip">会员续约</a-button>
       </template>
       <template v-slot:createTime="{ dataSource }">
         <span>{{ dataSource.createTime ? formatDate(dataSource.createTime) : ''}}</span>
