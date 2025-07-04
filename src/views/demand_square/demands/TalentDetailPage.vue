@@ -79,7 +79,7 @@ const formConfigs = [
   { label: '研究领域', field: 'skillAreaName', span: 24 },
   { label: '意愿合作方向', field: 'desiredCooperationDirection', span: 24, },
   { label: '主要研究方向', field: 'skillDesc', span: 24, },
-  { label: '论文成果', field: 'paperAchievement', span: 24, },
+  { label: '论文数量', field: 'paperAchievement', span: 24, },
   { label: '专利数量', field: 'patentCount', span: 24, },
   { label: '专家人才来源', field: 'sourcing', span: 24, },
 ]
