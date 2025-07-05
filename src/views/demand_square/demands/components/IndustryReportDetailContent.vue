@@ -20,13 +20,13 @@
         <div class="report-action-block">
           <div class="report-price-header">
             <p class="original-price">原价: {{ report.unitPrice }}元</p>
-            <p class="member-price">会员价: {{ report.memberUnitPrice  }}元</p>
-            <p class="vip-price">
+            <p class="member-price">会员价: {{ report.memberUnitPrice }}元</p>
+            <div class="vip-price">
               <div>
-                VIP会员价: <span class="vip-price-value">{{ report.vipUnitPrice  }}</span>元
+                VIP会员价: <span class="vip-price-value">{{ report.vipUnitPrice }}</span>元
               </div>
               <div class="vip-price-tips"> (可分章节单独购买)</div>
-            </p>
+            </div>
           </div>
           <a-button type="primary" danger @click="handlePurchase" :loading="isPurchasing"
             class="purchase-button-header">
@@ -38,11 +38,11 @@
 
     <!-- Outline Section Below -->
     <section class="report-outline-section info-section">
-					<div class="section-title-wrapper">
-						<h3 class="section-title-text">大纲/目录</h3>
-					</div>
-          <div class="outline-list" v-html="report.outline">
-          </div>
+      <div class="section-title-wrapper">
+        <h3 class="section-title-text">大纲/目录</h3>
+      </div>
+      <div class="outline-list" v-html="report.outline">
+      </div>
     </section>
 
     <!-- Full Content (If applicable and different from summary) -->
@@ -57,18 +57,19 @@
       <p v-if="report.previous">
         <router-link :to="`/demands/IndustryReportDetailPage/${report.previous.id}`">
           <span class="link-text">上一篇：</span>
-          <span class="link-reportName">{{ report.previous.reportName}}</span>
+          <span class="link-reportName">{{ report.previous.reportName }}</span>
         </router-link>
       </p>
       <p v-if="report.next">
-       <router-link :to="`/demands/IndustryReportDetailPage/${report.next.id}`">
-        <span class="link-text">下一篇：</span>
-        <span class="link-reportName">{{ report.next.reportName}}</span>
-      </router-link>
+        <router-link :to="`/demands/IndustryReportDetailPage/${report.next.id}`">
+          <span class="link-text">下一篇：</span>
+          <span class="link-reportName">{{ report.next.reportName }}</span>
+        </router-link>
       </p>
     </div>
   </div>
   <operationResultPage v-else @primaryAction="handleToDetail" @secondaryAction="handleToList" />
+  <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" title="联系管理员购买" actionText="一键敲门"></PhoneAndEmailModal>
 </template>
 
 <script setup>
@@ -80,6 +81,7 @@ import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore';
 import { getFileAccessHttpUrl } from '@/utils/index';
 import { useRouter } from 'vue-router';
+import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
 const router = useRouter();
 const authStore = useAuthStore();
 const modalStore = useModalStore();
@@ -96,21 +98,27 @@ const props = defineProps({
     default: false // By default, don't show it to keep this component focused on the header part
   }
 });
-
 const isPurchasing = ref(false);
 const defaultThumbnail = defaultThumbnailPlaceholder;
 const isRegisterSuccess = ref(false);
-
+const phoneAndEmailModal = ref()
 const handlePurchase = async () => {
   if (authStore?.token) {
-    const response = await defHttp.post({ url: `/apm/apmResearchReportDetail/newTodo/${props.report.id}` });
-    if (response && response.success) {
-      isRegisterSuccess.value = true;
-    }
+    phoneAndEmailModal.value.opneModal()
   } else {
     modalStore.showLogin();
   }
 };
+
+const handleFinish = async (data) => {
+  const response = await defHttp.post({ url: `/apm/apmResearchReportDetail/newTodo/${props.report.id}`, params: data });
+  if (response && response.success) {
+    isRegisterSuccess.value = true;
+    phoneAndEmailModal.value.handleClose()
+  } else {
+    message.error(response.message);
+  }
+}
 
 const handleToDetail = () => {
   isRegisterSuccess.value = false;
@@ -214,6 +222,13 @@ defineExpose({
     font-size: 14px;
     line-height: 1.7;
     color: @text-color-secondary;
+    height: 66px;
+    display: -webkit-box; // For multi-line ellipsis
+    -webkit-line-clamp: 3; // Show 3 lines for summary
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 66px; // Ensure space for 3 lines
 
     .summary-label {
       font-family: PingFang SC;
@@ -242,9 +257,9 @@ defineExpose({
       -webkit-box-orient: vertical;
       overflow: hidden;
       text-overflow: ellipsis;
-      min-height: calc(1.7em * 3); // Ensure space for 3 lines
+      min-height: 66px; // Ensure space for 3 lines
       display: inline;
-      :deep(p){
+      :deep(p) {
         display: inline;
       }
     }
@@ -264,7 +279,8 @@ defineExpose({
     flex-direction: column; // Stack domain and report number
     gap: 3px; // Small gap between domain and report number
   }
-  .report-code{
+
+  .report-code {
     color: #272A30;
   }
 
@@ -352,18 +368,19 @@ defineExpose({
     margin-bottom: @spacing-md;
     padding-bottom: @spacing-sm;
     border-bottom: 1px solid @border-color-light;
-		position: relative;
+    position: relative;
+
     &::after {
-			content: '';
-			display: block;
-			width: 100%;
-			height: 2px;
-			background-color: @primary-color;
-			position: absolute;
-			bottom: -(@spacing-xs + 1px);
-			left: 0;
-			z-index: 1;
-		}
+      content: '';
+      display: block;
+      width: 100%;
+      height: 2px;
+      background-color: @primary-color;
+      position: absolute;
+      bottom: -(@spacing-xs + 1px);
+      left: 0;
+      z-index: 1;
+    }
   }
 
   .outline-list {
@@ -379,36 +396,37 @@ defineExpose({
     }
   }
 }
-.section-title-wrapper {
-	margin-bottom: @spacing-md;
-	padding-bottom: @spacing-xs;
-	border-bottom: 1px solid @border-color-light;
-	position: relative;
 
-	.section-title-text {
-		color: #656C74;
-		margin: 0;
+.section-title-wrapper {
+  margin-bottom: @spacing-md;
+  padding-bottom: @spacing-xs;
+  border-bottom: 1px solid @border-color-light;
+  position: relative;
+
+  .section-title-text {
+    color: #656C74;
+    margin: 0;
     font-family: PingFang SC;
     font-weight: 400;
     font-size: 14px;
     line-height: 15px;
     letter-spacing: 0px;
 
-		display: inline-block;
-		position: relative;
+    display: inline-block;
+    position: relative;
 
-		&::after {
-			content: '';
-			display: block;
-			width: 100%;
-			height: 2px;
-			background-color: @primary-color;
-			position: absolute;
-			bottom: -10px;
-			left: 0;
-			z-index: 1;
-		}
-	}
+    &::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 2px;
+      background-color: @primary-color;
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      z-index: 1;
+    }
+  }
 }
 
 .report-body-content {
@@ -460,21 +478,23 @@ defineExpose({
 
 
 .report-navigation-footer {
-  .link-text{
-      color: @primary-color;
-    }
-    .link-reportName{
-      color: #656C74;
-    }
+  .link-text {
+    color: @primary-color;
+  }
+
+  .link-reportName {
     color: #656C74;
-    font-family: PingFang SC;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 28px;
-    letter-spacing: 0%;
-    line-height: 1.6;
-    padding: 24px;
-    background-color: @background-color-base;
+  }
+
+  color: #656C74;
+  font-family: PingFang SC;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 28px;
+  letter-spacing: 0%;
+  line-height: 1.6;
+  padding: 24px;
+  background-color: @background-color-base;
   // border: 1px solid @border-color-light;
 
   p {
@@ -493,7 +513,8 @@ defineExpose({
     }
   }
 }
-.vip-price-tips{
+
+.vip-price-tips {
   font-family: PingFang SC;
   font-weight: 400;
   font-size: 14px;
