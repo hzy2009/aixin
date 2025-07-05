@@ -17,7 +17,7 @@ import defHttp from '@/utils/http/axios'
 import { useModalStore } from '@/store/modalStore'; 
 
 import {message} from 'ant-design-vue'
-import { BUSINESS_REF_LIST, TENANT_REF_LIST, STATUS_HISTORY_COLUMNS} from '@/utils/const';
+import {  STATUS_HISTORY_COLUMNS} from '@/utils/const.jsx';
 const editPage = ref()
 const authStore = useAuthStore();
 const modalStore = useModalStore();

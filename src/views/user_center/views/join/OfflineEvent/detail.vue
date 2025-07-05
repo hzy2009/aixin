@@ -9,7 +9,7 @@ import { ref, computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import detail from '@/components/template/detail.vue';
 import { useAuthStore } from '@/store/authStore';
-import { BUSINESS_REF_LIST, REGISTER_LIST, STATUS_HISTORY_COLUMNS} from '@/utils/const';
+import { BUSINESS_REF_LIST, REGISTER_LIST, STATUS_HISTORY_COLUMNS} from '@/utils/const.jsx';
 import defHttp from '@/utils/http/axios'
 import { message } from 'ant-design-vue';
 

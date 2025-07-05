@@ -6,8 +6,7 @@
       :columns="columns"
       :row-config="{ keyField: 'id' }"
       border
-    >
-    </vxe-grid>
+    />
 </template>
 
 <script setup lang="jsx">
@@ -21,7 +20,7 @@ const props = defineProps(['data'])
 const columns = [
     {
       type: 'expand', // 这是 vxe-table 的展开列，会显示 +/- 图标
-      width: 100,
+      width: 120,
       title: '点击查看详情',
       // 展开行的内容在这里通过 JSX 定义
       slots: {
@@ -38,11 +37,12 @@ const columns = [
     {
       type: 'seq', // 使用 vxe-table 内置的序号类型
       title: '序号',
-      width: 80,
+      width: 60,
     },
     {
       title: '内部管理单号',
       field: 'materialCode', // field -> field
+      width: 150,
     },
     {
       title: '状态',

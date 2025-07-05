@@ -10,7 +10,7 @@ import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 import { useAuthStore } from '@/store/authStore';
-import {OFFLINE_EVENT_COLUMNS} from '@/utils/const';
+import {OFFLINE_EVENT_COLUMNS} from '@/utils/const.jsx';
 
 const router = useRouter();
 

@@ -9,7 +9,7 @@ import { ref, reactive } from 'vue'; // onMounted removed as hook handles it
 import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
-import { PUBLIC_RELATIONS_COLUMNS } from '@/utils/const';
+import { PUBLIC_RELATIONS_COLUMNS } from '@/utils/const.jsx';
 const router = useRouter();
 
 // --- Filter Configuration (remains in component as it's UI specific) ---
