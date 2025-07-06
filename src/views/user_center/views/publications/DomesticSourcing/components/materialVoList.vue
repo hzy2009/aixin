@@ -4,6 +4,7 @@
       class="custom-detail-table"
       :data="props.data"
       :columns="columns"
+      resizable
       :row-config="{ keyField: 'id' }"
       border
     />
@@ -20,14 +21,14 @@ const props = defineProps(['data'])
 const columns = [
     {
       type: 'expand', // 这是 vxe-table 的展开列，会显示 +/- 图标
-      width: 120,
+      width: 98,
       title: '点击查看详情',
       // 展开行的内容在这里通过 JSX 定义
       slots: {
         content: ({ row }) => { // vxe-table 的作用域变量是 { row }
           return (
             <>
-              <userRefList data={row.tenantRefList} style="margin: 16px;"></userRefList>
+              {/* <userRefList data={row.tenantRefList} style="margin: 16px;"></userRefList> */}
               <businessRefList data={row.businessRefList} style="margin: 16px;"></businessRefList>
             </>
           )
@@ -37,12 +38,12 @@ const columns = [
     {
       type: 'seq', // 使用 vxe-table 内置的序号类型
       title: '序号',
-      width: 60,
+      width: 46,
     },
     {
       title: '内部管理单号',
       field: 'materialCode', // field -> field
-      width: 150,
+      width: 110,
     },
     {
       title: '状态',
@@ -50,7 +51,33 @@ const columns = [
       formatter: ({ cellValue }) => {
           const option = selectOptions('material_code').find(item => item.value == cellValue);
           return option ? option.label : '';
-      }
+      },
+      width: 80,
+    },
+    {
+      title: '厂商1',
+      field: 'refUserCode1', // field -> field
+      width: 168,
+    },
+    {
+      title: '厂商2',
+      field: 'refUserCode2', // field -> field
+      width: 168,
+    },
+    {
+      title: '厂商3',
+      field: 'refUserCode3', // field -> field
+      width: 168,
+    },
+    {
+      title: '厂商4',
+      field: 'refUserCode4', // field -> field
+      width: 168,
     },
 ]
 </script>
+<style>
+.custom-detail-table{
+  max-width: 710px;
+}
+</style>
