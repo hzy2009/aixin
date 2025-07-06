@@ -23,7 +23,8 @@ const formConfigs = [
   { label: '活动类型', field: 'activityTypeCode', dictKey: 'activity_type', fieldType: 'select', span: 24 },
   { label: '活动内容', field: 'description', span: 24, fieldType: 'textarea' },
   { label: '活动结果', field: 'activityResult ', span: 24},
-  { label: '活动日期', field: 'activityDate', span: 24, fieldType: 'date' },
+  { label: '活动开始日期', field: 'activityDate', span: 24, fieldType: 'date' },
+  { label: '活动结束日期', field: 'activityEndDate', span: 24, fieldType: 'date' },
   { label: '封面图片', field: 'imageUrl', fieldType: 'imageUpload', span: 24 },
 ]
 

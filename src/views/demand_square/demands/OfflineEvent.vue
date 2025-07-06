@@ -61,7 +61,7 @@ const pageData = ref({
       },
       {
           field: 'activityDate', // Unique key for this date range
-          label: '活动日期',
+          label: '活动开始日期',
       }
   ],
 })
