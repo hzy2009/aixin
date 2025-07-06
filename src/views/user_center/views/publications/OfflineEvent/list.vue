@@ -72,6 +72,16 @@ const pageData = ref({
             btnType: 'delete',
         },
     ],
+     dateRangeConfig: [
+      {
+          field: 'createTime', // Unique key for this date range
+          label: '需求创建日期',
+      },
+      {
+          field: 'activityDate', // Unique key for this date range
+          label: '活动日期',
+      }
+  ],
     requiredRoles: ['apm-vip', 'apm-vip-inspection']
 })
 
