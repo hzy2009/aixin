@@ -94,7 +94,7 @@ const columns = [
                 <a-input-number
                     v-model:value={row.tax}
                     min={0}
-                    precision={2}
+                    precision={0}
                     max={100}
                     style={{ width: '100%' }}
                 />
