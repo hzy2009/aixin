@@ -56,7 +56,7 @@ export default [{
       path: 'PublicRelationsDetailPage/:id',
       component: PublicRelationsDetailPage,
       props: route => ({ IdProp: route.params.id}),
-      meta: { title: '研发攻关详情', breadcrumb: ['研发攻关详情'], roles: ['apm-vip', 'apm-register', 'apm-register-expert'] } // Appends to base
+      meta: { title: '研发攻关详情', breadcrumb: ['研发攻关详情'] } // Appends to base
     },
     {
       path: 'Verification',

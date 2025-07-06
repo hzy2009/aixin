@@ -170,7 +170,7 @@ const userCenterRoutes = [
       {
         path: 'OEMPartsSourcing',
         component: joinOEMPartsSourcing, 
-        meta: { title: '我参与的 - 原厂件寻源', roles: ['apm-vip', 'apm-vip-inspection', 'apm-register', 'apm-register-expert'] }
+        meta: { title: '我参与的 - 原厂件寻源', roles: ['apm-vip', 'apm-register', 'apm-register-expert'] }
       },
       {
         path: 'OEMPartsSourcing/detail/:id', 
