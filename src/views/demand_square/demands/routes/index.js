@@ -50,13 +50,13 @@ export default [{
     {
       path: 'PublicRelations',
       component: PublicRelations,
-      meta: { title: '研发攻关', breadcrumb: ['研发攻关'], roles: ['apm-vip', 'apm-register', 'apm-register-expert'] } // Appends to base
+      meta: { title: '研发攻关', breadcrumb: ['研发攻关'] } // Appends to base
     },
     {
       path: 'PublicRelationsDetailPage/:id',
       component: PublicRelationsDetailPage,
       props: route => ({ IdProp: route.params.id}),
-      meta: { title: '研发攻关详情', breadcrumb: ['研发攻关详情'] } // Appends to base
+      meta: { title: '研发攻关详情', breadcrumb: ['研发攻关详情'], roles: ['apm-vip', 'apm-register', 'apm-register-expert'] } // Appends to base
     },
     {
       path: 'Verification',
