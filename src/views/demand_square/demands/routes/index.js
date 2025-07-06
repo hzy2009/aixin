@@ -50,7 +50,7 @@ export default [{
     {
       path: 'PublicRelations',
       component: PublicRelations,
-      meta: { title: '研发攻关', breadcrumb: ['研发攻关'] } // Appends to base
+      meta: { title: '研发攻关', breadcrumb: ['研发攻关'], requiresAuth: false } // Appends to base
     },
     {
       path: 'PublicRelationsDetailPage/:id',
