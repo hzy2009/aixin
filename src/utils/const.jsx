@@ -162,6 +162,7 @@ export const OFFLINE_EVENT_COLUMNS = [
     { title: '内容', field: 'description', align: 'center', showOverflow: true, width: 180 },
     { title: '结论', field: 'activityAddress', align: 'center', width: 180 },
     { title: '需求创建日期', field: 'createTime', align: 'center', fieldType: 'date', width: 100 },
+    { title: '活动日期', field: 'activityDate', align: 'center', fieldType: 'date', width: 100 },
     { title: '活动状态', field: 'statusName', align: 'center', width: 80 },
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 90 },
 ]
