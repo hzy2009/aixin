@@ -71,6 +71,11 @@ const columns = [
       field: 'priceIncludingTax',
     },
     {
+      title: '税率%',
+      field: 'tax',
+      width: '100px',
+    },
+    {
       title: '未税价格',
       width: '100px',
       field: 'priceExcludingTax',

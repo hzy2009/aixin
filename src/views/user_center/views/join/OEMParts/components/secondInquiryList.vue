@@ -81,6 +81,27 @@ const columns = [
       }
     },
     {
+      title: '税率%',
+      field: 'tax',
+      width: '160px',
+      slots: {
+        default: ({ row }) => { // customRender -> slots.default, {record} -> {row}
+            const expire = dayjs(row?.expireDate);
+            const disabled = dayjs().isAfter(expire, 'day');
+            return (
+                isSecondRound.value || disabled ? <span>{row.tax}</span> :
+                <a-input-number
+                    v-model:value={row.tax}
+                    min={0}
+                    precision={2}
+                    max={100}
+                    style={{ width: '100%' }}
+                />
+            );
+        },
+      }
+    },
+    {
       title: '未税价格',
       field: 'priceExcludingTax',
       width: '160px',
