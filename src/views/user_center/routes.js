@@ -170,13 +170,13 @@ const userCenterRoutes = [
       {
         path: 'OEMPartsSourcing',
         component: joinOEMPartsSourcing, 
-        meta: { title: '我参与的 - 原厂件寻源', roles: ['apm-vip', 'apm-register', 'apm-register-expert'] }
+        meta: { title: '我参与的 - 原厂件寻源', roles: ['apm-vip', 'apm-vip-inspection', 'apm-register', 'apm-register-expert'] }
       },
       {
         path: 'OEMPartsSourcing/detail/:id', 
         component: joinOEMPartsDetailPage, 
         props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
-        meta: { title: '原厂件寻源详情', breadcrumb: ['原厂件寻源详情'], roles: ['apm-vip', 'apm-vip-inspection', 'apm-register', 'apm-register-expert'] }
+        meta: { title: '原厂件寻源详情', breadcrumb: ['原厂件寻源详情'], roles: ['apm-vip', 'apm-vip-inspection', 'apm-register'] }
       },
       {
         path: 'PublicRelations',
