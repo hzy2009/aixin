@@ -3,27 +3,27 @@
     <!-- Main Report Info Block (Image Left, Details Right) -->
     <div class="report-header-block">
       <div class="report-header__image-wrapper">
-        <img :src="getImgUrl(report.imageUrl)" :alt="report.title" class="report-header-image" />
+        <img :src="getImgUrl(props.report.imageUrl)" :alt="report.title" class="report-header-image" />
       </div>
       <div class="report-header__details">
-        <h1 class="report-main-title-header">{{ report.reportName }}</h1>
-        <div><span>报告来源：</span><span>{{ report.source }}</span></div>
+        <h1 class="report-main-title-header">{{ props.report.reportName }}</h1>
+        <div><span>报告来源：</span><span>{{ props.report.source }}</span></div>
         <div class="report-summary-header">
           <span class="summary-label">摘要：</span>
           <!-- <p class="summary-text">{{ report.description }}</p> -->
-          <div class="summary-text" v-html="report.description"></div>
+          <div class="summary-text" v-html="props.report.description"></div>
         </div>
         <div class="report-meta-info-header">
           <!-- <span>领域：{{ report.reportTypeName }}</span> -->
-          <span>报告编号：<span class="report-code">{{ report.code || '未知字段' }}</span></span>
+          <span>报告编号：<span class="report-code">{{ props.report.code || '未知字段' }}</span></span>
         </div>
         <div class="report-action-block">
           <div class="report-price-header">
-            <p class="original-price">原价: {{ report.unitPrice }}元</p>
-            <p class="member-price">会员价: {{ report.memberUnitPrice }}元</p>
+            <p class="original-price">原价: {{ props.report.unitPrice }}元</p>
+            <p class="member-price">会员价: {{ props.report.memberUnitPrice }}元</p>
             <div class="vip-price">
               <div>
-                VIP会员价: <span class="vip-price-value">{{ report.vipUnitPrice }}</span>元
+                VIP会员价: <span class="vip-price-value">{{ props.report.vipUnitPrice }}</span>元
               </div>
               <div class="vip-price-tips"> (可分章节单独购买)</div>
             </div>
@@ -41,7 +41,7 @@
       <div class="section-title-wrapper">
         <h3 class="section-title-text">大纲/目录</h3>
       </div>
-      <div class="outline-list" v-html="report.outline">
+      <div class="outline-list" v-html="props.report.outline">
       </div>
     </section>
 
@@ -54,16 +54,16 @@
 
     <!-- Previous/Next Navigation Below -->
     <div class="report-navigation-footer">
-      <p v-if="report.previous">
-        <router-link :to="`/demands/IndustryReportDetailPage/${report.previous.id}`">
+      <p v-if="props.report.previous">
+        <router-link :to="`/demands/IndustryReportDetailPage/${props.report.previous.id}`">
           <span class="link-text">上一篇：</span>
-          <span class="link-reportName">{{ report.previous.reportName }}</span>
+          <span class="link-reportName">{{ props.report.previous.reportName }}</span>
         </router-link>
       </p>
-      <p v-if="report.next">
-        <router-link :to="`/demands/IndustryReportDetailPage/${report.next.id}`">
+      <p v-if="props.report.next">
+        <router-link :to="`/demands/IndustryReportDetailPage/${props.report.next.id}`">
           <span class="link-text">下一篇：</span>
-          <span class="link-reportName">{{ report.next.reportName }}</span>
+          <span class="link-reportName">{{ props.report.next.reportName }}</span>
         </router-link>
       </p>
     </div>
@@ -103,11 +103,12 @@ const defaultThumbnail = defaultThumbnailPlaceholder;
 const isRegisterSuccess = ref(false);
 const phoneAndEmailModal = ref()
 const handlePurchase = async () => {
-  if (authStore?.token) {
-    phoneAndEmailModal.value.opneModal()
-  } else {
-    modalStore.showLogin();
-  }
+  // if (authStore?.token) {
+  //   phoneAndEmailModal.value.opneModal()
+  // } else {
+  //   modalStore.showLogin();
+  // }
+  phoneAndEmailModal.value.opneModal()
 };
 
 const handleFinish = async (data) => {
