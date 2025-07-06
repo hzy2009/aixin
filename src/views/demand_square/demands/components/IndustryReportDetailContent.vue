@@ -112,7 +112,7 @@ const handlePurchase = async () => {
 };
 
 const handleFinish = async (data) => {
-  const response = await defHttp.post({ url: `/apm/apmResearchReportDetail/newTodo/${props.report.id}`, params: data });
+  const response = await defHttp.post({ url: `/apm/apmResearchReportDetail/newTodo/front/${props.report.id}`, params: data });
   if (response && response.success) {
     isRegisterSuccess.value = true;
     phoneAndEmailModal.value.handleClose()
