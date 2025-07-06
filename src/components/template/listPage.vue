@@ -124,7 +124,7 @@ const {
 } = props.pageData;
 
 const {
-    selectOptions, stats, currentFilters, search, isLoading, tableData,
+    selectOptions, stats, currentFilters, search, isLoading, tableData,searchParams,
     pagination, handleFiltersChange, triggerSearch, handleTablePaginationChange,
     getStatusTagColor, handleStatClick, handleExportXls, clearfilters,handleDelete, loadTableData
 } = useUserDemandList({
@@ -233,6 +233,9 @@ const operationsClick = (btn) => {
             handleExportXls(btn.fileName, btn.url, {
                 selections: selectedRowKeys.value.join(','),
                 ...otherParams,
+                search: search.value,
+                ...currentFilters.value,
+                ...searchParams.value
             });
         } else if (btn.btnType == 'delete') {
             triggerSearch({ deleteFlag: 1 });
