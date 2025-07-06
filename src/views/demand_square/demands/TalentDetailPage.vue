@@ -93,6 +93,7 @@ const columns = [
 		type: 'seq', // Using vxe-table's built-in sequence type
 		title: '序号',
 		key: 'seq', // Using a unique key is good practice
+    width: 60,
 	},
   {
     title: '授予单位',
