@@ -38,9 +38,10 @@ const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
   { label: '会员等级', field: 'role', span: 24, fieldType: 'slot' },
-  {
-    label: '会员类型', field: 'type', dictKey: 'trade', span: 24, fieldType: 'select',
-  },
+  { label: '会员类型', field: 'role', span: 24 },
+  // {
+  //   label: '会员类型', field: 'roleCode', dictKey: 'trade', span: 24, fieldType: 'select',
+  // },
   { label: '会员开始日期', field: 'createTime', span: 24, fieldType: 'slot'},
   { label: '会员结束日期', field: 'endTime', span: 24, fieldType: 'slot' },
   
