@@ -51,6 +51,7 @@
       <TalentSidebar @reportClick="handleReportClick" />
     </template>
   </ContentWithSidebarLayout>
+  <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" title="联系平台获取专家信息" actionText="一键敲门"></PhoneAndEmailModal>
 </template>
 
 <script setup>
@@ -60,6 +61,7 @@ import detail from '@/components/template/detail.vue';
 import { message } from 'ant-design-vue';
 import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue';
 import TalentSidebar from './components/TalentSidebar.vue';
+import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
 import ManImg from '@/assets/images/auth/m.png';
 import WomanImg from '@/assets/images/auth/w.png';
 import defHttp from '@/utils/http/axios'
@@ -71,6 +73,7 @@ const props = defineProps({
   IdProp: { type: String, default: null },
 });
 const reportData = ref({});
+const phoneAndEmailModal = ref()
 
 const formConfigs = [
   { label: '人才编号', field: 'code', span: 24 },
@@ -90,6 +93,7 @@ const columns = [
 		type: 'seq', // Using vxe-table's built-in sequence type
 		title: '序号',
 		key: 'seq', // Using a unique key is good practice
+    width: 60,
 	},
   {
     title: '授予单位',
@@ -126,10 +130,14 @@ const pageData = reactive({
 })
 
 const submit = async () => {
-  const response = await defHttp.post({ url: `/apm/apmTalent/newTodo/${props.IdProp}` });
+  phoneAndEmailModal.value.opneModal()
+};
+const handleFinish = async (data) => {
+  const response = await defHttp.post({ url: `/apm/apmTalent/newTodo/${props.IdProp}`, params: data });
   if (response && response.success) {
 	  window.scrollTo({ top: 0, behavior: 'smooth' });
     detailRef.value.isCreating = false
+    phoneAndEmailModal.value.handleClose()
   } else {
     message.error(response.message);
   }

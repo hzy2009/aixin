@@ -2,7 +2,7 @@
     <section class="home-breakthroughs-section section-padding">
       <div class="container">
         <div class="breakthroughs-column">
-          <SectionHeader title-ch="研发动态" title-en="R&D DYNAMICS"  />
+          <SectionHeader title-ch="研发动态" title-en="R&D DYNAMICS" more-link="/rd-dynamics" />
           <!-- Use the new SpecificPagedList component -->
           <SpecificPagedList
             :items="breakthroughItems"
@@ -14,6 +14,8 @@
           />
         </div>
       </div>
+    <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" title="填写信息获取最新进展" actionText="联系平台获取最新进展"></PhoneAndEmailModal>
+
     </section>
 </template>
 <script setup>
@@ -22,6 +24,7 @@ import SectionHeader from '@/components/common/SectionHeader.vue';
 import SpecificPagedList from './SpecificPagedList.vue';
 import defHttp from '@/utils/http/axios'
 import { useModalStore } from '@/store/modalStore'; 
+import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
 import { message } from 'ant-design-vue';
 const modalStore = useModalStore();
 const breakthroughItems = ref([]);
@@ -33,14 +36,15 @@ const fetchBreakthroughItems = async () => {
   }
   breakthroughItems.value = items;
 };
-
+const currentItem = ref(null);
+const phoneAndEmailModal = ref(null);
 const handleBreakthroughItemRowClick = (item) => {
   console.log('Breakthrough item ROW clicked:', item);
   // Potentially navigate to a detail page if the row itself is meant to be a link
   // router.push({ name: 'BreakthroughDetail', params: { id: item.id } });
 };
-const handleBreakthroughActionBtnClick = async (item) => {
-  const res = await defHttp.get({ url: `/apm/apmTodo/apmNewsForRd/newTodo/${item.id}`});
+const handleFinish = async (data) => {
+  const res = await defHttp.get({ url: `/apm/apmTodo/apmNewsForRd/newTodo/${currentItem.value.id}`, params: data });
   if (res.success) {
     const defaultConfig = {
       title: '一键敲门成功',
@@ -54,6 +58,10 @@ const handleBreakthroughActionBtnClick = async (item) => {
   } else {
     message.error(res.message)
   }
+}
+const handleBreakthroughActionBtnClick = async (item) => {
+  currentItem.value = item;
+  phoneAndEmailModal.value.opneModal()
 };
 
 onMounted(() => {

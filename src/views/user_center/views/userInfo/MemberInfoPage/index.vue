@@ -26,7 +26,7 @@ import defHttp from '@/utils/http/axios'
 import { useModalStore } from '@/store/modalStore'; 
 import {formatDate} from '@/utils';
 import {message} from 'ant-design-vue'
-import { BUSINESS_REF_LIST, TENANT_REF_LIST, STATUS_HISTORY_COLUMNS} from '@/utils/const';
+import { BUSINESS_REF_LIST, TENANT_REF_LIST, STATUS_HISTORY_COLUMNS} from '@/utils/const.jsx';
 
 const authStore = useAuthStore();
 const modalStore = useModalStore();

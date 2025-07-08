@@ -10,7 +10,7 @@ import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 import { useAuthStore } from '@/store/authStore';
-import {OFFLINE_EVENT_COLUMNS} from '@/utils/const';
+import {OFFLINE_EVENT_COLUMNS} from '@/utils/const.jsx';
 
 const router = useRouter();
 
@@ -72,6 +72,16 @@ const pageData = ref({
             btnType: 'delete',
         },
     ],
+     dateRangeConfig: [
+      {
+          field: 'createTime', // Unique key for this date range
+          label: '需求创建日期',
+      },
+      {
+          field: 'activityDate', // Unique key for this date range
+          label: '活动开始日期',
+      }
+  ],
     requiredRoles: ['apm-vip', 'apm-vip-inspection']
 })
 

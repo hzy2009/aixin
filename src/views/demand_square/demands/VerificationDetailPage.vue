@@ -24,7 +24,7 @@ import detail from '@/components/template/detail.vue';
 import { useAuthStore } from '@/store/authStore';
 import VerificationSidebar from './components/VerificationSidebar.vue'; // Adjust path if needed
 import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue'; // Adjust path if needed
-import { BUSINESS_REF_LIST, TENANT_REF_LIST} from '@/utils/const';
+import { BUSINESS_REF_LIST, TENANT_REF_LIST} from '@/utils/const.jsx';
 
 const authStore = useAuthStore();
 

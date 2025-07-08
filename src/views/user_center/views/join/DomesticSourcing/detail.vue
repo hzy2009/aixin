@@ -14,7 +14,7 @@ import { useRouter } from 'vue-router';
 import detail from '@/components/template/detail.vue';
 import materialVoList from '../../publications/DomesticSourcing/components/materialVoList.vue';
 import { useAuthStore } from '@/store/authStore';
-import { BUSINESS_REF_LIST, TENANT_REF_LIST, STATUS_HISTORY_COLUMNS} from '@/utils/const';
+import { BUSINESS_REF_LIST, TENANT_REF_LIST, STATUS_HISTORY_COLUMNS} from '@/utils/const.jsx';
 
 
 const props = defineProps({

@@ -10,7 +10,7 @@ import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 const router = useRouter();
-import { DOMESTIC_SOURCING_COLUMNS } from '@/utils/const';
+import { DOMESTIC_SOURCING_COLUMNS } from '@/utils/const.jsx';
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
   // { id: 'statusCode', label: '寻源状态', maxVisibleWithoutMore: 9, dictKey: 'sourcing_status' }

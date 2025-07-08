@@ -5,29 +5,16 @@
       :data="props.data"
       :columns="columns"
       border
-    >
-        <!-- bodyCell 插槽不再需要，vxe-table 通过列配置直接处理 -->
-    </vxe-grid>
+    />
 </template>
 
 <script setup>
+import { BUSINESS_REF_LIST } from '@/utils/const.jsx';
 const props = defineProps(['data'])
 
 // 列定义已转换为 vxe-table 格式
 const columns = [
-    {
-      type: 'seq', // 使用 vxe-table 内置的序号类型，更简单
-      title: '序号',
-      width: 80,
-    },
-    {
-      title: '单据类型',
-      field: 'refBusinessTypeName', // field -> field
-    },
-    {
-      title: '单据编号',
-      field: 'refBusinessCode', // field -> field
-    },
+    ...BUSINESS_REF_LIST.columns
 ]
 </script>
 

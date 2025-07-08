@@ -27,6 +27,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
   const search = ref('');
   const isLoading = ref(false);
   const tableData = ref([]);
+  const searchParams = ref({});
   
   // *** THIS IS THE ONLY CHANGE ***
   // Simplified pagination object to only hold state, not UI config.
@@ -115,6 +116,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
 
   const triggerSearch = (params = {}) => {
     pagination.current = 1;
+    searchParams.value = params;
     loadTableData(params);
   };
 
@@ -217,6 +219,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     isLoading,
     tableData,
     pagination,
+    searchParams,
     loadStats,
     loadTableData,
     handleFiltersChange,

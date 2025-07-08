@@ -153,7 +153,7 @@ const handleTradeTypeChange = (value, record, options) => {
 const columns = [
     {
       type: 'expand',
-      width: 100,
+      width: 120,
       title: '点击查看详情',
       slots: {
         // 【关键修改】在渲染子组件时，通过 ref 函数将其存入我们的 ref 容器中
@@ -190,10 +190,12 @@ const columns = [
       type: 'seq',
       title: '序号',
       width: 60,
+      align: 'center',
     },
     {
       title: '内部管理单号',
       field: 'materialCode',
+      width: 150,
     },
 	{
       title: '选定贸易商',

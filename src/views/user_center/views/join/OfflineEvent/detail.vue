@@ -9,7 +9,7 @@ import { ref, computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import detail from '@/components/template/detail.vue';
 import { useAuthStore } from '@/store/authStore';
-import { BUSINESS_REF_LIST, REGISTER_LIST, STATUS_HISTORY_COLUMNS} from '@/utils/const';
+import { BUSINESS_REF_LIST, REGISTER_LIST, STATUS_HISTORY_COLUMNS} from '@/utils/const.jsx';
 import defHttp from '@/utils/http/axios'
 import { message } from 'ant-design-vue';
 
@@ -25,7 +25,8 @@ const formConfigs = [
   { label: '活动内容', field: 'activityName', span: 24,  },
   { label: '活动结果', field: 'description', span: 24 },
   { label: '活动名称', field: 'activityName', span: 24 },
-  { label: '活动日期', field: 'activityDate', span: 24 },
+  { label: '活动开始日期', field: 'activityDate', span: 24 },
+  { label: '活动结束日期', field: 'activityEndDate', span: 24 },
   { label: '封面图片', field: 'imageUrl', fieldType: 'imageUpload', span: 24 },
 ]
 

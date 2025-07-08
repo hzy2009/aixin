@@ -53,7 +53,17 @@ const pageData = ref({
   pageTitle: '线下活动',
   searchTitle: '线下活动',
   listPageisPadding: false,
-  requiredRoles: ['apm-vip', 'apm-vip-inspection']
+  requiredRoles: ['apm-vip', 'apm-vip-inspection'],
+  dateRangeConfig: [
+      {
+          field: 'createTime', // Unique key for this date range
+          label: '需求创建日期',
+      },
+      {
+          field: 'activityDate', // Unique key for this date range
+          label: '活动开始日期',
+      }
+  ],
 })
 
 const currentPage = ref(1);

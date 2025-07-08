@@ -16,7 +16,7 @@ import detail from '@/components/template/detail.vue';
 import inquiryList from './components/inquiryList.vue'
 import { useAuthStore } from '@/store/authStore';
 
-import { BUSINESS_REF_LIST, STATUS_HISTORY_COLUMNS} from '@/utils/const';
+import { BUSINESS_REF_LIST, STATUS_HISTORY_COLUMNS} from '@/utils/const.jsx';
 
 
 const props = defineProps({

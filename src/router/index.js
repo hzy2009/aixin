@@ -7,6 +7,7 @@ import homeRoutes from '@/views/home/routes';
 import authRoutes from '@/views/auth/routes';
 import demandsRoutes from '@/views/demand_square/demands/routes/index';
 import industryDynamicsRoutes from '@/views/industryDynamics/routes';
+import rdDynamicRoutes from '@/views/rdDynamic/routes';
 import userCenterRoutes from '@/views/user_center/routes';
 import otherPageRoutes from '@/views/otherPage/routes';
 const tongyongcaiji = () => import('@/views/otherPage/tongyongcaiji/index.vue');
@@ -24,6 +25,7 @@ const routes = [
       ...userCenterRoutes,
       ...otherPageRoutes,
       ...industryDynamicsRoutes,
+      ...rdDynamicRoutes,
       {
         path: 'other/tongyongcaiji', 
         component: tongyongcaiji, 

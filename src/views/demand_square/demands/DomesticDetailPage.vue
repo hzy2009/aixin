@@ -25,7 +25,7 @@ import detail from '@/components/template/detail.vue';
 import { useAuthStore } from '@/store/authStore';
 import DomesticSidebar from './components/DomesticSidebar.vue'; // Adjust path if needed
 import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue'; // Adjust path if needed
-import { BUSINESS_REF_LIST, TENANT_REF_LIST} from '@/utils/const';
+import { BUSINESS_REF_LIST, TENANT_REF_LIST} from '@/utils/const.jsx';
 import materialVoList from '@/views/user_center/views/publications/DomesticSourcing/components/materialVoList.vue'
 
 const authStore = useAuthStore();
@@ -99,7 +99,7 @@ const pageData = reactive({
 })
 
 const goBack = () => {
-  router.go(-1);
+  router.push({ path: '/demands/DomesticSourcing' });
 };
 const isLoadingRelated = ref(false);
 

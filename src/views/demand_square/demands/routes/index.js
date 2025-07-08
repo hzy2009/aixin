@@ -50,7 +50,7 @@ export default [{
     {
       path: 'PublicRelations',
       component: PublicRelations,
-      meta: { title: '研发攻关', breadcrumb: ['研发攻关'], roles: ['apm-vip', 'apm-register', 'apm-register-expert'] } // Appends to base
+      meta: { title: '研发攻关', breadcrumb: ['研发攻关'], requiresAuth: false } // Appends to base
     },
     {
       path: 'PublicRelationsDetailPage/:id',
@@ -78,8 +78,9 @@ export default [{
       path: 'IndustryReportDetailPage/:id',
       component: IndustryReportDetailPage,
       props: route => ({ IdProp: route.params.id}),
-      meta: { title: '行研报告详情', breadcrumb: ['行研报告详情'], roles: ['apm-vip', 'apm-vip-inspection', 'apm-register', 'apm-register-expert'] } // Appends to base
+      meta: { title: '行研报告详情', breadcrumb: ['行研报告详情'], requiresAuth: false} // Appends to base
     },
+    // , roles: ['apm-vip', 'apm-vip-inspection', 'apm-register', 'apm-register-expert'] 
     {
       path: 'OfflineEvent',
       component: OfflineEvent,

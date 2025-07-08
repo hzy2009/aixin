@@ -50,7 +50,7 @@ const handleToggleExpand = ({ row, expanded }) => {
 const columns = [
     {
       type: 'expand',
-      width: 100,
+      width: 120,
       title: '点击查看详情',
       slots: {
         // 【关键修改】在渲染子组件时，绑定 ref
@@ -83,6 +83,7 @@ const columns = [
     {
       title: '内部管理单号',
       field: 'materialCode',
+      width: 150,
     },
 	{
       title: '操作',

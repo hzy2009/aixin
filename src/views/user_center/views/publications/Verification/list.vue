@@ -10,7 +10,7 @@ import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 import { useAuthStore } from '@/store/authStore';
-import {VERIFICATION_COLUMNS} from '@/utils/const';
+import {VERIFICATION_COLUMNS} from '@/utils/const.jsx';
 import { selectOptions } from '@/utils/index';
 const authStore = useAuthStore();
 const router = useRouter();
@@ -83,7 +83,7 @@ const pageData = ref({
     dateRangeConfig: [
         {
             field: 'createTime', // Unique key for this date range
-            label: '创建日期',
+            label: '需求创建日期',
         },
         {
             field: 'expireDate', // Unique key for this date range
