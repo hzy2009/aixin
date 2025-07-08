@@ -73,7 +73,7 @@ const initializeFilters = () => {
       // 默认状态下，每个组都选中“全部”
       newFilters[group.id] = [""]; 
     }
-    expandedGroups.value[group.id] = false;
+    expandedGroups.value[group.id] = true;
   });
   selectedFilters.value = newFilters;
 };
