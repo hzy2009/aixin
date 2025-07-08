@@ -70,7 +70,7 @@ export const BUSINESS_REF_LIST = {
                 default: ({ row }) => {
                     const router = useRouter();
                     const { refBusinessType = '', refBusinessCode } = row
-                    return [<span class="link" onClick={async () => {
+                    return [<span class="link" style="cursor: pointer; color: #BC1A2C" onClick={async () => {
                         if (pathMap[refBusinessType]) {
                             const id = await getOrderId(pathMap[refBusinessType].url, refBusinessCode)
                             if (id) {
