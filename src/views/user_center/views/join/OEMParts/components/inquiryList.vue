@@ -8,6 +8,7 @@
         :row-config="{ keyField: 'id' }"
         :expand-config="{ expandRowKeys: expandedRowKeys, trigger: 'default' }"
         @toggle-row-expand="handleToggleExpand"
+        min-height="88"
     >
     </vxe-grid>
 </template>

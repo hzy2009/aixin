@@ -32,6 +32,7 @@
 								:data="dataSource.achievementList || []"
 								:row-config="{ keyField: 'id' }"
 								border
+						    min-height="88"
 								size="medium"
 								class="custom-detail-table" >
               <!-- The #bodyCell template is no longer needed -->

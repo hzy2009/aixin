@@ -10,6 +10,7 @@
       ref="gridRef"
       border
       size="small"
+      min-height="88"
     >
     </vxe-grid>
   </div>

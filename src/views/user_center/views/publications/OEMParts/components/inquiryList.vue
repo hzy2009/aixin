@@ -10,6 +10,7 @@
         :row-config="{ keyField: 'id' }"
         :expand-config="{ expandRowKeys: expandedRowKeys, trigger: 'default' }"
         @toggle-row-expand="handleToggleExpand"
+      min-height="88"
     >
         <!--
             vxe-table 的展开行内容通过 expand 列的 content 插槽实现

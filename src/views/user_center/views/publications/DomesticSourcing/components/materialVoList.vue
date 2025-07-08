@@ -7,6 +7,7 @@
       resizable
       :row-config="{ keyField: 'id' }"
       border
+      min-height="88"
     />
 </template>
 

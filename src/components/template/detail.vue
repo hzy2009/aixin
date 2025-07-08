@@ -102,6 +102,7 @@
 						:columns="statusHistoryColumns || []"
 						:data="formModel.logList"
 						:row-config="{ keyField: 'id' }"
+						min-height="88"
 						border
 						size="medium"
 						class="custom-detail-table status-history-table">

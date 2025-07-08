@@ -4,6 +4,7 @@
       class="custom-detail-table"
       :data="props.data"
       :columns="columns"
+      min-height="88"
       border
     >
     </vxe-grid>
