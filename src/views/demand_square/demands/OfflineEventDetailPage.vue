@@ -27,8 +27,12 @@
           <!-- 4. Meta Info (Stacked) -->
           <div class="event-meta-stacked">
             <div class="meta-item-row">
-              <span class="meta-label">活动时间：</span>
+              <span class="meta-label">活动开始时间：</span>
               <span class="meta-value">{{ eventDetail.activityDate }}</span>
+            </div>
+            <div class="meta-item-row">
+              <span class="meta-label">活动结束时间：</span>
+              <span class="meta-value">{{ eventDetail.activityEndDate }}</span>
             </div>
             <div class="meta-item-row">
               <span class="meta-label">活动类型：</span>
