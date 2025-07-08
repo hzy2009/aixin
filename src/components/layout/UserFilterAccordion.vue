@@ -23,6 +23,7 @@
       </div>
       <!-- 折叠面板，用于展示“更多”之后的选项 -->
       <a-collapse :activeKey="expandedGroups[group.id] ? [group.id] : []" :bordered="false"
+        v-if="group.options.length > (group.maxVisibleWithoutMore || group.options.length)"
         class="filter-accordion-collapse">
         <a-collapse-panel :key="group.id" :showArrow="false" class="filter-accordion-panel">
           <div class="expanded-options">
