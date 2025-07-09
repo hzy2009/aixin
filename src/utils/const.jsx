@@ -150,7 +150,7 @@ export const OEM_PARTS_SOURCING_COLUMNS = [
 
 export const OFFLINE_EVENT_COLUMNS = [
     { title: '序号', type: 'seq', fixed: 'left', width: 50, align: 'center' },
-    { title: '爱芯活动单号', field: 'code', align: 'center', width: 180 },
+    { title: '爱芯享活动单号', field: 'code', align: 'center', width: 180 },
     { title: '活动类型', field: 'activityTypeName', align: 'center', width: 80 },
     { title: '发起人', field: 'createBy', align: 'center', width: 180 },
     {
