@@ -18,7 +18,7 @@ const router = useRouter();
 const getALLProductTypes = () => {
    const allProductTypes = selectOptions('product_type')  
    const allProductTypeMaterials = selectOptions('product_type_material')
-   return [...allProductTypes, ...allProductTypeMaterials]
+   return [{ value: '', label: '全部' }, ...allProductTypes, ...allProductTypeMaterials]
 }
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
