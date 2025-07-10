@@ -38,7 +38,7 @@ const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
   { label: '会员等级', field: 'role', span: 24, fieldType: 'slot' },
-  { label: '会员类型', field: 'role', span: 24 },
+  { label: '会员类型', field: 'type', span: 24 },
   // {
   //   label: '会员类型', field: 'roleCode', dictKey: 'trade', span: 24, fieldType: 'select',
   // },
