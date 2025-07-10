@@ -1,7 +1,7 @@
 <template>
   <div class="user-filter-accordion">
     <div v-for="group in filterGroups" :key="group.id" class="filter-group">
-      <div class="filter-row">
+      <div class="filter-row" :class="{ 'filter-row--expanded': expandedGroups[group.id] && group.options.length > (group.maxVisibleWithoutMore || group.options.length) }">
         <div class="filter-row__label">{{ group.label }}:</div>
         <div class="filter-row__options">
           <!-- “更多”之前可见的选项 -->
@@ -179,7 +179,7 @@ defineExpose({ resetAllFilters });
 
 .filter-tag {
   cursor: pointer;
-  padding: 3px 6px;
+  padding: 3px 5px;
   border-radius: @border-radius-sm;
   background-color: transparent;
   color: @text-color-secondary;
@@ -250,6 +250,9 @@ defineExpose({ resetAllFilters });
     }
   }
 }
+.filter-row--expanded{
+  padding-bottom: 0px;
+}
 
 .filter-accordion-collapse {
   background-color: transparent;
@@ -268,7 +271,7 @@ defineExpose({ resetAllFilters });
   }
 
   :deep(.ant-collapse-content-box) {
-    padding: @spacing-sm 0 @spacing-md 178px
+    padding: @spacing-sm 0 0 178px
   }
 }
 

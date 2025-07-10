@@ -24,7 +24,7 @@ const getALLProductTypes = () => {
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
     { id: 'projectType', label: '检测验证类型', maxVisibleWithoutMore: 7, dictKey: 'project_type' },
-    { id: 'productType', label: '产品类别', maxVisibleWithoutMore: 13, dictKey: 'product_type', options: getALLProductTypes() },
+    { id: 'productType', label: '产品类别', maxVisibleWithoutMore: 14, dictKey: 'product_type', options: getALLProductTypes() },
 ]);
 
 // --- Table Columns (remains in component as it's UI specific) ---
