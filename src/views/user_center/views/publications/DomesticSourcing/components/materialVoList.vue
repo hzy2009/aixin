@@ -1,7 +1,7 @@
 <template>
     <!-- 使用 vxe-grid 替代 a-table -->
     <vxe-grid
-      class="custom-detail-table"
+      :class="isMaxWidth ? 'materialVoListtable': ''"
       :data="props.data"
       :columns="columns"
       resizable
@@ -16,7 +16,7 @@ import userRefList from '@/views/user_center/views/components/userRefList.vue'
 import businessRefList from '@/views/user_center/views/components/businessRefList.vue'
 import { selectOptions } from '@/utils/index';
 
-const props = defineProps(['data'])
+const props = defineProps(['data', 'isMaxWidth'])
 
 // 列定义已转换为 vxe-table 格式，并包含了展开行的配置
 const columns = [
@@ -78,7 +78,7 @@ const columns = [
 ]
 </script>
 <style>
-.custom-detail-table{
+.materialVoListtable{
   max-width: 710px;
 }
 </style>
