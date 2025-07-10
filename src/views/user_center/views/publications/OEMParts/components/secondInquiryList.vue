@@ -78,7 +78,7 @@ const columns = [
     },
     {
       title: '贸易商',
-      width: '180px',
+      width: '70px',
       field: 'refUserCode',
       fixed: 'left',
     },
@@ -90,7 +90,7 @@ const columns = [
      {
       title: '税率%',
       field: 'tax',
-      width: '100px',
+      width: '70px',
     },
     {
       title: '未税价格',
@@ -100,7 +100,7 @@ const columns = [
     {
       title: '交期',
       field: 'deliveryDate',
-      width: '130px',
+      width: '90px',
       // Simple formatting is cleaner with a formatter
       formatter: ({ cellValue }) => {
         return cellValue ? Dayjs(cellValue).format('YYYY-MM-DD') : ''
@@ -113,7 +113,7 @@ const columns = [
     },
     {
       title: '质保期',
-      width: '100px',
+      width: '70px',
       field: 'guaranteePeriod',
     },
     {
@@ -124,7 +124,7 @@ const columns = [
     {
       title: '报价截止日期',
       field: 'expireDate',
-      width: 130,
+      width: 106,
       // Use slots.default for rendering complex components like a-date-picker
       slots: {
         default: ({ row, $rowIndex }) => { // vxe-table uses { row, $rowIndex }
