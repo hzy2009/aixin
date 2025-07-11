@@ -81,7 +81,7 @@ const pageData = ref({
             type: 'primary',
             btnType: 'exportXls',
             fileName: '原厂件寻源',
-            url: 'apm/apmSourcing/exportXls',
+            url: 'apm/apmSourcingOriginSubstitute/exportXls',
         },
         {
             title: '已删除',
