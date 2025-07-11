@@ -135,7 +135,7 @@ const getRowState = (record) => {
     // const winnerInFirst = record.firstInquiryList.filter(item => item.isWinner  == 1);
     // const winnerInSecond = record.secondInquiryList ? record.secondInquiryList.filter(item => item.isWinner == 1) : null;
     // winner = winnerInFirst && winnerInFirst.length > 0 ? winnerInFirst : winnerInSecond;
-    if (winner) {
+    if (winner.id) {
         isWinnerSelected = true;
         winnerName = winner.map(item => item.refUserCode).join(',');
     }
