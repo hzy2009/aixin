@@ -49,20 +49,6 @@ const pageData = ref({
     actions,
     statusDictKey: 'rd_breakthrough_status',
     userStatCardVisible: true,
-    tableOperations: [
-        // {
-        //     title: '创建需求',
-        //     clickFn: createNewSourcing,
-        //     type: 'primary'
-        // },
-        {
-            title: '下载',
-            type: 'primary',
-            btnType: 'exportXls',
-            fileName: '研发攻关',
-            url: 'apm/apmRdBreakthrough/exportXls',
-        }
-    ],
     dateRangeConfig: [
         {
             field: 'createTime', // Unique key for this date range
@@ -74,6 +60,13 @@ const pageData = ref({
         }
     ],
      tableOperations: [
+        {
+            title: '下载',
+            type: 'primary',
+            btnType: 'exportXls',
+            fileName: '研发攻关',
+            url: 'apm/apmRdBreakthrough/exportXls',
+        },
         {
             title: '已删除',
             type: 'delete',

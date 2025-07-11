@@ -44,20 +44,6 @@ const pageData = ref({
     actions,
     statusDictKey: 'origin_substitute_sourcing_status',
     userStatCardVisible: true,
-    tableOperations: [
-        // {
-        //     title: '创建需求',
-        //     clickFn: createNewSourcing,
-        //     type: 'primary'
-        // },
-        {
-            title: '下载',
-            type: 'primary',
-            btnType: 'exportXls',
-            fileName: '原厂件寻源',
-            url: 'apm/apmSourcing/exportXls',
-        }
-    ],
     dateRangeConfig: [
         {
         field: 'createTime', // Unique key for this date range
@@ -70,6 +56,13 @@ const pageData = ref({
         }
     ],
     tableOperations: [
+        {
+            title: '下载',
+            type: 'primary',
+            btnType: 'exportXls',
+            fileName: '原厂件寻源',
+            url: 'apm/apmSourcingOriginSubstitute/exportXls',
+        },
         {
             title: '已删除',
             type: 'delete',

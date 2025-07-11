@@ -43,20 +43,6 @@ const pageData = ref({
     actions,
     statusDictKey: 'activity_status',
     userStatCardVisible: true,
-    tableOperations: [
-        // {
-        //     title: '创建需求',
-        //     clickFn: createNewSourcing,
-        //     type: 'primary'
-        // },
-        {
-            title: '下载',
-            type: 'primary',
-            btnType: 'exportXls',
-            fileName: '线下活动',
-            url: 'apm/apmOfflineActivity/exportXls',
-        }
-    ],
      dateRangeConfig: [
       {
           field: 'createTime', // Unique key for this date range
@@ -67,7 +53,14 @@ const pageData = ref({
           label: '活动开始日期',
       }
   ],
-     tableOperations: [
+    tableOperations: [
+         {
+            title: '下载',
+            type: 'primary',
+            btnType: 'exportXls',
+            fileName: '线下活动',
+            url: 'apm/apmOfflineActivity/exportXls',
+        },
         {
             title: '已删除',
             type: 'delete',

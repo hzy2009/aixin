@@ -49,23 +49,6 @@ const pageData = ref({
   actions,
   statusDictKey: 'sourcing_status',
   userStatCardVisible: true,
-  tableOperations: [
-    // {
-    //   title: '创建国产替代寻源',
-    //   clickFn: createNewSourcing,
-    //   type: 'primary'
-    // },
-    {
-      title: '下载',
-      type: 'primary',
-      btnType: 'exportXls',
-      fileName: '多元化寻源',
-      url: 'apm/apmSourcing/exportXls',
-      otherParams: {
-        sourcingType: '国产替代寻源'
-      }
-    }
-  ],
   dateRangeConfig: [
     {
       field: 'createTime', // Unique key for this date range
@@ -78,6 +61,16 @@ const pageData = ref({
     }
   ],
   tableOperations: [
+    {
+      title: '下载',
+      type: 'primary',
+      btnType: 'exportXls',
+      fileName: '多元化寻源',
+      url: 'apm/apmSourcing/exportXls',
+      otherParams: {
+        sourcingType: '国产替代寻源'
+      }
+    },
     {
         title: '已删除',
         type: 'delete',

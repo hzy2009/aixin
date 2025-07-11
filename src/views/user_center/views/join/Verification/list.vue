@@ -52,20 +52,6 @@ const pageData = ref({
     userStatCardVisible: true,
     actions,
     pageTitle: '检测验证',
-    tableOperations: [
-        // {
-        //     title: '创建需求',
-        //     clickFn: createNewSourcing,
-        //     type: 'primary'
-        // },
-        {
-            title: '下载',
-            type: 'primary',
-            btnType: 'exportXls',
-            fileName: '检测验证',
-            url: 'apm/apmInspection/exportXls',
-        }
-    ],
     dateRangeConfig: [
         {
             field: 'createTime', // Unique key for this date range
@@ -77,6 +63,13 @@ const pageData = ref({
         }
     ],
      tableOperations: [
+        {
+            title: '下载',
+            type: 'primary',
+            btnType: 'exportXls',
+            fileName: '检测验证',
+            url: 'apm/apmInspection/exportXls',
+        },
         {
             title: '已删除',
             type: 'delete',
