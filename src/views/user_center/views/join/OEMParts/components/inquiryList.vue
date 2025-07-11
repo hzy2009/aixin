@@ -61,6 +61,7 @@ const columns = [
                 <firstInquiryList
                     data={parentRecord.firstInquiryList}
                     isSecondInquiryEnable={parentRecord.isSecondInquiryEnable}
+                    isFinished={parentRecord.isFinished}
                     // 将组件实例存入 ref 对象，以行 id 为 key
                     ref={el => { if (el) firstInquiryListRefs.value[parentRecord.id] = el; }}
                 />

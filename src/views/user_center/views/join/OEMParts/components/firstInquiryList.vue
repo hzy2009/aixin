@@ -31,8 +31,13 @@ const props = defineProps({
   isSecondInquiryEnable: {
     type: Number,
     default: 0
+  },
+  isFinished: {
+    type: Number,
+    default: 0
   }
 });
+const isDisabled = computed(() => props.isFinished === 1);
 
 const isSecondRound = computed(() => props.isSecondInquiryEnable === 1);
 
@@ -68,7 +73,7 @@ const columns = [
             const expire = dayjs(row?.expireDate);
             const disabled = dayjs().isAfter(expire, 'day');
             return (
-                isSecondRound.value || disabled ? <span>{row.priceIncludingTax}</span> :
+                isDisabled.value || isSecondRound.value || disabled ? <span>{row.priceIncludingTax}</span> :
                 <a-input-number
                     v-model:value={row.priceIncludingTax}
                     min={0}
@@ -91,7 +96,7 @@ const columns = [
             const expire = dayjs(row?.expireDate);
             const disabled = dayjs().isAfter(expire, 'day');
             return (
-                isSecondRound.value || disabled ? <span>{row.tax}</span> :
+                isDisabled.value || isSecondRound.value || disabled ? <span>{row.tax}</span> :
                 <a-input-number
                     v-model:value={row.tax}
                     min={0}
@@ -112,7 +117,7 @@ const columns = [
             const expire = dayjs(row?.expireDate);
             const disabled = dayjs().isAfter(expire, 'day');
             return (
-                isSecondRound.value || disabled ? <span>{row.priceExcludingTax}</span> :
+                isDisabled.value || isSecondRound.value || disabled ? <span>{row.priceExcludingTax}</span> :
                 <a-input-number
                     v-model:value={row.priceExcludingTax}
                     min={0}
@@ -135,7 +140,7 @@ const columns = [
             const expire = dayjs(row?.expireDate);
             const disabled = dayjs().isAfter(expire, 'day');
             return (
-                isSecondRound.value || disabled ? <span>{row.deliveryDate ? row.deliveryDate.split(' ')[0] : ''}</span> :
+                isDisabled.value || isSecondRound.value || disabled ? <span>{row.deliveryDate ? row.deliveryDate.split(' ')[0] : ''}</span> :
                 <a-date-picker v-model:value={row.deliveryDate} format="YYYY-MM-DD" valueFormat="YYYY-MM-DD HH:mm:ss" style={{ width: '100%' }}></a-date-picker>
             );
         }
@@ -151,7 +156,7 @@ const columns = [
             const expire = dayjs(row?.expireDate);
             const disabled = dayjs().isAfter(expire, 'day');
             return (
-                isSecondRound.value || disabled ? <span>{row.paymentTermsName}</span> :
+                isDisabled.value || isSecondRound.value || disabled ? <span>{row.paymentTermsName}</span> :
                 <a-select 
                   v-model:value={row.paymentTermsCode} // Corrected: was tradeTypeCode in original
                   style={{ width: '100%' }} 
@@ -172,7 +177,7 @@ const columns = [
             const expire = dayjs(row?.expireDate);
             const disabled = dayjs().isAfter(expire, 'day');
             return (
-                isSecondRound.value || disabled ? <span>{row.guaranteePeriod}</span> :
+                isDisabled.value || isSecondRound.value || disabled ? <span>{row.guaranteePeriod}</span> :
                 <a-input v-model:value={row.guaranteePeriod} style={{ width: '100%' }}></a-input>
             )
         }
@@ -187,7 +192,7 @@ const columns = [
             const expire = dayjs(row?.expireDate);
             const disabled = dayjs().isAfter(expire, 'day');
             return (
-                isSecondRound.value || disabled ? <span>{row.guaranteeDesc}</span> : // Corrected: was guaranteePeriod
+                isDisabled.value || isSecondRound.value || disabled ? <span>{row.guaranteeDesc}</span> : // Corrected: was guaranteePeriod
                 <a-input v-model:value={row.guaranteeDesc} style={{ width: '100%' }}></a-input>
             )
         }
