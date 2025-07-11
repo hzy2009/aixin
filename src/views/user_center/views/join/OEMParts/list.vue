@@ -15,7 +15,7 @@ const router = useRouter();
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
     // { id: 'region', label: '区域', maxVisibleWithoutMore: 3, options: [{ value: 'all', label: '全部' }, { value: 'huadong', label: '华东' }, { value: 'huanan', label: '华南' }, { value: 'huazhong', label: '华中' }, { value: 'huabei', label: '华北' }, { value: 'xinan', label: '西南' }, { value: 'xibei', label: '西北' }] },
-    { id: 'statusCode', label: '寻源状态', maxVisibleWithoutMore: 7, dictKey: 'origin_substitute_sourcing_status' }
+    // { id: 'statusCode', label: '寻源状态', maxVisibleWithoutMore: 7, dictKey: 'origin_substitute_sourcing_status' }
 ]);
 
 const tableColumns = reactive([
