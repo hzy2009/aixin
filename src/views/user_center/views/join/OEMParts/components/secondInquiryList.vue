@@ -142,21 +142,26 @@ const columns = [
     },
     {
       title: '付款条件',
-      field: 'paymentTermsCode',
+      field: 'paymentTermsName',
       width: '120px',
       slots: {
         default: ({ row }) => { // customRender -> slots.default, {record} -> {row}
-            const options = selectOptions('paymentTerms_type');
+            // const options = selectOptions('paymentTerms_type');
             const expire = dayjs(row?.expireDate);
             const disabled = dayjs().isAfter(expire, 'day');
             return (
                 isDisabled.value || disabled ? <span>{row.paymentTermsName}</span> :
-                <a-select 
-                  v-model:value={row.paymentTermsCode} // Corrected: was tradeTypeCode in original
+                // <a-select 
+                //   v-model:value={row.paymentTermsCode} // Corrected: was tradeTypeCode in original
+                //   style={{ width: '100%' }} 
+                //   placeholder="付款条件"
+                //   options={options} // More concise way to pass options in JSX
+                //   onChange={value => handlePaymentTermChange(value, row, options)}
+                // />
+                <a-input 
+                  v-model:value={row.paymentTermsName} // Corrected: was tradeTypeCode in original
                   style={{ width: '100%' }} 
                   placeholder="付款条件"
-                  options={options} // More concise way to pass options in JSX
-                  onChange={value => handlePaymentTermChange(value, row, options)}
                 />
             );
         },
