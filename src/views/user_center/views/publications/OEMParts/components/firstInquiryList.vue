@@ -62,7 +62,7 @@ const columns = [
     },
     {
       title: '贸易商',
-      width: '180px',
+      width: '70px',
       fixed: 'left',
       field: 'refUserCode',
     },
@@ -74,7 +74,7 @@ const columns = [
     {
       title: '税率%',
       field: 'tax',
-      width: '100px',
+      width: '70px',
     },
     {
       title: '未税价格',
@@ -84,7 +84,7 @@ const columns = [
     {
       title: '交期',
       field: 'deliveryDate',
-      width: '130px',
+      width: '90px',
       // 使用 formatter 进行简单的日期格式化
       formatter: ({ cellValue }) => {
         return cellValue ? Dayjs(cellValue).format('YYYY-MM-DD') : ''
@@ -97,7 +97,7 @@ const columns = [
     },
     {
       title: '质保期',
-      width: '100px',
+      width: '70px',
       field: 'guaranteePeriod',
     },
     {
@@ -107,7 +107,7 @@ const columns = [
     },
     {
       title: '报价截止日期',
-      width: '130px',
+      width: '106px',
       field: 'expireDate',
       // 使用 formatter 进行简单的字符串处理
       formatter: ({ cellValue }) => {
