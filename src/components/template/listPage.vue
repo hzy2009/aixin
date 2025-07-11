@@ -68,7 +68,7 @@
                     show-overflow
                     border
                     size="medium"
-                    :row-config="{ keyField: 'id' }"
+                    :row-config="{ keyField: rowUseKey || 'id' }"
                     :checkbox-config="{ checkRowKeys: selectedRowKeys }"
                     :pager-config="paginationConfig"
                     @page-change="handlePageChange"
@@ -120,7 +120,7 @@ const {
     url, filterConfigForPage, tableColumns, actions, otherParams,
     statusDictKey, userStatCardVisible, showBanner = false, pageTitle,
     tableOperations = [], dateRangeConfig = [], searchTitle, listPageisPadding = true,
-    userSearchTitle = true, requiredRoles = []
+    userSearchTitle = true, requiredRoles = [], rowUseKey
 } = props.pageData;
 
 const {

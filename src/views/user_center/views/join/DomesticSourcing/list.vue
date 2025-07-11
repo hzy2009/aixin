@@ -84,6 +84,7 @@ const pageData = ref({
         btnType: 'delete',
     },
   ],
+  rowUseKey: 'materialCode',
 })
 
 

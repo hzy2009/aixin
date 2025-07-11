@@ -76,7 +76,8 @@ const pageData = ref({
             btnType: 'delete',
         },
     ],
-    requiredRoles: ['apm-vip', 'apm-vip-inspection', 'apm-register']
+    requiredRoles: ['apm-vip', 'apm-vip-inspection', 'apm-register'],
+    rowUseKey: 'materialCode',
 })
 
 

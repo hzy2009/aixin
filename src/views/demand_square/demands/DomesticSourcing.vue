@@ -63,7 +63,8 @@ const pageData = ref({
       label: '期望完成日期',
     }
   ],
-  searchTitle: '多元化寻源'
+  searchTitle: '多元化寻源',
+  rowUseKey: 'materialCode',
 })
 
 

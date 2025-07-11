@@ -100,7 +100,8 @@ const pageData = ref({
         label: '期望完成日期',
         }
     ],
-    requiredRoles: ['apm-vip', 'apm-vip-inspection', 'apm-register']
+    requiredRoles: ['apm-vip', 'apm-vip-inspection', 'apm-register'],
+    rowUseKey: 'materialCode',
 })
 
 
