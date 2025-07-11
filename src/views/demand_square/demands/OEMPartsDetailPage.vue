@@ -63,11 +63,11 @@ const pageData = reactive({
   IdProp: props.IdProp,
   mode: props.mode,
   apiMap: {
-    add: 'apm/apmSourcing/add',
-    edit: 'apm/apmSourcing/edit',
-    detail: 'apm/apmSourcing/queryById/front',
-    submit: 'apm/apmSourcing/submit',
-    delete: 'apm/apmSourcing/delete',
+    add: 'apm/apmSourcingOriginSubstitute/add',
+    edit: 'apm/apmSourcingOriginSubstitute/edit',
+    detail: 'apm/apmSourcingOriginSubstitute/queryById/front',
+    submit: 'apm/apmSourcingOriginSubstitute/submit',
+    delete: 'apm/apmSourcingOriginSubstitute/delete',
   },
   otherParams: {
     sourcingType: '原厂件寻源详情',
