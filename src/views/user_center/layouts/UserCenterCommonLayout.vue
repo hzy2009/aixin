@@ -19,7 +19,7 @@
           <div class="user-membership-info" v-else>
             <img src="@/assets/images/auth/vip.png" alt="">
           </div>
-          <p class="user-id">ID: {{ userInfo?.createBy || '加载中...' }}</p>
+          <p class="user-id">ID: {{ userInfo?.realname || '加载中...' }}</p>
         </div>
       </div>
     </section>
