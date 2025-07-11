@@ -10,7 +10,7 @@
           <h2 class="report-item-title">{{ item.code }}</h2>
           <p class="report-item-meta fontSizeitem">研发攻关类型：{{ item.rdType }}</p>
           <div class="report-item-footer report-item-summary fontSizeitem">
-            <span>期望匹配周期：{{ item.matchPeriodName }}</span>
+            <span>期望完成日期：{{ item.expireDate ? formatDate(item.expireDate) : '' }}</span>
             <ArrowRightOutlined class="arrow-icon" />
           </div>
         </div>
@@ -25,6 +25,7 @@ import { ref, onMounted, watch, computed } from 'vue';
 import { Skeleton as ASkeleton, Empty as AEmpty } from 'ant-design-vue';
 import { ArrowRightOutlined } from '@ant-design/icons-vue';
 import { useUserDemandList } from '@/components/template/hooks/useUserDemandList.js'; // Adjust path
+import { formatDate } from '@/utils'; // 请确保此路径正确
 // import apiClient from '@/api';
 
 const props = defineProps({
