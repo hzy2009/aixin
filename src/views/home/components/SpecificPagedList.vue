@@ -27,7 +27,9 @@
               <img src="@/assets/images/home/rightIcon.png" alt="">
           </div>
           <div class="item-text-content">
-            <span class="item-main-text">{{ item.content }}</span>
+            <div class="item-main-text">
+              <div v-html="item.content"></div>
+            </div>
           </div>
           <!-- Date is now a separate element before the action button's container -->
           <div class="item-date-column">
@@ -153,6 +155,9 @@ watch(() => [props.autoCycleInterval, props.loop], () => { if (actualTotalPages.
   flex: 1.5; // Takes up available space between icon and date
   min-width: 0; // Essential for text-overflow to work in flex items
   padding-right: @spacing-md; // Space before date column
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   .item-main-text {
     font-family: PingFang SC;
     font-weight: 400;
@@ -167,6 +172,10 @@ watch(() => [props.autoCycleInterval, props.loop], () => { if (actualTotalPages.
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.5; // Ensure single line height
+    :deep(p){
+      margin: 0;
+      padding: 0;
+    }
   }
 }
 
