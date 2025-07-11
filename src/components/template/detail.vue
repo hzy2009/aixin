@@ -80,6 +80,7 @@
 									:columns="tableSection.columns|| []"
 									:data="formModel[`${tableSection.groupCode}`] || []"
 									:row-config="{ keyField: tableSection.rowKey || 'id' }"
+									min-height="88"
 									border
 									size="medium"
 									class="custom-detail-table">

@@ -39,9 +39,7 @@ const formConfigs = [
   {
     label: '研发攻关类型', field: 'rdType', dictKey: 'rd_type', span: 24,
   },
-  {
-    label: '期望匹配周期', field: 'matchPeriodName', dictKey: 'rd_breakthrough_period', span: 24,
-  },
+  { label: '期望完成日期', field: 'expireDate', fieldType: 'date', span: 24, fieldType: 'date' },
   
   // { label: '需求有效期', field: 'expireDate', span: 24 },
   { label: '需求提出方', field: 'createBy', span: 24, },
