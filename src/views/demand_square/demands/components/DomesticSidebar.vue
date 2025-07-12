@@ -8,9 +8,9 @@
         :to="`/demands/DomesticDetailPage/${item.id}`" class="report-item-link">
         <div class="report-item-content">
           <h2 class="report-item-title">{{ item.code }}</h2>
-          <p class="report-item-meta fontSizeitem">物料：{{ item.rdType }}</p>
+          <p class="report-item-meta fontSizeitem">物料：{{ item.materialCode }}</p>
           <div class="report-item-footer report-item-summary fontSizeitem">
-            <span>需求有效期：{{ item.expireDate ?formatDate(item.expireDate) : '' }}</span>
+            <span>期望完成日期：{{ item.expireDate ?formatDate(item.expireDate) : '' }}</span>
             <ArrowRightOutlined class="arrow-icon" />
           </div>
         </div>
