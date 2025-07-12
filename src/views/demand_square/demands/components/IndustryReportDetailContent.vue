@@ -117,7 +117,7 @@ const handleFinish = async (data) => {
     isRegisterSuccess.value = true;
     phoneAndEmailModal.value.handleClose()
   } else {
-    message.error(response.message);
+    message.info(response.message);
   }
 }
 

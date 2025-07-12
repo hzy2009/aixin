@@ -147,7 +147,7 @@ const handleFinish = async (data) => {
     modalStore.showSuccessPrompt({ ...defaultConfig });
     phoneAndEmailModal.value.handleClose()
   } else {
-    message.error(res.message)
+    message.info(res.message)
   }
 }
 

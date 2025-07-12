@@ -140,7 +140,7 @@ const handleFinish = async (data) => {
     detailRef.value.isCreating = false
     phoneAndEmailModal.value.handleClose()
   } else {
-    message.error(response.message);
+    message.info(response.message);
   }
 };
 
