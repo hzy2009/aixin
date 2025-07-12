@@ -177,7 +177,7 @@ const vxeTableColumns = computed(() => {
                 default: ({ row }) => (
                     actions.map((action, i) => (
                         action.type == 'del' ? 
-                        <a-popconfirm title="是否确认删除" ok-text="是" cancel-text="否" onConfirm={()=> {
+                        <a-popconfirm disabled={(row.statusCode != 'submit')} title="是否确认删除" ok-text="是" cancel-text="否" onConfirm={()=> {
                                 handleDelete(row)
                             }} >
                             <span class="action-item">
