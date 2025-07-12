@@ -363,7 +363,7 @@ const rulePresets = {
  */
 const allRules = (field) => {
   // 1. 获取从外部 formConfig 传入的基础规则 (如 required, min, max 等)
-  const baseRules = field.rules || [];
+  const baseRules = field.rules || [{  trigger: 'change', required: true }];
 
   // 2. 根据 field.fieldType 从预设中查找额外的格式校验规则
   const presetRules = rulePresets[field.fieldType] || [];
