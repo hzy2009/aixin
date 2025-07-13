@@ -410,7 +410,7 @@ watch(() => route.params.id, (newId, oldId) => {
 	}
 }, { immediate: false });
 
-defineExpose({ isCreating, handleToDetail, fetchDemandDetail });
+defineExpose({ isCreating, handleToDetail, fetchDemandDetail, detailData: demandDetailData });
 </script>
 
 <style scoped lang="less">
