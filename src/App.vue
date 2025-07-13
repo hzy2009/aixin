@@ -30,18 +30,24 @@
       @close="modalStore.hideSuccessPrompt"
       @action="() => { /* Modal internal action also calls its onClose */ }"
     />
+  <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" title="注册" actionText="一键敲门"></PhoneAndEmailModal>
+
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import zhCN from 'ant-design-vue/es/locale/zh_CN';
 import LoginPromptModal from '@/components/layout/LoginPromptModal.vue';
 import SuccessPromptModal from '@/components/common/SuccessPromptModal.vue';
+import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
 import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore'; 
+import { message } from 'ant-design-vue';
+import defHttp from '@/utils/http/axios'
 const authStore = useAuthStore();
 authStore.getDictItems();
 
+const phoneAndEmailModal = ref()
 
 const modalStore = useModalStore();
 // const router = useRouter();
@@ -68,7 +74,17 @@ const handleLoginSuccess = (userData) => {
 
 const navigateToRegister = () => {
   // router.push({ name: 'RegisterPage' }); // 假设你有注册页的路由名
-  modalStore.hideLogin();
+  // modalStore.hideLogin();
+  phoneAndEmailModal.value.opneModal()
+};
+const handleFinish = async (data) => {
+  const response = await defHttp.get({ url: `/apm/apmTodo/newVip/newTodo/front`, params: data });
+  if (response && response.success) {
+    phoneAndEmailModal.value.handleClose()
+    message.success('一键敲门成功');
+  } else {
+    message.info(response.message);
+  }
 };
 
 const navigateToForgotPassword = () => {
