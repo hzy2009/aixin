@@ -5,10 +5,10 @@
   </div>
   <ContentWithSidebarLayout>
     <template #main>
-      <detail :pageData="pageData" @goBack="goBack" class="detail-view-page"></detail>
+      <detail :pageData="pageData" @goBack="goBack" class="detail-view-page" ref="detailRef"></detail>
     </template>
     <template #sidebar>
-      <PublicRelationsSidebar />
+      <PublicRelationsSidebar :code="detailRef?.detailData?.code"/>
     </template>
   </ContentWithSidebarLayout>
 </template>
@@ -30,7 +30,7 @@ const props = defineProps({
   mode: { type: String, default: 'view' }, // 'create', 'view'
 });
 const internalDemandId = ref(props.IdProp);
-
+const detailRef = ref(null);
 
 const router = useRouter();
 // // --- 表单配置 ---

@@ -13,7 +13,7 @@
         </detail>
     </template>
     <template #sidebar>
-      <DomesticSidebar :count="5"/>
+      <DomesticSidebar :count="5" :code="detailRef?.detailData?.code"/>
     </template>
   </ContentWithSidebarLayout>
 </template>
@@ -34,7 +34,7 @@ const props = defineProps({
   IdProp: { type: String, default: null },
   mode: { type: String, default: 'view' }, // 'create', 'view'
 });
-
+const detailRef = ref()
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [

@@ -5,7 +5,7 @@
   </div>
   <ContentWithSidebarLayout>
     <template #main>
-      <detail :pageData="pageData" @goBack="goBack">
+      <detail :pageData="pageData" @goBack="goBack" ref="detailRef">
          <template #inquiryList="{ dataSource }">
           <inquiryList :data="dataSource.inquiryList" :isDetail="true" @success="success" v-if="dataSource.inquiryList && dataSource.inquiryList.length > 0"></inquiryList>
           <span v-else>暂无结果</span>
@@ -13,7 +13,7 @@
       </detail>
     </template>
     <template #sidebar>
-      <OEMPartsSidebar  :count="5"/>
+      <OEMPartsSidebar :code="detailRef?.detailData?.code" :count="5"/>
     </template>
   </ContentWithSidebarLayout>
 </template>
@@ -32,7 +32,7 @@ const props = defineProps({
   IdProp: { type: String, default: null },
   mode: { type: String, default: 'view' }, // 'create', 'view'
 });
-
+const detailRef = ref()
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [

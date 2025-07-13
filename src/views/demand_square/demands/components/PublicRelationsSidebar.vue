@@ -31,7 +31,8 @@ import { formatDate } from '@/utils'; // 请确保此路径正确
 const props = defineProps({
   currentReportId: { type: [String, Number], default: null },
   category: { type: String, default: null },
-  count: { type: Number, default: 4 }
+  count: { type: Number, default: 4 },
+  code: { type: String, default: '' },
 });
 
 const skeletonCount = computed(() => props.count); // For skeleton loader
@@ -43,6 +44,17 @@ const {
   url: {
     list: '/apm/apmRdBreakthrough/list/front',
   },
+  otherParams: {
+    code: `!${props.code}`
+  },
+})
+watch(() => props.code, () => {
+  if (!props.code) return
+  loadTableData(
+    {
+      code: `!${props.code}`
+    }
+  );
 })
 
 </script>

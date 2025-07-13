@@ -8,7 +8,7 @@
       <IndustryReportDetailContent :report="reportData" ref="reportDetail" class="detail-view-page"/>
     </template>
     <template #sidebar>
-      <RecommendedSidebar :category="reportData?.category" :count="3" @reportClick="handleReportClick" class="sidebar"/>
+      <RecommendedSidebar :category="reportData?.category" :count="3" @reportClick="handleReportClick" class="sidebar" :code="reportData?.code" />
     </template>
   </ContentWithSidebarLayout>
 </template>
@@ -31,7 +31,6 @@ const props = defineProps({
 const reportData = ref({});
 const isLoading = ref(false);
 const error = ref(null);
-
 const internalDemandId = ref(props.IdProp);
 
 async function fetchReportDetail() {
@@ -42,7 +41,6 @@ async function fetchReportDetail() {
     // TODO: API 调用 - 获取报告详情
     const response = await defHttp.get({ url: 'apm/apmResearchReport/queryById/front', params: { id: internalDemandId.value } });
     reportData.value = response.result;
-
   } catch (err) {
     console.error("获取报告详情失败:", err);
     error.value = err.message || "加载报告详情失败，请稍后再试。";

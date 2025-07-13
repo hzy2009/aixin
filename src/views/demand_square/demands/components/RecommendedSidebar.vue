@@ -36,7 +36,8 @@ const emit = defineEmits(['reportClick']);
 
 const props = defineProps({
   category: { type: String, default: null },
-  count: { type: Number, default: 4 }
+  count: { type: Number, default: 4 },
+  code: { type: String, default: '' },
 });
 
 const skeletonCount = computed(() => props.count); // For skeleton loader
@@ -44,15 +45,26 @@ const skeletonCount = computed(() => props.count); // For skeleton loader
 const {
   isLoading,
   tableData: recommendedReports,
+  loadTableData,
 } = useUserDemandList({
   url: {
     list: '/apm/apmResearchReport/list/front',
+  },
+  otherParams: {
+    code: `!${props.code}`
   },
 });
 const handleReportClick = () => {
   emit('reportClick');
 }
 
+watch(() => props.code, () => {
+  loadTableData(
+    {
+      code: `!${props.code}`
+    }
+  );
+})
 </script>
 
 <style scoped lang="less">

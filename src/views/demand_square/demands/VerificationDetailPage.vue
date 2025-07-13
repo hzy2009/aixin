@@ -5,14 +5,14 @@
   </div>
   <ContentWithSidebarLayout>
     <template #main>
-      <detail :pageData="pageData" @goBack="goBack">
+      <detail :pageData="pageData" @goBack="goBack" ref="detailRef">
         <template #productType="{ dataSource }">
           <div><span>{{ dataSource.productMainTypeName }}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ dataSource.productTypeName }}</span></div>
         </template>
       </detail>
     </template>
     <template #sidebar>
-      <VerificationSidebar />
+      <VerificationSidebar :code="detailRef?.detailData?.code"/>
     </template>
   </ContentWithSidebarLayout>
 </template>
@@ -32,7 +32,7 @@ const props = defineProps({
   IdProp: { type: String, default: null },
   mode: { type: String, default: 'view' }, // 'create', 'view'
 });
-
+const detailRef = ref(null);
 const isManagerAdmin = computed(() => {
   return authStore.isManagerAdmin
 });

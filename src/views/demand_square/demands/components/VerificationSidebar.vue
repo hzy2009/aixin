@@ -32,7 +32,8 @@ import {selectOptions, formatDate} from '@/utils/index';
 const props = defineProps({
   currentReportId: { type: [String, Number], default: null },
   category: { type: String, default: null },
-  count: { type: Number, default: 4 }
+  count: { type: Number, default: 4 },
+  code: { type: String, default: '' },
 });
 
 const skeletonCount = computed(() => props.count); // For skeleton loader
@@ -44,12 +45,24 @@ const {
   url: {
     list: '/apm/apmInspection/list/front',
   },
+  otherParams: {
+    code: `!${props.code}`
+  },
 })
 const getSelectDisplayValue = (value, dictKey) => {
 	let optionsList = selectOptions(dictKey)
   const option = optionsList.find(opt => opt.value === value);
   return option ? option.label : (value || '-');
 }
+
+watch(() => props.code, () => {
+  if (!props.code) return
+  loadTableData(
+    {
+      code: `!${props.code}`
+    }
+  );
+})
 
 </script>
 

@@ -77,7 +77,7 @@
     </template>
 
     <template #sidebar>
-      <OfflineEventSidebar @reportClick="handleToDetail"></OfflineEventSidebar>
+      <OfflineEventSidebar :code="eventDetail?.code" @reportClick="handleToDetail"></OfflineEventSidebar>
     </template>
   </ContentWithSidebarLayout>
 </template>

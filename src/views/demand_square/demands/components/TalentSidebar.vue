@@ -37,7 +37,8 @@ import { useUserDemandList } from '@/components/template/hooks/useUserDemandList
 const props = defineProps({
   currentReportId: { type: [String, Number], default: null },
   category: { type: String, default: null },
-  count: { type: Number, default: 4 }
+  count: { type: Number, default: 4 },
+  code: { type: String, default: '' },
 });
 
 const emit = defineEmits(['reportClick']);
@@ -47,10 +48,22 @@ const skeletonCount = computed(() => props.count); // For skeleton loader
 const {
   isLoading,
   tableData,
+  loadTableData
 } = useUserDemandList({
   url: {
     list: '/apm/apmTalent/list/front',
   },
+  otherParams: {
+    code: `!${props.code}`
+  },
+})
+watch(() => props.code, () => {
+  if (!props.code) return
+  loadTableData(
+    {
+      code: `!${props.code}`
+    }
+  )
 })
 const handleReportClick = () => emit('reportClick');
 

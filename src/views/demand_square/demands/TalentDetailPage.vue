@@ -49,7 +49,7 @@
       </detail>
     </template>
     <template #sidebar>
-      <TalentSidebar @reportClick="handleReportClick" />
+      <TalentSidebar @reportClick="handleReportClick" :code="dataSource?.code"/>
     </template>
   </ContentWithSidebarLayout>
   <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" title="联系平台获取专家信息" actionText="一键敲门"></PhoneAndEmailModal>

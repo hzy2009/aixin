@@ -31,7 +31,8 @@ import {formatDate} from '@/utils/index.js';
 const props = defineProps({
   currentReportId: { type: [String, Number], default: null },
   category: { type: String, default: null },
-  count: { type: Number, default: 4 }
+  count: { type: Number, default: 4 },
+  code: { type: String, default: '' },
 });
 
 const skeletonCount = computed(() => props.count); // For skeleton loader
@@ -39,14 +40,22 @@ const skeletonCount = computed(() => props.count); // For skeleton loader
 const {
   isLoading,
   tableData,
-  
+  loadTableData
 } = useUserDemandList({
   url: {
     list: '/apm/apmSourcing/material/list/front',
   },
   otherParams: {
-    sourcingType: '国产替代寻源'
+    sourcingType: '国产替代寻源',
+    code: `!${props.code}`
   },
+})
+watch(() => props.code, () => {
+  loadTableData(
+    {
+      code: `!${props.code}`
+    }
+  );
 })
 
 </script>
