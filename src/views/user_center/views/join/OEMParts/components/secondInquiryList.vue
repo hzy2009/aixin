@@ -90,7 +90,7 @@ const columns = [
             const expire = dayjs(row?.expireDate);
             const disabled = dayjs().isAfter(expire, 'day');
             return (
-                isSecondRound.value || disabled ? <span>{row.tax}</span> :
+                isDisabled.value || disabled ? <span>{row.tax}</span> :
                 <a-input-number
                     v-model:value={row.tax}
                     min={0}
