@@ -128,7 +128,7 @@ const columns = [
       // Use slots.default for rendering complex components like a-date-picker
       slots: {
         default: ({ row, $rowIndex }) => { // vxe-table uses { row, $rowIndex }
-          const disabled = props.isFinished == 1 || props.isSecondInquiryEnable == 1 || props.isDetail;
+          const disabled = props.isFinished == 1 || props.isDetail;
           return (
             disabled ?
               <span>{row.expireDate ? Dayjs(row.expireDate).format('YYYY-MM-DD') : ''}</span> : 
