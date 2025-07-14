@@ -14,6 +14,7 @@
         <span>{{ dataSource.createTime ? formatDate(dataSource.createTime) : ''}}</span>
       </template>
     </detail>
+    <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" :title="注册" actionText="一键敲门"></PhoneAndEmailModal>
   </div>
 </template>
 
@@ -26,6 +27,7 @@ import defHttp from '@/utils/http/axios'
 import { useModalStore } from '@/store/modalStore'; 
 import {formatDate} from '@/utils';
 import {message} from 'ant-design-vue'
+import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
 import { BUSINESS_REF_LIST, TENANT_REF_LIST, STATUS_HISTORY_COLUMNS} from '@/utils/const.jsx';
 
 const authStore = useAuthStore();
@@ -33,7 +35,9 @@ const modalStore = useModalStore();
 const props = defineProps({
   IdProp: { type: String, default: null },
 });
-
+const Modaltitle = '会员信息';
+const phoneAndEmailModal = ref()
+const phoneAndEmailModalType = ref('register')
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
@@ -74,7 +78,28 @@ const pageData = reactive({
 })
 
 const upgradeVip = async () => {
-  const res = await defHttp.get({ url: `/apm/apmTodo/vipUpgrade/newTodo` });
+  const {email, phone} = authStore.userInfo
+  phoneAndEmailModalType.value = 'upgradeVip'
+  if (!email || !phone) {
+    
+  } else {
+    handledTODO({email, phone})
+  }
+}
+
+const renewVip = async () => {
+  console.log('authStore', authStore.userInfo)
+  phoneAndEmailModalType.value = 'renewVip'
+  const {email, phone} = authStore.userInfo
+  if (!email || !phone) {
+    phoneAndEmailModal.value.opneModal()
+  } else {
+    handledTODO({email, phone})
+  }
+}
+const handledTODO = async ( params) => {
+  const url = phoneAndEmailModalType.value == 'upgradeVip' ? '/apm/apmTodo/vipUpgrade/newTodo' : '/apm/apmTodo/vipPay/newTodo'
+  const res = await defHttp.get({ url, params });
   if (res.success) {
     const defaultConfig = {
       title: '一键敲门成功',
@@ -85,26 +110,13 @@ const upgradeVip = async () => {
       onAction: null, // Default onAction is handled in store to go home
     };
     modalStore.showSuccessPrompt({ ...defaultConfig });
+    phoneAndEmailModal.value.handleClose()
   }else {
     message.error(res.message)
   }
 }
-
-const renewVip = async () => {
-  const res = await defHttp.get({ url: `/apm/apmTodo/vipPay/newTodo` });
-  if (res.success) {
-     const defaultConfig = {
-      title: '一键敲门成功',
-      message: '一键敲门后后，客服人员将在30分钟内与您联系',
-      contactInfo: { name: '陈靖玮', phone: '020-55698507', email: 'chenjingwei@icshare.com' },
-      buttonText: '返回首页',
-      onAction: null, // Default onAction is handled in store to go home
-      // onClose: null,
-    };
-    modalStore.showSuccessPrompt({ ...defaultConfig });
-  } else {
-    message.error(res.message)
-  }
+const handleFinish = async (data) => {
+  handledTODO(data)
 }
 
 </script>
