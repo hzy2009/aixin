@@ -6,6 +6,7 @@
       :data="dataSource"
       :columns="columns"
       :row-config="{ keyField: 'key' }"
+      resizable
       border
       ref="gridRef"
       size="small"
@@ -124,7 +125,7 @@ const columns = [
     {
       title: '报价截止日期',
       field: 'expireDate',
-      width: 106,
+      width: 150,
       // Use slots.default for rendering complex components like a-date-picker
       slots: {
         default: ({ row, $rowIndex }) => { // vxe-table uses { row, $rowIndex }

@@ -6,6 +6,7 @@
           class="custom-detail-table"
           :data="props.data"
           :columns="columns"
+          resizable
           border
           size="small"
           ref="gridRef"
@@ -107,7 +108,7 @@ const columns = [
     },
     {
       title: '报价截止日期',
-      width: '106px',
+      width: 150,
       field: 'expireDate',
       // 使用 formatter 进行简单的字符串处理
       formatter: ({ cellValue }) => {
