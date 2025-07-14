@@ -1,7 +1,7 @@
 // src/utils/http/axios.js
 import axios from 'axios';
 import { useAuthStore } from '@/store/authStore';
-import router  from '@/router/index.js';
+import router from '@/router/index.js';
 import { message as AntMessage, Modal } from 'ant-design-vue';
 console.log('import.meta.env.VITE_API_BASE_URL', import.meta.env.VITE_API_BASE_URL)
 const defaultConfig = {
@@ -146,14 +146,13 @@ class AxiosHttpClient {
           authStore.logout();
           router.push({
             path: '/login',
-          }).finally(() => { Modal._hasPromise = false; });
+          })
         },
         onCancel: () => {
           authStore.logout(); // Still good to logout
-          Modal._hasPromise = false;
         },
         afterClose: () => { // Ensure flag is cleared if modal is closed by other means
-            Modal._hasPromise = false;
+          authStore.logout(); // Still good to logout
         }
       });
     } else {
