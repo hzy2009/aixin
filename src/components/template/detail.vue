@@ -105,10 +105,10 @@
 						<a-button @click="handleDefaultCancel" class="action-button cancel-button" v-if="isUseBack">返回</a-button>
 						<a-button @click="handleDefaultdelete" class="action-button cancel-button"
 							v-if="formModel.statusCode === 'submit' && isUseDelete">删除</a-button>
-						<a-button v-for="(item, i) in actionNotes" :key="i" class="action-button cancel-button"
+						<a-button v-for="(item, i) in actionNotesList" :key="i" class="action-button cancel-button"
 							@click="handleActionNoteClick(item)" :type="item.type">{{ item.title }}</a-button>
 						<a-button type="primary" danger @click="handleDefaultSubmit"
-							v-if='formModel.statusCode === "submit" && canSubmit' class="action-button submit-button">{{
+							v-if='formModel.statusCode === "submit" && canSubmit && actionNotes.length == 0' class="action-button submit-button">{{
 								formModel.statusCode === "submit" ? actionNote == '一键敲门' ? '修改单据' : actionNote : actionNote
 							}}</a-button>
 					</div>
@@ -160,6 +160,14 @@ const {
 	actionNotes = [], statusTrackingTitle, isUseBack = true, localeGetDetail = null, submitTpe = 'fn', handleBeforeSubmit, isUseDelete = false,
 	successTitle = '一键敲门成功'
 } = props.pageData;
+
+const actionNotesList = computed(() => {
+	const btns = actionNotes.filter(item => {
+		console.log('btns', item, item.isShow(formModel.value))
+		return item.isShow && item.isShow(formModel.value)
+	})
+	return btns
+})
 
 const uploadUrl = `${import.meta.env.VITE_GLOB_UPLOAD_URL}sys/common/upload` || '/api';
 const getHeaders = () => {

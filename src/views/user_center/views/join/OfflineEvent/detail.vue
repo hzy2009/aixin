@@ -47,9 +47,8 @@ const pageData = reactive({
   handleBeforeSave: (data) => {
     data.imageUrl = data.imageUrl.join(',');
   },
-  detailPath: '/user/published/OfflineEventDetail',
-  listPath: '/user/published/OfflineEvent',
-  canSubmit: true,
+  detailPath: '/user/join/OfflineEventDetail',
+  listPath: '/user/join/OfflineEvent',
   submitTpe: 'emit',
   actionNote: '报名',
   tableSections: [
@@ -70,19 +69,38 @@ const pageData = reactive({
         } else {
           message.error(response.message);
         }
+        detailRef.value.fetchDemandDetail();
+      },
+      isShow: (formModel) => {
+        return formModel.isRegistered
       }
     },
+    {
+      title: '报名',
+      fn: async () => {
+        const response = await defHttp.post({ url: `/apm/apmOfflineActivityRegister/newTodo/${props.IdProp}` });
+       if (response && response.success) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          detailRef.value.isCreating = false
+        } else {
+          message.error(response.message);
+        }
+      },
+      isShow: (formModel) => {
+        return !formModel.isRegistered
+      }
+    }
   ]
 })
-const submit = async () => {
-  const response = await defHttp.post({ url: `/apm/apmOfflineActivityRegister/newTodo/${props.IdProp}` });
-  if (response && response.success) {
-	  window.scrollTo({ top: 0, behavior: 'smooth' });
-    detailRef.value.isCreating = false
-  } else {
-    message.error(response.message);
-  }
-};
+// const submit = async () => {
+//   const response = await defHttp.post({ url: `/apm/apmOfflineActivityRegister/newTodo/${props.IdProp}` });
+//   if (response && response.success) {
+// 	  window.scrollTo({ top: 0, behavior: 'smooth' });
+//     detailRef.value.isCreating = false
+//   } else {
+//     message.error(response.message);
+//   }
+// };
 
 const goBack = () => {
   router.push({ path: '/user/join/OfflineEvent' });
