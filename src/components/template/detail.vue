@@ -117,7 +117,7 @@
 						<a-button @click="handleDefaultdelete" class="action-button cancel-button" v-if="formModel.statusCode === 'submit' && isUseDelete ">删除</a-button>
 						<a-button v-for="(item, i) in actionNotes" :key="i" class="action-button cancel-button" @click="handleActionNoteClick(item)" :type="item.type">{{ item.title }}</a-button>
 						<a-button type="primary" danger @click="handleDefaultSubmit" v-if='formModel.statusCode === "submit" && canSubmit'
-							class="action-button submit-button">{{ formModel.statusCode === "submit" ? '修改' : actionNote }}</a-button>
+							class="action-button submit-button">{{ formModel.statusCode === "submit" ? actionNote == '一键敲门' ? '修改' : actionNote : actionNote }}</a-button>
 					</div>
 				</slot>
             </div>
