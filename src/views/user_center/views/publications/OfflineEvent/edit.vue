@@ -61,6 +61,7 @@ const pageData = reactive({
   },
   detailPath: '/user/published/OfflineEvent/detail',
   listPath: '/user/published/OfflineEvent',
+  successTitle: '需求创建成功'
 })
 
 const goBack = () => {

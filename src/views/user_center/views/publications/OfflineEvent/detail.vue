@@ -56,7 +56,8 @@ const pageData = reactive({
     }
   ],
   canSubmit: true,
-  isUseDelete: true
+  isUseDelete: true,
+  successTitle: '需求创建成功'
 })
 
 const goBack = () => {

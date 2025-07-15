@@ -115,7 +115,7 @@
 				</slot>
 			</div>
 			<div v-else>
-				<operationResultPage @primaryAction="handleToDetail" @secondaryAction="handleToList" />
+				<operationResultPage @primaryAction="handleToDetail" @secondaryAction="handleToList" :pagepageData="{title: successTitle}"/>
 			</div>
 		</a-spin>
 	</div>
@@ -157,7 +157,8 @@ const {
 	IdProp, mode, pageTitle, apiMap, statusDictKey, statusHistoryColumns,
 	otherParams, formConfigs, tableSections, canSubmit = false,
 	showLogList = true, showPageTitle = true, listPath, actionNote = '一键敲门',
-	actionNotes = [], statusTrackingTitle, isUseBack = true, localeGetDetail = null, submitTpe = 'fn', handleBeforeSubmit, isUseDelete = false
+	actionNotes = [], statusTrackingTitle, isUseBack = true, localeGetDetail = null, submitTpe = 'fn', handleBeforeSubmit, isUseDelete = false,
+	successTitle = '一键敲门成功'
 } = props.pageData;
 
 const uploadUrl = `${import.meta.env.VITE_GLOB_UPLOAD_URL}sys/common/upload` || '/api';

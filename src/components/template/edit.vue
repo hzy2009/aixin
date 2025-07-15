@@ -29,7 +29,7 @@
                  </div>
             </div>
             <div v-else>
-                <operationResultPage :pageData="resultPageData" @primaryAction="handleToDetail"
+                <operationResultPage :pageData="{title: successTitle}" @primaryAction="handleToDetail"
                     @secondaryAction="handleToList" />
             </div>
 		</a-spin>
@@ -66,6 +66,7 @@ const {
     detailPath,
     listPath,
     useFooterAction = true,
+    successTitle = '一键敲门成功',
 } = props.pageData;
 
 const emit = defineEmits(['goBack']);
@@ -139,11 +140,6 @@ const handleFormAction = async (actionApi, beforeActionHook) => {
         if (result) {
             demandDetailData.value = result;
             isCreating.value = false; // 切换到结果页
-            // resultPageData.value = {
-            //     status: 'success',
-            //     title: '提交成功',
-            //     subTitle: '我们已收到您的请求，客服将尽快与您联系。'
-            // };
         }
     } catch (validationError) {
         // 捕获校验失败或其他错误
