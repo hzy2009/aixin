@@ -109,7 +109,7 @@
 							@click="handleActionNoteClick(item)" :type="item.type">{{ item.title }}</a-button>
 						<a-button type="primary" danger @click="handleDefaultSubmit"
 							v-if='formModel.statusCode === "submit" && canSubmit' class="action-button submit-button">{{
-								formModel.statusCode === "submit" ? actionNote == '一键敲门' ? '修改' : actionNote : actionNote
+								formModel.statusCode === "submit" ? actionNote == '一键敲门' ? '修改单据' : actionNote : actionNote
 							}}</a-button>
 					</div>
 				</slot>
