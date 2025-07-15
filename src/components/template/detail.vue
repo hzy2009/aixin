@@ -5,9 +5,9 @@
 			<h2 class="page-main-heading">{{ pageTitle }}</h2>
 		</div>
 		<a-spin :spinning="isLoading">
-            <div v-if="isCreating">
-			<!-- Section: Basic Information -->
-				<section  v-if="$slots.title" >
+			<div v-if="isCreating">
+				<!-- Section: Basic Information -->
+				<section v-if="$slots.title">
 					<slot name="title" :dataSource="formModel"></slot>
 				</section>
 				<section class="info-section">
@@ -20,14 +20,15 @@
 							:style="{ gridColumn: item.span ? `span ${item.span}` : 'span 1' }">
 							<span class="info-grid-label">{{ item.label }}：</span>
 							<span class="info-grid-value" v-if="item.fieldType === 'input'">
-								<a-input v-if="formModel.statusCode == 'submit' && canSubmit" style="width: 386px;" v-model:value="formModel[item.field]"
-              					:placeholder="item.placeholder || `请输入${item.label}`" :disabled="item.disabled" allow-clear />
+								<a-input v-if="formModel.statusCode == 'submit' && canSubmit" style="width: 386px;"
+									v-model:value="formModel[item.field]" :placeholder="item.placeholder || `请输入${item.label}`"
+									:disabled="item.disabled" allow-clear />
 								<span v-else>{{ formModel[item.field] }}</span>
 							</span>
-							<span class="info-grid-value" v-else-if="item.fieldType === 'select' && (item.options || selectOptions(item.dictKey))">
+							<span class="info-grid-value"
+								v-else-if="item.fieldType === 'select' && (item.options || selectOptions(item.dictKey))">
 								<a-select v-if="formModel.statusCode == 'submit' && canSubmit" v-model:value="formModel[item.field]"
-									style="width: 386px;"
-									:placeholder="item.placeholder || `请选择${item.label}`"
+									style="width: 386px;" :placeholder="item.placeholder || `请选择${item.label}`"
 									:options="item.options || selectOptions(item.dictKey)" :mode="item.selectMode"
 									:filter-option="item.remoteSearch ? false : filterOption" :loading="item.loading"
 									:disabled="item.disabled" @change="(v, option) => handleSelectChange(v, item, option)" allow-clear />
@@ -36,34 +37,32 @@
 								</span>
 							</span>
 							<span class="info-grid-value" v-else-if="item.fieldType === 'date'">
-								<a-date-picker v-if="formModel.statusCode == 'submit' && canSubmit" v-model:value="formModel[item.field]"
-									:placeholder="item.placeholder || `请选择${item.label}`"
-									:disabled-date="disabledDate"
-									:value-format="item.valueFormat || 'YYYY-MM-DD HH:mm:ss'" :show-time="item.showTime"
-									style="width: 386px" :disabled="item.disabled" />
+								<a-date-picker v-if="formModel.statusCode == 'submit' && canSubmit"
+									v-model:value="formModel[item.field]" :placeholder="item.placeholder || `请选择${item.label}`"
+									:disabled-date="disabledDate" :value-format="item.valueFormat || 'YYYY-MM-DD HH:mm:ss'"
+									:show-time="item.showTime" style="width: 386px" :disabled="item.disabled" />
 								<span v-else>{{ getDataDisplayValue(formModel[item.field]) }}</span>
 							</span>
 							<span class="info-grid-value" v-else-if="item.fieldType === 'textarea'">
 								<a-textarea v-if="formModel.statusCode == 'submit' && canSubmit" v-model:value="formModel[item.field]"
-								style="width: 386px"
-								:placeholder="item.placeholder || `请输入${item.label}`" :rows="item.rows || 4" :disabled="item.disabled"
-								allow-clear :maxlength="item.maxLength" show-count />
+									style="width: 386px" :placeholder="item.placeholder || `请输入${item.label}`" :rows="item.rows || 4"
+									:disabled="item.disabled" allow-clear :maxlength="item.maxLength" show-count />
 								<span v-else>{{ formModel[item.field] }}</span>
 							</span>
 							<span class="info-grid-value" v-else-if="item.fieldType === 'imageUpload'">
-								<a-upload v-if="formModel.statusCode == 'submit' && canSubmit" v-model:file-list="formModel[item.field]" :name="item.uploadName || 'file'"
-									list-type="picture-card" class="custom-image-uploader"
+								<a-upload v-if="formModel.statusCode == 'submit' && canSubmit" v-model:file-list="formModel[item.field]"
+									:name="item.uploadName || 'file'" list-type="picture-card" class="custom-image-uploader"
 									:show-upload-list="item.showUploadList !== undefined ? item.showUploadList : true" :action="uploadUrl"
 									:before-upload="item.beforeUpload || beforeUpload" accept="image/*" :headers="getHeaders()"
 									:data="{ biz: 'temp' }" @change="(info) => handleImageUploadChange(info, item)"
 									@preview="handleImagePreview" :max-count="item.maxCount || 1" :disabled="item.disabled">
-									<div
-										v-if="(!formModel[item.field] || formModel[item.field].length < (item.maxCount || 1))">
+									<div v-if="(!formModel[item.field] || formModel[item.field].length < (item.maxCount || 1))">
 										<PlusOutlined />
 										<div style="margin-top: 8px">上传</div>
 									</div>
 								</a-upload>
-								<img v-else :src="getImgUrl(formModel[item.field])" :alt="formModel[item.field]" alt="" class="info-grid-image">
+								<img v-else :src="getImgUrl(formModel[item.field])" :alt="formModel[item.field]" alt=""
+									class="info-grid-image">
 							</span>
 							<div class="info-grid-value" v-else-if="item.fieldType === 'slot'" width="100%">
 								<slot :name="item.field" :dataSource="formModel"></slot>
@@ -71,25 +70,21 @@
 							<span v-else class="info-grid-value">{{ formModel[item.field] }}</span>
 						</div>
 						<!-- Table Sections - CONVERTED TO VXE-GRID -->
-						<div v-for="(tableSection, index) in tableSections" :key="`table-section-${index}`"
-							class="info-grid-item">
+						<div v-for="(tableSection, index) in tableSections" :key="`table-section-${index}`" class="info-grid-item">
 							<span class="info-grid-label">{{ tableSection.title }}：</span>
 							<div class="flex1">
-								<span v-if='!formModel[`${tableSection.groupCode}`] || formModel[`${tableSection.groupCode}`].length === 0'>暂无数据</span>
-								<vxe-grid v-else
-									:columns="tableSection.columns|| []"
+								<span
+									v-if='!formModel[`${tableSection.groupCode}`] || formModel[`${tableSection.groupCode}`].length === 0'>暂无数据</span>
+								<vxe-grid v-else :columns="tableSection.columns || []"
 									:data="formModel[`${tableSection.groupCode}`] || []"
-									:row-config="{ keyField: tableSection.rowKey || 'id' }"
-									min-height="88"
-									border
-									size="medium"
+									:row-config="{ keyField: tableSection.rowKey || 'id' }" min-height="88" border size="medium"
 									class="custom-detail-table">
 								</vxe-grid>
 							</div>
 						</div>
 					</div>
 				</section>
-				<section class="info-section" v-if="$slots.content" >
+				<section class="info-section" v-if="$slots.content">
 					<slot name="content" :dataSource="formModel"></slot>
 				</section>
 				<section v-if="showProgressList" class="info-section">
@@ -98,14 +93,8 @@
 					</div>
 					<CustomProgressTimeline :progressList="formModel.progressList" />
 					<!-- Status History Table - CONVERTED TO VXE-GRID -->
-					<vxe-grid
-						v-if="formModel.logList && formModel.logList.length > 0"
-						:columns="statusHistoryColumns || []"
-						:data="formModel.logList"
-						:row-config="{ keyField: 'id' }"
-						min-height="88"
-						border
-						size="medium"
+					<vxe-grid v-if="formModel.logList && formModel.logList.length > 0" :columns="statusHistoryColumns || []"
+						:data="formModel.logList" :row-config="{ keyField: 'id' }" min-height="88" border size="medium"
 						class="custom-detail-table status-history-table">
 					</vxe-grid>
 				</section>
@@ -114,23 +103,26 @@
 				<slot name="actions" :handleDefaultSubmit=handleDefaultSubmit :handleDefaultCancel=handleDefaultCancel>
 					<div class="page-actions-footer">
 						<a-button @click="handleDefaultCancel" class="action-button cancel-button" v-if="isUseBack">返回</a-button>
-						<a-button @click="handleDefaultdelete" class="action-button cancel-button" v-if="formModel.statusCode === 'submit' && isUseDelete ">删除</a-button>
-						<a-button v-for="(item, i) in actionNotes" :key="i" class="action-button cancel-button" @click="handleActionNoteClick(item)" :type="item.type">{{ item.title }}</a-button>
-						<a-button type="primary" danger @click="handleDefaultSubmit" v-if='formModel.statusCode === "submit" && canSubmit'
-							class="action-button submit-button">{{ formModel.statusCode === "submit" ? actionNote == '一键敲门' ? '修改' : actionNote : actionNote }}</a-button>
+						<a-button @click="handleDefaultdelete" class="action-button cancel-button"
+							v-if="formModel.statusCode === 'submit' && isUseDelete">删除</a-button>
+						<a-button v-for="(item, i) in actionNotes" :key="i" class="action-button cancel-button"
+							@click="handleActionNoteClick(item)" :type="item.type">{{ item.title }}</a-button>
+						<a-button type="primary" danger @click="handleDefaultSubmit"
+							v-if='formModel.statusCode === "submit" && canSubmit' class="action-button submit-button">{{
+								formModel.statusCode === "submit" ? actionNote == '一键敲门' ? '修改' : actionNote : actionNote
+							}}</a-button>
 					</div>
 				</slot>
-            </div>
+			</div>
 			<div v-else>
-                <operationResultPage  @primaryAction="handleToDetail"
-                    @secondaryAction="handleToList" />
-            </div>
+				<operationResultPage @primaryAction="handleToDetail" @secondaryAction="handleToList" />
+			</div>
 		</a-spin>
 	</div>
-	  <!-- Image Preview Modal -->
-  <a-modal :open="previewVisible" :title="previewTitle" :footer="null" @cancel="handlePreviewCancel">
-    <img alt="example" style="width: 100%" :src="previewImage" />
-  </a-modal>
+	<!-- Image Preview Modal -->
+	<a-modal :open="previewVisible" :title="previewTitle" :footer="null" @cancel="handlePreviewCancel">
+		<img alt="example" style="width: 100%" :src="previewImage" />
+	</a-modal>
 </template>
 
 <script setup>
@@ -164,16 +156,16 @@ const props = defineProps({
 const {
 	IdProp, mode, pageTitle, apiMap, statusDictKey, statusHistoryColumns,
 	otherParams, formConfigs, tableSections, canSubmit = false,
-	showLogList = true, showPageTitle = true, listPath, actionNote='一键敲门',
-	actionNotes = [], statusTrackingTitle, isUseBack = true, localeGetDetail = null,submitTpe = 'fn', handleBeforeSubmit, isUseDelete= false
+	showLogList = true, showPageTitle = true, listPath, actionNote = '一键敲门',
+	actionNotes = [], statusTrackingTitle, isUseBack = true, localeGetDetail = null, submitTpe = 'fn', handleBeforeSubmit, isUseDelete = false
 } = props.pageData;
 
 const uploadUrl = `${import.meta.env.VITE_GLOB_UPLOAD_URL}sys/common/upload` || '/api';
 const getHeaders = () => {
-  return reactive({
-    'X-Access-Token': auth.token,
-    'X-Tenant-Id': auth.userInfo.id || '0',
-  });
+	return reactive({
+		'X-Access-Token': auth.token,
+		'X-Tenant-Id': auth.userInfo.id || '0',
+	});
 }
 const previewVisible = ref(false);
 const previewImage = ref('');
@@ -191,7 +183,7 @@ const handleformConfigsAfter = (data) => {
 };
 const {
 	demandDetail: demandDetailData, isLoading, error, operationMode,
-	fetchDemandDetail, internalDemandId, handleSubmit,handleDelete
+	fetchDemandDetail, internalDemandId, handleSubmit, handleDelete
 } = useDemandDetail({
 	IdProp, mode, url: apiMap, otherParams, handleformConfigsAfter, localeGetDetail
 });
@@ -209,20 +201,20 @@ watch(demandDetailData, (newDetail) => {
 	if (canSubmit && newDetail && newDetail.statusCode === 'submit') {
 		baseFormConfigs.value.forEach(field => {
 			if (field.fieldType === 'imageUpload') {
-			if (!modelToAssign[field.field]) {
-				modelToAssign[field.field] = []; // Initialize as empty array for AntD Upload
-			} else {
-				modelToAssign[field.field] = [{
-				uid: getRandom(10),
-				name: "图片",
-				status: 'done',
-				url: getFileAccessHttpUrl(modelToAssign[field.field]),
-				response: {
-					status: 'history',
-					message: modelToAssign[field.field],
-				},
-				}]
-			}
+				if (!modelToAssign[field.field]) {
+					modelToAssign[field.field] = []; // Initialize as empty array for AntD Upload
+				} else {
+					modelToAssign[field.field] = [{
+						uid: getRandom(10),
+						name: "图片",
+						status: 'done',
+						url: getFileAccessHttpUrl(modelToAssign[field.field]),
+						response: {
+							status: 'history',
+							message: modelToAssign[field.field],
+						},
+					}]
+				}
 			}
 		});
 	}
@@ -265,20 +257,20 @@ const formatAmount = (value) => {
 	return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
 
-const handleDefaultCancel = () => { 
+const handleDefaultCancel = () => {
 	if (listPath) {
 		handleToList();
 	} else {
 		emit('goBack');
 	}
- };
-const handleDefaultdelete = async() => { 
+};
+const handleDefaultdelete = async () => {
 	const result = await handleDelete(formModel.value);
 	console.log('result', result);
 	if (result.success) {
 		handleToList();
 	}
- };
+};
 const goBack = () => { emit('goBack'); };
 const handleDefaultSubmit = () => {
 	// window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -290,8 +282,8 @@ const handleDefaultSubmit = () => {
 };
 const handleToDetail = () => { isCreating.value = true; };
 const handleToList = () => {
-    isCreating.value = true;
-    router.push({ path: listPath });
+	isCreating.value = true;
+	router.push({ path: listPath });
 };
 const getImgUrl = (url) => url ? getFileAccessHttpUrl(url) : defaultImg;
 const handleActionNoteClick = (actionNote) => { if (actionNote.fn) actionNote.fn(demandDetailData); };
@@ -299,7 +291,7 @@ const showProgressList = computed(() => {
 	if (showLogList) {
 		if (statusTracking.value) {
 			if (statusTrackingTitle !== '状态跟踪' && (!formModel.value.progressList || formModel.value.progressList.length === 0)) {
-			return false;
+				return false;
 			}
 		} else {
 			return false;
@@ -310,96 +302,96 @@ const showProgressList = computed(() => {
 	return true;
 });
 const handleSelectChange = (value, fieldConfig, option) => {
-  // Emit a generic fieldChange event
-//   emit('fieldChange', { field: fieldConfig.field, value, option, formModel: formModel.value });
-  if (fieldConfig.onChange) {
-    fieldConfig.onChange({ value, field: fieldConfig, form: formModel.value, option });
-  }
+	// Emit a generic fieldChange event
+	//   emit('fieldChange', { field: fieldConfig.field, value, option, formModel: formModel.value });
+	if (fieldConfig.onChange) {
+		fieldConfig.onChange({ value, field: fieldConfig, form: formModel.value, option });
+	}
 };
 const handleSubmitForm = async () => {
-    try {
+	try {
 		const params = getAllData();
-        if (handleBeforeSubmit && typeof handleBeforeSubmit === 'function') {
-            handleBeforeSubmit(params)
-        }
-        isSubmitting.value = true;
-        const result = await handleSubmit(params);
-        if (result) {
-            demandDetailData.value = result;
-            isCreating.value = false;
-        }
-    } catch (validationError) {
-        console.log('表单校验失败:', validationError);
-    } finally {
-        isSubmitting.value = false;
-    }
+		if (handleBeforeSubmit && typeof handleBeforeSubmit === 'function') {
+			handleBeforeSubmit(params)
+		}
+		isSubmitting.value = true;
+		const result = await handleSubmit(params);
+		if (result) {
+			demandDetailData.value = result;
+			isCreating.value = false;
+		}
+	} catch (validationError) {
+		console.log('表单校验失败:', validationError);
+	} finally {
+		isSubmitting.value = false;
+	}
 };
 const handleImagePreview = async file => {
-  if (!file.url && !file.preview) {
-    file.preview = await getBase64(file.originFileObj);
-  }
-  previewImage.value = file.url || file.preview;
-  previewVisible.value = true;
-  previewTitle.value = file.name || file.url.substring(file.url.lastIndexOf('/') + 1);
+	if (!file.url && !file.preview) {
+		file.preview = await getBase64(file.originFileObj);
+	}
+	previewImage.value = file.url || file.preview;
+	previewVisible.value = true;
+	previewTitle.value = file.name || file.url.substring(file.url.lastIndexOf('/') + 1);
 };
 const handlePreviewCancel = () => {
-  previewVisible.value = false;
+	previewVisible.value = false;
 };
 const handleImageUploadChange = (info, fieldConfig) => {
-  // internalFormModel[fieldConfig.field] is already bound with v-model:file-list
-  // This handler is for additional logic like showing messages or custom status updates
-  if (info.file.status === 'uploading') {
-    // fieldConfig.loading = true; // If you have a loading state per field
-    return;
-  }
-  if (info.file.status === 'done') {
-    if (info.file.response.success === false) {
-      message.error(info.file.response.message);
-      const failIndex = internalFormModel[fieldConfig.field].findIndex((item) => item.uid === file.uid);
-      if (failIndex != -1) {
-        internalFormModel[fieldConfig.field].splice(failIndex, 1);
-      }
-    }
-    // fieldConfig.loading = false;
-    message.success(`${info.file.name} 上传成功`);
-    // if ((fieldConfig.maxCount || 1) === 1 && info.file.response?.message) {
-    //   internalFormModel[fieldConfig.field] = [info.file.response.message];
-    // }
-  } else if (info.file.status === 'error') {
-    // fieldConfig.loading = false;
-    message.error(`${info.file.name} 上传失败.`);
-  }
-  // emit('fieldChange', { field: fieldConfig.field, value: info.fileList, formModel: internalFormModel });
+	// internalFormModel[fieldConfig.field] is already bound with v-model:file-list
+	// This handler is for additional logic like showing messages or custom status updates
+	if (info.file.status === 'uploading') {
+		// fieldConfig.loading = true; // If you have a loading state per field
+		return;
+	}
+	if (info.file.status === 'done') {
+		if (info.file.response.success === false) {
+			message.error(info.file.response.message);
+			const failIndex = internalFormModel[fieldConfig.field].findIndex((item) => item.uid === file.uid);
+			if (failIndex != -1) {
+				internalFormModel[fieldConfig.field].splice(failIndex, 1);
+			}
+		}
+		// fieldConfig.loading = false;
+		message.success(`${info.file.name} 上传成功`);
+		// if ((fieldConfig.maxCount || 1) === 1 && info.file.response?.message) {
+		//   internalFormModel[fieldConfig.field] = [info.file.response.message];
+		// }
+	} else if (info.file.status === 'error') {
+		// fieldConfig.loading = false;
+		message.error(`${info.file.name} 上传失败.`);
+	}
+	// emit('fieldChange', { field: fieldConfig.field, value: info.fileList, formModel: internalFormModel });
 };
 const beforeUpload = (file) => {
-  let fileType = file.type;
-  if (fileType.indexOf('image') < 0) {
-    createMessage.info('请上传图片');
-    return false;
-  }
+	let fileType = file.type;
+	if (fileType.indexOf('image') < 0) {
+		createMessage.info('请上传图片');
+		return false;
+	}
 };
 
 const disabledDate = (current) => {
-  // 不能选择上个月的日期
-  return current && current < dayjs().subtract(1, 'month');
+	// 不能选择上个月的日期
+	return current && current < dayjs().subtract(1, 'month');
 }
 const filterOption = (input, option) => {
-  return option.label && option.label.toLowerCase().includes(input.toLowerCase());
+	return option.label && option.label.toLowerCase().includes(input.toLowerCase());
 };
 
 const getAllData = () => {
-  const paranms = JSON.parse(JSON.stringify(formModel.value || {}));
-  baseFormConfigs.value.forEach(fielditem => {
-    if (fielditem.fieldType === 'imageUpload') {
-		debugger
-      if (paranms[fielditem.field] && paranms[fielditem.field][0] && paranms[fielditem.field][0].response.message) {
-        paranms[fielditem.field] = paranms[fielditem.field][0].response.message
-      } else {
-        paranms[fielditem.field] = null
-      }
-    }
-  });
-  return paranms
+	const paranms = JSON.parse(JSON.stringify(formModel.value || {}));
+	baseFormConfigs.value.forEach(fielditem => {
+		if (fielditem.fieldType === 'imageUpload') {
+			debugger
+			if (paranms[fielditem.field] && paranms[fielditem.field][0] && paranms[fielditem.field][0].response.message) {
+				paranms[fielditem.field] = paranms[fielditem.field][0].response.message
+			} else {
+				paranms[fielditem.field] = null
+			}
+		}
+	});
+	return paranms
 }
 
 watch(() => route.params.id, (newId, oldId) => {
@@ -516,7 +508,7 @@ defineExpose({ isCreating, handleToDetail, fetchDemandDetail, detailData: demand
 		// letter-spacing: 0%;
 		display: flex;
 		justify-content: right;
-    	// align-items: center;
+		// align-items: center;
 		color: @text-color-secondary;
 		margin-right: @spacing-xs;
 		white-space: nowrap;
@@ -534,6 +526,7 @@ defineExpose({ isCreating, handleToDetail, fetchDemandDetail, detailData: demand
 		color: #272A30;
 		word-break: break-word;
 		flex: 1;
+
 		&.requester-id-value {
 			background-color: #F7F8FA;
 			padding: 2px 8px;
@@ -627,11 +620,13 @@ defineExpose({ isCreating, handleToDetail, fetchDemandDetail, detailData: demand
 
 	border-radius: 4px;
 	margin-right: @spacing-md;
+
 	&.cancel-button {
 		background-color: @background-color-base;
 		border: 1px solid #D9D9D9;
 		color: #C3CBCF;
-			&:hover {
+
+		&:hover {
 			color: @primary-color;
 			border-color: @primary-color;
 		}
