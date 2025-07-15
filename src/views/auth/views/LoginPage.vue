@@ -140,7 +140,7 @@ import {
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons-vue';
 import { getCodeInfo } from '@/api/user.js';
 import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
-
+import defHttp from '@/utils/http/axios';
 const router = useRouter();
 const authStore = useAuthStore();
 const currentView = ref('login');
