@@ -2,16 +2,16 @@
   <section class="home-hero-section-banner" :style="{ height: height + 'px' }">
     <div class="hero-banner-content container"> 
       <div class="text-overlay-block">
-        <p class="hero-title" v-if="height == 200">
+        <p class="hero-title" >
           打通产业链上下游，为会员提供寻源、攻关、贸易、
           验证、行研、人才等一站式解决方案
         </p>
-        <p class="hero-title"  v-if="height == 160">
+        <!-- <p class="hero-title"  v-if="height == 160">
           致力于为产业链上下游提供准确、可靠的供应链信息支持
           促进行业的信息互通与资源共享
-        </p>
-        <div class="hero-divider" v-if="height == 200"></div>
-        <p class="hero-description" v-if="height == 200">
+        </p> -->
+        <div class="hero-divider" ></div>
+        <p class="hero-description" >
           打破信息孤岛，构建共享生态，汇聚全球洞察，赋能行业决策，让每一次交流，都成为价值的传递。
         </p>
       </div>
