@@ -1,6 +1,6 @@
 <template>
   <div class="recommended-reports-list">
-    <div v-if="isLoading" class="loading-placeholder">
+    <div v-if="isLoading || !props.code" class="loading-placeholder">
       <a-skeleton active :paragraph="{ rows: 4 }" v-for="i in skeletonCount" :key="`ske-${i}`" class="skeleton-item" />
     </div>
     <div v-else-if="recommendedReports.length > 0" class="reports-list-items" >
