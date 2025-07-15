@@ -42,6 +42,7 @@ const formConfigs = [
   // {
   //   label: '验证项目', field: 'projectName', fieldType: 'input', span: 24,
   // },
+  { label: '需求创建日期', field: 'createTime', fieldType: 'date', span: 24},
   { label: '期望完成日期', field: 'expireDate', fieldType: 'date', span: 24 },
   { label: '电话', field: 'phone', fieldType: 'phone', span: 24 },
   { label: '邮箱', field: 'email', fieldType: 'email', span: 24 },

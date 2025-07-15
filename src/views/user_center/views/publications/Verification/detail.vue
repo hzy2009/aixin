@@ -43,7 +43,8 @@ const formConfigs = [
   {
     label: '爱芯享检测验证单号', field: 'code', span: 24,
   },
-  { label: '期望完成日期', field: 'expireDate', fieldType: 'date', span: 24, fieldType: 'date' },
+  { label: '需求创建日期', field: 'createTime', fieldType: 'date', span: 24},
+  { label: '期望完成日期', field: 'expireDate', fieldType: 'date', span: 24 },
   // {
   //   label: '产品类别', field: 'productType', fieldType: 'select', dictKey: 'product_type', span: 24,
   // },
