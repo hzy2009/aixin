@@ -59,11 +59,9 @@
               </a-button>
             </a-form-item>
 
-            <!-- <a-form-item>
-              <a-button class="secondary-action-button" @click="navigateToRegister">
-                会员入会申请
-              </a-button>
-            </a-form-item> -->
+            <div class="register-prompt">
+              没有账号? <a href="#" @click.prevent="handleRegister" class="register-link">注册一键敲门</a>
+            </div>
           </a-form>
         </div>
 
@@ -121,6 +119,7 @@
       </div>
     </main>
     <!-- Footer has been removed -->
+  <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" title="注册" actionText="一键敲门"></PhoneAndEmailModal>
   </div>
 </template>
 
@@ -140,6 +139,7 @@ import {
 } from 'ant-design-vue';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons-vue';
 import { getCodeInfo } from '@/api/user.js';
+import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -148,6 +148,7 @@ const loginLoading = ref(false);
 const loginFormState = reactive({ username: '', password: '', remember: true });
 const forgotPasswordLoading = ref(false);
 const forgotPasswordFormState = reactive({ account: '' });
+const phoneAndEmailModal = ref()
 
 const switchToForgotPassword = () => { currentView.value = 'forgotPassword'; };
 const switchToLogin = () => { currentView.value = 'login'; };
@@ -213,7 +214,18 @@ const handleChangeCheckCode = () => {
 onMounted(() => {
   getCaptchaCode()
 });
-
+const handleRegister = () => {
+  phoneAndEmailModal.value.opneModal()
+}
+const handleFinish = async (data) => {
+  const response = await defHttp.get({ url: `/apm/apmTodo/newVip/newTodo/front`, params: data });
+  if (response && response.success) {
+    phoneAndEmailModal.value.handleClose()
+    message.success('一键敲门成功');
+  } else {
+    message.info(response.message);
+  }
+};
 
 </script>
 
@@ -509,5 +521,19 @@ onMounted(() => {
   top: 0;
   cursor: pointer;
   z-index: 1;
+}
+.register-prompt {
+  margin-top: 24px; // Space above "没有账号?"
+  text-align: center;
+  font-size: 14px;
+  color: @text-color-secondary; // Gray text
+
+  .register-link {
+    color: @primary-color; // Red link
+    font-weight: 500;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 </style>
