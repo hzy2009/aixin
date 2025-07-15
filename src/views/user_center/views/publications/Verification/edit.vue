@@ -10,6 +10,7 @@ import { useRouter } from 'vue-router';
 import edit from '@/components/template/edit.vue';
 import { useAuthStore } from '@/store/authStore';
 
+import dayjs from 'dayjs';
 
 
 const props = defineProps({
@@ -73,6 +74,9 @@ const pageData = reactive({
   formConfigs,
   statusHistoryColumns,
   pageTitle,
+  otherParams: {
+    createTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+  },
   detailPath: '/user/published/Verification/detail',
   listPath: '/user/published/Verification',
 })
