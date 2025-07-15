@@ -182,7 +182,7 @@ const vxeTableColumns = computed(() => {
                             }} >
                             <span class="action-item">
                                 <span><img src={ delIcon} alt="" class="action-icon" /></span>
-                                <AButton type="link"  class="action-link" key={i}>
+                                <AButton type="link" class="action-link" class={ {'not-allowed': row.statusCode != 'submit'}} disabled={(row.statusCode != 'submit')} key={i} >
                                     {action.formatText ? action.formatText(row) : action.text}
                                 </AButton>
                             </span>
@@ -334,6 +334,14 @@ defineExpose({
     padding: 4px 5px;
     &:hover {
         color: #656C74;
+        // color: @primary-color;
+    }
+    // Add any specific styles for the action links here
+}
+:deep(.not-allowed) {
+    color:  rgba(0, 0, 0, 0.25);
+    &:hover {
+        color:  rgba(0, 0, 0, 0.25);
         // color: @primary-color;
     }
     // Add any specific styles for the action links here
