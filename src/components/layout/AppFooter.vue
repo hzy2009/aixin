@@ -3,7 +3,7 @@
     <div class="footer-content-revised container">
       <p class="copyright-line">
         <!-- ©{{ new Date().getFullYear() }} 爱芯享信息共享平台 AipuMax Information Sharing Platform Co.LTD.版权所有ALL RIGHT RESERVED | 沪ICP备2025131551号-0 -->
-        ©2025 爱芯享信息共享平台 | <span class="icp-number" @click="navigateToIcp">沪ICP备2025131551号-0</span>
+        ©2025 爱芯享信息共享平台 | <span class="icp-number" @click="navigateToIcp">沪ICP备2025131551号-0</span> | <span class="icp-number" @click="navigateToxx">沪公网安备31011502403495号</span>
       </p>
       <div class="footer-links-line">
         <a href="#" @click.prevent="scrollToContact" class="footer-link">联系我们</a>
@@ -23,6 +23,9 @@ const scrollToTop = () => {
 };
 const navigateToIcp = () => {
   window.open('https://beian.miit.gov.cn/#/Integrated/index', '_blank');
+}
+const navigateToxx = () => {
+  window.open('https://beian.mps.gov.cn/#/query/webSearch', '_blank');
 }
 const scrollToContact = () => {
   // TODO: Implement navigation or scroll to contact section if you have one
