@@ -19,6 +19,7 @@ const props = defineProps({
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
+  { label: '需求提出方', field: 'createBy', fieldType: 'input', span: 24, disabled: true, },
   { label: '活动名称', field: 'activityName', fieldType: 'input', span: 24 },
   { label: '封面图片', field: 'imageUrl', fieldType: 'imageUpload', span: 24 },
   {

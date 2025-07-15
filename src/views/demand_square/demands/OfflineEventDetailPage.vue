@@ -26,6 +26,10 @@
 
           <!-- 4. Meta Info (Stacked) -->
           <div class="event-meta-stacked">
+              <div class="meta-item-row">
+              <span class="meta-label">需求提出方：</span>
+              <span class="meta-value">{{ eventDetail.createBy || '' }}</span>
+            </div>
             <div class="meta-item-row">
               <span class="meta-label">活动开始时间：</span>
               <span class="meta-value">{{ formatDate(eventDetail.activityDate) || '' }}</span>
