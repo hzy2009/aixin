@@ -81,7 +81,15 @@ const handleFinish = async (data) => {
   const response = await defHttp.get({ url: `/apm/apmTodo/newVip/newTodo/front`, params: data });
   if (response && response.success) {
     phoneAndEmailModal.value.handleClose()
-    message.success('一键敲门成功');
+      const defaultConfig = {
+      title: '一键敲门成功',
+      message: '一键敲门后后，客服人员将在30分钟内与您联系',
+      contactInfo: { name: '陈靖玮', phone: '020-55698507', email: 'chenjingwei@icshare.com' },
+      buttonText: '返回首页',
+      showButton: false,
+      onAction: null, // Default onAction is handled in store to go home
+    };
+    modalStore.showSuccessPrompt({ ...defaultConfig });
   } else {
     message.info(response.message);
   }
