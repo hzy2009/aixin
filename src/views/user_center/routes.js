@@ -238,7 +238,7 @@ const userCenterRoutes = [
       {
         path: 'list',
         component: todoList,
-        meta: { title: '我的待办', roles: ['apm-vip'] }
+        meta: { title: '我的待办', roles: ['apm-vip', 'apm-vip-inspection', 'apm-register', 'apm-register-expert'] }
       },
     
     ]
