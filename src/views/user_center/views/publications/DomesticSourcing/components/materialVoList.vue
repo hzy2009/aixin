@@ -4,7 +4,6 @@
       :class="isMaxWidth ? 'materialVoListtable': ''"
       :data="props.data"
       :columns="columns"
-      resizable
       :row-config="{ keyField: 'id' }"
       border
       min-height="88"
@@ -39,12 +38,14 @@ const columns = [
     {
       type: 'seq', // 使用 vxe-table 内置的序号类型
       title: '序号',
+      align: 'center',
       width: 46,
     },
     {
       title: '内部管理单号',
       field: 'materialCode', // field -> field
-      width: 110,
+      width: 180,
+      align: 'center'
     },
     {
       title: '状态',
@@ -53,27 +54,27 @@ const columns = [
           const option = selectOptions('material_code').find(item => item.value == cellValue);
           return option ? option.label : '';
       },
-      width: 80,
+      width: 90,
     },
     {
       title: '厂商1',
       field: 'refUserCode1', // field -> field
-      width: 168,
+      width: 150,
     },
     {
       title: '厂商2',
       field: 'refUserCode2', // field -> field
-      width: 168,
+      width: 150,
     },
     {
       title: '厂商3',
       field: 'refUserCode3', // field -> field
-      width: 168,
+      width: 150,
     },
     {
       title: '厂商4',
       field: 'refUserCode4', // field -> field
-      width: 168,
+      width: 150,
     },
 ]
 </script>
