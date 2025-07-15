@@ -143,10 +143,17 @@ class AxiosHttpClient {
         okText: '重新登录',
         cancelText: '取消',
         onOk: () => {
-          authStore.logout();
-          router.push({
-            path: '/login',
-          })
+          try {
+            authStore.logout();
+            router.push({
+              path: '/login',
+            }).finally(() => { Modal._hasPromise = false; });
+          } catch (error) {
+            console.log(error);
+            router.push({
+              path: '/login',
+            })
+          }
         },
         onCancel: () => {
           authStore.logout(); // Still good to logout
