@@ -235,7 +235,8 @@ const operationsClick = (btn) => {
                 ...otherParams,
                 search: search.value,
                 ...currentFilters.value,
-                ...searchParams.value
+                ...searchParams.value,
+                referer: btn.referer || null
             });
         } else if (btn.btnType == 'delete') {
             triggerSearch({ deleteFlag: 1 });

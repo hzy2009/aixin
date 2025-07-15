@@ -69,6 +69,7 @@ const pageData = ref({
             btnType: 'exportXls',
             fileName: '检测验证',
             url: 'apm/apmInspection/exportXls',
+            referer: 'join'
         },
         {
             title: '已删除',

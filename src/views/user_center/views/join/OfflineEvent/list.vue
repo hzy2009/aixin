@@ -60,6 +60,7 @@ const pageData = ref({
             btnType: 'exportXls',
             fileName: '线下活动',
             url: 'apm/apmOfflineActivity/exportXls',
+            referer: 'join'
         },
         {
             title: '已删除',

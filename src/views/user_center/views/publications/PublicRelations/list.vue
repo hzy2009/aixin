@@ -66,6 +66,7 @@ const pageData = ref({
             btnType: 'exportXls',
             fileName: '研发攻关',
             url: 'apm/apmRdBreakthrough/exportXls',
+            referer: 'owner'
         },
         {
             title: '已删除',

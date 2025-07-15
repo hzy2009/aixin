@@ -79,7 +79,8 @@ const pageData = ref({
       url: 'apm/apmSourcing/exportXls',
       otherParams: {
         sourcingType: '国产替代寻源'
-      }
+      },
+      referer: 'owner'
     },
     {
         title: '已删除',
