@@ -64,7 +64,6 @@ const pageData = ref({
     }
   ],
   searchTitle: '多元化寻源',
-  rowUseKey: 'materialCode',
 })
 
 

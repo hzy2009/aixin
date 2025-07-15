@@ -64,7 +64,6 @@ const pageData = ref({
     ],
     searchTitle: '原厂件寻源',
     requiredRoles: ['apm-vip', 'apm-vip-inspection', 'apm-register'],
-    rowUseKey: 'materialCode',
 })
 
 

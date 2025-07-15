@@ -99,7 +99,6 @@ const pageData = ref({
       label: '期望完成日期',
     }
   ],
-  rowUseKey: 'materialCode',
 })
 
 
