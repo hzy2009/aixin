@@ -97,6 +97,7 @@ export const REGISTER_LIST = {
         {
             title: '类型',
             field: 'registerType',
+            align: 'center',
             // 使用 formatter 进行转换
             formatter: ({ cellValue }) => {
                 const option = selectOptions('register_type').find(item => item.value == cellValue);
