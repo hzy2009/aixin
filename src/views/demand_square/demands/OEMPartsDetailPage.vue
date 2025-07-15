@@ -90,7 +90,7 @@ const pageData = reactive({
 })
 
 const goBack = () => {
-  router.go(-1);
+  router.push({ path: '/demands/OEMPartsSourcing' });
 };
 const isLoadingRelated = ref(false);
 
