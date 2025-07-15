@@ -97,8 +97,7 @@ const pageData = reactive({
 })
 
 const goBack = () => {
-  router.go(-1);
-  // router.push('/user/published/verification');
+  router.push('/demands/Verification');
 };
 const isLoadingRelated = ref(false);
 
