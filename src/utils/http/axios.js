@@ -150,9 +150,6 @@ class AxiosHttpClient {
             }).finally(() => { Modal._hasPromise = false; });
           } catch (error) {
             console.log(error);
-            router.push({
-              path: '/login',
-            })
           }
         },
         onCancel: () => {
