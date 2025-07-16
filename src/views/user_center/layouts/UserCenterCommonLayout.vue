@@ -17,7 +17,7 @@
             <a-button type="link" class="upgrade-link" v-if="userRole?.role == '普通会员'" @click="upgradeMembership">升级会员</a-button>
           </div>
           <div class="user-membership-info" v-else>
-            <img src="@/assets/images/auth/vip.png" alt="">
+            <img src="@/assets/images/auth/VIP会员.png" alt="">
           </div>
           <p class="user-id">ID: {{ userInfo?.realname || '加载中...' }}</p>
         </div>
