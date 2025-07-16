@@ -188,11 +188,11 @@ const getALLProductTypes = () => {
 }
 export const VERIFICATION_COLUMNS = [
     { title: '序号', type: 'seq', fixed: 'left', width: 50, align: 'center' },
-    { title: '爱芯享检测验证单号', field: 'code', align: 'center', width: 160 },
-    { title: '检测验证类别', field: 'projectType', align: 'center', fieldType: 'select', width: 100, dictKey: 'project_type' },
-    { title: '产品类别1', field: 'productMainTypeCode', align: 'center', fieldType: 'select', width: 80, dictKey: 'product_main_type' },
+    { title: '爱芯享检测验证单号', field: 'code', align: 'center', width: 150 },
+    { title: '检测验证类别', field: 'projectType', align: 'center', fieldType: 'select', width: 94, dictKey: 'project_type' },
+    { title: '产品类别1', field: 'productMainTypeCode', align: 'center', fieldType: 'select', width: 76, dictKey: 'product_main_type' },
     {
-        title: '产品类别2', field: 'productTypeName', align: 'center', width: 100,
+        title: '产品类别2', field: 'productTypeName', align: 'center', width: 76,
         // formatter: ({row}) => {
         //     let txt = row?.productMainTypeName
         //     const spaces = '\u00A0'.repeat(4); // 4个空格的间距
@@ -202,11 +202,11 @@ export const VERIFICATION_COLUMNS = [
         //     return txt
         // } 
     },
-    { title: '需求创建日期', field: 'createTime', align: 'center', fieldType: 'date', width: 100 },
-    { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date', width: 100 },
+    { title: '需求创建日期', field: 'createTime', align: 'center', fieldType: 'date', width: 94 },
+    { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date', width: 94 },
     { title: '需求方', field: 'createBy', align: 'center' },
-    { title: '承接方', field: 'refUserName', align: 'center' },
-    { title: '需求状态', field: 'statusName', align: 'center', width: 80 },
+    { title: '承接方', field: 'refUserName', align: 'center', width: 70 },
+    { title: '需求状态', field: 'statusName', align: 'center', width: 90 },
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 90 },
 ]
