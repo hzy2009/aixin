@@ -1,17 +1,8 @@
 <template>
     <!-- 使用 vxe-grid 替代 a-table -->
-    <vxe-grid
-        class="custom-detail-table"
-        ref="gridRef"
-        :data="dataSource"
-        :columns="columns"
-        border
-        resizable
-        :row-config="{ keyField: 'id' }"
-        :expand-config="{ expandRowKeys: expandedRowKeys, trigger: 'default' }"
-        @toggle-row-expand="handleToggleExpand"
-      min-height="88"
-    >
+    <vxe-grid class="custom-detail-table" ref="gridRef" :data="dataSource" :columns="columns" border resizable
+        :row-config="{ keyField: 'id' }" :expand-config="{ expandRowKeys: expandedRowKeys, trigger: 'default' }"
+        @toggle-row-expand="handleToggleExpand" min-height="88">
         <!--
             vxe-table 的展开行内容通过 expand 列的 content 插槽实现
             为了简单，我们直接在列配置的 slots.content 中定义 JSX
@@ -101,6 +92,7 @@ const handleSelectWinner = ({ record: winningItem, checked, type }) => {
                 if (checked) item.isSelected = 0
                 if (item.id === winningItem.id) item.isWinner = checked ? 1 : 0;
             });
+            mainRecord.secondInquiryList = []
         }
         if (type === 'second' && mainRecord.secondInquiryList) {
             mainRecord.secondInquiryList.forEach(item => {
@@ -249,9 +241,10 @@ const columns = [
             if (props.isDetail) return <span>''</span>;
             return (
                 row.isFinished === 1 ? <span>已完成</span> :
+                buttonText === '请先选择' ? <span>请先选择</span> :
                 <a-button
-                    type="link"
                     disabled={actionType === 'none'}
+                    type="primary"
                     onClick={() => save(row, actionType)}
                 >
                     {buttonText}
@@ -329,27 +322,34 @@ const logFinalData = () => {
 @import '@/assets/styles/_variables.less'; // 假设您的项目中有这个文件
 
 .custom-detail-table {
-	margin-top: @spacing-xs;
-	:deep(.vxe-header--column) {
-		background-color: #FAFAFA;
-		color: @text-color-base;
-		font-weight: 500;
-		font-size: 13px;
-		padding: 10px 8px;
-		text-align: left;
+    margin-top: @spacing-xs;
+
+    :deep(.vxe-header--column) {
+        background-color: #FAFAFA;
+        color: @text-color-base;
+        font-weight: 500;
+        font-size: 13px;
+        padding: 10px 8px;
+        text-align: left;
+
         .vxe-cell {
             padding-left: 8px;
             padding-right: 8px;
         }
-	}
-	:deep(.vxe-body--column), :deep(.vxe-body--expanded-cell) {
-		color: @text-color-secondary;
-		font-size: 13px;
+    }
+
+    :deep(.vxe-body--column),
+    :deep(.vxe-body--expanded-cell) {
+        color: @text-color-secondary;
+        font-size: 13px;
+
         .vxe-cell {
             padding: 10px 8px;
         }
-		word-break: break-all;
-	}
+
+        word-break: break-all;
+    }
+
     :deep(.vxe-body--expanded-cell) {
         padding: 12px;
         background-color: #fff; // 展开行背景色

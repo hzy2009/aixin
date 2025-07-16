@@ -75,6 +75,7 @@ import { getFileAccessHttpUrl } from '@/utils/index';
 import HomeHeroSection from '@/views/home/components/HomeHeroSection.vue';
 import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
 import { useModalStore } from '@/store/modalStore'; 
+import defHttp from '@/utils/http/axios'
 const modalStore = useModalStore();
 
 const props = defineProps({

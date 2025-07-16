@@ -1,18 +1,9 @@
 <template>
-    <div>第二轮报价</div>
-    <!-- 使用 vxe-grid 替代 a-table -->
-    <vxe-grid
-      class="custom-detail-table"
-      :data="dataSource"
-      :columns="columns"
-      :row-config="{ keyField: 'key' }"
-      resizable
-      border
-      ref="gridRef"
-      size="small"
-      min-height="88"
-    >
-    </vxe-grid>
+  <div>第二轮报价</div>
+  <!-- 使用 vxe-grid 替代 a-table -->
+  <vxe-grid class="custom-detail-table" :data="dataSource" :columns="columns" :row-config="{ keyField: 'key' }"
+    resizable border ref="gridRef" size="small" min-height="88">
+  </vxe-grid>
 </template>
 
 <script setup lang='jsx'>
@@ -147,7 +138,7 @@ const columns = [
       title: '选定中标方',
       field: 'isWinner',
       fixed: 'right',
-      width: 220,
+      width: 188,
       // Use slots.default for rendering a-checkbox
       slots: {
         default: ({ row }) => { // vxe-table uses { row }
@@ -160,10 +151,11 @@ const columns = [
             return false;
           }
           return (
-              <a-checkbox 
-                  disabled={isDisabled()}
-                  checked={row.isWinner === 1} // Explicitly check for 1
-                  onChange={(e) => handleWinnerChange(row, e.target.checked)}
+              <a-switch
+                disabled={isDisabled()}
+                checked-children="是" un-checked-children="否"
+                checked={row.isWinner === 1}
+                onChange={(checked) => handleWinnerChange(row, checked)}
               />
           );
         },
@@ -180,29 +172,33 @@ defineExpose({ getData });
 <style lang="less" scoped>
 // Styles are updated for vxe-table classes
 @import '@/assets/styles/_variables.less';
-.custom-detail-table {
-	margin-top: @spacing-xs;
 
-	:deep(.vxe-header--column) {
-		background-color: #FAFAFA;
-		color: @text-color-base;
-		font-weight: 500;
-		font-size: 13px;
-		padding: 10px 8px;
-		text-align: left;
+.custom-detail-table {
+  margin-top: @spacing-xs;
+
+  :deep(.vxe-header--column) {
+    background-color: #FAFAFA;
+    color: @text-color-base;
+    font-weight: 500;
+    font-size: 13px;
+    padding: 10px 8px;
+    text-align: left;
+
     .vxe-cell {
       padding-left: 8px;
       padding-right: 8px;
     }
-	}
+  }
 
-	:deep(.vxe-body--column) {
-		color: @text-color-secondary;
-		font-size: 13px;
+  :deep(.vxe-body--column) {
+    color: @text-color-secondary;
+    font-size: 13px;
+
     .vxe-cell {
       padding: 10px 8px;
     }
-		word-break: break-all;
-	}
+
+    word-break: break-all;
+  }
 }
 </style>

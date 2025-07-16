@@ -55,6 +55,7 @@ const handleFinish = async (data) => {
       onAction: null, // Default onAction is handled in store to go home
     };
     modalStore.showSuccessPrompt({ ...defaultConfig });
+    phoneAndEmailModal.value.handleClose()
   } else {
     message.error(res.message)
   }

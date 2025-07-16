@@ -3,7 +3,7 @@
     <detail :pageData="pageData" @goBack="goBack">
       <template #productType="{ dataSource }">
         <div v-if='dataSource.statusCode !== "submit"'><span>{{ dataSource.productMainTypeName }}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ dataSource.productTypeName }}</span></div>
-        <div>
+        <div v-else>
          <a-select v-model:value="dataSource['productMainTypeCode']" :placeholder="`请选择`" 
             style="width: 185px; margin-right: 16px"
             :options="selectOptions('product_main_type')" 
@@ -86,11 +86,11 @@ const pageData = reactive({
   listPath: '/user/published/Verification',
   tableSections: [
     {
-      title: '研发攻关承接方',
+      title: '检测验证承接方',
       groupCode: 'tenantRefList',
       columns: [
           { title: '序号', type: 'seq', width: 48, align: 'center' },
-          { title: '研发攻关承接方', field: 'refUserName', align: 'center' },
+          { title: '检测验证承接方', field: 'refUserName', align: 'center' },
       ]
     },
     {

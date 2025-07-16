@@ -94,12 +94,13 @@ router.beforeEach((to, from, next) => {
     }
   } else {
      // 如果用户已登录，且尝试访问“仅访客”页面（如登录页），则重定向到首页
-    if (to.meta.guestOnly && isLogin) {
-        next({ name: 'Home' }); // 假设首页 name 是 'Home'
-    } else {
-        // 页面无需认证，直接放行
-        next();
-    }
+    // if (to.meta.guestOnly && isLogin) {
+    //     next({ name: 'Home' }); // 假设首页 name 是 'Home'
+    // } else {
+    //     // 页面无需认证，直接放行
+    //     next();
+    // }
+    next();
   }
 });
 
