@@ -37,6 +37,12 @@ export const useAuthStore = defineStore('auth', {
       this.setUserRose({});
       // Optionally, clear other stores or redirect
     },
+    clearUser() {
+      this.setToken(null);
+      this.setUserInof(null);
+      this.setSysAllDictItems([]);
+      this.setUserRose({});
+    },
     async getDictItems() {
       const res =  await getAllDictApi()
       this.setSysAllDictItems(res.result || []);

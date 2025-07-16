@@ -144,7 +144,7 @@ class AxiosHttpClient {
         cancelText: '取消',
         onOk: () => {
           try {
-            authStore.logout();
+            authStore.clearUser();
             router.push({
               path: '/login',
             }).finally(() => { Modal._hasPromise = false; });
@@ -156,10 +156,10 @@ class AxiosHttpClient {
           }
         },
         onCancel: () => {
-          authStore.logout(); // Still good to logout
+          authStore.clearUser(); // Still good to logout
         },
         afterClose: () => { // Ensure flag is cleared if modal is closed by other means
-          authStore.logout(); // Still good to logout
+          authStore.clearUser(); // Still good to logout
         }
       });
     } else {
