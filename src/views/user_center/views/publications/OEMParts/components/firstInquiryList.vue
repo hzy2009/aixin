@@ -3,6 +3,7 @@
     <div>第一轮报价</div>
     <!-- 使用 vxe-grid 替代 a-table -->
     <vxe-grid class="custom-detail-table" :data="props.data" :columns="columns" resizable border size="small"
+      show-overflow
       ref="gridRef" min-height="88">
     </vxe-grid>
   </div>
@@ -51,7 +52,8 @@ const columns = [
     type: 'seq',
     title: '序号',
     fixed: 'left',
-    width: '60px',
+    width: '54px',
+    align: 'center',
   },
   {
     title: '贸易商',
@@ -61,7 +63,7 @@ const columns = [
   },
   {
     title: '含税价格',
-    width: '100px',
+    width: '90px',
     field: 'priceIncludingTax',
   },
   {
@@ -71,8 +73,16 @@ const columns = [
   },
   {
     title: '未税价格',
-    width: '100px',
+    width: '90px',
     field: 'priceExcludingTax',
+  },
+  {
+    title: '报价截止日期',
+    width: 130,
+    field: 'expireDate',
+    formatter: ({ cellValue }) => {
+      return cellValue ? cellValue.split(' ')[0] : '';
+    }
   },
   {
     title: '交期',
@@ -89,7 +99,7 @@ const columns = [
   },
   {
     title: '质保期',
-    width: '70px',
+    width: '68px',
     field: 'guaranteePeriod',
   },
   {
@@ -97,14 +107,7 @@ const columns = [
     width: '150px',
     field: 'guaranteeDesc',
   },
-  {
-    title: '报价截止日期',
-    width: 150,
-    field: 'expireDate',
-    formatter: ({ cellValue }) => {
-      return cellValue ? cellValue.split(' ')[0] : '';
-    }
-  },
+  
   {
     title: '入围第二轮',
     field: 'isSelected',

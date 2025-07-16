@@ -2,7 +2,7 @@
   <div>第二轮报价</div>
   <!-- 使用 vxe-grid 替代 a-table -->
   <vxe-grid class="custom-detail-table" :data="dataSource" :columns="columns" :row-config="{ keyField: 'key' }"
-    resizable border ref="gridRef" size="small" min-height="88">
+  show-overflow  resizable border ref="gridRef" size="small" min-height="100">
   </vxe-grid>
 </template>
 
@@ -65,8 +65,9 @@ const columns = [
     {
       type: 'seq', // Use vxe-table's built-in sequence type
       title: '序号',
-      width: '60px',
+      width: '54px',
       fixed: 'left',
+      align: 'center',
     },
     {
       title: '贸易商',
@@ -77,7 +78,7 @@ const columns = [
     {
       title: '含税价格',
       field: 'priceIncludingTax',
-      width: '100px',
+      width: '90px',
     },
      {
       title: '税率%',
@@ -87,7 +88,28 @@ const columns = [
     {
       title: '未税价格',
       field: 'priceExcludingTax',
-      width: '100px',
+      width: '90px',
+    },
+    {
+      title: '报价截止日期',
+      field: 'expireDate',
+      width: 130,
+      // Use slots.default for rendering complex components like a-date-picker
+      slots: {
+        default: ({ row, $rowIndex }) => { // vxe-table uses { row, $rowIndex }
+          const disabled = props.isFinished == 1 || props.isDetail || props.isSecondInquiryEnable == 1;
+          return (
+            disabled ?
+              <span>{row.expireDate ? Dayjs(row.expireDate).format('YYYY-MM-DD') : ''}</span> : 
+              <a-date-picker 
+                  format="YYYY-MM-DD" valueFormat="YYYY-MM-DD HH:mm:ss" style={{ width: '100%' }}
+                  v-model:value={row.expireDate}
+                  placeholder="请选择日期"
+                  onChange={(date, dateString) => handleDateChange(date, dateString, $rowIndex)}
+              />
+          )
+        }
+      }
     },
     {
       title: '交期',
@@ -105,7 +127,7 @@ const columns = [
     },
     {
       title: '质保期',
-      width: '70px',
+      width: '68px',
       field: 'guaranteePeriod',
     },
     {
@@ -113,27 +135,7 @@ const columns = [
       width: '150px',
       field: 'guaranteeDesc',
     },
-    {
-      title: '报价截止日期',
-      field: 'expireDate',
-      width: 150,
-      // Use slots.default for rendering complex components like a-date-picker
-      slots: {
-        default: ({ row, $rowIndex }) => { // vxe-table uses { row, $rowIndex }
-          const disabled = props.isFinished == 1 || props.isDetail;
-          return (
-            disabled ?
-              <span>{row.expireDate ? Dayjs(row.expireDate).format('YYYY-MM-DD') : ''}</span> : 
-              <a-date-picker 
-                  format="YYYY-MM-DD" valueFormat="YYYY-MM-DD HH:mm:ss" style={{ width: '100%' }}
-                  v-model:value={row.expireDate}
-                  placeholder="请选择日期"
-                  onChange={(date, dateString) => handleDateChange(date, dateString, $rowIndex)}
-              />
-          )
-        }
-      }
-    },
+    
     {
       title: '选定中标方',
       field: 'isWinner',

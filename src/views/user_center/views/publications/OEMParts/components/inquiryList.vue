@@ -78,6 +78,7 @@ const handleToggleSelection = (parentRecord, { record: itemToToggle, checked }) 
         parentRecord.secondInquiryList.push(newItemForSecondRound);
         parentRecord.tradeTypeCode = null;
 		parentRecord.tradeTypeName = null;
+        parentRecord.sucessSecond = true
     } else {
         parentRecord.secondInquiryList = parentRecord.secondInquiryList.filter(
             item => item.originKey !== originalItem.id
@@ -296,7 +297,6 @@ const save = async (record, actionType) => {
         if (res.success) {
             if (actionType === 'start_second_round') {
                 record.isSecondInquiryEnable = 1
-                record.sucessSecond = true
             } else {
                 record.isFinished = 1
             }
