@@ -20,13 +20,16 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import SectionHeader from '@/components/common/SectionHeader.vue';
 import SpecificPagedList from './SpecificPagedList.vue';
 import defHttp from '@/utils/http/axios'
 import { useModalStore } from '@/store/modalStore'; 
 import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
 import { message } from 'ant-design-vue';
+
 const modalStore = useModalStore();
+const router = useRouter();
 const breakthroughItems = ref([]);
 const fetchBreakthroughItems = async () => {
   const res = await defHttp.get({ url: `/apm/apmNewsForRd/list/front`, params: { page: 1, pageSize: 28 } });
@@ -41,7 +44,7 @@ const phoneAndEmailModal = ref(null);
 const handleBreakthroughItemRowClick = (item) => {
   console.log('Breakthrough item ROW clicked:', item);
   // Potentially navigate to a detail page if the row itself is meant to be a link
-  // router.push({ name: 'BreakthroughDetail', params: { id: item.id } });
+  router.push({ path: `/rd-dynamics` });
 };
 const handleFinish = async (data) => {
   const res = await defHttp.get({ url: `/apm/apmTodo/apmNewsForRd/newTodo/${currentItem.value.id}`, params: data });

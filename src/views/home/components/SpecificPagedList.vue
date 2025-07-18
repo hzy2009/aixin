@@ -133,7 +133,7 @@ watch(() => [props.autoCycleInterval, props.loop], () => { if (actualTotalPages.
   padding-bottom: 10px;
   margin: 0 @spacing-sm; // Horizontal margin for the item within its page group
   border-bottom: 1px dotted #E8E8E8;
-
+  cursor: pointer;
   &:last-child {
     border-bottom: none;
   }
