@@ -36,6 +36,9 @@
                     <DeleteOutlined /> 
                     <span>清空筛选条件</span>
                 </div>
+                <div class='rest' v-if='isUseFilterDelete' @click="() => {triggerSearch({ deleteFlag: 1 })}">
+                    <span>已删除</span>
+                </div>
             </div>
             <div class="results-count-wrapper" v-if="userSearchTitle">
                 <span>为您找到</span>
@@ -119,7 +122,7 @@ const {
     url, filterConfigForPage, tableColumns, actions, otherParams,
     statusDictKey, userStatCardVisible, showBanner = false, pageTitle,
     tableOperations = [], dateRangeConfig = [], searchTitle, listPageisPadding = true,
-    userSearchTitle = true, requiredRoles = []
+    userSearchTitle = true, requiredRoles = [], isUseFilterDelete
 } = props.pageData;
 
 const {

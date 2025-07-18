@@ -68,12 +68,13 @@ const pageData = ref({
             url: 'apm/apmRdBreakthrough/exportXls',
             referer: 'join'
         },
-        {
-            title: '已删除',
-            type: 'delete',
-            btnType: 'delete',
-        },
+        // {
+        //     title: '已删除',
+        //     type: 'delete',
+        //     btnType: 'delete',
+        // },
     ],
+    isUseFilterDelete: true,
 })
 
 

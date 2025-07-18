@@ -67,12 +67,13 @@ const pageData = ref({
             url: 'apm/apmOfflineActivity/exportXls',
             referer: 'owner'
         },
-        {
-            title: '已删除',
-            type: 'delete',
-            btnType: 'delete',
-        },
+        // {
+        //     title: '已删除',
+        //     type: 'delete',
+        //     btnType: 'delete',
+        // },
     ],
+    isUseFilterDelete: true,
      dateRangeConfig: [
       {
           field: 'createTime', // Unique key for this date range

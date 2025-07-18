@@ -44,9 +44,9 @@ const hasPlusSymbol = computed(() => {
   return String(props.number).includes('+');
 });
 
-// Clamp the target number to 999 for display formatting if needed
+// Clamp the target number to 99999 for display formatting if needed
 const clampedTargetNumber = computed(() => {
-    return Math.min(targetMainNumber.value, 999);
+    return Math.min(targetMainNumber.value, 99999);
 });
 
 
@@ -69,9 +69,9 @@ const animateNumber = (target) => {
 
     let currentVal = Math.floor(easedProgress * target);
 
-    // Clamp the display number if the original target was > 999 but we animate to clamped target
-    if (targetMainNumber.value > 999 && target === 999) {
-        currentVal = Math.floor(easedProgress * 999);
+    // Clamp the display number if the original target was > 99999 but we animate to clamped target
+    if (targetMainNumber.value > 99999 && target === 99999) {
+        currentVal = Math.floor(easedProgress * 99999);
     } else {
         currentVal = Math.floor(easedProgress * target);
     }
@@ -92,8 +92,8 @@ const animateNumber = (target) => {
 // Watch for changes in the 'number' prop to re-trigger animation
 watch(() => props.number, (newVal, oldVal) => {
   if (newVal !== oldVal) {
-    // Animate to the clamped target number if original > 999, else animate to original target
-    animateNumber(targetMainNumber.value > 999 ? 999 : targetMainNumber.value);
+    // Animate to the clamped target number if original > 99999, else animate to original target
+    animateNumber(targetMainNumber.value > 99999 ? 99999 : targetMainNumber.value);
   }
 }, { immediate: true }); // `immediate: true` will run the watcher on component mount
 </script>
