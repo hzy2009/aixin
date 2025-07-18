@@ -72,9 +72,9 @@ const pageData = reactive({
         }
         detailRef.value.fetchDemandDetail();
       },
-      // isShow: (formModel) => {
-      //   return formModel.isRegistered
-      // }
+      isShow: (formModel) => {
+        return formModel.isRegistered
+      }
     },
     {
       title: '报名',
@@ -87,9 +87,9 @@ const pageData = reactive({
           message.error(response.message);
         }
       },
-      // isShow: (formModel) => {
-      //   return !formModel.isRegistered
-      // }
+      isShow: (formModel) => {
+        return !formModel.isRegistered
+      }
     }
   ]
 })
