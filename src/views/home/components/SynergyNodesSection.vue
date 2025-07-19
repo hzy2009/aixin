@@ -25,39 +25,48 @@ import SectionHeader from '@/components/common/SectionHeader.vue'; // Your exist
 // Data for the links, structured into columns
 // In a real app, this would likely come from a CMS or API call
 const linkColumns = ref([
-  // {
-  //   id: 'gov',
-  //   // title: '相关政府部门', // Titles above columns are not in this specific image
-  //   links: [
-  //     { id: 'gov1', name: '中华人民共和国工业和信息化部', url: '#' },
-  //     { id: 'gov2', name: '中华人民共和国科学技术部', url: '#' },
-  //     { id: 'gov3', name: '中华人民共和国国家发展和改革委员会', url: '#' },
-  //     { id: 'gov4', name: '中华人民共和国国家统计局', url: '#' },
-  //     { id: 'gov5', name: '中华人民共和国海关总署', url: '#' },
-  //   ]
-  // },
+  {
+    id: 'gov',
+    // title: '相关政府部门', // Titles above columns are not in this specific image
+    links: [
+      // { id: 'gov1', name: '中华人民共和国工业和信息化部', url: '#' },
+      // { id: 'gov2', name: '中华人民共和国科学技术部', url: '#' },
+      // { id: 'gov3', name: '中华人民共和国国家发展和改革委员会', url: '#' },
+      // { id: 'gov4', name: '中华人民共和国国家统计局', url: '#' },
+      // { id: 'gov5', name: '中华人民共和国海关总署', url: '#' },
+      { id: 'assoc1', name: '上海市集成电路行业协会', url: 'https://www.sica.org.cn/#/overview' },
+    ]
+  },
   {
     id: 'associations',
     // title: '行业协会',
     links: [
-      { id: 'assoc1', name: '上海市集成电路行业协会', url: 'https://www.sica.org.cn/#/overview' },
+      // { id: 'assoc1', name: '上海市集成电路行业协会', url: 'https://www.sica.org.cn/#/overview' },
       { id: 'assoc2', name: '大半导体产业网', url: 'https://www.semi.org.cn' },
-      { id: 'assoc3', name: '求是缘半导体联盟', url: 'https://www.truthsemi.com' },
-      { id: 'assoc4', name: '中国膜工业协会', url: 'http://www.membranes.com.cn/' },
+      // { id: 'assoc3', name: '求是缘半导体联盟', url: 'https://www.truthsemi.com' },
+      // { id: 'assoc4', name: '中国膜工业协会', url: 'http://www.membranes.com.cn/' },
       // { id: 'assoc5', name: '天津市集成电路行业协会', url: '#' },
     ]
   },
-  // {
-  //   id: 'media',
-  //   // title: '合作媒体与机构',
-  //   links: [
-  //     { id: 'media1', name: '《中国电子报》', url: '#' },
-  //     { id: 'media2', name: '上海硅知识产权交易中心', url: '#' },
-  //     { id: 'media3', name: '信息化观察网', url: '#' },
-  //     { id: 'media4', name: '中国电子材料网', url: '#' },
-  //     { id: 'media5', name: '21IC电子网', url: '#' },
-  //   ]
-  // }
+  {
+    id: 'media',
+    // title: '合作媒体与机构',
+    links: [
+      // { id: 'media1', name: '《中国电子报》', url: '#' },
+      // { id: 'media2', name: '上海硅知识产权交易中心', url: '#' },
+      // { id: 'media3', name: '信息化观察网', url: '#' },
+      // { id: 'media4', name: '中国电子材料网', url: '#' },
+      // { id: 'media5', name: '21IC电子网', url: '#' },
+      { id: 'assoc3', name: '求是缘半导体联盟', url: 'https://www.truthsemi.com' },
+    ]
+  },
+  {
+    id: 'others',
+    // title: '其他',
+    links: [
+      { id: 'assoc4', name: '中国膜工业协会', url: 'http://www.membranes.com.cn/' },
+    ]
+  }
 ]);
 
 // TODO: If fetching from API:
@@ -92,7 +101,7 @@ const linkColumns = ref([
   background-color: #fff; // Very light gray background for this section, matching image
   display: grid;
   // 3 columns as per the image
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: @spacing-xxl; // Generous gap between columns
 padding: 10px 30px;
   @media (max-width: 992px) { // 2 columns on tablets
