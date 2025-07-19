@@ -143,12 +143,43 @@ export function useNavigation() {
       path: '/demands/Talent', 
       matchPaths: ['/demands/Talent'] 
     },
+    // { 
+    //   key: 'techForum', 
+    //   label: '技术论坛', 
+    //   fn: (router, message) => { 
+    //     message.info('业务即将上线，敬请期待');
+    //   } 
+    // },
     { 
-      key: 'techForum', 
-      label: '技术论坛', 
+      key: 'daizhi', 
+      label: '呆滞处理', 
       fn: (router, message) => { 
         message.info('业务即将上线，敬请期待');
-      } 
+      },
+      matchPaths: [
+
+      ],
+      subItems: [
+        { key: '', label: '原厂件呆滞', path: '',
+        fn: (router, message) => { 
+          message.info('正在建设中');
+        },  },
+        { key: '', label: '标准件呆滞', path: '',
+        fn: (router, message) => { 
+          message.info('正在建设中');
+        }, 
+        },
+        { key: '', label: '非标件呆滞', path: '',
+        fn: (router, message) => { 
+          message.info('正在建设中');
+        }, 
+        },
+        { key: '', label: '二手设备呆滞', path: '',
+        fn: (router, message) => { 
+          message.info('正在建设中');
+        }, 
+        },
+      ]
     },
   ]);
 
