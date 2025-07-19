@@ -47,7 +47,7 @@
 								<a-textarea v-if="formModel.statusCode == 'submit' && canSubmit" v-model:value="formModel[item.field]"
 									style="width: 386px" :placeholder="item.placeholder || `请输入${item.label}`" :rows="item.rows || 4"
 									:disabled="item.disabled" allow-clear :maxlength="item.maxLength" show-count />
-								<span v-else>{{ formModel[item.field] }}</span>
+								<p v-else>{{ textareaFormat(formModel[item.field]) }}</p>
 							</span>
 							<span class="info-grid-value" v-else-if="item.fieldType === 'imageUpload'">
 								<a-upload v-if="formModel.statusCode == 'submit' && canSubmit" v-model:file-list="formModel[item.field]"
@@ -387,6 +387,10 @@ const disabledDate = (current) => {
 const filterOption = (input, option) => {
 	return option.label && option.label.toLowerCase().includes(input.toLowerCase());
 };
+const textareaFormat = (value) => {
+	console.log('value', value)
+	return value?.replace(/\n/g, '<br>');
+}
 
 const getAllData = () => {
 	const paranms = JSON.parse(JSON.stringify(formModel.value || {}));
@@ -417,7 +421,9 @@ defineExpose({ isCreating, handleToDetail, fetchDemandDetail, detailData: demand
 <style scoped lang="less">
 // Style section is adjusted for vxe-table
 @import '@/assets/styles/_variables.less';
-
+p{
+  margin: 0;
+}
 .flex1 {
 	flex: 1
 }

@@ -14,7 +14,7 @@
             <ArrowRightOutlined class="arrow-icon" />
           </h2>
           <p class="report-item-title">{{ item.skillAreaName }}</p>
-          <p class="report-item-meta">意愿合作方向：{{ item.skillDesc }}</p>
+          <p class="report-item-meta">意愿合作方向：{{ item.desiredCooperationDirection }}</p>
           <p class="report-item-meta">主要研究方向：{{ item.skillDesc }}</p>
         <!-- <div class="report-item-footer report-item-summary">
             <span>期望匹配周期：{{ item.matchPeriodName }}</span>

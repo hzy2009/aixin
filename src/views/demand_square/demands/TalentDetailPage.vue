@@ -29,7 +29,7 @@
             <!-- CONVERTED TO VXE-GRID -->
 						<vxe-grid 
 								:columns="columns"
-								:data="dataSource.achievementList || []"
+								:data="dataSource?.achievementList || []"
 								:row-config="{ keyField: 'id' }"
 								border
 						    min-height="88"
@@ -49,7 +49,7 @@
       </detail>
     </template>
     <template #sidebar>
-      <TalentSidebar @reportClick="handleReportClick" :code="dataSource?.code"/>
+      <TalentSidebar @reportClick="handleReportClick" :code="detailRef?.detailData?.code"/>
     </template>
   </ContentWithSidebarLayout>
   <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" title="联系平台获取专家信息" actionText="一键敲门"></PhoneAndEmailModal>
@@ -81,8 +81,8 @@ const formConfigs = [
   { label: '现工作单位', field: 'company', span: 24, },
   { label: '现任职务', field: 'job', span: 24, },
   { label: '研究领域', field: 'skillAreaName', span: 24 },
-  { label: '意愿合作方向', field: 'desiredCooperationDirection', span: 24, },
-  { label: '主要研究方向', field: 'skillDesc', span: 24, },
+  { label: '意愿合作方向', field: 'desiredCooperationDirection', span: 24, fieldType: 'textarea'},
+  { label: '主要研究方向', field: 'skillDesc', span: 24, fieldType: 'textarea'},
   { label: '论文数量', field: 'paperAchievement', span: 24, },
   { label: '专利数量', field: 'patentCount', span: 24, },
   { label: '专家人才来源', field: 'sourcing', span: 24, },
