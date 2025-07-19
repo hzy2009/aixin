@@ -83,6 +83,7 @@ const pageData = reactive({
        if (response && response.success) {
           window.scrollTo({ top: 0, behavior: 'smooth' });
           detailRef.value.isCreating = false
+          detailRef.value.fetchDemandDetail();
         } else {
           message.error(response.message);
         }
