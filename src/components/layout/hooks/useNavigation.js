@@ -76,6 +76,37 @@ export function useNavigation() {
       ]
     },
     { 
+      key: 'daizhi', 
+      label: '二手设备交易', 
+      fn: (router, message) => { 
+        message.info('业务即将上线，敬请期待');
+      },
+      matchPaths: [
+
+      ],
+      subItems: [
+        { key: '', label: '原厂件库存处理', path: '',
+        fn: (router, message) => { 
+          message.info('正在建设中');
+        },  },
+        { key: '', label: '标准件库存处理', path: '',
+        fn: (router, message) => { 
+          message.info('正在建设中');
+        }, 
+        },
+        { key: '', label: '非标件库存处理', path: '',
+        fn: (router, message) => { 
+          message.info('正在建设中');
+        }, 
+        },
+        { key: '', label: '二手设备库存处理', path: '',
+        fn: (router, message) => { 
+          message.info('正在建设中');
+        }, 
+        },
+      ]
+    },
+    { 
       key: 'rndCollaboration', 
       label: '研发攻关', 
       path: '/demands/PublicRelations', 
@@ -124,37 +155,6 @@ export function useNavigation() {
         { key: 'publishedOfflineEvent', label: '我发布的', path: '/user/published/OfflineEvent' },
         { key: 'joinOfflineEvent', label: '我参与的', path: '/user/join/OfflineEvent' },
         { key: 'createOfflineEvent', label: '创建线下活动', path: '/user/published/OfflineEvent/create' },
-      ]
-    },
-     { 
-      key: 'daizhi', 
-      label: '二手设备交易', 
-      fn: (router, message) => { 
-        message.info('业务即将上线，敬请期待');
-      },
-      matchPaths: [
-
-      ],
-      subItems: [
-        { key: '', label: '原厂件库存处理', path: '',
-        fn: (router, message) => { 
-          message.info('正在建设中');
-        },  },
-        { key: '', label: '标准件库存处理', path: '',
-        fn: (router, message) => { 
-          message.info('正在建设中');
-        }, 
-        },
-        { key: '', label: '非标件库存处理', path: '',
-        fn: (router, message) => { 
-          message.info('正在建设中');
-        }, 
-        },
-        { key: '', label: '二手设备库存处理', path: '',
-        fn: (router, message) => { 
-          message.info('正在建设中');
-        }, 
-        },
       ]
     },
     { 
