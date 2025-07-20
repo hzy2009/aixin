@@ -11,7 +11,7 @@ import listPage from '../../../components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 import { useAuthStore } from '@/store/authStore';
 import {VERIFICATION_COLUMNS} from '@/utils/const.jsx';
-import { selectOptions } from '@/utils/index';
+import { selectOptions, maskMiddle } from '@/utils/index';
 const authStore = useAuthStore();
 
 const router = useRouter();
@@ -29,7 +29,12 @@ const filterConfigForPage = reactive([
 
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = reactive([
-    ...VERIFICATION_COLUMNS
+    ...VERIFICATION_COLUMNS.map(item => {
+    if (['createBy', 'refUserName'].includes(item.field)) {
+        item.formatter = ({ cellValue }) => maskMiddle(cellValue)
+    }
+    return item
+  })
 ]);
 
 

@@ -20,8 +20,8 @@ const filterConfigForPage = reactive([
 const tableColumns = reactive([
   {type: 'checkbox', width: 34},
   { title: '序号', type: 'seq', fixed: 'left', width: 50, align: 'center' },
-  { title: '爱芯享寻源单号', field: 'code', align: 'center' },
-  { title: '需求方', field: 'createBy', align: 'center', width: 100, formatter: ({ cellValue }) => maskMiddle(cellValue) },
+  { title: '爱芯享寻源单号', field: 'code', align: 'center', width: 160  },
+  { title: '需求方', field: 'createBy', align: 'center', width: 160 },
   { title: '需求创建日期', field: 'createTime', align: 'center', fieldType: 'date', width: 100},
   { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date', width: 100},
   { title: '内部管理单号', field: 'materialCode', align: 'center', width: 130 },

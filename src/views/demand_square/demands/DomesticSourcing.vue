@@ -11,6 +11,7 @@ import listPage from '@/components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 const router = useRouter();
 import { DOMESTIC_SOURCING_COLUMNS } from '@/utils/const.jsx';
+import { maskMiddle } from '@/utils/index';
 
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
@@ -18,7 +19,12 @@ const filterConfigForPage = reactive([
 ]);
 
 // --- Table Columns (remains in component as it's UI specific) ---
-const tableColumns = reactive([...DOMESTIC_SOURCING_COLUMNS]);
+const tableColumns = reactive([...DOMESTIC_SOURCING_COLUMNS.map(item => {
+    if (['createBy', 'refUserName'].includes(item.field)) {
+        item.formatter = ({ cellValue }) => maskMiddle(cellValue)
+    }
+    return item
+  })]);
 
 
 const actions = reactive([

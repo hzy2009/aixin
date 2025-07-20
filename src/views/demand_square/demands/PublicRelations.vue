@@ -10,6 +10,7 @@ import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 import { PUBLIC_RELATIONS_COLUMNS } from '@/utils/const.jsx';
+import { maskMiddle } from '@/utils/index';
 const router = useRouter();
 
 // --- Filter Configuration (remains in component as it's UI specific) ---
@@ -19,7 +20,14 @@ const filterConfigForPage = reactive([
 ]);
 
 // --- Table Columns (remains in component as it's UI specific) ---
-const tableColumns = reactive([...PUBLIC_RELATIONS_COLUMNS]);
+const tableColumns = reactive([
+    ...PUBLIC_RELATIONS_COLUMNS.map(item => {
+    if (['createBy', 'refUserName'].includes(item.field)) {
+        item.formatter = ({ cellValue }) => maskMiddle(cellValue)
+    }
+    return item
+  })
+]);
 
 
 const actions = reactive([
