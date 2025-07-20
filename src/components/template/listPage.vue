@@ -122,7 +122,7 @@ const {
     url, filterConfigForPage, tableColumns, actions, otherParams,
     statusDictKey, userStatCardVisible, showBanner = false, pageTitle,
     tableOperations = [], dateRangeConfig = [], searchTitle, listPageisPadding = true,
-    userSearchTitle = true, requiredRoles = [], isUseFilterDelete
+    userSearchTitle = true, requiredRoles = [], isUseFilterDelete, initialPageSize
 } = props.pageData;
 
 const {
@@ -130,7 +130,7 @@ const {
     pagination, handleFiltersChange, triggerSearch, handleTablePaginationChange,
     getStatusTagColor, handleStatClick, handleExportXls, clearfilters,handleDelete, loadTableData
 } = useUserDemandList({
-    otherParams, url, statusDictKey, userStatCardVisible
+    otherParams, url, statusDictKey, userStatCardVisible, initialPageSize
 });
 
 filterConfigForPage && filterConfigForPage.forEach(item => {

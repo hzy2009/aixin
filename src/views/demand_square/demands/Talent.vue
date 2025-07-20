@@ -24,7 +24,7 @@ const router = useRouter();
 const filterConfigForPage = reactive([
     { id: 'skillAreaCode', label: '研究领域', maxVisibleWithoutMore: 10, dictKey: 'skill_area' },
 ]);
-
+const initialPageSize = 12
 const pageData = ref({
     url: {
         list: 'apm/apmTalent/list/front',
@@ -35,7 +35,8 @@ const pageData = ref({
     searchTitle: '专家人才',
     showBanner: true,
     listPageisPadding: false,
-    requiredRoles: ['all']
+    requiredRoles: ['all'],
+    initialPageSize: initialPageSize
 })
 const handleChagePage = (page, handleTablePaginationChange, paginationConfig) => {
     window.scrollTo({
@@ -44,7 +45,7 @@ const handleChagePage = (page, handleTablePaginationChange, paginationConfig) =>
     });
     handleTablePaginationChange({
         current: page,
-        pageSize: paginationConfig.pageSize
+        pageSize: initialPageSize
     });
 }
 function viewDetails({ id }) {
