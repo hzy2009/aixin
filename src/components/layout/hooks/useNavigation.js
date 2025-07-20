@@ -99,7 +99,7 @@ export function useNavigation() {
           message.info('正在建设中');
         }, 
         },
-        { key: '', label: '二手设备库存处理', path: '',
+        { key: '', label: '二手设备交易', path: '',
         fn: (router, message) => { 
           message.info('正在建设中');
         }, 
