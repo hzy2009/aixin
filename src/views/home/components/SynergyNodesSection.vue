@@ -49,6 +49,12 @@ const linkColumns = ref([
     ]
   },
   {
+    id: 'associations',
+    links: [
+      { id: 'assoc323', name: 'Semicon China', url: 'https://www.semiconchina.org/' },
+    ]
+  },
+  {
     id: 'media',
     // title: '合作媒体与机构',
     links: [
@@ -61,12 +67,11 @@ const linkColumns = ref([
     ]
   },
   {
-    id: 'others',
-    // title: '其他',
+    id: 'industries',
     links: [
       { id: 'assoc4', name: '中国膜工业协会', url: 'http://www.membranes.com.cn/' },
     ]
-  }
+  },
 ]);
 
 // TODO: If fetching from API:
@@ -101,7 +106,7 @@ const linkColumns = ref([
   background-color: #fff; // Very light gray background for this section, matching image
   display: grid;
   // 3 columns as per the image
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: @spacing-xxl; // Generous gap between columns
 padding: 10px 30px;
   @media (max-width: 992px) { // 2 columns on tablets
