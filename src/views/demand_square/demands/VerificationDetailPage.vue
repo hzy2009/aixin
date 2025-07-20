@@ -55,7 +55,7 @@ const formConfigs = [
   //   label: '验证项目', field: 'projectName', fieldType: 'input', span: 24,
   // },
   {
-    label: '需求提出方', field: 'createBy', fieldType: 'input', span: 24, disabled: true,
+    label: '需求提出方', field: 'createBy', fieldType: 'input', span: 24, disabled: true, isMask: true
   },
   // {
   //   label: '检测验证状态', field: 'statusName', detailField: 'statusName', fieldType: 'select', span: 24, disabled: true,
