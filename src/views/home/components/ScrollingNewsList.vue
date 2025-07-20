@@ -19,7 +19,7 @@
         @click="() => onItemClick(item)"
       >
         <span class="marquee-item-text-content">{{ item.content || item.message || item.text }}</span>
-        <span class="marquee-item-date-content">{{ item.createTime ? formatDate(item.createTime) : (item.date || '') }}</span>
+        <span class="marquee-item-date-content">{{ item[props.timeCode] ? formatDate(item[props.timeCode]) : (item.date || '') }}</span>
       </div>
       <!-- 如果可以滚动，则复制一份列表项用于无缝循环 -->
       <template v-if="canScroll">
@@ -31,7 +31,7 @@
           aria-hidden="true"
         >
           <span class="marquee-item-text-content">{{ item.content || item.message || item.text }}</span>
-          <span class="marquee-item-date-content">{{ item.createTime ? formatDate(item.createTime) : (item.date || '') }}</span>
+          <span class="marquee-item-date-content">{{ item[props.timeCode] ? formatDate(item[props.timeCode]) : (item.date || '') }}</span>
         </div>
       </template>
     </div>
@@ -47,6 +47,7 @@ const props = defineProps({
   items: { type: Array, required: true, default: () => [] },
   visibleItemCount: { type: Number, default: 5 },
   scrollSpeedPxPerSecond: { type: Number, default: 25 },
+  timeCode: { type: String, default: 'createTime' },
 });
 
 // --- 组件 Emits 定义 ---

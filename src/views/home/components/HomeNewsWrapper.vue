@@ -19,6 +19,7 @@
               <ScrollingNewsList
                 :items="memberNews"
                 :items-per-page="5"
+                :timeCode="'publishTime'"
                 :auto-cycle-interval="5500"
                 @item-click="handleNewsItemClick"
               />
