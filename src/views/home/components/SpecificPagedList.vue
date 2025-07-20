@@ -187,7 +187,7 @@ watch(() => [props.autoCycleInterval, props.loop], () => { if (actualTotalPages.
 }
 
 .item-date-column {
-  flex: 1; // Takes up available space between icon and date
+  flex: 0.5; // Takes up available space between icon and date
   flex-shrink: 0;
   padding-right: @spacing-lg; // Space between date and action button
   .item-date-text {
