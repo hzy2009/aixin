@@ -28,12 +28,7 @@ export function useNavigation() {
       matchPaths: ['/'],
       exact: true // 确保只在根路径时才匹配
     },
-    { 
-      key: 'industryDynamics', 
-      label: '行业热点', 
-      path: '/industry-dynamics', 
-      matchPaths: ['/industry-dynamics'] 
-    },
+    
     { 
       key: 'originalSourcing', 
       label: '原厂件寻源', 
@@ -131,26 +126,7 @@ export function useNavigation() {
         { key: 'createOfflineEvent', label: '创建线下活动', path: '/user/published/OfflineEvent/create' },
       ]
     },
-    { 
-      key: 'industryReport', 
-      label: '行研报告', 
-      path: '/demands/IndustryReport', 
-      matchPaths: ['/demands/IndustryReport'] 
-    },
-    { 
-      key: 'industryTalent', 
-      label: '专家人才', 
-      path: '/demands/Talent', 
-      matchPaths: ['/demands/Talent'] 
-    },
-    // { 
-    //   key: 'techForum', 
-    //   label: '技术论坛', 
-    //   fn: (router, message) => { 
-    //     message.info('业务即将上线，敬请期待');
-    //   } 
-    // },
-    { 
+     { 
       key: 'daizhi', 
       label: '呆滞处理', 
       fn: (router, message) => { 
@@ -180,6 +156,32 @@ export function useNavigation() {
         }, 
         },
       ]
+    },
+    { 
+      key: 'industryReport', 
+      label: '行研报告', 
+      path: '/demands/IndustryReport', 
+      matchPaths: ['/demands/IndustryReport'] 
+    },
+    { 
+      key: 'industryTalent', 
+      label: '专家人才', 
+      path: '/demands/Talent', 
+      matchPaths: ['/demands/Talent'] 
+    },
+    // { 
+    //   key: 'techForum', 
+    //   label: '技术论坛', 
+    //   fn: (router, message) => { 
+    //     message.info('业务即将上线，敬请期待');
+    //   } 
+    // },
+   
+    { 
+      key: 'industryDynamics', 
+      label: '行业热点', 
+      path: '/industry-dynamics', 
+      matchPaths: ['/industry-dynamics'] 
     },
   ]);
 
