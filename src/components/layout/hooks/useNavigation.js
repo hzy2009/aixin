@@ -128,7 +128,7 @@ export function useNavigation() {
     },
      { 
       key: 'daizhi', 
-      label: '呆滞处理', 
+      label: '二手交易', 
       fn: (router, message) => { 
         message.info('业务即将上线，敬请期待');
       },
