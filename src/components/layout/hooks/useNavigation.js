@@ -136,21 +136,21 @@ export function useNavigation() {
 
       ],
       subItems: [
-        { key: '', label: '原厂件呆滞', path: '',
+        { key: '', label: '原厂件库存处理', path: '',
         fn: (router, message) => { 
           message.info('正在建设中');
         },  },
-        { key: '', label: '标准件呆滞', path: '',
+        { key: '', label: '标准件库存处理', path: '',
         fn: (router, message) => { 
           message.info('正在建设中');
         }, 
         },
-        { key: '', label: '非标件呆滞', path: '',
+        { key: '', label: '非标件库存处理', path: '',
         fn: (router, message) => { 
           message.info('正在建设中');
         }, 
         },
-        { key: '', label: '二手设备呆滞', path: '',
+        { key: '', label: '二手设备库存处理', path: '',
         fn: (router, message) => { 
           message.info('正在建设中');
         }, 
