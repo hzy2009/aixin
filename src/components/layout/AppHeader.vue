@@ -251,11 +251,11 @@ onMounted(() => {
 .logo-section {
   flex-shrink: 0;
   .logo-link { display: flex; align-items: center; text-decoration: none; }
-  .logo-image { margin-right: @spacing-sm; } // Slightly larger logo
+  .logo-image { margin-right: @spacing-sm; height: 90px;} // Slightly larger logo
   .logo-text { 
     color: @primary-color;
     font-family: PingFang SC;
-    font-weight: 400;
+    font-weight: 900;
     font-size: 30px;
     line-height: 30px;
     letter-spacing: 0%;
