@@ -1,7 +1,7 @@
 <template>
   <section class="common-parts-purchase-section section-padding">
     <div class="container">
-      <SectionHeader title-ch="通用件集采" title-en="COMMON PARTS BULK PURCHASING" /> 
+      <SectionHeader title-ch="通用件集采" title-en="STANDARD PARTS BULK PURCHASING" /> 
       <div class="purchase-blocks-container">
         <!-- Left Block -->
         <div class="purchase-block special-hover-effect">
