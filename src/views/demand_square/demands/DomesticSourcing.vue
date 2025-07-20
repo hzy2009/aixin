@@ -20,8 +20,17 @@ const filterConfigForPage = reactive([
 
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = reactive([...DOMESTIC_SOURCING_COLUMNS.map(item => {
-    if (['createBy', 'refUserName'].includes(item.field)) {
+    if (['createBy'].includes(item.field)) {
         item.formatter = ({ cellValue }) => maskMiddle(cellValue)
+    }
+    if ('refUserCode' == item.field) {
+        item.formatter = ({ cellValue }) => {
+          const arr = cellValue ? cellValue.split(',') : []
+          let text = arr.map(item => {
+            return maskMiddle(item)
+          })
+          return text
+        }
     }
     return item
   })]);
