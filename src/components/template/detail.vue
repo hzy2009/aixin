@@ -67,7 +67,7 @@
 							<div class="info-grid-value" v-else-if="item.fieldType === 'slot'" width="100%">
 								<slot :name="item.field" :dataSource="formModel"></slot>
 							</div>
-							<span v-else class="info-grid-value">{{ formModel[item.field] }}</span>
+							<span v-else class="info-grid-value">{{ item.field == 'createBy' ? maskMiddle(formModel[item.field]) : formModel[item.field] }}</span>
 						</div>
 						<!-- Table Sections - CONVERTED TO VXE-GRID -->
 						<div v-for="(tableSection, index) in tableSections" :key="`table-section-${index}`" class="info-grid-item">
@@ -136,7 +136,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { selectOptions } from '@/utils/index';
 import operationResultPage from './operationResultPage.vue';
 import CustomProgressTimeline from '@/components/layout/CustomProgressTimeline.vue';
-import { getFileAccessHttpUrl, formatDate, getRandom } from '@/utils/index';
+import { getFileAccessHttpUrl, formatDate, getRandom, maskMiddle } from '@/utils/index';
 import { PlusOutlined } from '@ant-design/icons-vue';
 import defaultImg from '@/assets/images/default.jpg';
 import dayjs from 'dayjs';

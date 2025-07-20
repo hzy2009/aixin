@@ -34,3 +34,8 @@ export function formatDate (date, format) {
 export const getRandom = (length = 1) => {
   return '-' + parseInt(String(Math.random() * 10000 + 1), length);
 };
+
+export const maskMiddle = (str = '') => 
+  str.length > 2 
+    ? `${str[0]}***${str.slice(-1)}` 
+    : str;

@@ -28,7 +28,7 @@
           <div class="event-meta-stacked">
               <div class="meta-item-row">
               <span class="meta-label">需求提出方：</span>
-              <span class="meta-value">{{ eventDetail.createBy || '' }}</span>
+              <span class="meta-value">{{ maskMiddle(eventDetail.createBy)|| '' }}</span>
             </div>
             <div class="meta-item-row">
               <span class="meta-label">活动开始时间：</span>
@@ -96,7 +96,7 @@ import defaultEventBannerPlaceholder from '@/assets/images/home/offline.png'; //
 import operationResultPage from '@/components/template/operationResultPage.vue';
 import defHttp from '@/utils/http/axios'
 import { useAuthStore } from '@/store/authStore';
-import { getFileAccessHttpUrl, formatDate } from '@/utils/index';
+import { getFileAccessHttpUrl, formatDate, maskMiddle } from '@/utils/index';
 
 const authStore = useAuthStore();
 
