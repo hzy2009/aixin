@@ -4,7 +4,7 @@ const homeRoutes = [
     path: '', // Empty path for the root of the parent layout
     name: 'Home',
     component: () => import('@/views/home/views/HomePage.vue'),
-    meta: { title: '首页 - 爱芯享信息共享平台' } // Example meta for document title
+    meta: { title: '首页 - 爱芯享集成电路信息共享平台' } // Example meta for document title
   }
 ];
 

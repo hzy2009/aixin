@@ -519,7 +519,7 @@ pre{
 		// letter-spacing: 0%;
 		display: flex;
 		justify-content: right;
-		// align-items: center;
+		align-items: center;
 		color: @text-color-secondary;
 		margin-right: @spacing-xs;
 		white-space: nowrap;

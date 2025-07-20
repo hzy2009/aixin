@@ -54,7 +54,7 @@ const formatName = (code) => {
 }
 // const demandTypeDisplayName = '研发攻关';
 
-const pageTitle = '爱芯享信息共享平台'
+const pageTitle = '爱芯享集成电路信息共享平台'
 
 const localeGetDetail = () => {
   return defHttp.get({ url: '/apm/apmTodo/vipUpgrade/userInfo' }); //apm/apmTodo/vipUpgrade/userInfo

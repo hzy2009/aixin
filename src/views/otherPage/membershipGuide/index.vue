@@ -6,7 +6,7 @@
       </div>
 
       <div class="guide-content">
-        <div class="intro-text">申请加入爱芯享信息共享平台，请联系：</div>
+        <div class="intro-text">申请加入爱芯享集成电路信息共享平台，请联系：</div>
         <!-- <div class="intro-text">陈靖玮</div> -->
         <div class="intro-text">座机： 021-55698507</div>
         <div class="intro-text">手机： 15317664387</div>

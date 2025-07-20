@@ -59,7 +59,7 @@ router.beforeEach((to, from, next) => {
   const isLogin = authStore.isLogin;
 
   // 设置页面标题
-  document.title = to.meta.title || '爱芯享信息共享平台';
+  document.title = to.meta.title || '爱芯享集成电路信息共享平台';
   // 检查目标路由是否需要认证
   if (to.meta.requiresAuth) {
     if (isLogin) {

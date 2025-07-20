@@ -3,7 +3,7 @@
     <!-- Top Welcome Bar - Full Width -->
     <div class="top-welcome-bar" v-if="showTopWelcomeBar">
       <div class="top-welcome-bar__content container">
-        <span class="welcome-text">欢迎来到爱芯享信息共享平台！</span>
+        <span class="welcome-text">欢迎来到爱芯享集成电路信息共享平台！</span>
         <div class="user-actions-group">
           <template v-if="auth.isLogin">
              <span :count="unreadMessagesCount" :overflow-count="99" class="action-item notification-badge" @click="navigateToMessages">
@@ -31,7 +31,7 @@
         <div class="logo-section">
           <div class="logo-link">
             <img src="@/assets/images/logo.png" alt="LOGO" class="logo-image" />
-            <span class="logo-text">爱芯享信息共享平台</span>
+            <span class="logo-text">集成电路信息共享平台</span>
           </div>
         </div>
         <!-- Spacer or actions for UserCenter view if needed, but top bar mostly handles it -->
@@ -238,8 +238,8 @@ onMounted(() => {
   display: flex;
   align-items: center;
   background-color: @background-color-base; // White
-  border-bottom: 1px solid @border-color-light; // Separator line before red nav if not in user center
-
+  // border-bottom: 1px solid @border-color-light; // Separator line before red nav if not in user center
+  margin-bottom: 10px;
   &__content {
     display: flex;
     align-items: center;
@@ -251,7 +251,7 @@ onMounted(() => {
 .logo-section {
   flex-shrink: 0;
   .logo-link { display: flex; align-items: center; text-decoration: none; }
-  .logo-image { height: 36px; margin-right: @spacing-sm; } // Slightly larger logo
+  .logo-image { margin-right: @spacing-sm; } // Slightly larger logo
   .logo-text { 
     color: @primary-color;
     font-family: PingFang SC;
