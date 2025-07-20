@@ -1,56 +1,58 @@
 <template>
   <div class="horizontal-sliding-items-wrapper" ref="wrapperRef">
-    <div
-      class="sliding-container"
-      ref="containerRef"
-      :style="{
-        width: `${containerWidthPercentage}%`,
-        transform: `translateX(-${currentTranslateXPercentage}%)`,
-        transition: useTransition ? `transform ${transitionDurationMs}ms ease-in-out` : 'none'
-      }"
-      @mouseenter="pauseCycle"
-      @mouseleave="resumeCycle"
-    >
+    <div class="sliding-items-container">
       <div
-        v-for="(pageItems, pageIndex) in itemPagesForDisplay"
-        :key="`h-page-${pageIndex}`"
-        class="item-page-group"
-        :style="{ width: `${pageGroupWidthPercentage}%` }"
+        class="sliding-container"
+        ref="containerRef"
+        :style="{
+          width: `${containerWidthPercentage}%`,
+          transform: `translateX(-${currentTranslateXPercentage}%)`,
+          transition: useTransition ? `transform ${transitionDurationMs}ms ease-in-out` : 'none'
+        }"
+        @mouseenter="pauseCycle"
+        @mouseleave="resumeCycle"
       >
         <div
-          v-for="item in pageItems"
-          :key="item.id"
-          class="breakthrough-style-item"
-          @click="() => onItemClick(item)"
+          v-for="(pageItems, pageIndex) in itemPagesForDisplay"
+          :key="`h-page-${pageIndex}`"
+          class="item-page-group"
+          :style="{ width: `${pageGroupWidthPercentage}%` }"
         >
-          <div class="item-icon-area">
-              <img src="@/assets/images/home/rightIcon.png" alt="">
-          </div>
-          <div class="item-text-content">
-            <div class="item-main-text">
-              <div v-html="item.content"></div>
+          <div
+            v-for="item in pageItems"
+            :key="item.id"
+            class="breakthrough-style-item"
+            @click="() => onItemClick(item)"
+          >
+            <div class="item-icon-area">
+                <img src="@/assets/images/home/rightIcon.png" alt="">
             </div>
-          </div>
-          <!-- Date is now a separate element before the action button's container -->
-          <div class="item-date-column">
-            <span class="item-date-text">{{ item.createTime ? formatDate(item.createTime) : '' }}</span>
-          </div>
-          <div class="item-action-column">
-            <a-button type="link" class="action-link" @click.stop="() => onActionClick(item)">
-              {{ item.actionText || '点击联系平台获取最新进展' }}
-            </a-button>
+            <div class="item-text-content">
+              <div class="item-main-text">
+                <div v-html="item.content"></div>
+              </div>
+            </div>
+            <!-- Date is now a separate element before the action button's container -->
+            <div class="item-date-column">
+              <span class="item-date-text">{{ item.createTime ? formatDate(item.createTime) : '' }}</span>
+            </div>
+            <div class="item-action-column">
+              <a-button type="link" class="action-link" @click.stop="() => onActionClick(item)">
+                {{ item.actionText || '点击联系平台获取最新进展' }}
+              </a-button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div v-if="actualTotalPages > 1 && showPagination" class="pagination-dots-footer">
-      <span
-        v-for="dotIndex in actualTotalPages"
-        :key="`dot-${dotIndex}`"
-        :class="['dot-indicator', { 'dot--active': dotIndex - 1 === currentPageIndex }]"
-        @click="goToPage(dotIndex - 1)"
-      ></span>
+      <div v-if="actualTotalPages > 1 && showPagination" class="pagination-dots-footer">
+        <span
+          v-for="dotIndex in actualTotalPages"
+          :key="`dot-${dotIndex}`"
+          :class="['dot-indicator', { 'dot--active': dotIndex - 1 === currentPageIndex }]"
+          @click="goToPage(dotIndex - 1)"
+        ></span>
+      </div>
     </div>
   </div>
 </template>
@@ -109,6 +111,11 @@ watch(() => [props.autoCycleInterval, props.loop], () => { if (actualTotalPages.
   min-height: @min-list-height;
   background-color: @background-color-base;
   padding: 15px 20px; // Reduced overall vertical padding to match single list look
+}
+.sliding-items-container{
+  overflow: hidden;
+  width: 100%;
+
 }
 
 .sliding-container {
