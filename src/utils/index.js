@@ -36,6 +36,6 @@ export const getRandom = (length = 1) => {
 };
 
 export const maskMiddle = (str = '') => 
-  str.length > 2 
+  str && str?.length > 2 
     ? `${str[0]}***${str.slice(-1)}` 
     : str;

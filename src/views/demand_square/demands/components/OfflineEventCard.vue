@@ -131,7 +131,7 @@ const getImgUrl = (url) => {
 }
 
 .event-card-body {
-  padding: @spacing-md;
+  padding: @spacing-md - 6px;
 }
 
 .event-card-content {
