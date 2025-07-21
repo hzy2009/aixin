@@ -204,9 +204,9 @@ export const VERIFICATION_COLUMNS = [
     },
     { title: '需求创建日期', field: 'createTime', align: 'center', fieldType: 'date', width: 94 },
     { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date', width: 94 },
-    { title: '需求方', field: 'createBy', align: 'center', width: 165 },
-    { title: '承接方', field: 'refUserName', align: 'center', width: 70 },
-    { title: '需求状态', field: 'statusName', align: 'center', width: 105 },
+    { title: '需求方', field: 'createBy', align: 'center', width: 162 },
+    { title: '承接方', field: 'refUserName', align: 'center', width: 164 },
+    { title: '需求状态', field: 'statusName', align: 'center', width: 110 },
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
-    { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 80 },
+    { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 90 },
 ]
