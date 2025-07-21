@@ -132,7 +132,7 @@ const getRowState = (record) => {
         isWinnerSelected = true;
         winnerName = winner.map(item => item.refUserCode).join(',');
     }
-    if (record.isFinished == 1) {
+    if (record.isFinished == 1 || record.refUserName) {
         winnerName = record.refUserName;
     }
     const isSecondRoundSelected = record.firstInquiryList.some(item => item.isSelected === 1);
