@@ -77,16 +77,16 @@ const pageData = reactive({
   showLogList: false,
   pageTitle,
   queryAfter,
-  tableSections: [
-    {
-      title: '物料清单',
-      groupCode: 'materialList',
-      columns: [
-        { title: '序号', type: 'seq', key: 'index', width: 60, align: 'center', align: 'center' },
-        { title: '爱芯享享单据号', field: 'businessCode', key: 'businessCode' },
-      ]
-    },
-  ],
+  // tableSections: [
+  //   {
+  //     title: '物料清单',
+  //     groupCode: 'materialList',
+  //     columns: [
+  //       { title: '序号', type: 'seq', key: 'index', width: 60, align: 'center', align: 'center' },
+  //       { title: '爱芯享享单据号', field: 'businessCode', key: 'businessCode' },
+  //     ]
+  //   },
+  // ],
 })
 
 const goBack = () => {
