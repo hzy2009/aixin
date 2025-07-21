@@ -21,11 +21,12 @@ const filterConfigForPage = reactive([
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = reactive([
     ...OEM_PARTS_SOURCING_COLUMNS.map(item => {
+    let Obj = Object.assign({}, item)
     if (['createBy'].includes(item.field)) {
-        item.formatter = ({ cellValue }) => maskMiddle(cellValue)
+        Obj.formatter = ({ cellValue }) => maskMiddle(cellValue)
     }
     if ('refUserCode' == item.field) {
-        item.formatter = ({ cellValue }) => {
+        Obj.formatter = ({ cellValue }) => {
           const arr = cellValue ? cellValue.split(',') : []
           let text = arr.map(item => {
             return maskMiddle(item)
@@ -33,7 +34,7 @@ const tableColumns = reactive([
           return text
         }
     }
-    return item
+    return Obj
   })
 ]);
 const actions = reactive([

@@ -22,10 +22,11 @@ const filterConfigForPage = reactive([
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = reactive([
     ...PUBLIC_RELATIONS_COLUMNS.map(item => {
+    let Obj = Object.assign({}, item)
     if (['createBy', 'refUserName'].includes(item.field)) {
-        item.formatter = ({ cellValue }) => maskMiddle(cellValue)
+        Obj.formatter = ({ cellValue }) => maskMiddle(cellValue)
     }
-    return item
+    return Obj
   })
 ]);
 

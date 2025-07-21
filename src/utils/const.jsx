@@ -151,17 +151,17 @@ export const OEM_PARTS_SOURCING_COLUMNS = [
 
 export const OFFLINE_EVENT_COLUMNS = [
     { title: '序号', type: 'seq', fixed: 'left', width: 50, align: 'center' },
-    { title: '爱芯享活动单号', field: 'code', align: 'center' },
+    { title: '爱芯享活动单号', field: 'code', align: 'center', width: 160 },
     { title: '活动类型', field: 'activityTypeName', align: 'center', width: 80 },
     { title: '发起人', field: 'createBy', align: 'center', width: 100 },
     {
-        title: '参与者', field: 'registerList', align: 'center', width: 180, formatter: ({ cellValue }) => {
+        title: '参与者', field: 'registerList', align: 'center', width: 160, formatter: ({ cellValue }) => {
             const text = cellValue && cellValue.length > 0 && cellValue.map(item => item.registerUserWorkNo).join(',');
             return text || ''
         }
     },
     { title: '内容', field: 'description', align: 'center', showOverflow: true, width: 180 },
-    { title: '结论', field: 'activityAddress', align: 'center', width: 180 },
+    { title: '结论', field: 'activityAddress', align: 'center', width: 160 },
     { title: '需求创建日期', field: 'createTime', align: 'center', fieldType: 'date', width: 100 },
     { title: '活动开始日期', field: 'activityDate', align: 'center', fieldType: 'date', width: 100 },
     { title: '活动结束日期', field: 'activityEndDate', align: 'center', fieldType: 'date', width: 100 },
@@ -204,9 +204,9 @@ export const VERIFICATION_COLUMNS = [
     },
     { title: '需求创建日期', field: 'createTime', align: 'center', fieldType: 'date', width: 94 },
     { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date', width: 94 },
-    { title: '需求方', field: 'createBy', align: 'center', width: 165 },
-    { title: '承接方', field: 'refUserName', align: 'center', width: 70 },
-    { title: '需求状态', field: 'statusName', align: 'center', width: 105 },
+    { title: '需求方', field: 'createBy', align: 'center', width: 160 },
+    { title: '承接方', field: 'refUserName', align: 'center' },
+    { title: '需求状态', field: 'statusName', align: 'center', width: 110 },
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
-    { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 80 },
+    { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 90 },
 ]
