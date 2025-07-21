@@ -92,14 +92,14 @@ const getImgUrl = (url) => {
   }
 
   .event-cover-image-wrapper {
-    height: 180px;
+    height: 100px;
     position: relative; // 为了主办方徽标定位
   }
 
   .event-cover-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    // object-fit: cover;
     transition: transform 0.3s ease-in-out;
   }
 
