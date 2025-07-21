@@ -201,6 +201,11 @@ const columns = [
         }
       }
     },
+    {
+      title: '状态',
+      field: 'statusName',
+      width: 150,
+    },
 	{
       title: '交易方式',
       field: 'tradeTypeCode',

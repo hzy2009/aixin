@@ -42,7 +42,7 @@ const pageData = ref({
     filterConfigForPage,
     tableColumns,
     actions,
-    statusDictKey: 'origin_substitute_sourcing_status',
+    statusDictKey: 'origin_sourcing_material_status',
     userStatCardVisible: true,
     dateRangeConfig: [
         {

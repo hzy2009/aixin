@@ -47,7 +47,7 @@ const pageData = ref({
   tableColumns,
   addButton,
   actions,
-  statusDictKey: 'sourcing_status',
+  statusDictKey: 'material_code',
   userStatCardVisible: true,
   dateRangeConfig: [
     {

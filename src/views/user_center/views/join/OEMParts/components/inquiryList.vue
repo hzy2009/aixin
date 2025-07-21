@@ -83,6 +83,11 @@ const columns = [
       width: 60,
     },
     {
+      title: '状态',
+      field: 'statusName',
+      width: 150,
+    },
+    {
       title: '内部管理单号',
       field: 'materialCode',
       width: 150,

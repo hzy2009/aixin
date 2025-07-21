@@ -59,7 +59,7 @@ const pageData = ref({
     showBanner: true,
     userStatCardVisible: true,
     pageTitle: '原厂件寻源',
-    statusDictKey: 'origin_substitute_sourcing_status',
+    statusDictKey: 'origin_sourcing_material_status',
     tableOperations: [
         {
         title: '创建原厂件寻源',

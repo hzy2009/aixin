@@ -59,7 +59,7 @@ const pageData = ref({
   showBanner: true,
   userStatCardVisible: true,
   pageTitle: '多元化寻源',
-  statusDictKey: 'sourcing_status',
+  statusDictKey: 'material_code',
   tableOperations: [
     {
       title: '创建多元化寻源',

@@ -63,7 +63,7 @@ const pageData = ref({
   addButton,
   actions,
   searchTitle: '多元化寻源',
-  statusDictKey: 'sourcing_status',
+  statusDictKey: 'material_code',
   userStatCardVisible: true,
   tableOperations: [
     {

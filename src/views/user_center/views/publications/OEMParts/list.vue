@@ -35,7 +35,7 @@ const tableColumns = reactive([
 ]);
 
 const addButton = reactive({
-    text: '创建多元化寻源',
+    text: '创建原厂件寻源',
     clickFn: createNewSourcing
 })
 
@@ -69,7 +69,7 @@ const pageData = ref({
     addButton,
     actions,
     searchTitle: '原厂件寻源',
-    statusDictKey: 'origin_substitute_sourcing_status',
+    statusDictKey: 'origin_sourcing_material_status',
     userStatCardVisible: true,
     tableOperations: [
         {
