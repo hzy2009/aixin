@@ -151,17 +151,17 @@ export const OEM_PARTS_SOURCING_COLUMNS = [
 
 export const OFFLINE_EVENT_COLUMNS = [
     { title: '序号', type: 'seq', fixed: 'left', width: 50, align: 'center' },
-    { title: '爱芯享活动单号', field: 'code', align: 'center' },
+    { title: '爱芯享活动单号', field: 'code', align: 'center', width: 160 },
     { title: '活动类型', field: 'activityTypeName', align: 'center', width: 80 },
     { title: '发起人', field: 'createBy', align: 'center', width: 100 },
     {
-        title: '参与者', field: 'registerList', align: 'center', width: 180, formatter: ({ cellValue }) => {
+        title: '参与者', field: 'registerList', align: 'center', width: 160, formatter: ({ cellValue }) => {
             const text = cellValue && cellValue.length > 0 && cellValue.map(item => item.registerUserWorkNo).join(',');
             return text || ''
         }
     },
     { title: '内容', field: 'description', align: 'center', showOverflow: true, width: 180 },
-    { title: '结论', field: 'activityAddress', align: 'center', width: 180 },
+    { title: '结论', field: 'activityAddress', align: 'center', width: 160 },
     { title: '需求创建日期', field: 'createTime', align: 'center', fieldType: 'date', width: 100 },
     { title: '活动开始日期', field: 'activityDate', align: 'center', fieldType: 'date', width: 100 },
     { title: '活动结束日期', field: 'activityEndDate', align: 'center', fieldType: 'date', width: 100 },
