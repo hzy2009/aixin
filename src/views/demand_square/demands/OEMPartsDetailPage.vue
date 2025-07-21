@@ -65,7 +65,7 @@ const pageData = reactive({
   apiMap: {
     add: 'apm/apmSourcingOriginSubstitute/add',
     edit: 'apm/apmSourcingOriginSubstitute/edit',
-    detail: 'apm/apmSourcingOriginSubstitute/queryById/front',
+    detail: 'apm/apmSourcingOriginSubstitute/queryById',
     submit: 'apm/apmSourcingOriginSubstitute/submit',
     delete: 'apm/apmSourcingOriginSubstitute/delete',
   },
