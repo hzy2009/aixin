@@ -10,14 +10,14 @@
         <!-- <div class="intro-text">陈靖玮</div> -->
         <div class="intro-text">座机： 021-55698507</div>
         <div class="intro-text">手机： 15317664387</div>
-        <div class="intro-text">E-MAIL： chenjingwei@icshare.com</div>
+        <div class="intro-text">E-MAIL： info-service@icshare.com</div>
         <div class="intro-text">注：新会员提交注册申请后，运营专员会在30分钟内与您联系。</div>
 
         <!-- <div class="contact-details">
           <p><span class="contact-label">陈靖玮</span></p> 
           <p><span class="contact-label">座机：</span>021-55698507</p>
           <p><span class="contact-label">手机：</span>15317664387</p>
-          <p><span class="contact-label">E-MAIL：</span>chenjingwei@icshare.com</p>
+          <p><span class="contact-label">E-MAIL：</span>info-service@icshare.com</p>
         </div> -->
 <!-- 
         <p class="note-text">
@@ -42,7 +42,7 @@ onMounted(() => {
 //   name: '陈靖玮',
 //   landline: '021-55698507',
 //   mobile: '15317664387',
-//   email: 'chenjingwei@icshare.com'
+//   email: 'info-service@icshare.com'
 // });
 // async function fetchContactInformation() { /* ... API call ... */ }
 </script>

@@ -80,9 +80,9 @@ const {
   status,
   title = '一键敲门成功',
   subtitle = '客服人员将在30分钟内与您联系',
-    // E-MAIL: chenjingwei@icshare.com
+    // E-MAIL: info-service@icshare.com
   contactInfo = '联系电话：021-55698507',
-  emilt = 'E-MAIL: chenjingwei@icshare.com',
+  emilt = 'E-MAIL: info-service@icshare.com',
   primaryActionText = '查看详情',
   primaryActionPayload,
   secondaryActionText = '返回列表',

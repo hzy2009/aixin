@@ -48,10 +48,10 @@ const props = defineProps({
   },
   message: {
     type: String,
-    default: '“一键敲门”后后，客服人员将在30分钟内与您联系',
+    default: '“一键敲门”后，客服人员将在30分钟内与您联系',
   },
   contactInfo: {
-    type: Object, // { name: '陈靖玮', phone: '020-55698507', email: 'chenjingwei@icshare.com' }
+    type: Object, // { name: '陈靖玮', phone: '021-55698507', email: 'info-service@icshare.com' }
     default: null,
   },
   buttonText: {
