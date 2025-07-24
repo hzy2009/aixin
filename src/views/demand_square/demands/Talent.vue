@@ -22,7 +22,7 @@ const router = useRouter();
 
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
-    { id: 'skillAreaCode', label: '研究领域', maxVisibleWithoutMore: 10, dictKey: 'skill_area' },
+    { id: 'skillAreaCode', label: '研究领域', maxVisibleWithoutMore: 14, dictKey: 'skill_area' },
 ]);
 const initialPageSize = 12
 const pageData = ref({

@@ -39,8 +39,6 @@ const tableColumns = reactive([
  { title: '业务类型', field: 'businessName', align: 'center', width: 180},
  { title: '需求创建日期', field: 'createTime', align: 'center', fieldType: 'date' },
  { title: '需求状态', field: 'statusName', align: 'center' },
- { title: '操作类型', field: 'remark', align: 'center' },
- { title: '操作历史', field: 'xxx', align: 'center' },
  { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
 ]);
 const activeKey = ref('1');
