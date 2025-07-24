@@ -210,3 +210,14 @@ export const VERIFICATION_COLUMNS = [
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 90 },
 ]
+
+export const OEMPARTS_TRADE_COLUMNS = [
+    { title: '序号', type: 'seq', fixed: 'left', width: 50, align: 'center' },
+    { title: '科号', field: 'code', align: 'center' },
+    { title: '产品名称', field: 'name', align: 'center', width: 100 },
+    { title: '适用设备型号', field: 'model', align: 'center', width: 120 },
+    { title: '原厂', field: 'oemCode', align: 'center', width: 120 },
+    { title: '产品状态', field: 'productStatus', align: 'center', width: 160 },
+    { title: '数量', field: 'quantity', align: 'center', width: 160 },
+    { title: '交易状态', field: 'tradeStatus', align: 'center', width: 120 },
+]

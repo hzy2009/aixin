@@ -76,13 +76,15 @@ export function useNavigation() {
       ]
     },
     { 
-      key: 'daizhi', 
+      key: 'secondTrade', 
       label: '二手交易', 
-      fn: (router, message) => { 
-        message.info('业务即将上线，敬请期待');
-      },
+      path: '/secondTrade/oemParts', 
       matchPaths: [
-
+        '/secondTrade/oemParts',
+        // '/demands/DomesticSourcing',
+        // '/user/published/DomesticSourcing',
+        // '/user/join/DomesticSourcing',
+        // '/user/published/DomesticSourcing/create'
       ],
       subItems: [
         { key: '', label: '原厂件库存处理', path: '',
