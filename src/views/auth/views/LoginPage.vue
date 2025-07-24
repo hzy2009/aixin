@@ -4,7 +4,7 @@
     <main class="login-main-content">
       <!-- Logo and Site Name - Positioned relative to the form box -->
       <div class="branding-header">
-        <img src="@/assets/images/logo.png" alt="LOGO" class="logo-image" />
+        <img src="@/assets/images/logoWithe.png" alt="LOGO" class="logo-image" />
         <span class="site-name">爱芯享集成电路信息共享平台</span>
       </div>
 
