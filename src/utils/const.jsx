@@ -152,6 +152,7 @@ export const OEM_PARTS_SOURCING_COLUMNS = [
 export const OFFLINE_EVENT_COLUMNS = [
     { title: '序号', type: 'seq', fixed: 'left', width: 50, align: 'center' },
     { title: '爱芯享活动单号', field: 'code', align: 'center', width: 160 },
+    { title: '内部管理单号', field: 'internalCode', align: 'center' },
     { title: '活动类型', field: 'activityTypeName', align: 'center', width: 80 },
     { title: '发起人', field: 'createBy', align: 'center', width: 100 },
     {
@@ -172,6 +173,7 @@ export const OFFLINE_EVENT_COLUMNS = [
 export const PUBLIC_RELATIONS_COLUMNS = [
     { title: '序号', type: 'seq', fixed: 'left', width: 50, align: 'center' },
     { title: '爱芯享研发攻关单号', field: 'code', align: 'center' },
+    { title: '内部管理单号', field: 'internalCode', align: 'center' },
     { title: '研发攻关类型', field: 'rdType', align: 'center', width: 120 },
     { title: '需求创建日期', field: 'createTime', align: 'center', fieldType: 'date', width: 100 },
     { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date', width: 100 },
@@ -189,6 +191,7 @@ const getALLProductTypes = () => {
 export const VERIFICATION_COLUMNS = [
     { title: '序号', type: 'seq', fixed: 'left', width: 50, align: 'center' },
     { title: '爱芯享检测验证单号', field: 'code', align: 'center', width: 150 },
+    { title: '内部管理单号', field: 'internalCode', align: 'center' },
     { title: '检测验证类别', field: 'projectType', align: 'center', fieldType: 'select', width: 94, dictKey: 'project_type' },
     { title: '产品类别1', field: 'productMainTypeCode', align: 'center', fieldType: 'select', width: 76, dictKey: 'product_main_type' },
     {
