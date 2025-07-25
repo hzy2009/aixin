@@ -538,7 +538,12 @@ pre{
 		color: #272A30;
 		word-break: break-word;
 		flex: 1;
-
+		width: calc(100% - 120px);
+		pre {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: pre-wrap;
+		}
 		&.requester-id-value {
 			background-color: #F7F8FA;
 			padding: 2px 8px;
