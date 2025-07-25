@@ -44,13 +44,20 @@ const actions = reactive([
         // isVisible: (record) => record.statusCode !== '已完成' // Example condition
     }
 ]);
-
+const tableOperations = reactive([
+    {
+        title: '一键敲门',
+        clickFn: createNewSourcing,
+        type: 'primary'
+    }
+])
 const pageData = ref({
     url: {
         list: 'apm/apmSourcingOriginSubstitute/material/list/front',
         overview: 'apm/apmSourcingOriginSubstitute/overview/front'
     },
     tableColumns,
+    tableOperations,
     actions,
     // requiredRoles: ['apm-vip', 'apm-vip-inspection', 'apm-register'],
 })

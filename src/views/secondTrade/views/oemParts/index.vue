@@ -19,22 +19,7 @@ const filterConfigForPage = reactive([
 
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = reactive([
-    ...OEMPARTS_TRADE_COLUMNS.map(item => {
-    let Obj = Object.assign({}, item)
-    if (['createBy'].includes(item.field)) {
-        Obj.formatter = ({ cellValue }) => maskMiddle(cellValue)
-    }
-    if ('refUserCode' == item.field) {
-        Obj.formatter = ({ cellValue }) => {
-          const arr = cellValue ? cellValue.split(',') : []
-          let text = arr.map(item => {
-            return maskMiddle(item)
-          })
-          return text
-        }
-    }
-    return Obj
-  })
+    ...OEMPARTS_TRADE_COLUMNS
 ]);
 const actions = reactive([
     {
@@ -44,6 +29,13 @@ const actions = reactive([
         // isVisible: (record) => record.statusCode !== '已完成' // Example condition
     }
 ]);
+const tableOperations = reactive([
+    {
+        title: '一键敲门',
+        clickFn: createNewSourcing,
+        type: 'primary'
+    }
+])
 
 const pageData = ref({
     url: {
@@ -52,6 +44,7 @@ const pageData = ref({
     },
     tableColumns,
     actions,
+    tableOperations,
     // requiredRoles: ['apm-vip', 'apm-vip-inspection', 'apm-register'],
 })
 
