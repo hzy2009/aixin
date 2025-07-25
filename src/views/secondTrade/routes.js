@@ -3,6 +3,8 @@ import UserCenterCommonLayout from './layouts/UserCenterCommonLayout.vue'; // �
 
 const oemParts = () => import('./views/oemParts/index.vue'); 
 const standard = () => import('./views/standard/index.vue');
+const notStandard = () => import('./views/notStandard/index.vue');
+const usedEqpTrade = () => import('./views/usedEqpTrade/index.vue');
 
 const userCenterRoutes = [
   {
@@ -15,27 +17,20 @@ const userCenterRoutes = [
         component: oemParts, // 这个页面现在是子路由
         meta: { title: '原厂件库存处理', breadcrumb: ['原厂件库存处理'] }
       },
-      // {
-      //   path: 'oemPartsDetailPage/:id',
-      //   component: oemParts,
-      //   props: route => ({ IdProp: route.params.id}),
-      //   meta: { title: '原厂件库存处理详情', breadcrumb: ['原厂件库存处理详情']}
-      // }
       {
         path: 'standard', 
         component: standard, 
         meta: { title: '标准件库存处理', breadcrumb: ['标准件库存处理'] }
       },
-      // {
-      //   path: 'standardDetailPage/:id',
-      //   component: standard,
-      //   props: route => ({ IdProp: route.params.id}),
-      //   meta: { title: '标准件库存处理详情', breadcrumb: ['标准件库存处理详情']}
-      // }
       {
         path: 'notStandard',
         component: notStandard,
         meta: { title: '非标准件库存处理', breadcrumb: ['非标准件库存处理'] }
+      },
+      {
+        path: 'usedEqpTrade',
+        component: usedEqpTrade,
+        meta: { title: '二手设备交易', breadcrumb: ['二手设备交易'] }
       }
     ]
   },

@@ -10,11 +10,23 @@ const defaultTabsConfig = {
     defaultSubTabKey: 'oemParts', // 第一个子页签作为默认
     path: '/secondTrade/oemParts',
   },
-  domestic: {
-    key: 'domestic',
+  standard: {
+    key: 'standard',
     label: '标准件库存处理',
-    defaultSubTabKey: 'domestic', // 第一个子页签作为默认
-    path: '/secondTrade/domestic',
+    defaultSubTabKey: 'standard', // 第一个子页签作为默认
+    path: '/secondTrade/standard',
+  },
+  notStandard: {
+    key: 'notStandard',
+    label: '非标准件库存处理',
+    defaultSubTabKey: 'notStandard', // 第一个子页签作为默认
+    path: '/secondTrade/notStandard',
+  },
+  usedEqpTrade: {
+    key: 'usedEqpTrade',
+    label: '二手设备交易',
+    defaultSubTabKey: 'usedEqpTrade', // 第一个子页签作为默认
+    path: '/secondTrade/usedEqpTrade',
   }
 };
 
