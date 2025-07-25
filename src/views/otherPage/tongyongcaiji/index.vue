@@ -21,13 +21,13 @@
         </div> -->
         <div class="member-logo-item-wrapper special-hover-effect" >
             <img src="@/assets/images/home/PromoCard1.png" alt="通用件集采" class="member-logo-image" />
-            <div class="block-hover-overlay" @click="xxx">
+            <div class="block-hover-overlay" @click="handlePurchaseClick('aian')">
             <span class="hover-action-text">点击采购，享受爱芯享会员折扣</span>
           </div>
         </div>
           <div class="member-logo-item-wrapper special-hover-effect" >
             <img src="@/assets/images/home/PromoCard2.png" alt="通用件集采" class="member-logo-image" />
-            <div class="block-hover-overlay" @click="xxx">
+            <div class="block-hover-overlay" @click="handlePurchaseClick('jd_overlay')">
             <span class="hover-action-text">点击采购，享受爱芯享会员折扣</span>
           </div>
         </div>
@@ -124,8 +124,9 @@ const handleImageError = (event) => {
     // Fallback to placeholder if the primary logo fails to load
     event.target.src = defaultFallbackLogo;
 };
-const xxx = () => {
-    message.info('业务即将上线，敬请期待');
+const handlePurchaseClick = (partnerKey) => {
+  let uri = partnerKey === 'aian' ? 'https://www.ant-fa.com' : 'https://b.jd.com/';
+  window.open(uri, '_blank');
 }
 
 
