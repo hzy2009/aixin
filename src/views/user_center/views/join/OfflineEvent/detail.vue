@@ -28,6 +28,7 @@ const formConfigs = [
   { label: '活动名称', field: 'activityName', span: 24 },
   { label: '活动开始日期', field: 'activityDate', span: 24 },
   { label: '活动结束日期', field: 'activityEndDate', span: 24 },
+  { label: '内部管理单号', field: 'internalCode', fieldType: 'input', span: 24, },
   { label: '封面图片', field: 'imageUrl', fieldType: 'imageUpload', span: 24 },
 ]
 

@@ -46,6 +46,9 @@ const formConfigs = [
   { label: '需求创建日期', field: 'createTime', fieldType: 'date', span: 24},
   { label: '期望完成日期', field: 'expireDate', fieldType: 'date', span: 24, fieldType: 'date' },
   {
+    label: '内部管理单号', field: 'internalCode', fieldType: 'input', span: 24,
+  },
+  {
     label: '产品类别', field: 'productType', fieldType: 'slot', span: 24,
   },
   {

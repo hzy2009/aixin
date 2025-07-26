@@ -38,6 +38,10 @@
               <span class="meta-label">活动结束时间：</span>
               <span class="meta-value">{{ formatDate(eventDetail.activityEndDate) || ''}}</span>
             </div>
+             <div class="meta-item-row">
+              <span class="meta-label">内部管理单号：</span>
+              <span class="meta-value">{{ eventDetail.internalCode || ''}}</span>
+            </div>
             <div class="meta-item-row">
               <span class="meta-label">活动类型：</span>
               <span class="meta-value">{{ eventDetail.activityTypeName }}</span>
