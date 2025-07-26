@@ -214,13 +214,55 @@ export const VERIFICATION_COLUMNS = [
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 90 },
 ]
 
-export const OEMPARTS_TRADE_COLUMNS = [
+export const OEMPARTS_COLUMNS = [
+    { type: 'checkbox', width: 40 },
     { title: '序号', type: 'seq', fixed: 'left', width: 50, align: 'center' },
     { title: '科号', field: 'code', align: 'center' },
     { title: '产品名称', field: 'name', align: 'center', width: 100 },
+    { title: '产品类别', field: 'productTypeName', align: 'center', width: 100 },
+    { title: '规格描述', field: 'spec', align: 'center', width: 100 },
     { title: '适用设备型号', field: 'model', align: 'center', width: 120 },
-    { title: '原厂', field: 'oemCode', align: 'center', width: 120 },
+    { title: '原厂', field: 'manufacturer', align: 'center', width: 120 },
+    { title: '生产日期', field: 'productionDate', align: 'center', width: 120, fieldType: 'date' },
     { title: '产品状态', field: 'productStatus', align: 'center', width: 160 },
     { title: '数量', field: 'quantity', align: 'center', width: 160 },
-    { title: '交易状态', field: 'tradeStatus', align: 'center', width: 120 },
+    { title: '需求发布者', field: 'createBy', align: 'center', width: 120 },
+]
+
+export const STANDARD_COLUMNS = [
+    { type: 'checkbox', width: 40 },
+    { title: '序号', type: 'seq', fixed: 'left', width: 50, align: 'center' },
+    { title: '产品名称', field: 'name', align: 'center', width: 100 },
+    { title: '规格描述', field: 'spec', align: 'center', width: 100 },
+    { title: '生产厂商', field: 'manufacturer', align: 'center', width: 120 },
+    { title: '生产日期', field: 'productionDate', align: 'center', width: 120, fieldType: 'date' },
+    { title: '产品状态', field: 'productStatus', align: 'center', width: 160 },
+    { title: '数量', field: 'quantity', align: 'center', width: 160 },
+    { title: '需求发布者', field: 'createBy', align: 'center', width: 120 },
+]
+
+export const NOTSTANDARD_COLUMNS = [
+    { type: 'checkbox', width: 40 },
+    { title: '序号', type: 'seq', fixed: 'left', width: 50, align: 'center' },
+    { title: '产品名称', field: 'name', align: 'center', width: 100 },
+    { title: '规格描述', field: 'spec', align: 'center', width: 100 },
+    { title: '生产厂商', field: 'manufacturer', align: 'center', width: 120 },
+    { title: '生产日期', field: 'productionDate', align: 'center', width: 120, fieldType: 'date' },
+    { title: '产品状态', field: 'productStatus', align: 'center', width: 160 },
+    { title: '数量', field: 'quantity', align: 'center', width: 160 },
+    { title: '需求发布者', field: 'createBy', align: 'center', width: 120 },
+]
+
+export const USEDEQPTRADE_COLUMNS = [
+    { type: 'checkbox', width: 40 },
+    { title: '序号', type: 'seq', fixed: 'left', width: 50, align: 'center' },
+    { title: '设备名称', field: 'name', align: 'center', width: 100 },
+    { title: '设备型号', field: 'model', align: 'center', width: 100 },
+    { title: '规格描述', field: 'spec', align: 'center', width: 100 },
+    { title: '品牌厂商', field: 'manufacturer', align: 'center', width: 120 },
+    { title: '出厂日期', field: 'productionDate', align: 'center', width: 120, fieldType: 'date' },
+    { title: '工艺段', field: 'xxx', align: 'center', width: 160 },
+    { title: '设备状态', field: 'productStatus', align: 'center', width: 160 },
+    { title: '数量', field: 'quantity', align: 'center', width: 160 },
+    { title: '需求发布者', field: 'createBy', align: 'center', width: 120 },
 ]

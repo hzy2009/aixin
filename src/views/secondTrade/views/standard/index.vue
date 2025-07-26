@@ -1,6 +1,7 @@
 <template>
     <div>
         <listPage :pageData="pageData" />
+        <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" title="注册" actionText="一键敲门"></PhoneAndEmailModal>
     </div>
 </template>
 
@@ -9,7 +10,7 @@ import { ref, reactive } from 'vue'; // onMounted removed as hook handles it
 import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
-import { OEMPARTS_TRADE_COLUMNS } from '@/utils/const.jsx';
+import { OEMPARTS_COLUMNS } from '@/utils/const.jsx';
 import { maskMiddle } from '@/utils/index';
 const router = useRouter();
 
@@ -19,7 +20,7 @@ const filterConfigForPage = reactive([
 
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = reactive([
-    ...OEMPARTS_TRADE_COLUMNS.map(item => {
+    ...OEMPARTS_COLUMNS.map(item => {
     let Obj = Object.assign({}, item)
     if (['createBy'].includes(item.field)) {
         Obj.formatter = ({ cellValue }) => maskMiddle(cellValue)
