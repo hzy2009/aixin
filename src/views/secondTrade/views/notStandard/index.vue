@@ -19,22 +19,7 @@ const filterConfigForPage = reactive([
 
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = reactive([
-    ...OEMPARTS_COLUMNS.map(item => {
-    let Obj = Object.assign({}, item)
-    if (['createBy'].includes(item.field)) {
-        Obj.formatter = ({ cellValue }) => maskMiddle(cellValue)
-    }
-    if ('refUserCode' == item.field) {
-        Obj.formatter = ({ cellValue }) => {
-          const arr = cellValue ? cellValue.split(',') : []
-          let text = arr.map(item => {
-            return maskMiddle(item)
-          })
-          return text
-        }
-    }
-    return Obj
-  })
+    ...OEMPARTS_COLUMNS
 ]);
 const actions = reactive([
     {
@@ -55,8 +40,7 @@ const tableOperations = reactive([
 
 const pageData = ref({
     url: {
-        list: 'apm/apmSourcingOriginSubstitute/material/list/front',
-        overview: 'apm/apmSourcingOriginSubstitute/overview/front'
+        list: 'apm/apmDeviceUnstandard/list/front',
     },
     tableColumns,
     actions,

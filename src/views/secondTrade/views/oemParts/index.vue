@@ -1,6 +1,7 @@
 <template>
     <div>
         <listPage :pageData="pageData" />
+        <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" :title="modalTitle" :actionText="actionText"></PhoneAndEmailModal>
     </div>
 </template>
 
@@ -10,12 +11,16 @@ import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 import { OEMPARTS_COLUMNS } from '@/utils/const.jsx';
+import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
 import { maskMiddle } from '@/utils/index';
+import { useTodo } from '../hooks/useTodo.js'
 const router = useRouter();
-
+const PhoneAndEmailModal = ref();
 const filterConfigForPage = reactive([
     // { id: 'statusCode', label: '寻源结果', maxVisibleWithoutMore: 7, dictKey: 'origin_substitute_sourcing_status' }
 ]);
+
+const {modalTitle, actionText} = useTodo({url: 'apm/apmDeviceOrigin/list/front'})
 
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = reactive([
@@ -39,8 +44,8 @@ const tableOperations = reactive([
 
 const pageData = ref({
     url: {
-        list: 'apm/apmSourcingOriginSubstitute/material/list/front',
-        overview: 'apm/apmSourcingOriginSubstitute/overview/front'
+        list: 'apm/apmDeviceOrigin/list/front',
+        // overview: 'apm/apmSourcingOriginSubstitute/overview/front'
     },
     tableColumns,
     actions,
