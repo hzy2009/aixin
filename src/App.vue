@@ -30,7 +30,7 @@
       @close="modalStore.hideSuccessPrompt"
       @action="() => { /* Modal internal action also calls its onClose */ }"
     />
-  <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" title="注册" actionText="一键敲门"></PhoneAndEmailModal>
+  <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" title="填写信息获取交易信息" actionText="联系平台获取最新进展"></PhoneAndEmailModal>
 
 </template>
 

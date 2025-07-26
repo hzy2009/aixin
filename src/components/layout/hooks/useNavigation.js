@@ -76,34 +76,20 @@ export function useNavigation() {
       ]
     },
     { 
-      key: 'daizhi', 
+      key: 'secondTrade', 
       label: '二手交易', 
-      fn: (router, message) => { 
-        message.info('业务即将上线，敬请期待');
-      },
+      path: '/secondTrade/oemParts', 
       matchPaths: [
-
+        '/secondTrade/oemParts',
+        '/secondTrade/standard',
+        '/secondTrade/notStandard',
+        '/secondTrade/usedEqpTrade',
       ],
       subItems: [
-        { key: '', label: '原厂件库存处理', path: '',
-        fn: (router, message) => { 
-          message.info('正在建设中');
-        },  },
-        { key: '', label: '标准件库存处理', path: '',
-        fn: (router, message) => { 
-          message.info('正在建设中');
-        }, 
-        },
-        { key: '', label: '非标件库存处理', path: '',
-        fn: (router, message) => { 
-          message.info('正在建设中');
-        }, 
-        },
-        { key: '', label: '二手设备交易', path: '',
-        fn: (router, message) => { 
-          message.info('正在建设中');
-        }, 
-        },
+        { key: 'oemParts', label: '原厂件库存处理', path: '/secondTrade/oemParts'},
+        { key: 'standard', label: '标准件库存处理', path: '/secondTrade/standard'},
+        { key: 'notStandard', label: '非标件库存处理', path: '/secondTrade/notStandard'},
+        { key: 'usedEqpTrade', label: '二手设备交易', path: '/secondTrade/usedEqpTrade'},
       ]
     },
     { 

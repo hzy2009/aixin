@@ -138,7 +138,7 @@ filterConfigForPage && filterConfigForPage.forEach(item => {
         item.options = selectOptions(item.dictKey);
     }
 });
-
+const gridRef = ref();
 // --- VXE-TABLE ADAPTATION ---
 
 const multiDateRangePickerRef = ref();
@@ -298,8 +298,13 @@ const handleReset = () => {
     multiDateRangePickerRef.value?.resetAllDates();
 };
 
+const getCheckboxRecords = () => {
+    return gridRef.value?.getCheckboxRecords();
+}
+
 defineExpose({
-    handleTablePaginationChange
+    handleTablePaginationChange,
+    getCheckboxRecords
 });
 </script>
 

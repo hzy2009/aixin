@@ -10,6 +10,8 @@ import industryDynamicsRoutes from '@/views/industryDynamics/routes';
 import rdDynamicRoutes from '@/views/rdDynamic/routes';
 import userCenterRoutes from '@/views/user_center/routes';
 import otherPageRoutes from '@/views/otherPage/routes';
+import secondTradeRoutes from '@/views/secondTrade/routes';
+
 const tongyongcaiji = () => import('@/views/otherPage/tongyongcaiji/index.vue');
 import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore';
@@ -26,6 +28,7 @@ const routes = [
       ...otherPageRoutes,
       ...industryDynamicsRoutes,
       ...rdDynamicRoutes,
+      ...secondTradeRoutes,
       {
         path: 'other/tongyongcaiji', 
         component: tongyongcaiji, 
