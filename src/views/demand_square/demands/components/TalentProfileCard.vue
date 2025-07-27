@@ -106,7 +106,7 @@ const maskPhone = (phone) => {
   if (/^\d{11}$/.test(phone)) {
     return phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
   }
-  // 其他格式（如座机）采用通用规则：保留前3后2
+  // 其他格式（如热线电话）采用通用规则：保留前3后2
   if (phone.length > 5) {
     return phone.substring(0, 3) + '****' + phone.substring(phone.length - 2);
   }
