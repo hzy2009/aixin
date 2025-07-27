@@ -6,7 +6,7 @@
     </main>
     <AppFooter />
      <FixedActionButtons
-      contact-phone-number="021-55698507"
+      contact-phone-number="4000118892"
     />
   </div>
 </template>

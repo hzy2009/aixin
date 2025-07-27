@@ -10,7 +10,7 @@ export const useModalStore = defineStore('modal', {
     successPromptConfig: {
       title: '操作成功',
       message: '您的操作已成功处理。',
-      contactInfo: { name: '陈靖玮', phone: '021-55698507', email: 'info-service@icshare.com' },
+      contactInfo: { name: '陈靖玮', phone: '4000118892', email: 'info-service@icshare.com' },
       buttonText: '确定',
       onActionCallback: null, // Function to call when action button is clicked
       onCloseCallback: null,  // Function to call when modal is closed (X or cancel)

@@ -32,7 +32,7 @@ import { ref } from 'vue';
 const props = defineProps({
   contactPhoneNumber: {
     type: String,
-    default: '021-55698507'
+    default: '4000118892'
   },
   // verticalOffsetFromBottom prop removed
 });
