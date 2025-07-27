@@ -64,7 +64,7 @@
                 <vxe-grid
                     class="user-demands-table"
                     ref="gridRef"
-                    :data="tableData"
+                    :data="localTableData || tableData"
                     :columns="vxeTableColumns"
                     :loading="isLoading"
                     resizable
@@ -122,7 +122,7 @@ const {
     url, filterConfigForPage, tableColumns, actions, otherParams,
     statusDictKey, userStatCardVisible, showBanner = false, pageTitle,
     tableOperations = [], dateRangeConfig = [], searchTitle, listPageisPadding = true,
-    userSearchTitle = true, requiredRoles = [], isUseFilterDelete, initialPageSize
+    userSearchTitle = true, requiredRoles = [], isUseFilterDelete, initialPageSize, localTableData
 } = props.pageData;
 
 const {

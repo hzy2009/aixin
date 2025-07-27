@@ -218,21 +218,15 @@ export const OEMPARTS_COLUMNS = [
     { type: 'checkbox', width: 40 },
     { title: '序号', type: 'seq', fixed: 'left', width: 50, align: 'center' },
     { title: '科号', field: 'partNumber', align: 'center' },
-    { title: '产品名称', field: 'productName', align: 'center', width: 100 },
-    { title: '产品类别', field: 'productCategory', align: 'center', width: 100 },
-    { title: '规格描述', field: 'specification', align: 'center', width: 100 },
-    { title: '适用设备型号', field: 'compatibleModels', align: 'center', width: 120 },
-    { title: '原厂', field: 'originalManufacturer', align: 'center', width: 120 },
-    { title: '生产日期', field: 'productionDate', align: 'center', width: 120, fieldType: 'date' },
-    { title: '产品状态', field: 'productStatus', align: 'center', width: 160 },
-    { title: '数量', field: 'quantity', align: 'center', width: 160 },
-    { title: '需求发布者', field: 'postedBy', align: 'center', width: 120 },
-    { title: '质保期', field: 'guaranteePeriod', align: 'center', width: 120 },
-    { title: '不含税价', field: 'priceExcludingTax', align: 'center', width: 120 },
-    { title: '税率', field: 'tax', align: 'center', width: 120 },
-    { title: '交付条件名称', field: 'paymentTermsName', align: 'center', width: 120 },
-    { title: '交易方式名称', field: 'tradeTypeName', align: 'center', width: 120 },
-    { title: '物流方式名称', field: 'shippingTypeName', align: 'center', width: 120 },
+    { title: '产品名称', field: 'productName', align: 'center' },
+    { title: '产品类别', field: 'productCategory', align: 'center' },
+    { title: '规格描述', field: 'specification', align: 'center', width: 90 },
+    { title: '适用设备型号', field: 'compatibleModels', align: 'center', width: 100 },
+    { title: '原厂', field: 'originalManufacturer', align: 'center', width: 100 },
+    { title: '生产日期', field: 'productionDate', align: 'center', width: 100, fieldType: 'date' },
+    { title: '产品状态', field: 'productStatus', align: 'center', width: 100 },
+    { title: '数量', field: 'quantity', align: 'center', width: 90 },
+    { title: '需求发布者', field: 'postedBy', align: 'center', width: 100 },
 ]
 
 export const STANDARD_COLUMNS = [
@@ -245,12 +239,6 @@ export const STANDARD_COLUMNS = [
     { title: '产品状态', field: 'productStatus', align: 'center', width: 160 },
     { title: '数量', field: 'quantity', align: 'center', width: 160 },
     { title: '需求发布者', field: 'postedBy', align: 'center', width: 120 },
-    { title: '质保期', field: 'guaranteePeriod', align: 'center', width: 120 },
-    { title: '不含税价', field: 'priceExcludingTax', align: 'center', width: 120 },
-    { title: '税率', field: 'tax', align: 'center', width: 120 },
-    { title: '交付条件名称', field: 'paymentTermsName', align: 'center', width: 120 },
-    { title: '交易方式名称', field: 'tradeTypeName', align: 'center', width: 120 },
-    { title: '物流方式名称', field: 'shippingTypeName', align: 'center', width: 120 },
 ]
 
 export const NOTSTANDARD_COLUMNS = [
@@ -263,12 +251,6 @@ export const NOTSTANDARD_COLUMNS = [
     { title: '产品状态', field: 'productStatus', align: 'center', width: 160 },
     { title: '数量', field: 'quantity', align: 'center', width: 160 },
     { title: '需求发布者', field: 'postedBy', align: 'center', width: 120 },
-    { title: '质保期', field: 'guaranteePeriod', align: 'center', width: 120 },
-    { title: '不含税价', field: 'priceExcludingTax', align: 'center', width: 120 },
-    { title: '税率', field: 'tax', align: 'center', width: 120 },
-    { title: '交付条件名称', field: 'paymentTermsName', align: 'center', width: 120 },
-    { title: '交易方式名称', field: 'tradeTypeName', align: 'center', width: 120 },
-    { title: '物流方式名称', field: 'shippingTypeName', align: 'center', width: 120 },
 ]
 
 export const USEDEQPTRADE_COLUMNS = [
@@ -283,12 +265,4 @@ export const USEDEQPTRADE_COLUMNS = [
     { title: '设备状态', field: 'productStatus', align: 'center', width: 160 },
     { title: '数量', field: 'quantity', align: 'center', width: 160 },
     { title: '需求发布者', field: 'postedBy', align: 'center', width: 120 },
-    { title: '质保期', field: 'guaranteePeriod', align: 'center', width: 120 },
-    { title: '不含税价', field: 'priceExcludingTax', align: 'center', width: 120 },
-    { title: '税率', field: 'tax', align: 'center', width: 120 },
-    { title: '付款条件名称', field: 'paymentTermsName', align: 'center', width: 120 },
-    { title: '交易方式名称', field: 'tradeTypeName', align: 'center', width: 120 },
-    { title: '物流方式名称', field: 'shippingTypeName', align: 'center', width: 120 },
-    { title: '使用时长', field: 'usageDuration', align: 'center', width: 120 },
-    { title: '是否有产品使用说明书', field: 'hasUserManual', align: 'center', width: 120 },
 ]
