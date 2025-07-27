@@ -207,7 +207,7 @@ watch(() => route.params.id, (newId, oldId) => {
   .event-banner-image-actual {
     width: 100%;
     height: 100%;
-    object-fit: cover; // Ensure image covers the area
+    // object-fit: cover; // Ensure image covers the area
   }
 }
 
