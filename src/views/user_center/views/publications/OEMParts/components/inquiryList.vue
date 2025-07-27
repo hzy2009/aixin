@@ -150,8 +150,8 @@ const handleTradeTypeChange = (value, record, options) => {
 const columns = [
     {
       type: 'expand',
-      width: 120,
-      title: '点击查看详情',
+      width: 86,
+      title: '查看详情',
       slots: {
         // 【关键修改】在渲染子组件时，通过 ref 函数将其存入我们的 ref 容器中
         content: ({ row: parentRecord }) => {
@@ -186,17 +186,17 @@ const columns = [
     {
       type: 'seq',
       title: '序号',
-      width: 60,
+      width: 58,
       align: 'center',
     },
     {
       title: '内部管理单号',
       field: 'materialCode',
-      width: 150,
     },
 	{
       title: '选定贸易商',
       field: 'winnerName',
+      width: 100,
       slots: {
         default: ({ row }) => {
             const { winnerName } = getRowState(row);
@@ -207,11 +207,12 @@ const columns = [
     {
       title: '状态',
       field: 'statusName',
-      width: 150,
+      width: 80,
     },
 	{
       title: '交易方式',
       field: 'tradeTypeCode',
+      width: 120,
 	  slots: {
         default: ({ row }) => {
             const { isWinnerSelected } = getRowState(row);
@@ -221,7 +222,7 @@ const columns = [
                 <a-select
                     v-model:value={row.tradeTypeCode}
                     style={{ width: '100%' }}
-                    placeholder="请选择交易方式"
+                    placeholder="请选择"
                     disabled={!isWinnerSelected}
                     options={options}
                     onChange={value => handleTradeTypeChange(value, row, options)}
@@ -233,7 +234,6 @@ const columns = [
 	{
       title: '操作',
       field: 'action',
-      width: 150,
 	  slots: {
         default: ({ row }) => {
             const { isWinnerSelected, isSecondRoundSelected } = getRowState(row);
@@ -247,7 +247,7 @@ const columns = [
                 buttonText = '进入第二轮报价';
                 actionType = 'start_second_round';
             }
-            if (props.isDetail) return <span>''</span>;
+            if (props.isDetail) return <span></span>;
             return (
                 row.isFinished === 1 ? <span>已完成</span> :
                 buttonText === '请先选择' ? <span>请先选择</span> :
