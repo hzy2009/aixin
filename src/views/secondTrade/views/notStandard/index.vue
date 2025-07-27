@@ -16,6 +16,7 @@ import { message } from 'ant-design-vue';
 import { maskMiddle } from '@/utils/index';
 import { useTodo } from '../hooks/useTodo.js'
 import { useModalStore } from '@/store/modalStore'; 
+import defHttp from '@/utils/http/axios'
 const modalStore = useModalStore();
 
 
@@ -39,13 +40,11 @@ const handleClick = () => {
 }
 
 const handleFinish = async (p) => {
-  const res = await handleSubmit({
-        url: `/apm/apmDeviceOrigin/newTodo/front`,
+    const res = await defHttp.post({
+        url: `/apm/apmDeviceUnstandard/newTodo`,
         params: p,
-        data: {
-            integers: ids.value
-        }
-    })
+        data: ids.value
+    });
     if (res.success) {
         phoneAndEmailModal.value.handleClose()
         const defaultConfig = {
