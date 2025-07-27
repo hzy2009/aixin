@@ -199,15 +199,15 @@ watch(() => route.params.id, (newId, oldId) => {
 
 .event-banner-full-width {
   width: 100%;
-  height: 300px; // Adjust banner height to match image ratio if possible
+  // height: 300px; // Adjust banner height to match image ratio if possible
   margin-bottom: @spacing-lg;
-  background-color: #e9ecef; // Placeholder color if image is missing
+  // background-color: #e9ecef; // Placeholder color if image is missing
   overflow: hidden; // No rounded corners
 
   .event-banner-image-actual {
     width: 100%;
-    height: 100%;
-    // object-fit: cover; // Ensure image covers the area
+    // height: 100%;
+    object-fit: cover; // Ensure image covers the area
   }
 }
 
