@@ -22,7 +22,7 @@
       <div class="meessage-container">
         <div class="success-message">{{ message }}</div>
         <div v-if="contactInfo" class="contact-info">
-            <div>联系方式：{{ contactInfo.phone }}</div>
+            <div>热线电话：{{ contactInfo.phone }}</div>
             <div>E-MAIL：{{ contactInfo.email }}</div>
         </div>
       </div>

@@ -32,7 +32,7 @@
 	const props = defineProps({
 		title: {
 			type: String,
-			default: '联系方式',
+			default: '热线电话',
 		},
 		actionText: {
 			type: String,
