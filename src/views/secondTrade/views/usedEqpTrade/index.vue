@@ -9,7 +9,7 @@ import { ref, reactive } from 'vue'; // onMounted removed as hook handles it
 import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
-import { OEMPARTS_COLUMNS } from '@/utils/const.jsx';
+import { USEDEQPTRADE_COLUMNS } from '@/utils/const.jsx';
 import { maskMiddle } from '@/utils/index';
 const router = useRouter();
 
@@ -19,7 +19,7 @@ const filterConfigForPage = reactive([
 
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = reactive([
-    ...OEMPARTS_COLUMNS
+    ...USEDEQPTRADE_COLUMNS
 ]);
 const actions = reactive([
     {
