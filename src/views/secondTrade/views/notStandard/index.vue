@@ -1,8 +1,8 @@
 <template>
     <div>
         <listPage :pageData="pageData" ref="refListPage"/>
+        <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" :title="modalTitle" :actionText="actionText"></PhoneAndEmailModal>
     </div>
-    <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" :title="modalTitle" :actionText="actionText"></PhoneAndEmailModal>
 </template>
 
 <script setup >
