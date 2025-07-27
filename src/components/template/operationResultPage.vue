@@ -81,7 +81,7 @@ const {
   title = '一键敲门成功',
   subtitle = '客服人员将在30分钟内与您联系',
     // E-MAIL: info-service@icshare.com
-  contactInfo = '联系电话：4000118892',
+  contactInfo = '热线电话：4000118892',
   emilt = 'E-MAIL: info-service@icshare.com',
   primaryActionText = '查看详情',
   primaryActionPayload,
