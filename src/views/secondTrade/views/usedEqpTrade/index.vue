@@ -1,56 +1,80 @@
 <template>
     <div>
-        <listPage :pageData="pageData" />
+        <listPage :pageData="pageData" ref="refListPage"/>
     </div>
+    <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" :title="modalTitle" :actionText="actionText"></PhoneAndEmailModal>
 </template>
 
-<script setup lang="jsx">// jsx for custom pagination render if kept
+<script setup >
 import { ref, reactive } from 'vue'; // onMounted removed as hook handles it
 import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 import { USEDEQPTRADE_COLUMNS } from '@/utils/const.jsx';
+import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
+import { message } from 'ant-design-vue';
 import { maskMiddle } from '@/utils/index';
-const router = useRouter();
+import { useTodo } from '../hooks/useTodo.js'
+import { useModalStore } from '@/store/modalStore'; 
+const modalStore = useModalStore();
 
-const filterConfigForPage = reactive([
-    // { id: 'statusCode', label: '寻源结果', maxVisibleWithoutMore: 7, dictKey: 'origin_substitute_sourcing_status' }
-]);
+
+const router = useRouter();
+const phoneAndEmailModal = ref();
+const refListPage = ref();
+const ids = ref([])
+const {modalTitle, actionText, handleSubmit} = useTodo()
 
 // --- Table Columns (remains in component as it's UI specific) ---
 const tableColumns = reactive([
     ...USEDEQPTRADE_COLUMNS
 ]);
-const actions = reactive([
-    {
-        text: '详情',
-        icon: FileTextOutlined,
-        clickFn: viewDetails,
-        // isVisible: (record) => record.statusCode !== '已完成' // Example condition
+const handleClick = () => {
+  const records = refListPage.value.getCheckboxRecords() || []
+	if (!records.length) {
+		return message.error('请先勾选数据')
+	}
+	ids.value = records.map(item => item.id)
+  phoneAndEmailModal.value.opneModal()
+}
+
+const handleFinish = async (p) => {
+  const res = await handleSubmit({
+        url: `/apm/apmDeviceOrigin/newTodo/front`,
+        params: p,
+        data: {
+            integers: ids.value
+        }
+    })
+    if (res.success) {
+        phoneAndEmailModal.value.handleClose()
+        const defaultConfig = {
+        title: '一键敲门成功',
+        message: '一键敲门后，客服人员将在30分钟内与您联系',
+        contactInfo: { name: '陈靖玮', phone: '4000118892', email: 'info-service@icshare.com' },
+        buttonText: '返回首页',
+        showButton: false,
+        onAction: null, // Default onAction is handled in store to go home
+        };
+        modalStore.showSuccessPrompt({ ...defaultConfig });
     }
-]);
+}
 const tableOperations = reactive([
     {
         title: '一键敲门',
-        clickFn: createNewSourcing,
+        clickFn: handleClick,
         type: 'primary'
     }
 ])
+
 const pageData = ref({
     url: {
         list: 'apm/apmDeviceSecondhand/list/front',
+        // overview: 'apm/apmSourcingOriginSubstitute/overview/front'
     },
     tableColumns,
     tableOperations,
-    actions,
     // requiredRoles: ['apm-vip', 'apm-vip-inspection', 'apm-register'],
 })
 
-
-function viewDetails({ id }) {
-    router.push(`/demands/OEMPartsDetailPage/${id}`);
-};
-function createNewSourcing() {
-    router.push(`/user/published/OEMPartsSourcing/create`);
-};
 </script>

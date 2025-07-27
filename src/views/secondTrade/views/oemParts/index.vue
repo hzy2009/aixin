@@ -15,6 +15,8 @@ import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
 import { message } from 'ant-design-vue';
 import { maskMiddle } from '@/utils/index';
 import { useTodo } from '../hooks/useTodo.js'
+import { useModalStore } from '@/store/modalStore'; 
+const modalStore = useModalStore();
 
 
 const router = useRouter();
@@ -36,14 +38,26 @@ const handleClick = () => {
   phoneAndEmailModal.value.opneModal()
 }
 
-const handleFinish = (p) => {
-		handleSubmit({
-			url: `/apm/apmDeviceOrigin/newTodo/front`,
-			params: p,
-			data: {
-				integers: ids.value
-			}
-		})
+const handleFinish = async (p) => {
+  const res = await handleSubmit({
+        url: `/apm/apmDeviceOrigin/newTodo/front`,
+        params: p,
+        data: {
+            integers: ids.value
+        }
+    })
+    if (res.success) {
+        phoneAndEmailModal.value.handleClose()
+        const defaultConfig = {
+        title: '一键敲门成功',
+        message: '一键敲门后，客服人员将在30分钟内与您联系',
+        contactInfo: { name: '陈靖玮', phone: '4000118892', email: 'info-service@icshare.com' },
+        buttonText: '返回首页',
+        showButton: false,
+        onAction: null, // Default onAction is handled in store to go home
+        };
+        modalStore.showSuccessPrompt({ ...defaultConfig });
+    }
 }
 const tableOperations = reactive([
     {
