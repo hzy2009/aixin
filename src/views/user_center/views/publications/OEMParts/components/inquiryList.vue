@@ -207,12 +207,12 @@ const columns = [
     {
       title: '状态',
       field: 'statusName',
-      width: 80,
+      width: 100,
     },
 	{
       title: '交易方式',
       field: 'tradeTypeCode',
-      width: 120,
+      width: 150,
 	  slots: {
         default: ({ row }) => {
             const { isWinnerSelected } = getRowState(row);
@@ -234,6 +234,7 @@ const columns = [
 	{
       title: '操作',
       field: 'action',
+      width: 130,
 	  slots: {
         default: ({ row }) => {
             const { isWinnerSelected, isSecondRoundSelected } = getRowState(row);
@@ -262,7 +263,10 @@ const columns = [
         }
       }
     },
-];
+].filter(item => {
+    if (item.field == 'action' && props.isDetail) return false;
+    return true
+});
 
 // 【重大修改】重写 save 函数，以获取子组件的最新数据
 const save = async (record, actionType) => {
