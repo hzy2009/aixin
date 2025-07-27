@@ -7,10 +7,10 @@ export function useTodo (config) {
     const modalTitle =  ref('填写信息获取交易信息');
     const actionText =  ref('联系平台获取最新进展');
 
-    const handleSubmit = async (url, data) => {
+    const handleSubmit = async ({url, data, params}) => {
         loading.value = true;
         try {
-            const res = await defHttp.post({url, data});
+            const res = await defHttp.post({url, data, params});
             if (res.success) {
                 message.success(res.message);
             } else {
