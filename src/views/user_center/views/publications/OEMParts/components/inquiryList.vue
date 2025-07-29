@@ -207,7 +207,7 @@ const columns = [
     {
       title: '状态',
       field: 'statusName',
-      width: 100,
+      width: 110,
     },
 	{
       title: '交易方式',
