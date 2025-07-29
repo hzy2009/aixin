@@ -26,7 +26,11 @@
 
           <!-- 4. Meta Info (Stacked) -->
           <div class="event-meta-stacked">
-              <div class="meta-item-row">
+            <div class="meta-item-row">
+              <span class="meta-label">爱芯享活动单号：</span>
+              <span class="meta-value">{{ eventDetail.code || ''}}</span>
+            </div>
+            <div class="meta-item-row">
               <span class="meta-label">需求提出方：</span>
               <span class="meta-value">{{ maskMiddle(eventDetail.createBy)|| '' }}</span>
             </div>
