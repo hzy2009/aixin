@@ -27,7 +27,9 @@
 import { Card as ACard, Tag as ATag } from 'ant-design-vue';
 import { CalendarOutlined } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
-import defaultEventBannerPlaceholder from '@/assets/images/home/offline.png'; // 确保你有一个占位图
+import placeholder1 from '@/assets/images/offline/点对点对接会.jpg'; // Ensure this placeholder exists
+import placeholder2 from '@/assets/images/offline/供需对接会.jpg'; // Ensure this placeholder exists
+import placeholder3 from '@/assets/images/offline/技术对接会.jpg'; // Ensure this placeholder exists
 import { getFileAccessHttpUrl } from '@/utils/index';
 
 const props = defineProps({
@@ -40,8 +42,12 @@ const props = defineProps({
 });
 const emit = defineEmits(['handleDetails']);
 const router = useRouter();
-const defaultEventBanner = defaultEventBannerPlaceholder;
-
+const defaultBanner = placeholder1;
+const defaultBannerMap = {
+  'activity_type_2': placeholder1,
+  'activity_type_1': placeholder2,
+  'activity_type_3': placeholder3
+}
 const viewEventDetails = (payLoad) => {
   // 阻止事件冒泡，以防父级 card 的 click 事件也触发（如果 action 本身也是可点击区域）
   // event.stopPropagation(); // 在这里不需要，因为 action 的 click 事件会处理导航
@@ -51,11 +57,12 @@ const viewEventDetails = (payLoad) => {
   emit('handleDetails', payLoad);
 
 };
-const getImgUrl = (url) => {
+const getImgUrl = (url, pageData) => {
   if (url) {
     return getFileAccessHttpUrl(url);
   } else {
-    return defaultThumbnail;
+    let img = defaultBannerMap[pageData.activityTypeCode] || defaultBanner;
+    return img;
   }
 }
 </script>
