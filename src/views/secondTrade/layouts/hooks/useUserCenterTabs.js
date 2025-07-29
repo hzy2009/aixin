@@ -18,7 +18,7 @@ const defaultTabsConfig = {
   },
   notStandard: {
     key: 'notStandard',
-    label: '非标准件库存处理',
+    label: '非标件库存处理',
     defaultSubTabKey: 'notStandard', // 第一个子页签作为默认
     path: '/secondTrade/notStandard',
   },
