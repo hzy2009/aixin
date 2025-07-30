@@ -61,7 +61,7 @@
 										<div style="margin-top: 8px">上传</div>
 									</div>
 								</a-upload>
-								<img v-else :src="getImgUrl(formModel[item.field])" :alt="formModel[item.field]" alt=""
+								<img v-else :src="getImgUrl(formModel[item.field], item.defaultImgFn)" :alt="formModel[item.field]" alt=""
 									class="info-grid-image">
 							</span>
 							<div class="info-grid-value" v-else-if="item.fieldType === 'slot'" width="100%">
@@ -295,7 +295,7 @@ const handleToList = () => {
 	isCreating.value = true;
 	router.push({ path: listPath });
 };
-const getImgUrl = (url) => url ? getFileAccessHttpUrl(url) : defaultImg;
+const getImgUrl = (url, defaultImgFn) => url ? getFileAccessHttpUrl(url) : defaultImgFn ? defaultImgFn(formModel.value) : defaultImg;
 const handleActionNoteClick = (actionNote) => { if (actionNote.fn) actionNote.fn(demandDetailData); };
 const showProgressList = computed(() => {
 	if (showLogList) {

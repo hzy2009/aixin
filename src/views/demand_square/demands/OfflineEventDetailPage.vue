@@ -17,7 +17,7 @@
 
           <!-- 2. Event Banner -->
           <div class="event-banner-full-width">
-            <img :src="getImgUrl(eventDetail.imageUrl)" :alt="eventDetail.title"
+            <img :src="getImgUrl(eventDetail.imageUrl, eventDetail)" :alt="eventDetail.title"
               class="event-banner-image-actual" />
           </div>
 
@@ -26,7 +26,11 @@
 
           <!-- 4. Meta Info (Stacked) -->
           <div class="event-meta-stacked">
-              <div class="meta-item-row">
+            <div class="meta-item-row">
+              <span class="meta-label">爱芯享活动单号：</span>
+              <span class="meta-value">{{ eventDetail.code || ''}}</span>
+            </div>
+            <div class="meta-item-row">
               <span class="meta-label">需求提出方：</span>
               <span class="meta-value">{{ maskMiddle(eventDetail.createBy)|| '' }}</span>
             </div>
@@ -96,7 +100,9 @@ import { useRoute, useRouter } from 'vue-router';
 import { Button as AButton, Spin as ASpin, Empty as AEmpty, message } from 'ant-design-vue';
 import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue'; // Adjust path if needed
 import OfflineEventSidebar from './components/OfflineEventSidebar.vue'; // Adjust path if needed
-import defaultEventBannerPlaceholder from '@/assets/images/home/offline.png'; // Ensure this placeholder exists
+import placeholder1 from '@/assets/images/offline/点对点对接会.jpg'; // Ensure this placeholder exists
+import placeholder2 from '@/assets/images/offline/供需对接会.jpg'; // Ensure this placeholder exists
+import placeholder3 from '@/assets/images/offline/技术对接会.jpg'; // Ensure this placeholder exists
 import operationResultPage from '@/components/template/operationResultPage.vue';
 import defHttp from '@/utils/http/axios'
 import { useAuthStore } from '@/store/authStore';
@@ -106,8 +112,12 @@ const authStore = useAuthStore();
 
 const route = useRoute();
 const router = useRouter();
-const defaultBanner = defaultEventBannerPlaceholder;
-
+const defaultBanner = placeholder1;
+const defaultBannerMap = {
+  'activity_type_2': placeholder1,
+  'activity_type_1': placeholder2,
+  'activity_type_3': placeholder3
+}
 const eventDetail = ref(null);
 const isLoadingEvent = ref(true);
 const relatedEvents = ref([]);
@@ -167,11 +177,12 @@ const handleToDetail = () => {
 const handleToList = () => {
   router.push({ path: '/demands/OfflineEvent' });
 }
-const getImgUrl = (url) => {
+const getImgUrl = (url, pageData) => {
   if (url) {
     return getFileAccessHttpUrl(url);
   } else {
-    return defaultBanner;
+    let img = defaultBannerMap[pageData.activityTypeCode] || defaultBanner;
+    return img;
   }
 }
 onMounted(() => {

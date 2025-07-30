@@ -25,7 +25,7 @@ const userCenterRoutes = [
       {
         path: 'notStandard',
         component: notStandard,
-        meta: { title: '非标准件库存处理', breadcrumb: ['非标准件库存处理'] }
+        meta: { title: '非标件库存处理', breadcrumb: ['非标件库存处理'] }
       },
       {
         path: 'usedEqpTrade',

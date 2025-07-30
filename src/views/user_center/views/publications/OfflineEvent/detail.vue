@@ -10,7 +10,14 @@ import { useRouter } from 'vue-router';
 import detail from '@/components/template/detail.vue';
 import { useAuthStore } from '@/store/authStore';
 import { BUSINESS_REF_LIST, REGISTER_LIST, STATUS_HISTORY_COLUMNS} from '@/utils/const.jsx';
-
+import placeholder1 from '@/assets/images/offline/点对点对接会.jpg'; // Ensure this placeholder exists
+import placeholder2 from '@/assets/images/offline/供需对接会.jpg'; // Ensure this placeholder exists
+import placeholder3 from '@/assets/images/offline/技术对接会.jpg'; // Ensure this placeholder exists
+const defaultBannerMap = {
+  'activity_type_2': placeholder1,
+  'activity_type_1': placeholder2,
+  'activity_type_3': placeholder3
+}
 const props = defineProps({
   IdProp: { type: String, default: null },
 });
@@ -27,7 +34,10 @@ const formConfigs = [
   { label: '活动开始日期', field: 'activityDate', span: 24, fieldType: 'date' },
   { label: '活动结束日期', field: 'activityEndDate', span: 24, fieldType: 'date' },
   { label: '内部管理单号', field: 'internalCode', fieldType: 'input', span: 24, },
-  { label: '封面图片', field: 'imageUrl', fieldType: 'imageUpload', span: 24 },
+  { label: '封面图片', field: 'imageUrl', fieldType: 'imageUpload', span: 24, defaultImgFn: (data) => {
+      let img = defaultBannerMap[data.activityTypeCode] || placeholder1;
+      return img;
+  }},
 ]
 
 const pageTitle = '线下活动详情'
