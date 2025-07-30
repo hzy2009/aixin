@@ -32,49 +32,19 @@
           </div>
         </div>
       </div>
-      <!-- <div v-if="isLoading && members.length === 0" class="loading-placeholder">
-        <a-spin size="large" />
-      </div>
-      <div v-else-if="members.length > 0" class="members-logo-grid">
-        <div
-          v-for="(member, index) in members"
-          :key="member.id || `member-${index}`"
-          class="member-logo-item-wrapper"
-        >
-          <a :href="member.companyUrl || '#'" target="_blank" rel="noopener noreferrer" class="logo-link">
-            <img
-              :src="member.companyLogo ? getFileAccessHttpUrl(member.companyLogo) : defaultFallbackLogo"
-              :alt="member.companyName || '通用件集采'"
-              class="member-logo-image"
-              @error="handleImageError"
-            />
-          </a>
-        </div>
-      </div>
-      <div v-else class="empty-placeholder">
-        <a-empty description="暂无通用件集采信息" />
-      </div> -->
-       <!-- Optional: Pagination if pageSize is not 999 -->
-       <!-- <div v-if="!isLoading && totalMembers > pageSize" class="pagination-container">
-        <a-pagination
-          v-model:current="currentPage"
-          :total="totalMembers"
-          :page-size="pageSize"
-          @change="handlePageChange"
-          show-less-items
-        />
-      </div> -->
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import { Spin as ASpin, Empty as AEmpty, Pagination as APagination, message } from 'ant-design-vue';
 import defHttp from '@/utils/http/axios'; // Your Axios instance
 import { getFileAccessHttpUrl } from '@/utils/index'; // Your utility for image URLs
 import defaultFallbackLogo from '@/assets/images/home/dosilicon-logo.png'; // Fallback logo
-
+import { useAuthStore } from '@/store/authStore';
+import { useModalStore } from '@/store/modalStore'; 
+const modalStore = useModalStore();
+const authStore = useAuthStore();
 const members = ref([]);
 const isLoading = ref(false);
 // For pagination, if not fetching all at once
@@ -125,8 +95,18 @@ const handleImageError = (event) => {
     event.target.src = defaultFallbackLogo;
 };
 const handlePurchaseClick = (partnerKey) => {
-  let uri = partnerKey === 'aian' ? 'https://www.ant-fa.com' : 'https://b.jd.com/';
-  window.open(uri, '_blank');
+  if (authStore.isLogin) {
+    let url = partnerKey === 'aian' ? '/apm/jicai/redirectToAtEdiJson' : '/apm/jicai/redirectToJdJson ';
+    defHttp.get({ url }).then((res) => {
+      if(res.success){
+          window.open(res.result, '_blank');
+        } else {
+          message.error(res.message);
+        }
+    });
+  } else {
+    modalStore.showLogin();
+  }
 }
 
 

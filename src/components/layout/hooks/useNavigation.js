@@ -1,5 +1,8 @@
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
+import { useAuthStore } from '@/store/authStore';
+import { useModalStore } from '@/store/modalStore'; 
+import defHttp from '@/utils/http/axios'; // Your Axios instance
 
 /**
  * @typedef {Object} NavItem
@@ -71,8 +74,12 @@ export function useNavigation() {
         '/other/tongyongcaiji',
       ],
       subItems: [
-        { key: 'aiante', label: '爱安特', path: 'https://www.ant-fa.com', fn:() => window.open('https://www.ant-fa.com', '_blank') },
-        { key: 'jingdongqiyegou', label: '京东工业', path: 'https://b.jd.com', fn: () => window.open('https://b.jd.com', '_blank') },
+        { key: 'aiante', label: '爱安特', path: 'https://www.ant-fa.com', fn:() => {
+          handlePurchaseClick('aian');
+        }},
+        { key: 'jingdongqiyegou', label: '京东工业', path: 'https://b.jd.com', fn: () =>  {
+          handlePurchaseClick('jd');
+        }},
       ]
     },
     { 
@@ -205,6 +212,22 @@ export function useNavigation() {
       ([key, value]) => route.query[key] === value
     );
   };
+  const handlePurchaseClick = (partnerKey) => {
+    const authStore = useAuthStore();
+    if (authStore.isLogin) {
+      let url = partnerKey === 'aian' ? '/apm/jicai/redirectToAtEdiJson' : '/apm/jicai/redirectToJdJson ';
+      defHttp.get({ url }).then((res) => {
+        if(res.success){
+          window.open(res.result, '_blank');
+        } else {
+          message.error(res.message);
+        }
+      });
+    } else {
+      const modalStore = useModalStore(); 
+      modalStore.showLogin();
+    }
+  }
 
   return {
     navigationItems,
