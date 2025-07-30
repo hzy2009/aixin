@@ -5,7 +5,7 @@ import { message } from 'ant-design-vue';
 export function useTodo (config) {
     const loading = ref(false);
     const modalTitle =  ref('填写信息获取交易信息');
-    const actionText =  ref('联系平台获取最新进展');
+    const actionText =  ref('联系平台获取交易信息');
 
     const handleSubmit = async ({url, data, params}) => {
         loading.value = true;
