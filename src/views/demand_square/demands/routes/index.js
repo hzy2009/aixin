@@ -101,7 +101,7 @@ export default [{
       path: 'TalentDetailPage/:id',
       component: TalentDetailPage,
       props: route => ({ IdProp: route.params.id}),
-      meta: { title: '专家人才详情', breadcrumb: ['专家人才详情'] } // Appends to base
+      meta: { title: '专家人才详情', breadcrumb: ['专家人才详情'], roles: ['apm-vip', 'apm-vip-inspection', 'apm-register', 'apm-register-expert'] } // Appends to base
     },
   ]
 }];
