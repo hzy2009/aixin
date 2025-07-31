@@ -29,7 +29,7 @@
             <div class="article-body-content rich-text-format" v-html="formModel.content">
             </div>
             <div class="article-action-bar">
-              <a-button type="primary" danger @click="handleDefaultSubmit" class="action-button submit-button">联系平台获取专家信息</a-button>
+              <a-button type="primary" danger @click="handleDefaultSubmit" class="action-button submit-button">联系平台获取研发信息</a-button>
               <p class="action-submit-note">一键敲门后，客服人员将在<span class="text">30分钟内</span>与您联系</p>
             </div>
             <div class="article-navigation-links">
