@@ -34,10 +34,6 @@ const tableColumns = reactive([
   { title: '操作', width: '150px', align: 'center', fixed: 'right', key: 'actions' },
 ]);
 
-const addButton = reactive({
-    text: '创建原厂件寻源',
-    clickFn: createNewSourcing
-})
 
 const actions = reactive([
     {
@@ -66,7 +62,6 @@ const pageData = ref({
     },
     filterConfigForPage,
     tableColumns,
-    addButton,
     actions,
     searchTitle: '原厂件寻源',
     statusDictKey: 'origin_sourcing_material_status',
@@ -103,7 +98,7 @@ const pageData = ref({
         label: '期望完成日期',
         }
     ],
-    requiredRoles: ['apm-vip', 'apm-vip-inspection', 'apm-register'],
+    requiredRoles: ['apm-vip', 'apm-vip-inspection'],
 })
 
 

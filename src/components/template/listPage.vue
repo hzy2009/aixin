@@ -228,7 +228,7 @@ const handleCheckboxChange = ({ records }) => {
 
 const operationsClick = (btn) => {
     if (authStore?.token) {
-        if (!hasPermission(props.requiredRoles)) {
+        if (!hasPermission(requiredRoles)) {
             return message.error('抱歉，您没有权限执行此操作');
         }
         if (btn.btnType == 'exportXls') {
