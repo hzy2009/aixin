@@ -16,7 +16,8 @@
             </div>
           </p>
           <div class="report-item-footer">
-            <span class="report-item-price"><span class="currency-symbol">¥</span> {{ report.unitPrice }}</span>
+            <!-- <span class="report-item-price"><span class="currency-symbol">¥</span> {{ report.unitPrice }}</span> -->
+            <span class="report-item-price"><span class="currency-symbol">¥</span> ***</span>
             <ArrowRightOutlined class="arrow-icon" />
           </div>
         </div>
