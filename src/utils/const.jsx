@@ -191,8 +191,8 @@ const getALLProductTypes = () => {
 export const VERIFICATION_COLUMNS = [
     { title: '序号', type: 'seq', fixed: 'left', width: 50, align: 'center' },
     { title: '爱芯享检测验证单号', field: 'code', align: 'center', width: 150 },
-    { title: '检测验证类别', field: 'projectType', align: 'center', fieldType: 'select', width: 94, dictKey: 'project_type' },
-    { title: '产品类别1', field: 'productMainTypeCode', align: 'center', fieldType: 'select', width: 76, dictKey: 'product_main_type' },
+    { title: '检测验证类别', field: 'projectName', align: 'center', width: 94 },
+    { title: '产品类别1', field: 'productMainTypeName', align: 'center', width: 76 },
     {
         title: '产品类别2', field: 'productTypeName', align: 'center', width: 76,
         // formatter: ({row}) => {
