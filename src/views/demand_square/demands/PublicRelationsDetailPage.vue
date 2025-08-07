@@ -5,7 +5,11 @@
   </div>
   <ContentWithSidebarLayout>
     <template #main>
-      <detail :pageData="pageData" @goBack="goBack" class="detail-view-page" ref="detailRef"></detail>
+      <detail :pageData="pageData" @goBack="goBack" class="detail-view-page" ref="detailRef">
+        <template #productType="{ dataSource }">
+          <div><span>{{ dataSource.productMainTypeName }}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ dataSource.productTypeName }}</span></div>
+        </template>
+      </detail>
     </template>
     <template #sidebar>
       <PublicRelationsSidebar :code="detailRef?.detailData?.code"/>
@@ -36,8 +40,11 @@ const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
   { label: '爱芯享研发攻关单号', field: 'code', span: 24 },
+  // {
+  //   label: '研发攻关类型', field: 'rdType', dictKey: 'rd_type', span: 24,
+  // },
   {
-    label: '研发攻关类型', field: 'rdType', dictKey: 'rd_type', span: 24,
+    label: '产品类别', field: 'productType', fieldType: 'slot', span: 24,
   },
   { label: '需求创建日期', field: 'createTime', fieldType: 'date', span: 24},
   { label: '期望完成日期', field: 'expireDate', fieldType: 'date', span: 24 },

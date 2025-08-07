@@ -24,11 +24,14 @@ const router = useRouter();
 // --- 表单配置 ---
 const formConfigs = [
   { label: '需求提出方', field: 'createBy', fieldType: 'input', span: 24, disabled: true, },
+  // {
+  //   label: '研发攻关类型', field: 'rdCode', fieldType: 'select', detailField: 'rdType', dictKey: 'rd_type', span: 24,
+  //   onChange: ({ value, form, option }) => {
+  //     form.rdType = option.label || '';
+  //   }
+  // },
   {
-    label: '研发攻关类型', field: 'rdCode', fieldType: 'select', detailField: 'rdType', dictKey: 'rd_type', span: 24,
-    onChange: ({ value, form, option }) => {
-      form.rdType = option.label || '';
-    }
+    label: '产品类别', field: 'productType', fieldType: 'erjisb', span: 24,
   },
   { label: '需求创建日期', field: 'createTime', fieldType: 'date', span: 24},
   { label: '期望完成日期', field: 'expireDate', fieldType: 'date', span: 24 },

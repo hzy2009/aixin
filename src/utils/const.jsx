@@ -173,7 +173,9 @@ export const OFFLINE_EVENT_COLUMNS = [
 export const PUBLIC_RELATIONS_COLUMNS = [
     { title: '序号', type: 'seq', fixed: 'left', width: 50, align: 'center' },
     { title: '爱芯享研发攻关单号', field: 'code', align: 'center' },
-    { title: '研发攻关类型', field: 'rdType', align: 'center', width: 120 },
+    // { title: '研发攻关类型', field: 'rdType', align: 'center', width: 120 },
+    { title: '产品类别1', field: 'productMainTypeName', align: 'center', width: 76 },
+    { title: '产品类别2', field: 'productTypeName', align: 'center', width: 76, },
     { title: '需求创建日期', field: 'createTime', align: 'center', fieldType: 'date', width: 100 },
     { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date', width: 100 },
     { title: '内部管理单号', field: 'internalCode', align: 'center', width: 94 },
