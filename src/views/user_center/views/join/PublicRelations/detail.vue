@@ -1,6 +1,10 @@
 <template>
   <div>
-    <detail :pageData="pageData" @goBack="goBack"></detail>
+    <detail :pageData="pageData" @goBack="goBack">
+       <template #productType="{ dataSource }">
+        <div><span>{{ dataSource.productMainTypeName }}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ dataSource.productTypeName }}</span></div>
+      </template>
+    </detail>
   </div>
 </template>
 
@@ -23,8 +27,11 @@ const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
   { label: '爱芯享研发攻关单号', field: 'code', span: 24},
+  // {
+  //   label: '研发攻关类型', field: 'rdCode', dictKey: 'rd_type', span: 24, fieldType: 'select',
+  // },
   {
-    label: '研发攻关类型', field: 'rdCode', dictKey: 'rd_type', span: 24, fieldType: 'select',
+    label: '产品类别', field: 'productType', fieldType: 'slot', span: 24,
   },
   { label: '需求创建日期', field: 'createTime', fieldType: 'date', span: 24},
   { label: '期望完成日期', field: 'expireDate', fieldType: 'date', span: 24 },
