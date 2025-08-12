@@ -9,6 +9,7 @@ import { ref, computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import edit from '@/components/template/edit.vue';
 import { useAuthStore } from '@/store/authStore';
+import dayjs from 'dayjs';
 
 const authStore = useAuthStore();
 
@@ -72,6 +73,9 @@ const pageData = reactive({
   pageTitle,
   detailPath: '/user/published/PublicRelations/detail',
   listPath: '/user/published/PublicRelations',
+  otherParams: {
+    createTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+  }
 })
 
 const goBack = () => {
