@@ -1,8 +1,8 @@
 <template>
   <div>
     <detail :pageData="pageData" @goBack="goBack">
-      <template #productType="{ dataSource }">
-        <div v-if='dataSource.statusCode !== "submit"'><span>{{ dataSource.productMainTypeName }}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ dataSource.productTypeName }}</span></div>
+      <template #productType="{ dataSource,isView }">
+        <div v-if='dataSource.statusCode !== "submit" || isView'><span>{{ dataSource.productMainTypeName }}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ dataSource.productTypeName }}</span></div>
         <div v-else>
          <a-select v-model:value="dataSource['productMainTypeCode']" :placeholder="`请选择`" 
             style="width: 185px; margin-right: 16px"

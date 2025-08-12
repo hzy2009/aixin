@@ -20,14 +20,14 @@
 							:style="{ gridColumn: item.span ? `span ${item.span}` : 'span 1' }">
 							<span class="info-grid-label">{{ item.label }}：</span>
 							<span class="info-grid-value" v-if="item.fieldType === 'input'">
-								<a-input v-if="formModel.statusCode == 'submit' && canSubmit" style="width: 386px;"
+								<a-input v-if="isSubmit && canSubmit && !isView" style="width: 386px;"
 									v-model:value="formModel[item.field]" :placeholder="item.placeholder || `请输入${item.label}`"
 									:disabled="item.disabled" allow-clear />
 								<span v-else>{{ formModel[item.field] }}</span>
 							</span>
 							<span class="info-grid-value"
 								v-else-if="item.fieldType === 'select' && (item.options || selectOptions(item.dictKey))">
-								<a-select v-if="formModel.statusCode == 'submit' && canSubmit" v-model:value="formModel[item.field]"
+								<a-select v-if="isSubmit && canSubmit && !isView" v-model:value="formModel[item.field]"
 									style="width: 386px;" :placeholder="item.placeholder || `请选择${item.label}`"
 									:options="item.options || selectOptions(item.dictKey)" :mode="item.selectMode"
 									:filter-option="item.remoteSearch ? false : filterOption" :loading="item.loading"
@@ -37,20 +37,20 @@
 								</span>
 							</span>
 							<span class="info-grid-value" v-else-if="item.fieldType === 'date'">
-								<a-date-picker v-if="formModel.statusCode == 'submit' && canSubmit"
+								<a-date-picker v-if="isSubmit && canSubmit && !isView"
 									v-model:value="formModel[item.field]" :placeholder="item.placeholder || `请选择${item.label}`"
 									:disabled-date="disabledDate" :value-format="item.valueFormat || 'YYYY-MM-DD HH:mm:ss'"
 									:show-time="item.showTime" style="width: 386px" :disabled="item.disabled" />
 								<span v-else>{{ getDataDisplayValue(formModel[item.field]) }}</span>
 							</span>
 							<span class="info-grid-value" v-else-if="item.fieldType === 'textarea'">
-								<a-textarea v-if="formModel.statusCode == 'submit' && canSubmit" v-model:value="formModel[item.field]"
+								<a-textarea v-if="isSubmit && canSubmit && !isView" v-model:value="formModel[item.field]"
 									style="width: 386px" :placeholder="item.placeholder || `请输入${item.label}`" :rows="item.rows || 4"
 									:disabled="item.disabled" allow-clear :maxlength="item.maxLength" show-count />
 								<pre v-else>{{ formModel[item.field] }}</pre>
 							</span>
 							<span class="info-grid-value" v-else-if="item.fieldType === 'imageUpload'">
-								<a-upload v-if="formModel.statusCode == 'submit' && canSubmit" v-model:file-list="formModel[item.field]"
+								<a-upload v-if="isSubmit && canSubmit && !isView" v-model:file-list="formModel[item.field]"
 									:name="item.uploadName || 'file'" list-type="picture-card" class="custom-image-uploader"
 									:show-upload-list="item.showUploadList !== undefined ? item.showUploadList : true" :action="uploadUrl"
 									:before-upload="item.beforeUpload || beforeUpload" accept="image/*" :headers="getHeaders()"
@@ -65,7 +65,7 @@
 									class="info-grid-image">
 							</span>
 							<div class="info-grid-value" v-else-if="item.fieldType === 'slot'" width="100%">
-								<slot :name="item.field" :dataSource="formModel"></slot>
+								<slot :name="item.field" :dataSource="formModel" :isView="isView"></slot>
 							</div>
 							<!-- <span v-else class="info-grid-value">{{ item.field == 'createBy' ? maskMiddle(formModel[item.field]) : formModel[item.field] }}</span> -->
 							<span v-else class="info-grid-value">{{ item.isMask ? maskMiddle(formModel[item.field]) : formModel[item.field] }}</span>
@@ -105,12 +105,16 @@
 					<div class="page-actions-footer">
 						<a-button @click="handleDefaultCancel" class="action-button cancel-button" v-if="isUseBack">返回</a-button>
 						<a-button @click="handleDefaultdelete" class="action-button cancel-button"
-							v-if="formModel.statusCode === 'submit' && isUseDelete">删除</a-button>
+							v-if="isSubmit && isUseDelete">删除</a-button>
 						<a-button v-for="(item, i) in actionNotesList" :key="i" class="action-button cancel-button"
 							@click="handleActionNoteClick(item)" :type="item.type">{{ item.title }}</a-button>
+						<a-button type="primary" danger @click="handleToEdit"
+							v-if='isSubmit && canSubmit && isView && actionNotes.length == 0' class="action-button submit-button">{{
+								'修改单据'
+							}}</a-button>
 						<a-button type="primary" danger @click="handleDefaultSubmit"
-							v-if='formModel.statusCode === "submit" && canSubmit && actionNotes.length == 0' class="action-button submit-button">{{
-								formModel.statusCode === "submit" ? actionNote == '一键敲门' ? '修改单据' : actionNote : actionNote
+							v-else-if='isSubmit && canSubmit && !isView && actionNotes.length == 0' class="action-button submit-button">{{
+								isSubmit ? '一键敲门' : actionNote
 							}}</a-button>
 					</div>
 				</slot>
@@ -169,6 +173,9 @@ const actionNotesList = computed(() => {
 	})
 	return btns
 })
+const isSubmit = computed(() => {
+	return formModel.value.statusCode === 'submit'
+})
 
 const uploadUrl = `${import.meta.env.VITE_GLOB_UPLOAD_URL}sys/common/upload` || '/api';
 const getHeaders = () => {
@@ -181,7 +188,7 @@ const previewVisible = ref(false);
 const previewImage = ref('');
 const previewTitle = ref('');
 const isSubmitting = ref(false); // 用于提交按钮的 loading 状态
-
+const isView = ref(true);
 const baseFormConfigs = ref(formConfigs);
 const emit = defineEmits(['goBack', 'cancel', 'submit']);
 const handleformConfigsAfter = (data) => {
@@ -284,6 +291,7 @@ const handleDefaultdelete = async () => {
 const goBack = () => { emit('goBack'); };
 const handleDefaultSubmit = () => {
 	// window.scrollTo({ top: 0, behavior: 'smooth' });
+	isView.value = true;
 	if (submitTpe === 'fn') {
 		handleSubmitForm()
 	} else {
@@ -388,6 +396,10 @@ const disabledDate = (current) => {
 const filterOption = (input, option) => {
 	return option.label && option.label.toLowerCase().includes(input.toLowerCase());
 };
+
+const handleToEdit = () => {
+	isView.value = false;
+}
 
 const getAllData = () => {
 	const paranms = JSON.parse(JSON.stringify(formModel.value || {}));
