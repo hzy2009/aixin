@@ -101,15 +101,19 @@ const handleCardClick = () => {
     border-color: fade(@primary-color, 50%); // Lighter red border on hover
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     transform: translateY(-2px);
+    .card-image-section{
+      border-color: fade(@primary-color, 50%); // Lighter red border on hover
+    }
   }
 }
 
 .card-image-section {
   width: 100%;
+  border-bottom: 1px solid #fff;
 
   .equipment-image-asset {
-    width: 100%; // Image has padding around it
-    height: 100%;
+    width: 280px; // Image has padding around it
+    height: 280px;
     object-fit: contain; // Image is fully visible, not cropped
   }
   .image-placeholder-bg {

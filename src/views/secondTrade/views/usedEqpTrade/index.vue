@@ -38,8 +38,8 @@ const sortOptions = [
 const onSortChange = (newSort) => {
     console.log('排序改变:', newSort);
     // TODO: 调用 refListPage.value 的方法，传入新的排序参数并重新加载列表
-    refListPage.value.setQueryParams({ sortKey: newSort.key, sortOrder: newSort.order });
-    refListPage.value.reload();
+    // refListPage.value.setQueryParams({ sortKey: newSort.key, sortOrder: newSort.order });
+    // refListPage.value.reload();
 };
 
 const fieldList = [
@@ -47,7 +47,25 @@ const fieldList = [
     { key: 'compatibleModels', label: '设备型号' },
     { key: 'originalManufacturer', label: '设备厂商' },
 ]
-
+const handleDetails = (item) => {
+    console.log(item);
+    router.push({
+        path: `/secondTrade/usedEqpTrade/details/${item.id}`,
+    })
+};
+const onChange = (page, pageSize) => {
+    const res = refListPage.value.handleTablePaginationChange({
+        current: page,
+        pageSize
+    });
+    res.then(() => {
+        nextTick(() => {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+            });
+        })
+    })
+}
 
 const pageData = ref({
     url: {

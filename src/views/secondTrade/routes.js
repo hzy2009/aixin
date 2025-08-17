@@ -5,6 +5,7 @@ const oemParts = () => import('./views/oemParts/index.vue');
 const standard = () => import('./views/standard/index.vue');
 const notStandard = () => import('./views/notStandard/index.vue');
 const usedEqpTrade = () => import('./views/usedEqpTrade/index.vue');
+const secondTradeDetailPage = () => import('./views/usedEqpTrade/detail.vue');
 
 const userCenterRoutes = [
   {
@@ -31,6 +32,12 @@ const userCenterRoutes = [
         path: 'usedEqpTrade',
         component: usedEqpTrade,
         meta: { title: '二手设备交易', breadcrumb: ['二手设备交易'] }
+      },
+      {
+        path: 'usedEqpTrade/details/:id',
+        component: secondTradeDetailPage,
+        props: route => ({ IdProp: route.params.id}),
+        meta: { title: '二手设备交易详情', breadcrumb: ['二手设备交易详情'], roles: ['apm-vip', 'apm-vip-inspection', 'apm-register']  } // Appends to base
       }
     ]
   },

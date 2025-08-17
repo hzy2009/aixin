@@ -39,3 +39,28 @@ export const maskMiddle = (str = '') =>
   str && str?.length > 2 
     ? `${str[0]}***${str.slice(-1)}` 
     : str;
+
+/**
+ * 安全地从嵌套对象中获取值。
+ * @param {Object} obj - 源对象。
+ * @param {String} path - 属性路径，例如 'a.b[0].c'。
+ * @param {*} [defaultValue=undefined] - 如果路径不存在时返回的默认值。
+ * @returns {*} 找到的值或默认值。
+ */
+export function safeGet(obj, path, defaultValue = undefined) {
+  if (typeof path !== 'string' || !obj) {
+    return defaultValue;
+  }
+  // 将 'a.b[0].c' 这样的路径转换为 ['a', 'b', '0', 'c']
+  const pathArray = path.replace(/\[(\w+)\]/g, '.$1').replace(/^\./, '').split('.');
+  
+  let current = obj;
+  for (let i = 0; i < pathArray.length; i++) {
+    const key = pathArray[i];
+    if (current === null || typeof current !== 'object' || !Object.prototype.hasOwnProperty.call(current, key)) {
+      return defaultValue;
+    }
+    current = current[key];
+  }
+  return current;
+}
