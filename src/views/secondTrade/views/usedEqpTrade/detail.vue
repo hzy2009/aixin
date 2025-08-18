@@ -1,5 +1,6 @@
 <template>
     <DetailTemplate :product="productData" :page-config="productPageConfig" />
+    <SimilarProductsSection />
     <TransactionHistoryPage />
 </template>
 
@@ -8,6 +9,7 @@ import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import DetailTemplate from '../components/DetailTemplate.vue';
 import TransactionHistoryPage from '../components/TransactionHistoryPage.vue';
+import SimilarProductsSection from '../components/SimilarProductsSection.vue';
 import defHttp from '@/utils/http/axios'
 
 const route = useRoute();

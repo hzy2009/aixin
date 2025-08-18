@@ -1,7 +1,8 @@
-    <template>
-  <div class="transaction-history-page">
+<template>
+  <div class="transaction-history-component-wrapper">
     <a-tabs v-model:activeKey="activeTabKey" class="page-tabs">
-      <a-tab-pane key="bidding" tab="交易详情"></a-tab-pane>
+      <!-- "交易详情" tab is conditionally rendered based on context -->
+      <a-tab-pane v-if="context === 'fullView'" key="details" tab="交易详情"></a-tab-pane>
       <a-tab-pane key="negotiation" tab="议价历史"></a-tab-pane>
     </a-tabs>
 
@@ -9,7 +10,7 @@
       <VxeGridWrapper
         :columns="currentGridConfig.columns"
         :data="gridData"
-        :loading="isLoading"
+        :loading="loading"
         :button-config="currentGridConfig.buttons"
         @switch-change="handleSwitchChange"
         @button-click="handleButtonClick"
@@ -17,12 +18,13 @@
     </div>
 
     <div class="page-footer-actions">
+      <!-- The "确认出售" button is specific to the 'bidding' transaction type in the 'details' tab -->
       <a-button
-        v-if="currentGridConfig.showConfirmButton"
+        v-if="context === 'fullView' && activeTabKey === 'details' && transactionType === 'bidding'"
         type="primary"
         danger
         class="confirm-button"
-        @click="handleConfirm"
+        @click="handleConfirmBidding"
       >
         确认出售
       </a-button>
@@ -32,17 +34,48 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { Tabs as ATabs, TabPane as ATabPane, Button as AButton, message, Modal } from 'ant-design-vue';
-import VxeGridWrapper from './VxeGridWrapper.vue'; // Adjust path
-// import apiClient from '@/api'; // Your Axios instance
+import VxeGridWrapper from './VxeGridWrapper.vue'; // Adjust path if necessary
+
+const props = defineProps({
+  initialData: {
+    type: Array,
+    required: true,
+    default: () => [],
+  },
+  // 'fullView' shows both tabs, 'biddingDetail' shows only negotiation history
+  context: {
+    type: String,
+    default: 'fullView', // 'fullView' | 'biddingDetail'
+    validator: (value) => ['fullView', 'biddingDetail'].includes(value),
+  },
+  // For the 'details' tab, specifies which column set to use
+  transactionType: {
+    type: String,
+    default: 'bidding', // 'bidding' | 'fixedPrice'
+    validator: (value) => ['bidding', 'fixedPrice'].includes(value),
+  },
+  loading: { // Pass loading state from parent
+    type: Boolean,
+    default: false,
+  },
+});
+
+const emit = defineEmits(['confirmBidding', 'switchChange', 'buttonClick', 'goBack']);
 
 const router = useRouter();
-const activeTabKey = ref('bidding'); // Default tab
-
 const gridData = ref([]);
-const isLoading = ref(false);
+
+// Set initial active tab based on context
+const activeTabKey = ref(props.context === 'biddingDetail' ? 'negotiation' : 'details');
+
+// Watch for prop changes to update internal data state
+watch(() => props.initialData, (newData) => {
+  // Create a deep copy to allow for local modifications (like switch state)
+  gridData.value = JSON.parse(JSON.stringify(newData));
+}, { immediate: true, deep: true });
 
 // --- Helper for formatting currency ---
 const formatCurrency = ({ cellValue }) => {
@@ -50,9 +83,10 @@ const formatCurrency = ({ cellValue }) => {
   return `¥${Number(cellValue).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
-// --- Grid Configurations for each tab ---
+// --- Grid Configurations ---
 const gridConfigs = {
-  bidding: {
+  // Config for "交易详情" when transactionType is 'bidding'
+  details_bidding: {
     columns: [
       { type: 'seq', title: '序号', width: 60 },
       { field: 'buyerId', title: '买方' },
@@ -63,9 +97,26 @@ const gridConfigs = {
       { field: 'isSelected', title: '选定买方', slots: { default: 'switch' }, width: 140 },
       { field: 'sellQuantity', title: '卖出数量', editRender: { name: 'VxeInput' } },
     ],
-    showConfirmButton: true,
-    buttons: [], // No buttons in cells for this view
+    buttons: [],
   },
+  // Config for "交易详情" when transactionType is 'fixedPrice'
+  details_fixedPrice: {
+    columns: [
+      { type: 'seq', title: '序号', width: 60 },
+      { field: 'buyerId', title: '买方' },
+      { field: 'fixedPrice', title: '固定价(不含税)', formatter: formatCurrency },
+      { field: 'quantity', title: '购买数量' },
+      { field: 'totalPrice', title: '总价', formatter: formatCurrency },
+      { field: 'purchaseTime', title: '购买时间' },
+      { field: 'sellQuantity', title: '出售数量', editRender: { name: 'VxeInput' } },
+      { title: '操作', slots: { default: 'buttons' }, width: 220 },
+    ],
+    buttons: [
+      { key: 'confirmSale', label: '确认出售', type: 'primary', danger: true },
+      { key: 'cancelSale', label: '取消出售', type: 'default' },
+    ],
+  },
+  // Config for "议价历史" tab (same for all contexts)
   negotiation: {
     columns: [
       { type: 'seq', title: '序号', width: 60 },
@@ -78,148 +129,78 @@ const gridConfigs = {
       { field: 'sellerCounterOffer', title: '卖方还价', editRender: { name: 'VxeInput' } },
       { title: '操作', slots: { default: 'buttons' }, width: 260 },
     ],
-    showConfirmButton: false,
     buttons: [
       { key: 'notify', label: '价格通知买家', type: 'primary', danger: true },
-      { key: 'deal', label: '不还价直接成交', type: 'default', getDisabledState: (row) => row.status === 'dealt' /* Example disabled logic */ },
-    ],
-  },
-  fixedPrice: {
-    columns: [
-      { type: 'seq', title: '序号', width: 60 },
-      { field: 'buyerId', title: '买方' },
-      { field: 'fixedPrice', title: '固定价(不含税)', formatter: formatCurrency },
-      { field: 'quantity', title: '购买数量' },
-      { field: 'totalPrice', title: '总价', formatter: formatCurrency },
-      { field: 'purchaseTime', title: '购买时间' },
-      { field: 'sellQuantity', title: '出售数量', editRender: { name: 'VxeInput' } },
-      { title: '操作', slots: { default: 'buttons' }, width: 220 },
-    ],
-    showConfirmButton: false, // No single confirm button at bottom
-    buttons: [
-       { key: 'confirmSale', label: '确认出售', type: 'primary', danger: true },
-       { key: 'cancelSale', label: '取消出售', type: 'default' },
+      { key: 'deal', label: '不还价直接成交', type: 'default', getDisabledState: (row) => row.status === 'dealt' },
     ],
   },
 };
 
-const currentGridConfig = computed(() => gridConfigs[activeTabKey.value] || { columns: [], buttons: [] });
-
-// --- Data Fetching ---
-async function fetchDataForTab(tabKey) {
-  isLoading.value = true;
-  try {
-    // TODO: Replace with your actual API calls
-    // const response = await apiClient.get(`/api/transactions/${tabKey}/list`, { params: { ... } });
-    // gridData.value = response.data.records;
-
-    // --- Mock Data ---
-    console.log(`[MOCK API] Fetching data for tab: ${tabKey}`);
-    await new Promise(resolve => setTimeout(resolve, 500));
-    let mockData = [];
-    const baseData = [
-      { buyerId: 'C1067658', quantity: 3, offerPrice: 3450000, offerTime: '2025-08-29 16:48:23', deadline: '2025-09-03 16:48:23', isSelected: false, sellQuantity: null, fixedPrice: 3500000, negotiatedPrice: 3450000, negotiationTime: '2025-08-29 16:48:23', dealQuantity: null, sellerCounterOffer: null, totalPrice: 11400, purchaseTime: '2025-08-29 16:48:23', status: 'pending' },
-      { buyerId: 'C1004398', quantity: 1, offerPrice: 3480000, offerTime: '2025-08-29 16:48:23', deadline: '2025-09-03 16:48:23', isSelected: false, sellQuantity: null, fixedPrice: 3500000, negotiatedPrice: 3480000, negotiationTime: '2025-08-29 16:48:23', dealQuantity: null, sellerCounterOffer: null, totalPrice: 3800, purchaseTime: '2025-08-29 16:48:23', status: 'pending' },
-      { buyerId: 'C1008646', quantity: 2, offerPrice: 3486000, offerTime: '2025-08-29 16:48:23', deadline: '2025-09-03 16:48:23', isSelected: false, sellQuantity: null, fixedPrice: 3500000, negotiatedPrice: 3486000, negotiationTime: '2025-08-29 16:48:23', dealQuantity: null, sellerCounterOffer: null, totalPrice: 7600, purchaseTime: '2025-08-29 16:48:23', status: 'dealt' },
-      { buyerId: 'C1006578', quantity: 3, offerPrice: 3470000, offerTime: '2025-08-29 16:48:23', deadline: '22025-09-03 16:48:23', isSelected: false, sellQuantity: null, fixedPrice: 3500000, negotiatedPrice: 3470000, negotiationTime: '2025-08-29 16:48:23', dealQuantity: null, sellerCounterOffer: null, totalPrice: 11400, purchaseTime: '2025-08-29 16:48:23', status: 'pending' },
-    ];
-    // Clone data to avoid reactivity issues across tabs in mock
-    mockData = baseData.map(item => ({ ...item, _id: `${tabKey}-${item.buyerId}` }));
-    gridData.value = mockData;
-    // --- End Mock Data ---
-  } catch (error) {
-    console.error("Failed to fetch grid data:", error);
-    message.error("数据加载失败");
-    gridData.value = [];
-  } finally {
-    isLoading.value = false;
+const currentGridConfig = computed(() => {
+  if (activeTabKey.value === 'negotiation') {
+    return gridConfigs.negotiation;
   }
-}
-
-onMounted(() => {
-  fetchDataForTab(activeTabKey.value);
-});
-
-watch(activeTabKey, (newTabKey) => {
-  fetchDataForTab(newTabKey);
+  if (activeTabKey.value === 'details') {
+    // Select the correct 'details' config based on the transactionType prop
+    return gridConfigs[`details_${props.transactionType}`] || { columns: [], buttons: [] };
+  }
+  return { columns: [], buttons: [] }; // Fallback
 });
 
 // --- Event Handlers ---
+// These handlers simply forward the events to the parent component
 const handleSwitchChange = ({ checked, row }) => {
-  console.log('Switch changed:', checked, row);
-  // Logic for selecting a buyer, e.g., unselect others
   if (checked) {
     gridData.value.forEach(item => {
-      if (item !== row) {
-        item.isSelected = false;
-      }
+      if (item !== row) item.isSelected = false;
     });
   }
-  // TODO: Maybe an API call is needed here
+  emit('switchChange', { checked, row });
 };
 
 const handleButtonClick = ({ key, row }) => {
-  console.log('Button clicked:', key, row);
-  Modal.info({
-      title: '操作确认',
-      content: `您点击了 [${key}] 按钮，针对买方 [${row.buyerId}]。`,
-  });
-  // TODO: Implement logic for each button key (notify, deal, confirmSale, cancelSale)
+  emit('buttonClick', { key, row });
 };
 
-const handleConfirm = () => {
+const handleConfirmBidding = () => {
   const selectedRow = gridData.value.find(item => item.isSelected);
   if (!selectedRow) {
     message.warn('请先选定一个买方');
     return;
   }
-  if (!selectedRow.sellQuantity || selectedRow.sellQuantity <= 0) {
+  if (!selectedRow.sellQuantity || Number(selectedRow.sellQuantity) <= 0) {
     message.warn('请输入有效的卖出数量');
     return;
   }
-  console.log('Confirming sale:', selectedRow);
-  Modal.confirm({
-      title: '确认出售',
-      content: `您确定要向买方 [${selectedRow.buyerId}] 出售 [${selectedRow.sellQuantity}] 件商品吗？`,
-      onOk() {
-          // TODO: Call API to confirm sale
-          message.success('出售确认操作已提交');
-      }
-  });
+  emit('confirmBidding', selectedRow); // Emit the selected row to the parent
 };
 
 const goBack = () => {
-  router.go(-1);
+  // router.go(-1);
+  emit('goBack'); // Let parent handle navigation
 };
+
+// When context prop changes, reset the active tab
+watch(() => props.context, (newContext) => {
+    activeTabKey.value = newContext === 'biddingDetail' ? 'negotiation' : 'details';
+});
 
 </script>
 
 <style scoped lang="less">
+// Styles remain the same as the previous full page component
 @import '@/assets/styles/_variables.less';
 
-.transaction-history-page {
+.transaction-history-component-wrapper {
   padding: @spacing-lg;
   background-color: @background-color-base;
-  // border-radius, box-shadow etc. can be added if this component isn't inside another container
 }
 
 .page-tabs {
-  // Custom styling for AntD tabs to match image
-  :deep(.ant-tabs-nav) {
-    margin-bottom: @spacing-lg;
-  }
-  :deep(.ant-tabs-tab) {
-    font-size: 16px;
-    padding: 12px 0; // Only bottom padding is effective due to ink bar
-  }
-  :deep(.ant-tabs-ink-bar) {
-    background-color: @primary-color;
-    height: 3px;
-  }
-   :deep(.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn) {
-    color: @primary-color;
-    font-weight: 500;
-  }
+  :deep(.ant-tabs-nav) { margin-bottom: @spacing-lg; }
+  :deep(.ant-tabs-tab) { font-size: 16px; padding: 12px 0; }
+  :deep(.ant-tabs-ink-bar) { background-color: @primary-color; height: 3px; }
+  :deep(.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn) { color: @primary-color; font-weight: 500; }
 }
 
 .grid-container {
@@ -228,15 +209,8 @@ const goBack = () => {
 
 .page-footer-actions {
   display: flex;
-  justify-content: flex-end; // Align buttons to the right
+  justify-content: flex-end;
   gap: 12px;
-
-  .confirm-button {
-    min-width: 90px;
-    // background-color: @primary-color; // `danger` prop might handle this
-  }
-  .back-button {
-    min-width: 90px;
-  }
+  .confirm-button, .back-button { min-width: 90px; }
 }
 </style>
