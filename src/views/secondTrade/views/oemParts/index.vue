@@ -1,7 +1,17 @@
 <template>
     <div>
-        <listPage :pageData="pageData" ref="refListPage"/>
-        <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" :title="modalTitle" :actionText="actionText"></PhoneAndEmailModal>
+        <listPage :pageData="pageData" ref="refListPage">
+            <template #content="{ dataSource, paginationConfig }">
+                <div class="results-grid">
+                    <SortFilters :filters="sortOptions" v-model:value="currentSort" @change="onSortChange" />
+                    <EquipmentList :dataSource="dataSource" @handleDetails="handleDetails" :fieldList="fieldList"/>
+                </div>
+                <div class="pagination-wrapper">
+                    <a-pagination size="small" v-model:current="paginationConfig.current" v-bind="{...paginationConfig, showSizeChanger: false}"
+                        show-quick-jumper :total="paginationConfig.total" @change="onChange" />
+                </div>
+            </template>
+        </listPage>
     </div>
 </template>
 
@@ -9,70 +19,59 @@
 import { ref, reactive } from 'vue'; // onMounted removed as hook handles it
 import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
-import { FileTextOutlined } from '@ant-design/icons-vue';
-import { OEMPARTS_COLUMNS } from '@/utils/const.jsx';
-import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
+import SortFilters from '../components/SortFilters.vue';
+import EquipmentList from '../components/EquipmentList.vue';
+import { USEDEQPTRADE_COLUMNS } from '@/utils/const.jsx';
 import { message } from 'ant-design-vue';
-import { maskMiddle } from '@/utils/index';
-import { useTodo } from '../hooks/useTodo.js'
-import { useModalStore } from '@/store/modalStore'; 
 import defHttp from '@/utils/http/axios'
-const modalStore = useModalStore();
 
 
 const router = useRouter();
-const phoneAndEmailModal = ref();
 const refListPage = ref();
-const ids = ref([])
-const {modalTitle, actionText, handleSubmit} = useTodo()
+const currentSort = ref({ key: 'default' });
+const sortOptions = [
+    { key: 'default', label: '默认排序' },
+    { key: 'price', label: '价格排序', type: 'dropdown', options: [{label: '从高到低', value: 'desc'}, {label: '从低到高', value: 'asc'}] },
+    { key: 'time', label: '时间排序' }
+];
 
-// --- Table Columns (remains in component as it's UI specific) ---
-const tableColumns = reactive([
-    ...OEMPARTS_COLUMNS
-]);
-const handleClick = () => {
-  const records = refListPage.value.getCheckboxRecords() || []
-	if (!records.length) {
-		return message.error('请先勾选数据')
-	}
-	ids.value = records.map(item => item.id)
-  phoneAndEmailModal.value.opneModal()
-}
+const onSortChange = (newSort) => {
+    console.log('排序改变:', newSort);
+    // TODO: 调用 refListPage.value 的方法，传入新的排序参数并重新加载列表
+    // refListPage.value.setQueryParams({ sortKey: newSort.key, sortOrder: newSort.order });
+    // refListPage.value.reload();
+};
 
-const handleFinish = async (p) => {
-    const res = await defHttp.post({
-        url: `/apm/apmDeviceOrigin/newTodo`,
-        params: p,
-        data: ids.value
+const fieldList = [
+    { key: 'deviceType', label: '设备类型' },
+    { key: 'compatibleModels', label: '设备型号' },
+    { key: 'originalManufacturer', label: '设备厂商' },
+]
+const handleDetails = (item) => {
+    console.log(item);
+    router.push({
+        path: `/secondTrade/oemParts/details/${item.id}`,
+    })
+};
+const onChange = (page, pageSize) => {
+    const res = refListPage.value.handleTablePaginationChange({
+        current: page,
+        pageSize
     });
-    if (res.success) {
-        phoneAndEmailModal.value.handleClose()
-        const defaultConfig = {
-        title: '一键敲门成功',
-        message: '一键敲门后，客服人员将在30分钟内与您联系',
-        contactInfo: { name: '陈靖玮', phone: '4000118892', email: 'info-service@icshare.com' },
-        buttonText: '返回首页',
-        showButton: false,
-        onAction: null, // Default onAction is handled in store to go home
-        };
-        modalStore.showSuccessPrompt({ ...defaultConfig });
-    }
+    res.then(() => {
+        nextTick(() => {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+            });
+        })
+    })
 }
-const tableOperations = reactive([
-    {
-        title: '一键敲门',
-        clickFn: handleClick,
-        type: 'primary'
-    }
-])
 
 const pageData = ref({
     url: {
         list: 'apm/apmDeviceOrigin/list/front',
         // overview: 'apm/apmSourcingOriginSubstitute/overview/front'
     },
-    tableColumns,
-    tableOperations,
     // requiredRoles: ['apm-vip', 'apm-vip-inspection', 'apm-register'],
 })
 

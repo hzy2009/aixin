@@ -2,6 +2,7 @@
 import UserCenterCommonLayout from './layouts/UserCenterCommonLayout.vue'; // 新的通用布局
 
 const oemParts = () => import('./views/oemParts/index.vue'); 
+const oemPartsDetailPage = () => import('./views/oemParts/detail.vue');
 const standard = () => import('./views/standard/index.vue');
 const notStandard = () => import('./views/notStandard/index.vue');
 const usedEqpTrade = () => import('./views/usedEqpTrade/index.vue');
@@ -17,6 +18,12 @@ const userCenterRoutes = [
         path: 'oemParts', // 相对路径
         component: oemParts, // 这个页面现在是子路由
         meta: { title: '原厂件库存处理', breadcrumb: ['原厂件库存处理'] }
+      },
+      {
+        path: 'oemParts/details/:id',
+        component: oemPartsDetailPage,
+        props: route => ({ IdProp: route.params.id}),
+        meta: { title: '原厂件库存处理详情', breadcrumb: ['原厂件库存处理详情'], roles: ['apm-vip', 'apm-vip-inspection', 'apm-register']  } // Appends to base
       },
       {
         path: 'standard', 

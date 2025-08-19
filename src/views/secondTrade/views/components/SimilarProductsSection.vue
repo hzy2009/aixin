@@ -16,7 +16,7 @@
           </div>
         </div>
         <div v-else class="empty-placeholder">
-          <a-empty description="暂無類似商品推薦" />
+          <a-empty description="暂无商品推荐" />
         </div>
         <div class="pagination-controls">
             <div v-if="totalPages > 1" class="carousel-controls">

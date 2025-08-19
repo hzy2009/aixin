@@ -28,7 +28,8 @@
             </div>
             <div class="price-value-wrapper">
               <span class="price-amount">{{ priceInfo.price }}</span>
-              <span class="price-unit">{{ priceInfo.unit }}</span>
+              <!-- <span class="price-unit">{{ priceInfo.unit }}</span> -->
+              <span class="price-unit">元</span>
             </div>
           </div>
 
@@ -41,7 +42,7 @@
               class="quantity-input"
               :disabled="!isPurchasable"
             />
-            <span class="stock-info">库存：<span class="stock-value">{{ priceInfo.stock }}</span>个</span>
+            <span class="stock-info">库存：<span class="stock-value">{{ priceInfo.stock }}个</span></span>
           </div>
 
           <div class="action-buttons">
@@ -54,9 +55,10 @@
               :loading="isSubmitting"
               :disabled="!isPurchasable"
             >
-              立即购买
+              {{ actionText }}
             </a-button>
           </div>
+          <div v-if="props.product.purchaseMethod == 'AUCTION'">竞拍截止日期: {{ props.product.expiredDate }}</div>
         </div>
       </div>
 
@@ -94,6 +96,7 @@ import { ref, computed } from 'vue';
 import { Tag as ATag, InputNumber as AInputNumber, Button as AButton, message } from 'ant-design-vue';
 import defaultImagePlaceholder from '@/assets/images/fallback/detailFall.jpg'; // 准备一个占位图
 import { safeGet } from '@/utils/index'; // 引入我们自己的工具函数
+import { selectOptions } from '@/utils/index';
 
 const props = defineProps({
   product: {
@@ -110,6 +113,10 @@ const props = defineProps({
 
 const purchaseQuantity = ref(1);
 const isSubmitting = ref(false); // 用于按钮加载状态
+const actionText = computed(() => {
+   const purchaseMethodMap = selectOptions('purchase_method');
+   return purchaseMethodMap[props.product.purchaseMethod] || '立即购买';
+});
 
 // --- Computed properties to safely extract product using pageConfig and safeGet ---
 
@@ -124,7 +131,7 @@ const extractData = (config) => {
   }
   return value;
 };
-
+const pageState = computed(() => props.pageConfig.pageState);
 const title = computed(() => extractData(props.pageConfig.title));
 const mainImage = computed(() => extractData(props.pageConfig.mainImage) || defaultImagePlaceholder);
 const tags = computed(() => {
@@ -161,12 +168,23 @@ const specifications = computed(() => {
 });
 
 const priceInfo = computed(() => {
-  const priceConfig = props.pageConfig.priceInfo || {};
+  // const priceConfig = props.pageConfig.priceInfo || {};
   return {
-    label: extractData(priceConfig.labelConfig),
-    price: extractData(priceConfig.priceConfig),
-    unit: extractData(priceConfig.unitConfig),
-    stock: extractData(priceConfig.stockConfig) || 0,
+    label: extractData({
+      field: 'purchaseMethod',
+      formatter: (value) => {
+        const purchaseMethodMap = selectOptions('purchase_method');
+        const text = purchaseMethodMap[value] || '固定价，不可议价';
+        return text;
+      },
+      defaultValue: '固定价，不可议价'
+    }),
+    price: extractData({
+      field: 'priceExcludingTax',
+      formatter: (value) => value ? Number(value).toLocaleString() : '0.00'
+    }),
+    // unit: extractData({ field: 'unit' }),
+    stock: extractData({ field: 'quantity' }) || 0,
   };
 });
 
@@ -261,7 +279,7 @@ const handlePurchase = async () => {
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-bottom: 30px;
+    margin-bottom: auto;
   }
 
   .product-basic-info {
