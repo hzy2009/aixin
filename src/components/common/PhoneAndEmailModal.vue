@@ -13,31 +13,37 @@
 				<a-form ref="formRef" :model="formModel" 
 					@finish="onFinish">
 					<!-- 默认输入框 -->
-					<a-form-item v-if="props.showDefaultFields && !props.customFields" name="email" :rules="rulePresets.email">
+					<!-- <a-form-item v-if="props.showDefaultFields && !props.customFields" name="email" :rules="rulePresets.email">
 							<a-input v-model:value="formModel['email']" :placeholder="`请输入邮箱`" class="iteminput" />
 					</a-form-item>
 					<a-form-item v-if="props.showDefaultFields && !props.customFields" name="phone" :rules="rulePresets.phone">
 							<a-input v-model:value="formModel['phone']" :placeholder="`请输入电话号码`" class="iteminput"/>
-					</a-form-item>
+					</a-form-item> -->
 					<!-- 自定义输入框 -->
 					<a-form-item 
 						v-for="field in displayFields" 
-						:key="field.name" 
-						:name="field.name" 
+						:key="field.field" 
+						:name="field.field" 
 						:rules="field.rules || []"
 					>
 						<a-input 
 							v-if="field.type === 'input'"
-							v-model:value="formModel[field.name]" 
+							v-model:value="formModel[field.field]" 
 							:placeholder="field.placeholder" 
 							class="iteminput" 
 						/>
-						<a-textarea 
-							v-else-if="field.type === 'textarea'"
-							v-model:value="formModel[field.name]" 
+						<a-input-number 
+							v-else-if="field.type === 'number'"
+							v-model:value="formModel[field.field]" 
+							:placeholder="field.placeholder"
+							:min="field.min" :max="field.max"
+							class="iteminput" 
+						/>
+						<a-date-picker 
+							v-else-if="field.type === 'date'"
+							v-model:value="formModel[field.field]" 
 							:placeholder="field.placeholder" 
-							class="iteminput"
-							:rows="field.rows || 3"
+							class="iteminput" 
 						/>
 					</a-form-item>
 				</a-form>
@@ -50,7 +56,7 @@
 
 <script setup>
 	import { Modal as AModal, Button as AButton, Form as AForm, Input as AInput, Textarea as ATextarea } from 'ant-design-vue';
-	import { ref, onMounted, reactive, computed } from 'vue'
+	import { ref, onMounted, reactive, computed, nextTick } from 'vue'
 	const props = defineProps({
 		title: {
 			type: String,
@@ -92,28 +98,27 @@
 	
 	// 计算要显示的输入框
 	const displayFields = computed(() => {
+		const arr = []
 		if (props.customFields) {
-			return props.customFields;
+			arr.push(... props.customFields);
 		}
-		
 		if (props.showDefaultFields) {
-			return [
+			arr.push(... [
 				{
-					name: 'email',
+					field: 'email',
 					type: 'input',
 					placeholder: '请输入邮箱',
 					rules: rulePresets.email
 				},
 				{
-					name: 'phone',
+					field: 'phone',
 					type: 'input',
 					placeholder: '请输入电话号码',
 					rules: rulePresets.phone
 				}
-			];
+			]);
 		}
-		
-		return [];
+		return arr;
 	});
 	
 	const emit = defineEmits(['close', 'finish']);
@@ -131,6 +136,11 @@
     });
 	};
 	const opneModal = () => {
+		nextTick(() => {
+			props.customFields.forEach(item => {
+				formModel[item.field] = item.defaultValue
+			})
+		})
 		isVisible.value = true;
 	}
 	
@@ -157,6 +167,7 @@
 		}
 }
 	.iteminput{
+		width: 100%;
 		height: 40px;
 	}
 	:deep(.ant-modal-content) {

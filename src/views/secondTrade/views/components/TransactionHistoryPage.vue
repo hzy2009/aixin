@@ -2,7 +2,7 @@
   <div class="transaction-history-component-wrapper">
     <a-tabs v-model:activeKey="activeTabKey" class="page-tabs">
       <!-- "交易详情" tab is conditionally rendered based on context -->
-      <a-tab-pane v-if="context === 'fullView'" key="transactionType" tab="交易详情"></a-tab-pane>
+      <a-tab-pane v-if="context === 'editPage'" key="transactionType" tab="交易详情"></a-tab-pane>
       <a-tab-pane key="negotiation" tab="议价历史"></a-tab-pane>
     </a-tabs>
 
@@ -20,7 +20,7 @@
     <div class="page-footer-actions">
       <!-- The "确认出售" button is specific to the 'bidding' transaction type in the 'details' tab -->
       <a-button
-        v-if="context === 'fullView' && activeTabKey === 'transactionType' && transactionType === 'bidding'"
+        v-if="context === 'editPage' && activeTabKey === 'transactionType' && transactionType === 'PUBLICATION' && product?.purchaseMethod === 'AUCTION'"
         type="primary"
         danger
         class="confirm-button"
@@ -46,16 +46,11 @@ const props = defineProps({
     type: Object,
     default: () => {},
   },
-  initialData: {
-    type: Array,
-    required: true,
-    default: () => [],
-  },
-  // 'fullView' shows both tabs, 'biddingDetail' shows only negotiation history
+  // 'fullView' shows both tabs, 'editPage' shows only negotiation history
   context: {
     type: String,
-    default: 'fullView', // 'fullView' | 'biddingDetail'
-    validator: (value) => ['fullView', 'biddingDetail'].includes(value),
+    default: 'editPage', // 'fullView' | 'editPage'
+    validator: (value) => ['fullView', 'editPage'].includes(value),
   },
   // For the 'details' tab, specifies which column set to use
   transactionType: {
@@ -71,16 +66,16 @@ const props = defineProps({
 const emit = defineEmits(['confirmBidding', 'switchChange', 'buttonClick', 'goBack']);
 
 const router = useRouter();
-const gridData = ref([]);
+const gridData = ref([{}]);
 
 // Set initial active tab based on context
-const activeTabKey = ref(props.context === 'biddingDetail' ? 'negotiation' : 'transactionType');
+const activeTabKey = ref(props.context === 'fullView' ? 'negotiation' : 'transactionType');
 
 // Watch for prop changes to update internal data state
-watch(() => props.initialData, (newData) => {
-  // Create a deep copy to allow for local modifications (like switch state)
-  gridData.value = JSON.parse(JSON.stringify(newData));
-}, { immediate: true, deep: true });
+// watch(() => props.product, (newData) => {
+//   const groupCode = activeTabKey.value === 'transactionType' ? 'submitItemList' : 'dealItemList';
+//   gridData.value = JSON.parse(JSON.stringify(newData[groupCode] || []));
+// }, { immediate: true, deep: true });
 
 // --- Helper for formatting currency ---
 const formatCurrency = ({ cellValue }) => {
@@ -94,12 +89,18 @@ const gridConfigs = {
     columns: [
       { type: 'seq', title: '序号', width: 60 },
       { field: 'refUserName', title: '买方' },
-      { field: 'price', title: '固定价(不含税)', formatter: formatCurrency },
+      { field: 'price', title: '固定价', formatter: formatCurrency },
       { field: 'quantity', title: '购买数量' },
-      { field: 'totalPrice', title: '总价', formatter: ({ row }) => Decimal.mul(row.price, row.quantity) },
+      { field: 'totalPrice', title: '总价', formatter: ({ row }) => {
+        if (row.price && row.quantity) {
+          return Decimal.mul(row.price, row.quantity)
+        } else {
+          return '-'
+        }
+      } },
       { field: 'approveTime', title: '购买时间' },
-      { field: 'sellQuantity', title: '出售数量', editRender: { name: 'VxeInput' } },
-      { title: '操作', slots: { default: 'buttons' }, width: 220 },
+      { field: 'sellQuantity', title: '出售数量', editRender: { name: 'VxeNumberInput' } },
+      { title: '操作', slots: { default: 'buttons' }, width: 180   },
     ],
     buttons: [
       { key: 'confirmSale', label: '确认出售', type: 'primary', danger: true },
@@ -111,16 +112,16 @@ const gridConfigs = {
       { type: 'seq', title: '序号', width: 60 },
       { field: 'fixedPrice', title: '固定价', formatter: formatCurrency },
       { field: 'buyerId', title: '买方' },
-      { field: 'negotiatedPrice', title: '买方议价(不含税)', formatter: formatCurrency },
+      { field: 'negotiatedPrice', title: '买方议价', formatter: formatCurrency },
       { field: 'quantity', title: '购买数量' },
       { field: 'negotiationTime', title: '议价时间' },
-      { field: 'dealQuantity', title: '交易数量', editRender: { name: 'VxeInput' } },
-      { field: 'sellerCounterOffer', title: '卖方还价', editRender: { name: 'VxeInput' } },
-      { title: '操作', slots: { default: 'buttons' }, width: 300 },
+      { field: 'dealQuantity', title: '交易数量', editRender: { name: 'VxeNumberInput' } },
+      { field: 'sellerCounterOffer', title: '卖方还价', editRender: { name: 'VxeNumberInput' } },
+      { title: '操作', slots: { default: 'buttons' }, width: 320 },
     ],
     buttons: [
       { key: 'notify', label: '价格通知买家', type: 'primary', danger: true },
-      { key: 'deal', label: '不还价直接成交', type: 'default', getDisabledState: (row) => row.status === 'dealt' },
+      { key: 'deal', label: '不还价直接成交', type: 'default', getDisabledState: (row) => row.status == 'dealt' },
       { key: 'cancelSale', label: '取消出售', type: 'default' },
     ],
   },
@@ -128,12 +129,12 @@ const gridConfigs = {
      columns: [
       { type: 'seq', title: '序号', width: 60 },
       { field: 'refUserName', title: '买方' },
-      { field: 'price', title: '固定价(不含税)', formatter: () => '*,***,***,**' },
+      { field: 'price', title: '固定价', formatter: () => '*,***,***,**' },
       { field: 'quantity', title: '购买数量' },
       { field: 'totalPrice', title: '总价', formatter: () => '*,***,***,**' },
       { field: 'approveTime', title: '购买时间' },
-      { field: 'sellQuantity', title: '出售数量', editRender: { name: 'VxeInput' } },
-      { title: '操作', slots: { default: 'buttons' }, width: 220 },
+      { field: 'sellQuantity', title: '出售数量', editRender: { name: 'VxeNumberInput' } },
+      { title: '操作', slots: { default: 'buttons' }, width: 180 },
     ],
     buttons: [
       { key: 'confirmSale', label: '确认出售', type: 'primary', danger: true },
@@ -145,12 +146,12 @@ const gridConfigs = {
     columns: [
       { type: 'seq', title: '序号', width: 60 },
       { field: 'buyerId', title: '买方' },
-      { field: 'offerPrice', title: '买方出价(不含税)', formatter: formatCurrency },
+      { field: 'offerPrice', title: '买方出价', formatter: formatCurrency },
       { field: 'quantity', title: '购买数量' },
       { field: 'offerTime', title: '出价时间' },
       { field: 'deadline', title: '竞拍截止时间' },
-      { field: 'isSelected', title: '选定买方', slots: { default: 'switch' }, width: 140 },
-      { field: 'sellQuantity', title: '卖出数量', editRender: { name: 'VxeInput' } },
+      { field: 'isSelected', title: '选定买方', slots: { default: 'switch' }, width: 120 },
+      { field: 'sellQuantity', title: '卖出数量', editRender: { name: 'VxeNumberInput' } },
     ],
     buttons: [],
   },
@@ -158,11 +159,17 @@ const gridConfigs = {
     columns: [
       { type: 'seq', title: '序号', width: 60 },
       { field: 'refUserName', title: '卖方' },
-      { field: 'price', title: '固定价(不含税)', formatter: formatCurrency },
+      { field: 'price', title: '固定价', formatter: formatCurrency },
       { field: 'quantity', title: '可出售数量' },
-      { field: 'totalPrice', title: '总价', formatter: ({ row }) => Decimal.mul(row.price, row.quantity) },
+      { field: 'totalPrice', title: '总价', formatter: ({ row }) => {
+        if (row.price && row.quantity) {
+          return Decimal.mul(row.price, row.quantity)
+        } else {
+          return '- '
+        }
+      } },
       { field: 'approveTime', title: '购买时间' },
-      { field: 'sellQuantity', title: '购买数量', editRender: { name: 'VxeInput' } },
+      { field: 'sellQuantity', title: '购买数量', editRender: { name: 'VxeNumberInput' } },
       { title: '操作', slots: { default: 'buttons' }, width: 220 },
     ],
     buttons: [
@@ -179,7 +186,7 @@ const gridConfigs = {
       { field: 'quantity', title: '购买数量' },
       { field: 'approveTime', title: '议价时间' },
       { field: 'priceExcludingTax', title: '卖方议价', formatter: formatCurrency },
-      { field: 'sellQuantity', title: '可卖数量', editRender: { name: 'VxeInput' } },
+      { field: 'sellQuantity', title: '可卖数量', editRender: { name: 'VxeNumberInput' } },
       { title: '操作', slots: { default: 'buttons' }, width: 220 },
     ],
     buttons: [
@@ -191,11 +198,11 @@ const gridConfigs = {
     columns: [
       { type: 'seq', title: '序号', width: 60 },
       { field: 'refUserName', title: '卖方' },
-      { field: 'price', title: '固定价(不含税)', formatter: () => '*,***,***,**'},
+      { field: 'price', title: '固定价', formatter: () => '*,***,***,**'},
       { field: 'quantity', title: '可卖数量'},
       { field: 'totalPrice', title: '总价', formatter: () => '*,***,***,**' },
       { field: 'approveTime', title: '购买时间' },
-      { field: 'sellQuantity', title: '购买数量', editRender: { name: 'VxeInput' } },
+      { field: 'sellQuantity', title: '购买数量', editRender: { name: 'VxeNumberInput' } },
       { title: '操作', slots: { default: 'buttons' }, width: 220 },
     ],
     buttons: [
@@ -240,8 +247,8 @@ const currentGridConfig = computed(() => {
   }
   if (activeTabKey.value === 'transactionType') {
     // Select the correct 'details' config based on the transactionType prop
-    const columnType = props.product.purchaseMethod || 'FIXED_PRICE';
-    return gridConfigs[`${props.transactionType}_${props.product.purchaseMethod}`] || { columns: [], buttons: [] };
+    const columnType = props.product?.purchaseMethod || 'FIXED_PRICE';
+    return gridConfigs[`${props.transactionType}_${columnType}`] || { columns: [], buttons: [] };
   }
   return { columns: [], buttons: [] }; // Fallback
 });
@@ -249,12 +256,12 @@ const currentGridConfig = computed(() => {
 // --- Event Handlers ---
 // These handlers simply forward the events to the parent component
 const handleSwitchChange = ({ checked, row }) => {
-  if (checked) {
-    gridData.value.forEach(item => {
-      if (item !== row) item.isSelected = false;
-    });
-  }
-  emit('switchChange', { checked, row });
+  // if (checked) {
+  //   gridData.value.forEach(item => {
+  //     if (item !== row) item.isSelected = false;
+  //   });
+  // }
+  // emit('switchChange', { checked, row });
 };
 
 const handleButtonClick = ({ key, row }) => {
@@ -262,16 +269,16 @@ const handleButtonClick = ({ key, row }) => {
 };
 
 const handleConfirmBidding = () => {
-  const selectedRow = gridData.value.find(item => item.isSelected);
-  if (!selectedRow) {
-    message.warn('请先选定一个买方');
-    return;
-  }
-  if (!selectedRow.sellQuantity || Number(selectedRow.sellQuantity) <= 0) {
-    message.warn('请输入有效的卖出数量');
-    return;
-  }
-  emit('confirmBidding', selectedRow); // Emit the selected row to the parent
+  // const selectedRow = gridData.value.find(item => item.isSelected);
+  // if (!selectedRow) {
+  //   message.warn('请先选定一个买方');
+  //   return;
+  // }
+  // if (!selectedRow.sellQuantity || Number(selectedRow.sellQuantity) <= 0) {
+  //   message.warn('请输入有效的卖出数量');
+  //   return;
+  // }
+  // emit('confirmBidding', selectedRow); // Emit the selected row to the parent
 };
 
 const goBack = () => {
@@ -281,7 +288,7 @@ const goBack = () => {
 
 // When context prop changes, reset the active tab
 watch(() => props.context, (newContext) => {
-    activeTabKey.value = newContext === 'biddingDetail' ? 'negotiation' : 'details';
+    activeTabKey.value = newContext === 'editPage' ? 'negotiation' : 'details';
 });
 
 </script>

@@ -33,8 +33,7 @@
             :type="button.type || 'primary'"
             :danger="button.danger"
             :disabled="button.disabled || (typeof button.getDisabledState === 'function' ? button.getDisabledState(row) : false)"
-            size="small"
-            class="action-button"
+            class="actionButton"
             @click="() => onButtonClick(button.key, row)"
           >
             {{ button.label }}
@@ -89,7 +88,7 @@ defineExpose({
 });
 </script>
 
-<style lang="less"> // Use global style tag for deep selectors
+<style lang="less" scoped> // Use global style tag for deep selectors
 @import '@/assets/styles/_variables.less';
 
 .custom-vxe-table {
@@ -150,10 +149,9 @@ defineExpose({
   gap: 8px;
   flex-wrap: nowrap;
 
-  .action-button {
-    font-size: 13px;
-    padding: 2px 10px;
-    height: auto;
+  .actionButton {
+    border-radius: 4px;
+    padding: 2px 6px; 
   }
 }
 </style>

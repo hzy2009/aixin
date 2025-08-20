@@ -38,11 +38,11 @@
             <a-input-number
               v-model:value="purchaseQuantity"
               :min="1"
-              :max="priceInfo.stock"
+              :max="priceInfo.quantity"
               class="quantity-input"
               :disabled="!isPurchasable"
             />
-            <span class="stock-info">库存：<span class="stock-value">{{ priceInfo.stock }}个</span></span>
+            <span class="quantity-info">库存：<span class="quantity-value">{{ priceInfo.quantity }}个</span></span>
           </div>
 
           <div class="action-buttons">
@@ -88,6 +88,7 @@
         
       </div>
     </div>
+    <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" title="填写信息购买" actionText="联系平台购买" :customFields="customFields"></PhoneAndEmailModal>
   </div>
 </template>
 
@@ -96,7 +97,12 @@ import { ref, computed } from 'vue';
 import { Tag as ATag, InputNumber as AInputNumber, Button as AButton, message } from 'ant-design-vue';
 import defaultImagePlaceholder from '@/assets/images/fallback/detailFall.jpg'; // 准备一个占位图
 import { safeGet } from '@/utils/index'; // 引入我们自己的工具函数
+import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
 import { selectOptions } from '@/utils/index';
+import { useModalStore } from '@/store/modalStore'; 
+import defHttp from '@/utils/http/axios'
+const modalStore = useModalStore();
+
 
 const props = defineProps({
   product: {
@@ -117,6 +123,7 @@ const actionText = computed(() => {
    const purchaseMethodMap = selectOptions('purchase_method');
    return purchaseMethodMap[props.product.purchaseMethod] || '立即购买';
 });
+const customFields = ref([]);
 
 // --- Computed properties to safely extract product using pageConfig and safeGet ---
 
@@ -173,7 +180,7 @@ const priceInfo = computed(() => {
     label: extractData({
       field: 'purchaseMethod',
       formatter: (value) => {
-        const purchaseMethodMap = selectOptions('purchase_method');
+        const purchaseMethodMap = selectOptions('purchase_method').reduce((acc, { value: key, label }) => ({ ...acc, [key]: label }), {});
         const text = purchaseMethodMap[value] || '固定价，不可议价';
         return text;
       },
@@ -181,36 +188,65 @@ const priceInfo = computed(() => {
     }),
     price: extractData({
       field: 'priceExcludingTax',
-      formatter: (value) => value ? Number(value).toLocaleString() : '0.00'
+      formatter: (value) => {
+        if (props.product.purchaseMethod === 'PRICE_ON_REQUEST') return '**,***,***'
+        return value ? Number(value).toLocaleString() : '0.00'
+      }
     }),
-    // unit: extractData({ field: 'unit' }),
-    stock: extractData({ field: 'quantity' }) || 0,
+    // unit: extractData({ field: 'unit' }),  
+    quantity: extractData({ field: 'quantity' }) || 0,
   };
 });
 
-// const isPurchasable = computed(() => priceInfo.value.stock > 0);
-const isPurchasable = true;
+const isPurchasable = computed(() => priceInfo.value.quantity > 0);
+const phoneAndEmailModal = ref();
 
 const handlePurchase = async () => {
   if (!isPurchasable.value) {
     message.warn('该商品库存不足，无法购买。');
     return;
   }
-  isSubmitting.value = true;
-  try {
-    // TODO: 实现购买逻辑，例如调用 API
-    console.log(`准备购买 ${purchaseQuantity.value} 个 ${title.value} (ID: ${props.product.id})`);
-    // 模拟 API 调用
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    message.success('购买请求已提交！');
-    // router.push('/order/confirmation'); // 跳转到订单确认页
-  } catch (error) {
-    console.error("购买失败:", error);
-    message.error('购买失败，请稍后重试。');
-  } finally {
-    isSubmitting.value = false;
+  const customFieldsMap = {
+    'FIXED_PRICE': [
+      { min:1, max: props.product.quantity, field: 'quantity', placeholder: '请输入数量', defaultValue: purchaseQuantity.value, type: 'number', rules: [{ required: true, message: '请输入数量' }] },
+    ],
+    'NEGOTIABLE': [
+      { field: 'price', placeholder: '请输入价格', type: 'number' },
+      { min:1, max: props.product.quantity, field: 'quantity', placeholder: '请输入数量', defaultValue: purchaseQuantity.value, type: 'number', rules: [{ required: true, message: '请输入数量' }] },
+    ],
+    'PRICE_ON_REQUEST': [
+      { min:1, max: props.product.quantity, field: 'quantity', placeholder: '请输入数量', defaultValue: purchaseQuantity.value, type: 'number', rules: [{ required: true, message: '请输入数量' }] },
+    ],
+    'AUCTION': [
+      { field: 'price', placeholder: '请输入价格', type: 'number' },
+      { min:1, max: props.product.quantity, field: 'quantity', placeholder: '请输入数量', defaultValue: purchaseQuantity.value, type: 'number', rules: [{ required: true, message: '请输入数量' }] },
+    ],
   }
+  customFields.value = customFieldsMap[props.product.purchaseMethod]
+  phoneAndEmailModal.value.opneModal()
 };
+const handleFinish = (data) => {
+  // 购买逻辑
+  
+  const res = await defHttp.post({
+    url: `/apm/apmDeviceOrigin/buy/newTodo/${props.product.id}`,
+    params: {
+      item: [{...data}]
+    }
+  })
+  if (res.success) {
+      phoneAndEmailModal.value.handleClose()
+      const defaultConfig = {
+      title: '一键敲门成功',
+      message: '一键敲门后，客服人员将在30分钟内与您联系',
+      contactInfo: { name: '陈靖玮', phone: '4000118892', email: 'info-service@icshare.com' },
+      buttonText: '返回首页',
+      showButton: false,
+      onAction: null, // Default onAction is handled in store to go home
+      };
+      modalStore.showSuccessPrompt({ ...defaultConfig });
+  }
+}
 </script>
 
 <style scoped lang="less">
@@ -345,11 +381,11 @@ const handlePurchase = async () => {
         text-align: center;
       }
     }
-    .stock-info {
+    .quantity-info {
       font-size: 13px;
       color: @text-color-secondary;
       margin-left: @spacing-md;
-      .stock-value {
+      .quantity-value {
         color: @primary-color;
       }
     }
