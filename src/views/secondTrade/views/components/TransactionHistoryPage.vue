@@ -38,6 +38,8 @@ import { ref, computed, watch, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { Tabs as ATabs, TabPane as ATabPane, Button as AButton, message, Modal } from 'ant-design-vue';
 import VxeGridWrapper from './VxeGridWrapper.vue'; // Adjust path if necessary
+import { Decimal } from 'decimal.js';
+import defHttp from '@/utils/http/axios'
 
 const props = defineProps({
   initialData: {
@@ -85,8 +87,58 @@ const formatCurrency = ({ cellValue }) => {
 
 // --- Grid Configurations ---
 const gridConfigs = {
+  PUBLICATION_FIXED_PRICE: {
+    columns: [
+      { type: 'seq', title: '序号', width: 60 },
+      { field: 'refUserName', title: '买方' },
+      { field: 'price', title: '固定价(不含税)', formatter: formatCurrency },
+      { field: 'quantity', title: '购买数量' },
+      { field: 'totalPrice', title: '总价', formatter: ({ row }) => Decimal.mul(row.price, row.quantity) },
+      { field: 'approveTime', title: '购买时间' },
+      { field: 'sellQuantity', title: '出售数量', editRender: { name: 'VxeInput' } },
+      { title: '操作', slots: { default: 'buttons' }, width: 220 },
+    ],
+    buttons: [
+      { key: 'confirmSale', label: '确认出售', type: 'primary', danger: true },
+      { key: 'cancelSale', label: '取消出售', type: 'default' },
+    ],
+  },
+  PUBLICATION_NEGOTIABLE: {
+    columns: [
+      { type: 'seq', title: '序号', width: 60 },
+      { field: 'fixedPrice', title: '固定价', formatter: formatCurrency },
+      { field: 'buyerId', title: '买方' },
+      { field: 'negotiatedPrice', title: '买方议价(不含税)', formatter: formatCurrency },
+      { field: 'quantity', title: '购买数量' },
+      { field: 'negotiationTime', title: '议价时间' },
+      { field: 'dealQuantity', title: '交易数量', editRender: { name: 'VxeInput' } },
+      { field: 'sellerCounterOffer', title: '卖方还价', editRender: { name: 'VxeInput' } },
+      { title: '操作', slots: { default: 'buttons' }, width: 300 },
+    ],
+    buttons: [
+      { key: 'notify', label: '价格通知买家', type: 'primary', danger: true },
+      { key: 'deal', label: '不还价直接成交', type: 'default', getDisabledState: (row) => row.status === 'dealt' },
+      { key: 'cancelSale', label: '取消出售', type: 'default' },
+    ],
+  },
+  PUBLICATION_PRICE_ON_REQUEST: {
+     columns: [
+      { type: 'seq', title: '序号', width: 60 },
+      { field: 'refUserName', title: '买方' },
+      { field: 'price', title: '固定价(不含税)', formatter: () => '*,***,***,**' },
+      { field: 'quantity', title: '购买数量' },
+      { field: 'totalPrice', title: '总价', formatter: () => '*,***,***,**' },
+      { field: 'approveTime', title: '购买时间' },
+      { field: 'sellQuantity', title: '出售数量', editRender: { name: 'VxeInput' } },
+      { title: '操作', slots: { default: 'buttons' }, width: 220 },
+    ],
+    buttons: [
+      { key: 'confirmSale', label: '确认出售', type: 'primary', danger: true },
+      { key: 'cancelSale', label: '取消出售', type: 'default' },
+    ],
+  },
   // Config for "交易详情" when transactionType is 'bidding'
-  details_bidding: {
+  PUBLICATION_AUCTION: {
     columns: [
       { type: 'seq', title: '序号', width: 60 },
       { field: 'buyerId', title: '买方' },
@@ -99,41 +151,71 @@ const gridConfigs = {
     ],
     buttons: [],
   },
-  // Config for "交易详情" when transactionType is 'fixedPrice'
-  details_fixedPrice: {
+  JOIN_FIXED_PRICE: {
     columns: [
       { type: 'seq', title: '序号', width: 60 },
-      { field: 'buyerId', title: '买方' },
-      { field: 'fixedPrice', title: '固定价(不含税)', formatter: formatCurrency },
-      { field: 'quantity', title: '购买数量' },
-      { field: 'totalPrice', title: '总价', formatter: formatCurrency },
-      { field: 'purchaseTime', title: '购买时间' },
-      { field: 'sellQuantity', title: '出售数量', editRender: { name: 'VxeInput' } },
+      { field: 'refUserName', title: '卖方' },
+      { field: 'price', title: '固定价(不含税)', formatter: formatCurrency },
+      { field: 'quantity', title: '可出售数量' },
+      { field: 'totalPrice', title: '总价', formatter: ({ row }) => Decimal.mul(row.price, row.quantity) },
+      { field: 'approveTime', title: '购买时间' },
+      { field: 'sellQuantity', title: '购买数量', editRender: { name: 'VxeInput' } },
       { title: '操作', slots: { default: 'buttons' }, width: 220 },
     ],
     buttons: [
-      { key: 'confirmSale', label: '确认出售', type: 'primary', danger: true },
-      { key: 'cancelSale', label: '取消出售', type: 'default' },
+      { key: 'confirmBuy', label: '确认交易', type: 'primary', danger: true },
+      { key: 'cancelBuy', label: '取消交易', type: 'default' },
     ],
   },
-  // Config for "议价历史" tab (same for all contexts)
-  negotiation: {
+  JOIN_NEGOTIABLE: {
     columns: [
       { type: 'seq', title: '序号', width: 60 },
-      { field: 'fixedPrice', title: '固定价', formatter: formatCurrency },
-      { field: 'buyerId', title: '买方' },
-      { field: 'negotiatedPrice', title: '买方议价(不含税)', formatter: formatCurrency },
+      { field: 'price', title: '固定价', formatter: formatCurrency },
+      { field: 'refUserName', title: '卖方' },
+      { field: 'price', title: '我的议价', formatter: formatCurrency },
       { field: 'quantity', title: '购买数量' },
-      { field: 'negotiationTime', title: '议价时间' },
-      { field: 'dealQuantity', title: '交易数量', editRender: { name: 'VxeInput' } },
-      { field: 'sellerCounterOffer', title: '卖方还价', editRender: { name: 'VxeInput' } },
-      { title: '操作', slots: { default: 'buttons' }, width: 260 },
+      { field: 'approveTime', title: '议价时间' },
+      { field: 'priceExcludingTax', title: '卖方议价', formatter: formatCurrency },
+      { field: 'sellQuantity', title: '可卖数量', editRender: { name: 'VxeInput' } },
+      { title: '操作', slots: { default: 'buttons' }, width: 220 },
     ],
     buttons: [
-      { key: 'notify', label: '价格通知买家', type: 'primary', danger: true },
-      { key: 'deal', label: '不还价直接成交', type: 'default', getDisabledState: (row) => row.status === 'dealt' },
+      { key: 'confirmBuy', label: '接受还价确认交易', type: 'primary', danger: true },
+      { key: 'cancelBuy', label: '取消交易', type: 'default' },
     ],
   },
+  JOIN_PRICE_ON_REQUEST: {
+    columns: [
+      { type: 'seq', title: '序号', width: 60 },
+      { field: 'refUserName', title: '卖方' },
+      { field: 'price', title: '固定价(不含税)', formatter: () => '*,***,***,**'},
+      { field: 'quantity', title: '可卖数量'},
+      { field: 'totalPrice', title: '总价', formatter: () => '*,***,***,**' },
+      { field: 'approveTime', title: '购买时间' },
+      { field: 'sellQuantity', title: '购买数量', editRender: { name: 'VxeInput' } },
+      { title: '操作', slots: { default: 'buttons' }, width: 220 },
+    ],
+    buttons: [
+      { key: 'confirmBuy', label: '确认交易', type: 'primary', danger: true },
+      { key: 'cancelBuy', label: '取消交易', type: 'default' },
+    ],
+  },
+  JOIN_AUCTION: {
+    columns: [
+      { type: 'seq', title: '序号', width: 60 },
+      { field: 'refUserName', title: '卖方' },
+      { field: 'price', title: '我的竞价', formatter: formatCurrency},
+      { field: 'quantity', title: '购买数量'},
+      { field: 'totalPrice', title: '我的竞价总价', formatter: ({ row }) => Decimal.mul(row.price, row.quantity) },
+      { field: 'approveTime', title: '竞价时间' },
+      { field: 'expireDate', title: '竞拍截止时间' },
+      { field: 'expireDate', title: '竞拍状态' },
+      { title: '交易', slots: { default: 'buttons' }, width: 220 },
+    ],
+    buttons: [
+      { key: 'confirmBuy', label: '确定交易', type: 'primary', danger: true },
+    ],
+  }
 };
 
 const currentGridConfig = computed(() => {

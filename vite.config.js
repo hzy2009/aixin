@@ -35,5 +35,6 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/jeecgboot/, '') // 关键：移除前端请求中的 /jeecgboot 前缀
       },
     },
+    host: '0.0.0.0', // 或者设置为 true
   },
 });

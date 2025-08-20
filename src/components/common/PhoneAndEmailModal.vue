@@ -12,11 +12,33 @@
 	   	<div class="prompt-content">
 				<a-form ref="formRef" :model="formModel" 
 					@finish="onFinish">
-					<a-form-item name="email" :rules="rulePresets.email">
+					<!-- 默认输入框 -->
+					<a-form-item v-if="props.showDefaultFields && !props.customFields" name="email" :rules="rulePresets.email">
 							<a-input v-model:value="formModel['email']" :placeholder="`请输入邮箱`" class="iteminput" />
 					</a-form-item>
-					<a-form-item name="phone" :rules="rulePresets.phone">
+					<a-form-item v-if="props.showDefaultFields && !props.customFields" name="phone" :rules="rulePresets.phone">
 							<a-input v-model:value="formModel['phone']" :placeholder="`请输入电话号码`" class="iteminput"/>
+					</a-form-item>
+					<!-- 自定义输入框 -->
+					<a-form-item 
+						v-for="field in displayFields" 
+						:key="field.name" 
+						:name="field.name" 
+						:rules="field.rules || []"
+					>
+						<a-input 
+							v-if="field.type === 'input'"
+							v-model:value="formModel[field.name]" 
+							:placeholder="field.placeholder" 
+							class="iteminput" 
+						/>
+						<a-textarea 
+							v-else-if="field.type === 'textarea'"
+							v-model:value="formModel[field.name]" 
+							:placeholder="field.placeholder" 
+							class="iteminput"
+							:rows="field.rows || 3"
+						/>
 					</a-form-item>
 				</a-form>
 			</div>
@@ -27,8 +49,8 @@
 </template>
 
 <script setup>
-	import { Modal as AModal, Button as AButton, Form as AForm } from 'ant-design-vue';
-	import { ref, onMounted, reactive } from 'vue'
+	import { Modal as AModal, Button as AButton, Form as AForm, Input as AInput, Textarea as ATextarea } from 'ant-design-vue';
+	import { ref, onMounted, reactive, computed } from 'vue'
 	const props = defineProps({
 		title: {
 			type: String,
@@ -37,6 +59,16 @@
 		actionText: {
 			type: String,
 			default: '提交',
+		},
+		// 是否显示默认的邮箱和电话输入框
+		showDefaultFields: {
+			type: Boolean,
+			default: true,
+		},
+		// 自定义输入框配置
+		customFields: {
+			type: Array,
+			default: () => null
 		}
 	})
 	const isVisible = ref(false);
@@ -57,6 +89,32 @@
 		phone: [{  trigger: 'change', required: true, message: '请输入电话号码' }],
 		// 未来可以扩展更多，如身份证号等
 	};
+	
+	// 计算要显示的输入框
+	const displayFields = computed(() => {
+		if (props.customFields) {
+			return props.customFields;
+		}
+		
+		if (props.showDefaultFields) {
+			return [
+				{
+					name: 'email',
+					type: 'input',
+					placeholder: '请输入邮箱',
+					rules: rulePresets.email
+				},
+				{
+					name: 'phone',
+					type: 'input',
+					placeholder: '请输入电话号码',
+					rules: rulePresets.phone
+				}
+			];
+		}
+		
+		return [];
+	});
 	
 	const emit = defineEmits(['close', 'finish']);
 	const formRef = ref(null);
