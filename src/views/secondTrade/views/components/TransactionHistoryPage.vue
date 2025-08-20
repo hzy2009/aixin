@@ -2,7 +2,7 @@
   <div class="transaction-history-component-wrapper">
     <a-tabs v-model:activeKey="activeTabKey" class="page-tabs">
       <!-- "交易详情" tab is conditionally rendered based on context -->
-      <a-tab-pane v-if="context === 'fullView'" key="details" tab="交易详情"></a-tab-pane>
+      <a-tab-pane v-if="context === 'fullView'" key="transactionType" tab="交易详情"></a-tab-pane>
       <a-tab-pane key="negotiation" tab="议价历史"></a-tab-pane>
     </a-tabs>
 
@@ -20,7 +20,7 @@
     <div class="page-footer-actions">
       <!-- The "确认出售" button is specific to the 'bidding' transaction type in the 'details' tab -->
       <a-button
-        v-if="context === 'fullView' && activeTabKey === 'details' && transactionType === 'bidding'"
+        v-if="context === 'fullView' && activeTabKey === 'transactionType' && transactionType === 'bidding'"
         type="primary"
         danger
         class="confirm-button"
@@ -42,6 +42,10 @@ import { Decimal } from 'decimal.js';
 import defHttp from '@/utils/http/axios'
 
 const props = defineProps({
+  product: {
+    type: Object,
+    default: () => {},
+  },
   initialData: {
     type: Array,
     required: true,
@@ -56,8 +60,7 @@ const props = defineProps({
   // For the 'details' tab, specifies which column set to use
   transactionType: {
     type: String,
-    default: 'bidding', // 'bidding' | 'fixedPrice'
-    validator: (value) => ['bidding', 'fixedPrice'].includes(value),
+    default: 'PUBLICATION', // 'PUBLICATION' | 'JOIN'
   },
   loading: { // Pass loading state from parent
     type: Boolean,
@@ -71,7 +74,7 @@ const router = useRouter();
 const gridData = ref([]);
 
 // Set initial active tab based on context
-const activeTabKey = ref(props.context === 'biddingDetail' ? 'negotiation' : 'details');
+const activeTabKey = ref(props.context === 'biddingDetail' ? 'negotiation' : 'transactionType');
 
 // Watch for prop changes to update internal data state
 watch(() => props.initialData, (newData) => {
@@ -215,6 +218,19 @@ const gridConfigs = {
     buttons: [
       { key: 'confirmBuy', label: '确定交易', type: 'primary', danger: true },
     ],
+  },
+  negotiation: {
+    columns: [
+      { type: 'seq', title: '序号', width: 60 },
+      { field: 'refUserName', title: '卖方' },
+      { field: 'price', title: '我的竞价', formatter: formatCurrency},
+      { field: 'quantity', title: '购买数量'},
+      { field: 'totalPrice', title: '我的竞价总价', formatter: ({ row }) => Decimal.mul(row.price, row.quantity) },
+      { field: 'approveTime', title: '竞价时间' },
+      { field: 'expireDate', title: '竞拍截止时间' },
+      { field: 'expireDate', title: '竞拍状态' },
+      { title: '交易', slots: { default: 'buttons' }, width: 220 },
+    ],
   }
 };
 
@@ -222,9 +238,10 @@ const currentGridConfig = computed(() => {
   if (activeTabKey.value === 'negotiation') {
     return gridConfigs.negotiation;
   }
-  if (activeTabKey.value === 'details') {
+  if (activeTabKey.value === 'transactionType') {
     // Select the correct 'details' config based on the transactionType prop
-    return gridConfigs[`details_${props.transactionType}`] || { columns: [], buttons: [] };
+    const columnType = props.product.purchaseMethod || 'FIXED_PRICE';
+    return gridConfigs[`${props.transactionType}_${props.product.purchaseMethod}`] || { columns: [], buttons: [] };
   }
   return { columns: [], buttons: [] }; // Fallback
 });

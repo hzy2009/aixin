@@ -1,6 +1,6 @@
 <template>
     <DetailTemplate :product="productData" :page-config="productPageConfig" />
-    <TransactionHistoryPage />
+    <TransactionHistoryPage :product="productData" />
 </template>
 
 <script setup>
