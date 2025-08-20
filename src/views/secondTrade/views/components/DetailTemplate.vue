@@ -79,15 +79,6 @@
       </div>
     </div>
 
-    <!-- 3.类似商品 -->
-    <div class="product-similar-section">
-      <div class="details-title-bar">
-        <h3 class="details-title-text">{{ '类似商品' }}</h3>
-      </div>
-      <div class="details-content-wrapper">
-        
-      </div>
-    </div>
     <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" title="填写信息购买" actionText="联系平台购买" :customFields="customFields"></PhoneAndEmailModal>
   </div>
 </template>
@@ -225,7 +216,7 @@ const handlePurchase = async () => {
   customFields.value = customFieldsMap[props.product.purchaseMethod]
   phoneAndEmailModal.value.opneModal()
 };
-const handleFinish = (data) => {
+const handleFinish = async (data) => {
   // 购买逻辑
   
   const res = await defHttp.post({

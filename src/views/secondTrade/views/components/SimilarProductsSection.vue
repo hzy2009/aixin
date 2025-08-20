@@ -1,33 +1,39 @@
 <template>
   <section class="similar-products-section">
-    <div class="container section-container">
-      <div class="carousel-content-wrapper">
-        <div v-if="isLoading" class="loading-placeholder">
-          <a-spin size="large" />
-        </div>
-        <div v-else-if="products && products.length > 0" class="horizontal-scroll-container">
-          <div class="scrollable-track">
-            <EquipmentCard
-              v-for="product in products"
-              :key="product.id"
-              :product="product"
-              class="scroll-item"
-            />
+    <!-- 3.类似商品 -->
+    <div class="product-similar-section">
+      <div class="details-title-bar">
+        <h3 class="details-title-text">{{ '类似商品' }}</h3>
+      </div>
+      <div class="container section-container">
+        <div class="carousel-content-wrapper">
+          <div v-if="isLoading" class="loading-placeholder">
+            <a-spin size="large" />
           </div>
-        </div>
-        <div v-else class="empty-placeholder">
-          <a-empty description="暂无商品推荐" />
-        </div>
-        <div class="pagination-controls">
-            <div v-if="totalPages > 1" class="carousel-controls">
-                <button class="control-arrow" @click="changePage(currentPage - 1)" :disabled="currentPage === 1">
-                <LeftOutlined />
-                </button>
-                <span class="page-indicator">{{ currentPage }} / {{ totalPages }}</span>
-                <button class="control-arrow" @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages">
-                <RightOutlined />
-                </button>
+          <div v-else-if="products && products.length > 0" class="horizontal-scroll-container">
+            <div class="scrollable-track">
+              <EquipmentCard
+                v-for="product in products"
+                :key="product.id"
+                :product="product"
+                class="scroll-item"
+              />
             </div>
+          </div>
+          <div v-else class="empty-placeholder">
+            <a-empty description="暂无商品推荐" />
+          </div>
+          <div class="pagination-controls">
+              <div v-if="totalPages > 1" class="carousel-controls">
+                  <button class="control-arrow" @click="changePage(currentPage - 1)" :disabled="currentPage === 1">
+                  <LeftOutlined />
+                  </button>
+                  <span class="page-indicator">{{ currentPage }} / {{ totalPages }}</span>
+                  <button class="control-arrow" @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages">
+                  <RightOutlined />
+                  </button>
+              </div>
+          </div>
         </div>
       </div>
     </div>
@@ -242,4 +248,34 @@ watch(() => props.basedOnProductId, () => {
   border: 1px solid @border-color-light;
   border-radius: @border-radius-base;
 }
+.details-title-bar {
+    padding-bottom: @spacing-xs;
+    border-bottom: 1px solid @border-color-light;
+    position: relative;
+
+    .details-title-text {
+     color: #656C74;
+      margin: 0;
+      font-family: PingFang SC;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 15px;
+      letter-spacing: 0px;
+
+      display: inline-block;
+      position: relative;
+
+      &::after {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 2px;
+        background-color: @primary-color;
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        z-index: 1;
+      }
+    }
+  }
 </style>

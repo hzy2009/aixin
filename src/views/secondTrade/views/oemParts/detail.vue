@@ -1,7 +1,7 @@
 <template>
     <DetailTemplate :product="productData" :page-config="productPageConfig" />
-    <!-- <SimilarProductsSection /> -->
-    <TransactionHistoryPage :product="productData"/>
+    <SimilarProductsSection />
+    <!-- <TransactionHistoryPage :product="productData"/> -->
 </template>
 
 <script setup>
