@@ -96,7 +96,7 @@ const cancelSale = (selectedRow) => {
  handleAction({url: '/apm/apmDeviceOrigin/sale/cancel', data: selectedRow})
 }
 
-const deal = (selectedRow) => {
+const handledeal = (selectedRow) => {
   handleAction({url: '/apm/apmDeviceOrigin/sale/deal', data: selectedRow})
 }
 const handleButtonClick = ({ key, row }) => {
@@ -109,7 +109,7 @@ const handleButtonClick = ({ key, row }) => {
       cancelSale(row);
       break;
     case 'deal':
-      cancelSale(row);
+      handledeal(row);
       break;
     default:
       break;

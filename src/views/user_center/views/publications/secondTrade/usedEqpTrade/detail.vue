@@ -1,6 +1,6 @@
 <template>
     <DetailTemplate :product="productData" :page-config="productPageConfig" />
-    <TransactionHistoryPage />
+    <TransactionHistoryPage :product="productData" @confirmSell="confirmSell" @buttonClick="handleButtonClick"/>
 </template>
 
 <script setup>
@@ -8,6 +8,7 @@ import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import DetailTemplate from '../components/DetailTemplate.vue';
 import TransactionHistoryPage from '../components/TransactionHistoryPage.vue';
+import { message  } from 'ant-design-vue';
 import defHttp from '@/utils/http/axios'
 
 const route = useRoute();
@@ -26,10 +27,6 @@ const productPageConfig = ref({
     {
       field: 'inventory.isAvailable',
       formatter: (isAvailable) => isAvailable ? '现货供应' : '暂无现货' // 使用 formatter
-    },
-    {
-      field: 'specs.processSegment',
-      prefix: '工艺段: ' // 添加前缀
     },
   ],  
 
@@ -73,6 +70,46 @@ async function fetchReportDetail() {
     productData.value = null;
   } finally {
     isLoading.value = false;
+  }
+}
+const handleAction = ({url, data}) => {
+  isLoading.value = true;
+  defHttp.post({ url: `${url}/${internalDemandId.value}`, data}).then((res) => {
+    if (res.success) {
+      message.success(res.message);
+      fetchReportDetail();
+    } else {
+      message.error(res.message);
+    }
+  }).finally(() => {
+    isLoading.value = false;
+  });
+}
+const confirmSell = (selectedRow) => {
+ handleAction({url: '/apm/apmDeviceSecondhand/sale/confirm', data: selectedRow})
+}
+
+const cancelSale = (selectedRow) => {
+ handleAction({url: '/apm/apmDeviceSecondhand/sale/cancel', data: selectedRow})
+}
+
+const handledeal = (selectedRow) => {
+  handleAction({url: '/apm/apmDeviceSecondhand/sale/deal', data: selectedRow})
+}
+const handleButtonClick = ({ key, row }) => {
+  console.log(key, row);
+  switch (key) {
+    case 'confirmSale':
+      confirmSell(row);
+      break;
+    case 'cancelSale':
+      cancelSale(row);
+      break;
+    case 'deal':
+      handledeal(row);
+      break;
+    default:
+      break;
   }
 }
 
