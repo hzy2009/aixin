@@ -20,6 +20,8 @@ const defaultTabsConfig = {
       { key: 'RndCollaboration', label: '研发攻关', path: '/user/published/PublicRelations' },
       { key: 'TestingValidation', label: '检测验证', path: '/user/published/Verification' },
       { key: 'OfflineEvents', label: '线下活动', path: '/user/published/OfflineEvent' },
+      { key: 'oemParts', label: '原厂件库存处理', path: '/user/published/oemParts' },
+      { key: 'usedEqpTrade', label: '二手设备交易', path: '/user/published/usedEqpTrade' },
       // ... 更多 "我发布的" 子页签
     ],
   },
@@ -33,6 +35,8 @@ const defaultTabsConfig = {
       { key: 'RndCollaboration', label: '研发攻关', path: '/user/join/PublicRelations' },
       { key: 'TestingValidation', label: '检测验证', path: '/user/join/Verification' },
       { key: 'OfflineEvents', label: '线下活动', path: '/user/join/OfflineEvent' },
+      { key: 'oemParts', label: '原厂件库存处理', path: '/user/join/oemParts' },
+      { key: 'usedEqpTrade', label: '二手设备交易', path: '/user/join/usedEqpTrade' },
       // ... 更多 "我参与的" 子页签
     ],
   },

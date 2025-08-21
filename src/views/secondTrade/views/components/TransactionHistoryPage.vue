@@ -66,16 +66,16 @@ const props = defineProps({
 const emit = defineEmits(['confirmSell', 'switchChange', 'buttonClick', 'goBack']);
 
 const router = useRouter();
-const gridData = ref([{}]);
+const gridData = ref([]);
 
 // Set initial active tab based on context
 const activeTabKey = ref(props.context === 'fullView' ? 'negotiation' : 'transactionType');
 
 // Watch for prop changes to update internal data state
-// watch(() => props.product, (newData) => {
-//   const groupCode = activeTabKey.value === 'transactionType' ? 'submitItemList' : 'dealItemList';
-//   gridData.value = JSON.parse(JSON.stringify(newData[groupCode] || []));
-// }, { immediate: true, deep: true });
+watch(() => props.product, (newData) => {
+  const groupCode = activeTabKey.value === 'transactionType' ? 'submitItemList' : 'dealItemList';
+  gridData.value = JSON.parse(JSON.stringify(newData[groupCode] || []));
+}, { immediate: true, deep: true });
 
 // --- Helper for formatting currency ---
 const formatCurrency = ({ cellValue }) => {
@@ -98,20 +98,20 @@ const gridConfigs = {
           return '-'
         }
       } },
-      { field: 'approveTime', title: '购买时间' },
-      { field: 'sellQuantity', title: '出售数量', editRender: { name: 'VxeNumberInput' } },
+      { field: 'createTime', title: '购买时间', width: 180 },
+      { field: 'confirmedQuantity', title: '出售数量', editRender: { name: 'VxeNumberInput' } },
       { title: '操作', slots: { default: 'buttons' }, width: 180   },
     ],
     buttons: [
-      { key: 'confirmSale', label: '确认出售', type: 'primary', danger: true },
-      { key: 'cancelSale', label: '取消出售', type: 'default' },
+      { key: 'confirmSale', label: '确认出售', type: 'primary', danger: true, getDisabledState: (row) => ['published', 'succeeded'].includes(row.statusCode) },
+      { key: 'cancelSale', label: '取消出售', type: 'default', getDisabledState: (row) => ['published', 'succeeded'].includes(row.statusCode) },
     ],
   },
   PUBLICATION_NEGOTIABLE: {
     columns: [
       { type: 'seq', title: '序号', width: 60 },
       { field: 'fixedPrice', title: '固定价', formatter: formatCurrency },
-      { field: 'buyerId', title: '买方' },
+      { field: 'refUserName', title: '买方' },
       { field: 'negotiatedPrice', title: '买方议价', formatter: formatCurrency },
       { field: 'quantity', title: '购买数量' },
       { field: 'negotiationTime', title: '议价时间' },
@@ -120,9 +120,9 @@ const gridConfigs = {
       { title: '操作', slots: { default: 'buttons' }, width: 320 },
     ],
     buttons: [
-      { key: 'confirmSale', label: '价格通知买家', type: 'primary', danger: true },
-      { key: 'deal', label: '不还价直接成交', type: 'default', getDisabledState: (row) => row.status == 'dealt' },
-      { key: 'cancelSale', label: '取消出售', type: 'default' },
+      { key: 'confirmSale', label: '价格通知买家', type: 'primary', danger: true, getDisabledState: (row) => ['published', 'succeeded'].includes(row.statusCode) },
+      { key: 'deal', label: '不还价直接成交', type: 'default', getDisabledState: (row) => ['published', 'succeeded'].includes(row.statusCode) },
+      { key: 'cancelSale', label: '取消出售', type: 'default', getDisabledState: (row) => ['published', 'succeeded'].includes(row.statusCode) },
     ],
   },
   PUBLICATION_PRICE_ON_REQUEST: {
@@ -133,25 +133,25 @@ const gridConfigs = {
       { field: 'quantity', title: '购买数量' },
       { field: 'totalPrice', title: '总价', formatter: () => '*,***,***,**' },
       { field: 'approveTime', title: '购买时间' },
-      { field: 'sellQuantity', title: '出售数量', editRender: { name: 'VxeNumberInput' } },
+      { field: 'confirmedQuantity', title: '出售数量', editRender: { name: 'VxeNumberInput' } },
       { title: '操作', slots: { default: 'buttons' }, width: 180 },
     ],
     buttons: [
-      { key: 'confirmSale', label: '确认出售', type: 'primary', danger: true },
-      { key: 'cancelSale', label: '取消出售', type: 'default' },
+      { key: 'confirmSale', label: '确认出售', type: 'primary', danger: true, getDisabledState: (row) => ['published', 'succeeded'].includes(row.statusCode) },
+      { key: 'cancelSale', label: '取消出售', type: 'default', getDisabledState: (row) => ['published', 'succeeded'].includes(row.statusCode) },
     ],
   },
   // Config for "交易详情" when transactionType is 'bidding'
   PUBLICATION_AUCTION: {
     columns: [
       { type: 'seq', title: '序号', width: 60 },
-      { field: 'buyerId', title: '买方' },
+      { field: 'refUserName', title: '买方' },
       { field: 'offerPrice', title: '买方出价', formatter: formatCurrency },
       { field: 'quantity', title: '购买数量' },
       { field: 'offerTime', title: '出价时间' },
       { field: 'deadline', title: '竞拍截止时间' },
       { field: 'isSelected', title: '选定买方', slots: { default: 'switch' }, width: 120 },
-      { field: 'sellQuantity', title: '卖出数量', editRender: { name: 'VxeNumberInput' } },
+      { field: 'confirmedQuantity', title: '卖出数量', editRender: { name: 'VxeNumberInput' } },
     ],
     buttons: [],
   },
@@ -169,12 +169,12 @@ const gridConfigs = {
         }
       } },
       { field: 'approveTime', title: '购买时间' },
-      { field: 'sellQuantity', title: '购买数量', editRender: { name: 'VxeNumberInput' } },
+      { field: 'confirmedQuantity', title: '购买数量', editRender: { name: 'VxeNumberInput' } },
       { title: '操作', slots: { default: 'buttons' }, width: 220 },
     ],
     buttons: [
-      { key: 'confirmBuy', label: '确认交易', type: 'primary', danger: true },
-      { key: 'cancelBuy', label: '取消交易', type: 'default' },
+      { key: 'confirmBuy', label: '确认交易', type: 'primary', danger: true, getDisabledState: (row) => ['submit', 'succeeded'].includes(row.statusCode) },
+      { key: 'cancelBuy', label: '取消交易', type: 'default', getDisabledState: (row) => ['submit', 'succeeded'].includes(row.statusCode) },
     ],
   },
   JOIN_NEGOTIABLE: {
@@ -186,12 +186,12 @@ const gridConfigs = {
       { field: 'quantity', title: '购买数量' },
       { field: 'approveTime', title: '议价时间' },
       { field: 'priceExcludingTax', title: '卖方议价', formatter: formatCurrency },
-      { field: 'sellQuantity', title: '可卖数量', editRender: { name: 'VxeNumberInput' } },
+      { field: 'confirmedQuantity', title: '可卖数量', editRender: { name: 'VxeNumberInput' } },
       { title: '操作', slots: { default: 'buttons' }, width: 220 },
     ],
     buttons: [
-      { key: 'confirmBuy', label: '接受还价确认交易', type: 'primary', danger: true },
-      { key: 'cancelBuy', label: '取消交易', type: 'default' },
+      { key: 'confirmBuy', label: '接受还价确认交易', type: 'primary', danger: true , getDisabledState: (row) => ['submit', 'succeeded'].includes(row.statusCode)},
+      { key: 'cancelBuy', label: '取消交易', type: 'default', getDisabledState: (row) => ['submit', 'succeeded'].includes(row.statusCode) },
     ],
   },
   JOIN_PRICE_ON_REQUEST: {
@@ -202,12 +202,12 @@ const gridConfigs = {
       { field: 'quantity', title: '可卖数量'},
       { field: 'totalPrice', title: '总价', formatter: () => '*,***,***,**' },
       { field: 'approveTime', title: '购买时间' },
-      { field: 'sellQuantity', title: '购买数量', editRender: { name: 'VxeNumberInput' } },
+      { field: 'confirmedQuantity', title: '购买数量', editRender: { name: 'VxeNumberInput' } },
       { title: '操作', slots: { default: 'buttons' }, width: 220 },
     ],
     buttons: [
-      { key: 'confirmBuy', label: '确认交易', type: 'primary', danger: true },
-      { key: 'cancelBuy', label: '取消交易', type: 'default' },
+      { key: 'confirmBuy', label: '确认交易', type: 'primary', danger: true, getDisabledState: (row) => ['submit', 'succeeded'].includes(row.statusCode) },
+      { key: 'cancelBuy', label: '取消交易', type: 'default', getDisabledState: (row) => ['submit', 'succeeded'].includes(row.statusCode) },
     ],
   },
   JOIN_AUCTION: {
@@ -223,8 +223,8 @@ const gridConfigs = {
       { title: '交易', slots: { default: 'buttons' }, width: 220 },
     ],
     buttons: [
-      { key: 'confirmBuy', label: '确定交易', type: 'primary', danger: true },
-      { key: 'cancelBuy', label: '取消交易', type: 'default' },
+      { key: 'confirmBuy', label: '确定交易', type: 'primary', danger: true, getDisabledState: (row) => ['submit', 'succeeded'].includes(row.statusCode) },
+      { key: 'cancelBuy', label: '取消交易', type: 'default', getDisabledState: (row) => ['submit', 'succeeded'].includes(row.statusCode) },
     ],
   },
   negotiation: {
@@ -237,7 +237,6 @@ const gridConfigs = {
       { field: 'approveTime', title: '竞价时间' },
       { field: 'expireDate', title: '竞拍截止时间' },
       { field: 'expireDate', title: '竞拍状态' },
-      { title: '交易', slots: { default: 'buttons' }, width: 220 },
     ],
   }
 };
@@ -275,7 +274,7 @@ const handleConfirmSell = () => {
     message.warn('请先选定一个买方');
     return;
   }
-  if (!selectedRow.sellQuantity || Number(selectedRow.sellQuantity) <= 0) {
+  if (!selectedRow.confirmedQuantity || Number(selectedRow.confirmedQuantity) <= 0) {
     message.warn('请输入有效的卖出数量');
     return;
   }

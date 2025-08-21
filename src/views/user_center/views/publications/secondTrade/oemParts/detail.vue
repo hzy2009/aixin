@@ -6,8 +6,8 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import DetailTemplate from '../components/DetailTemplate.vue';
-import TransactionHistoryPage from '../components/TransactionHistoryPage.vue';
+import DetailTemplate from '@/views/secondTrade/views/components/DetailTemplate.vue';
+import TransactionHistoryPage from '@/views/secondTrade/views/components/TransactionHistoryPage.vue';
 import { message  } from 'ant-design-vue';
 import defHttp from '@/utils/http/axios'
 
@@ -66,7 +66,7 @@ async function fetchReportDetail() {
   isLoading.value = true;
   try {
     // TODO: API 调用 - 获取报告详情
-    const response = await defHttp.get({ url: '/apm/apmDeviceOrigin/queryById/front', params: { id: internalDemandId.value } });
+    const response = await defHttp.get({ url: '/apm/apmDeviceOrigin/queryById', params: { id: internalDemandId.value } });
     productData.value = response.result;
   } catch (err) {
     console.error("获取详情失败:", err);
@@ -77,7 +77,7 @@ async function fetchReportDetail() {
 }
 const handleAction = ({url, data}) => {
   isLoading.value = true;
-  defHttp.post({ url: `${url}/${internalDemandId.value}`, data}).then((res) => {
+  defHttp.post({ url: `${url}/${internalDemandId.value}`, data: [data]}).then((res) => {
     if (res.success) {
       message.success(res.message);
       fetchReportDetail();

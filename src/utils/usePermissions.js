@@ -34,7 +34,6 @@ export function usePermissions() {
       'apm-super-vip-free',
       'apm-super-vip'
     ]
-    debugger
     return d.includes(roleCode);
   };
 

@@ -193,7 +193,6 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     loadTableData();
   }
   const handleDelete = ({id, statusCode, statusName}) => {
-    debugger 
     if (statusCode !== 'submit') {
       message.error(`${statusName} 状态的需求无法删除`);
       return;

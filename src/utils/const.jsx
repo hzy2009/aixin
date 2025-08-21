@@ -229,6 +229,7 @@ export const OEMPARTS_COLUMNS = [
     { title: '产品状态', field: 'productStatus', align: 'center', width: 100 },
     { title: '数量', field: 'quantity', align: 'center', width: 90 },
     { title: '需求发布者', field: 'postedBy', align: 'center', width: 100, formatter: ({ cellValue }) => maskMiddle(cellValue) },
+    { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 90 },
 ]
 
 export const STANDARD_COLUMNS = [
@@ -241,6 +242,7 @@ export const STANDARD_COLUMNS = [
     { title: '产品状态', field: 'productStatus', align: 'center', width: 160 },
     { title: '数量', field: 'quantity', align: 'center', width: 160 },
     { title: '需求发布者', field: 'postedBy', align: 'center', width: 120, formatter: ({ cellValue }) => maskMiddle(cellValue) },
+    { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 90 },
 ]
 
 export const NOTSTANDARD_COLUMNS = [
@@ -253,6 +255,7 @@ export const NOTSTANDARD_COLUMNS = [
     { title: '产品状态', field: 'productStatus', align: 'center', width: 160 },
     { title: '数量', field: 'quantity', align: 'center', width: 160 },
     { title: '需求发布者', field: 'postedBy', align: 'center', width: 120, formatter: ({ cellValue }) => maskMiddle(cellValue) },
+    { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 90 },
 ]
 
 export const USEDEQPTRADE_COLUMNS = [
@@ -267,4 +270,5 @@ export const USEDEQPTRADE_COLUMNS = [
     { title: '设备状态', field: 'productStatus', align: 'center', width: 120 },
     { title: '数量', field: 'quantity', align: 'center', width: 120 },
     { title: '需求发布者', field: 'postedBy', align: 'center', width: 120, formatter: ({ cellValue }) => maskMiddle(cellValue) },
+    { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 90 },
 ]

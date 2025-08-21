@@ -405,7 +405,6 @@ const getAllData = () => {
 	const paranms = JSON.parse(JSON.stringify(formModel.value || {}));
 	baseFormConfigs.value.forEach(fielditem => {
 		if (fielditem.fieldType === 'imageUpload') {
-			debugger
 			if (paranms[fielditem.field] && paranms[fielditem.field][0] && paranms[fielditem.field][0].response.message) {
 				paranms[fielditem.field] = paranms[fielditem.field][0].response.message
 			} else {

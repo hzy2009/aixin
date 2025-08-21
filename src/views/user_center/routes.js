@@ -29,6 +29,10 @@ const OfflineEventEditPage = () => import('./views/publications/OfflineEvent/edi
 
 
 
+const oemPartsPage = () =>import('./views/publications/secondTrade/oemParts/list.vue'); 
+const oemPartsPageDetail = () => import('./views/publications/secondTrade/oemParts/detail.vue');
+
+
 
 
 const joinDomesticSourcing = () => import('./views/join/DomesticSourcing/list.vue'); 
@@ -51,6 +55,10 @@ const joinVerificationDetailPage = () =>import('./views/join/Verification/detail
 
 const joinOfflineEvent = () =>import('./views/join/OfflineEvent/list.vue'); 
 const JoinOfflineEventDetailPage = () => import('./views/join/OfflineEvent/detail.vue');
+
+
+const joinOemPartsPage = () =>import('./views/join/secondTrade/oemParts/list.vue'); 
+const joinOemPartsPageDetail = () => import('./views/join/secondTrade/oemParts/detail.vue');
 
 
 const MemberInfoPage = () => import('./views/userInfo/MemberInfoPage/index.vue');
@@ -148,6 +156,17 @@ const userCenterRoutes = [
         component: OfflineEventDetailPage,
         meta: { title: '线下活动详情', roles: ['apm-vip', 'apm-vip-inspection'] }
       },
+      {
+        path: 'oemParts',
+        component: oemPartsPage,
+        meta: { title: '原厂件库存处理', roles: ['apm-vip', 'apm-vip-inspection'] }
+      },
+      {
+        path: 'oemParts/detail/:id',
+        props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
+        component: oemPartsPageDetail,
+        meta: { title: '原厂件库存处理详情', roles: ['apm-vip', 'apm-vip-inspection'] }
+      },
     ]
   },
   {
@@ -210,6 +229,17 @@ const userCenterRoutes = [
         props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
         component: JoinOfflineEventDetailPage,
         meta: { title: '线下活动详情', roles: ['apm-vip', 'apm-vip-inspection', 'apm-register', 'apm-register-expert'] }
+      },
+      {
+        path: 'oemParts',
+        component: joinOemPartsPage,
+        meta: { title: '原厂件库存处理', roles: ['apm-vip', 'apm-vip-inspection'] }
+      },
+      {
+        path: 'oemParts/detail/:id',
+        props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
+        component: joinOemPartsPageDetail,
+        meta: { title: '原厂件库存处理详情', roles: ['apm-vip', 'apm-vip-inspection'] }
       },
     ]
   },
