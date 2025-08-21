@@ -30,10 +30,11 @@
               <span class="price-amount">{{ priceInfo.price }}</span>
               <!-- <span class="price-unit">{{ priceInfo.unit }}</span> -->
               <span class="price-unit">元</span>
+              <span v-if="props.product.purchaseMethod == 'AUCTION'">竞拍截止日期: {{ props.product.expiredDate }}</span>
             </div>
           </div>
 
-          <div class="quantity-section">
+          <div class="quantity-section" v-if="isEdit">
             <span class="quantity-label">购买数量</span>
             <a-input-number
               v-model:value="purchaseQuantity"
@@ -45,7 +46,7 @@
             <span class="quantity-info">库存：<span class="quantity-value">{{ priceInfo.quantity }}个</span></span>
           </div>
 
-          <div class="action-buttons">
+          <div class="action-buttons" v-if="isEdit">
             <a-button
               type="primary"
               danger
@@ -58,7 +59,7 @@
               {{ actionText }}
             </a-button>
           </div>
-          <div v-if="props.product.purchaseMethod == 'AUCTION'">竞拍截止日期: {{ props.product.expiredDate }}</div>
+          <div >需求发布者: {{ props.product.postedBy }}</div>
         </div>
       </div>
 
@@ -68,7 +69,7 @@
           <h3 class="details-title-text">{{ pageConfig.productDetailsTitle || '产品详情' }}</h3>
         </div>
         <div class="details-content-wrapper">
-          <div v-if="productDetailsHtml" class="rich-text-description" v-html="productDetailsHtml"></div>
+          <!-- <div v-if="productDetailsHtml" class="rich-text-description" v-html="productDetailsHtml"></div> -->
           <div v-if="specifications.length" class="specifications-list">
             <div v-for="spec in specifications" :key="spec.label" class="spec-item">
               <span class="spec-label">{{ spec.label }}：</span>
@@ -129,7 +130,7 @@ const extractData = (config) => {
   }
   return value;
 };
-const pageState = computed(() => props.pageConfig.pageState);
+const isEdit = computed(() => props.pageConfig.pageState == 'edit');
 const title = computed(() => extractData(props.pageConfig.title));
 const mainImage = computed(() => extractData(props.pageConfig.mainImage) || defaultImagePlaceholder);
 const tags = computed(() => {
@@ -145,7 +146,7 @@ const tags = computed(() => {
     })
     .filter(tag => tag !== null); // Filter out the nulls
 });
-const productDetailsHtml = computed(() => extractData(props.pageConfig.productDetailsHtml));
+// const productDetailsHtml = computed(() => extractData(props.pageConfig.productDetailsHtml));
 
 const basicInfo = computed(() => {
   if (!Array.isArray(props.pageConfig.basicInfo)) return [];
@@ -217,13 +218,9 @@ const handlePurchase = async () => {
   phoneAndEmailModal.value.opneModal()
 };
 const handleFinish = async (data) => {
-  // 购买逻辑
-  
   const res = await defHttp.post({
     url: `/apm/apmDeviceOrigin/buy/newTodo/${props.product.id}`,
-    params: {
-      item: [{...data}]
-    }
+    data
   })
   if (res.success) {
       phoneAndEmailModal.value.handleClose()
@@ -310,8 +307,8 @@ const handleFinish = async (data) => {
   }
 
   .product-basic-info {
-    padding-bottom: 20px;
-    margin-bottom: 20px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
     border-bottom: 1px solid @border-color-light;
     .info-line {
       font-size: 14px;
@@ -323,7 +320,7 @@ const handleFinish = async (data) => {
       .info-label {
         color: #000000;
         display: inline-block;
-        width: 80px;
+        min-width: 80px;
       }
       .info-value {
         color: #000000;

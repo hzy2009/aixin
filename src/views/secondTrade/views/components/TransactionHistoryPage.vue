@@ -24,7 +24,7 @@
         type="primary"
         danger
         class="confirm-button"
-        @click="handleConfirmBidding"
+        @click="handleConfirmSell"
       >
         确认出售
       </a-button>
@@ -63,7 +63,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['confirmBidding', 'switchChange', 'buttonClick', 'goBack']);
+const emit = defineEmits(['confirmSell', 'switchChange', 'buttonClick', 'goBack']);
 
 const router = useRouter();
 const gridData = ref([{}]);
@@ -120,7 +120,7 @@ const gridConfigs = {
       { title: '操作', slots: { default: 'buttons' }, width: 320 },
     ],
     buttons: [
-      { key: 'notify', label: '价格通知买家', type: 'primary', danger: true },
+      { key: 'confirmSale', label: '价格通知买家', type: 'primary', danger: true },
       { key: 'deal', label: '不还价直接成交', type: 'default', getDisabledState: (row) => row.status == 'dealt' },
       { key: 'cancelSale', label: '取消出售', type: 'default' },
     ],
@@ -268,17 +268,17 @@ const handleButtonClick = ({ key, row }) => {
   emit('buttonClick', { key, row });
 };
 
-const handleConfirmBidding = () => {
-  // const selectedRow = gridData.value.find(item => item.isSelected);
-  // if (!selectedRow) {
-  //   message.warn('请先选定一个买方');
-  //   return;
-  // }
-  // if (!selectedRow.sellQuantity || Number(selectedRow.sellQuantity) <= 0) {
-  //   message.warn('请输入有效的卖出数量');
-  //   return;
-  // }
-  // emit('confirmBidding', selectedRow); // Emit the selected row to the parent
+const handleConfirmSell = () => {
+  const selectedRow = gridData.value.find(item => item.isSelected);
+  if (!selectedRow) {
+    message.warn('请先选定一个买方');
+    return;
+  }
+  if (!selectedRow.sellQuantity || Number(selectedRow.sellQuantity) <= 0) {
+    message.warn('请输入有效的卖出数量');
+    return;
+  }
+  emit('confirmSell', selectedRow); // Emit the selected row to the parent
 };
 
 const goBack = () => {

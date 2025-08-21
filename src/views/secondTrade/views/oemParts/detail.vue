@@ -1,14 +1,12 @@
 <template>
     <DetailTemplate :product="productData" :page-config="productPageConfig" />
     <SimilarProductsSection />
-    <!-- <TransactionHistoryPage :product="productData"/> -->
 </template>
 
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import DetailTemplate from '../components/DetailTemplate.vue';
-import TransactionHistoryPage from '../components/TransactionHistoryPage.vue';
 import SimilarProductsSection from '../components/SimilarProductsSection.vue';
 import defHttp from '@/utils/http/axios'
 
@@ -19,8 +17,9 @@ const props = defineProps({
 const productData = ref({});
 // --- Page Configuration (定义了如何从 `productData` 映射到UI) ---
 const productPageConfig = ref({
+  pageState: 'edit',
   title: { field: 'productName' },
-  mainImage: { field: 'images[0].url' },
+  mainImage: { field: 'url' },
   tags: [
     { field: 'productStatus' }, // 第一个标签来自 data.condition.label
     { field: 'vendor.name' },      // 第二个标签来自 data.vendor.name
@@ -28,15 +27,12 @@ const productPageConfig = ref({
       field: 'inventory.isAvailable',
       formatter: (isAvailable) => isAvailable ? '现货供应' : '暂无现货' // 使用 formatter
     },
-    {
-      field: 'specs.processSegment',
-      prefix: '工艺段: ' // 添加前缀
-    },
   ],  
 
   basicInfo: [
-    { label: '设备厂商', field: 'originalManufacturer' },
-    { label: '设备型号', field: 'compatibleModels' },
+    { label: '零部件料号', field: 'partNumber' },
+    { label: '零部件型号', field: 'compatibleModels' },
+    { label: '品牌/制造商', field: 'originalManufacturer' },
     {
       label: '设备状态',
       field: 'productStatus',
@@ -44,20 +40,11 @@ const productPageConfig = ref({
     },
   ],
 
-  priceInfo: {
-    labelConfig: { field: 'purchaseMethod', defaultValue: '固定价，不可议价' },
-    priceConfig: {
-      field: 'priceExcludingTax',
-      formatter: (value) => value ? Number(value).toLocaleString() : '0.00'
-    },
-    unitConfig: { field: 'pricing.currency', defaultValue: '万元' },
-    stockConfig: { field: 'quantity', defaultValue: 0 },
-  },
-
   productDetailsTitle: '产品详情',
-  productDetailsHtml: { field: 'specification' },
 
   specifications: [
+    { label: '规格', field: 'specification' },
+    { label: '生产日期', field: 'productionDate' },
     { label: '设备名称', field: 'productName' },
     { label: '设备型号', field: 'compatibleModels' },
     { label: '规格描述', field: 'specification' },

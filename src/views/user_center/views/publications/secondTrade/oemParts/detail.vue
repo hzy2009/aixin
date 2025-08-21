@@ -1,6 +1,6 @@
 <template>
     <DetailTemplate :product="productData" :page-config="productPageConfig" />
-    <TransactionHistoryPage :product="productData" />
+    <TransactionHistoryPage :product="productData" @confirmSell="confirmSell" @buttonClick="handleButtonClick"/>
 </template>
 
 <script setup>
@@ -8,6 +8,7 @@ import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import DetailTemplate from '../components/DetailTemplate.vue';
 import TransactionHistoryPage from '../components/TransactionHistoryPage.vue';
+import { message  } from 'ant-design-vue';
 import defHttp from '@/utils/http/axios'
 
 const route = useRoute();
@@ -17,8 +18,9 @@ const props = defineProps({
 const productData = ref({});
 // --- Page Configuration (定义了如何从 `productData` 映射到UI) ---
 const productPageConfig = ref({
+  pageState: 'detail',
   title: { field: 'productName' },
-  mainImage: { field: 'images[0].url' },
+  mainImage: { field: 'url' },
   tags: [
     { field: 'productStatus' }, // 第一个标签来自 data.condition.label
     { field: 'vendor.name' },      // 第二个标签来自 data.vendor.name
@@ -26,15 +28,12 @@ const productPageConfig = ref({
       field: 'inventory.isAvailable',
       formatter: (isAvailable) => isAvailable ? '现货供应' : '暂无现货' // 使用 formatter
     },
-    {
-      field: 'specs.processSegment',
-      prefix: '工艺段: ' // 添加前缀
-    },
   ],  
 
   basicInfo: [
-    { label: '设备厂商', field: 'originalManufacturer' },
-    { label: '设备型号', field: 'compatibleModels' },
+    { label: '零部件料号', field: 'partNumber' },
+    { label: '零部件型号', field: 'compatibleModels' },
+    { label: '品牌/制造商', field: 'originalManufacturer' },
     {
       label: '设备状态',
       field: 'productStatus',
@@ -42,20 +41,11 @@ const productPageConfig = ref({
     },
   ],
 
-  priceInfo: {
-    labelConfig: { field: 'pricing.note', defaultValue: '固定价，不可议价' },
-    priceConfig: {
-      field: 'pricing.amount',
-      formatter: (value) => value ? Number(value).toLocaleString() : '0.00'
-    },
-    unitConfig: { field: 'pricing.currency', defaultValue: '万元' },
-    stockConfig: { field: 'inventory.quantity', defaultValue: 0 },
-  },
-
   productDetailsTitle: '产品详情',
-  productDetailsHtml: { field: 'specification' },
 
   specifications: [
+    { label: '规格', field: 'specification' },
+    { label: '生产日期', field: 'productionDate' },
     { label: '设备名称', field: 'productName' },
     { label: '设备型号', field: 'compatibleModels' },
     { label: '规格描述', field: 'specification' },
@@ -83,6 +73,46 @@ async function fetchReportDetail() {
     productData.value = null;
   } finally {
     isLoading.value = false;
+  }
+}
+const handleAction = ({url, data}) => {
+  isLoading.value = true;
+  defHttp.post({ url: `${url}/${internalDemandId.value}`, data}).then((res) => {
+    if (res.success) {
+      message.success(res.message);
+      fetchReportDetail();
+    } else {
+      message.error(res.message);
+    }
+  }).finally(() => {
+    isLoading.value = false;
+  });
+}
+const confirmSell = (selectedRow) => {
+ handleAction({url: '/apm/apmDeviceOrigin/sale/confirm', data: selectedRow})
+}
+
+const cancelSale = (selectedRow) => {
+ handleAction({url: '/apm/apmDeviceOrigin/sale/cancel', data: selectedRow})
+}
+
+const deal = (selectedRow) => {
+  handleAction({url: '/apm/apmDeviceOrigin/sale/deal', data: selectedRow})
+}
+const handleButtonClick = ({ key, row }) => {
+  console.log(key, row);
+  switch (key) {
+    case 'confirmSale':
+      confirmSell(row);
+      break;
+    case 'cancelSale':
+      cancelSale(row);
+      break;
+    case 'deal':
+      cancelSale(row);
+      break;
+    default:
+      break;
   }
 }
 

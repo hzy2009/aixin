@@ -1,6 +1,6 @@
 <template>
     <DetailTemplate :product="productData" :page-config="productPageConfig" />
-    <TransactionHistoryPage />
+    <TransactionHistoryPage :product="productData" :transactionType="'JOIN'"/>
 </template>
 
 <script setup>
@@ -27,15 +27,12 @@ const productPageConfig = ref({
       field: 'inventory.isAvailable',
       formatter: (isAvailable) => isAvailable ? '现货供应' : '暂无现货' // 使用 formatter
     },
-    {
-      field: 'specs.processSegment',
-      prefix: '工艺段: ' // 添加前缀
-    },
   ],  
 
   basicInfo: [
-    { label: '设备厂商', field: 'originalManufacturer' },
-    { label: '设备型号', field: 'compatibleModels' },
+    { label: '零部件料号', field: 'partNumber' },
+    { label: '零部件型号', field: 'compatibleModels' },
+    { label: '品牌/制造商', field: 'originalManufacturer' },
     {
       label: '设备状态',
       field: 'productStatus',
@@ -46,6 +43,8 @@ const productPageConfig = ref({
   productDetailsTitle: '产品详情',
 
   specifications: [
+    { label: '规格', field: 'specification' },
+    { label: '生产日期', field: 'productionDate' },
     { label: '设备名称', field: 'productName' },
     { label: '设备型号', field: 'compatibleModels' },
     { label: '规格描述', field: 'specification' },
@@ -66,7 +65,7 @@ async function fetchReportDetail() {
   isLoading.value = true;
   try {
     // TODO: API 调用 - 获取报告详情
-    const response = await defHttp.get({ url: '/apm/apmDeviceSecondhand/queryById/front', params: { id: internalDemandId.value } });
+    const response = await defHttp.get({ url: '/apm/apmDeviceOrigin/queryById/front', params: { id: internalDemandId.value } });
     productData.value = response.result;
   } catch (err) {
     console.error("获取详情失败:", err);
