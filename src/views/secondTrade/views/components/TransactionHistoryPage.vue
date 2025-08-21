@@ -224,6 +224,7 @@ const gridConfigs = {
     ],
     buttons: [
       { key: 'confirmBuy', label: '确定交易', type: 'primary', danger: true },
+      { key: 'cancelBuy', label: '取消交易', type: 'default' },
     ],
   },
   negotiation: {
