@@ -83,7 +83,7 @@ async function fetchReportDetail() {
     }
   } catch (err) {
     console.error("获取详情失败:", err);
-    message.error('网络错误，请稍后重试');
+    message.error('');
     productData.value = null;
   } finally {
     isLoading.value = false;
@@ -117,7 +117,7 @@ const handleAction = async ({ url, data }) => {
     }
   } catch (error) {
     console.error('操作失败:', error);
-    message.error('网络错误，请稍后重试');
+    message.error('');
   } finally {
     isLoading.value = false;
   }

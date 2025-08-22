@@ -119,16 +119,44 @@ const customFields = ref([]);
 
 // --- Computed properties to safely extract product using pageConfig and safeGet ---
 
-// 辅助函数，现在使用我们自己的 safeGet
+/**
+ * 安全提取产品数据
+ * @param {Object} config - 配置对象
+ * @param {string} config.field - 字段路径
+ * @param {Function} config.formatter - 格式化函数
+ * @param {*} config.defaultValue - 默认值
+ * @returns {*} 提取的值
+ */
 const extractData = (config) => {
-  if (!config || !config.field) return config.defaultValue !== undefined ? config.defaultValue : '-';
-  // 使用 safeGet
-  const value = safeGet(props.product, config.field, config.defaultValue);
-  if (value === null || value === undefined) return config.defaultValue !== undefined ? config.defaultValue : '-';
-  if (typeof config.formatter === 'function') {
-    return config.formatter(value, props.product);
+  // 参数验证
+  if (!config || typeof config !== 'object') {
+    return '-';
   }
-  return value;
+  
+  // 如果没有字段配置，返回默认值
+  if (!config.field) {
+    return config.defaultValue !== undefined ? config.defaultValue : '-';
+  }
+  
+  try {
+    // 使用 safeGet 安全获取值
+    const value = safeGet(props.product, config.field, config.defaultValue);
+    
+    // 值为空时返回默认值
+    if (value === null || value === undefined || value === '') {
+      return config.defaultValue !== undefined ? config.defaultValue : '-';
+    }
+    
+    // 应用格式化函数
+    if (typeof config.formatter === 'function') {
+      return config.formatter(value, props.product);
+    }
+    
+    return value;
+  } catch (error) {
+    console.error('提取数据时发生错误:', error, config);
+    return config.defaultValue !== undefined ? config.defaultValue : '-';
+  }
 };
 const isEdit = computed(() => props.pageConfig.pageState == 'edit');
 const title = computed(() => extractData(props.pageConfig.title));
@@ -193,48 +221,154 @@ const priceInfo = computed(() => {
 const isPurchasable = computed(() => priceInfo.value.quantity > 0);
 const phoneAndEmailModal = ref();
 
+/**
+ * 处理购买操作
+ */
 const handlePurchase = async () => {
+  // 验证商品可购买性
   if (!isPurchasable.value) {
-    message.warn('该商品库存不足，无法购买。');
+    message.warn('该商品库存不足，无法购买');
     return;
   }
-  const customFieldsMap = {
-    'FIXED_PRICE': [
-      { min:1, max: props.product.quantity, field: 'quantity', placeholder: '请输入数量', defaultValue: purchaseQuantity.value, type: 'number', rules: [{ required: true, message: '请输入数量' }] },
-    ],
-    'NEGOTIABLE': [
-      { field: 'price', placeholder: '请输入价格', type: 'number' },
-      { min:1, max: props.product.quantity, field: 'quantity', placeholder: '请输入数量', defaultValue: purchaseQuantity.value, type: 'number', rules: [{ required: true, message: '请输入数量' }] },
-    ],
-    'PRICE_ON_REQUEST': [
-      { min:1, max: props.product.quantity, field: 'quantity', placeholder: '请输入数量', defaultValue: purchaseQuantity.value, type: 'number', rules: [{ required: true, message: '请输入数量' }] },
-    ],
-    'AUCTION': [
-      { field: 'price', placeholder: '请输入价格', type: 'number' },
-      { min:1, max: props.product.quantity, field: 'quantity', placeholder: '请输入数量', defaultValue: purchaseQuantity.value, type: 'number', rules: [{ required: true, message: '请输入数量' }] },
-    ],
+  
+  // 验证产品信息
+  if (!props.product || !props.product.purchaseMethod) {
+    message.error('产品信息不完整，无法购买');
+    return;
   }
-  customFields.value = customFieldsMap[props.product.purchaseMethod]
-  phoneAndEmailModal.value.opneModal()
+  
+  try {
+    // 根据购买方式配置自定义字段
+    const customFieldsMap = {
+      'FIXED_PRICE': [
+        { 
+          min: 1, 
+          max: props.product.quantity, 
+          field: 'quantity', 
+          placeholder: '请输入数量', 
+          defaultValue: purchaseQuantity.value, 
+          type: 'number', 
+          rules: [{ required: true, message: '请输入数量' }] 
+        },
+      ],
+      'NEGOTIABLE': [
+        { 
+          field: 'price', 
+          placeholder: '请输入价格', 
+          type: 'number',
+          rules: [{ required: true, message: '请输入价格' }]
+        },
+        { 
+          min: 1, 
+          max: props.product.quantity, 
+          field: 'quantity', 
+          placeholder: '请输入数量', 
+          defaultValue: purchaseQuantity.value, 
+          type: 'number', 
+          rules: [{ required: true, message: '请输入数量' }] 
+        },
+      ],
+      'PRICE_ON_REQUEST': [
+        { 
+          min: 1, 
+          max: props.product.quantity, 
+          field: 'quantity', 
+          placeholder: '请输入数量', 
+          defaultValue: purchaseQuantity.value, 
+          type: 'number', 
+          rules: [{ required: true, message: '请输入数量' }] 
+        },
+      ],
+      'AUCTION': [
+        { 
+          field: 'price', 
+          placeholder: '请输入竞价', 
+          type: 'number',
+          rules: [{ required: true, message: '请输入竞价' }]
+        },
+        { 
+          min: 1, 
+          max: props.product.quantity, 
+          field: 'quantity', 
+          placeholder: '请输入数量', 
+          defaultValue: purchaseQuantity.value, 
+          type: 'number', 
+          rules: [{ required: true, message: '请输入数量' }] 
+        },
+      ],
+    };
+    
+    // 获取对应购买方式的字段配置
+    const fields = customFieldsMap[props.product.purchaseMethod];
+    if (!fields) {
+      message.error(`不支持的购买方式: ${props.product.purchaseMethod}`);
+      return;
+    }
+    
+    customFields.value = fields;
+    
+    // 打开弹窗
+    if (phoneAndEmailModal.value?.openModal) {
+      phoneAndEmailModal.value.openModal();
+    } else {
+      message.error('弹窗组件未正确加载');
+    }
+  } catch (error) {
+    console.error('处理购买操作时发生错误:', error);
+    message.error('系统错误，请稍后重试');
+  }
 };
+/**
+ * 处理购买完成
+ * @param {Object} data - 表单数据
+ */
 const handleFinish = async (data) => {
-  const res = await defHttp.post({
-    url: `/apm/apmDeviceOrigin/buy/newTodo/${props.product.id}`,
-    data
-  })
-  if (res.success) {
-      phoneAndEmailModal.value.handleClose()
-      const defaultConfig = {
-      title: '一键敲门成功',
-      message: '一键敲门后，客服人员将在30分钟内与您联系',
-      contactInfo: { name: '陈靖玮', phone: '4000118892', email: 'info-service@icshare.com' },
-      buttonText: '返回首页',
-      showButton: false,
-      onAction: null, // Default onAction is handled in store to go home
-      };
-      modalStore.showSuccessPrompt({ ...defaultConfig });
+  const productId = props.product?.id;
+  
+  if (!productId) {
+    message.error('产品信息缺失，无法提交');
+    return;
   }
-}
+  
+  if (!data || typeof data !== 'object') {
+    message.error('请填写完整信息');
+    return;
+  }
+  
+  try {
+    isSubmitting.value = true;
+    
+    const response = await defHttp.post({
+      url: `/apm/apmDeviceOrigin/buy/newTodo/${productId}`,
+      data
+    });
+    
+    if (response.success) {
+      phoneAndEmailModal.value?.handleClose?.();
+      
+      const successConfig = {
+        title: '一键敲门成功',
+        message: '一键敲门后，客服人员将在30分钟内与您联系',
+        contactInfo: { 
+          name: '陈靖玮', 
+          phone: '4000118892', 
+          email: 'info-service@icshare.com' 
+        },
+        buttonText: '返回首页',
+        showButton: false,
+        onAction: null, // Store默认处理返回首页
+      };
+      
+      modalStore.showSuccessPrompt(successConfig);
+    } else {
+      message.error(response.message || '提交失败，请稍后重试');
+    }
+  } catch (error) {
+    console.error('提交失败:', error);
+  } finally {
+    isSubmitting.value = false;
+  }
+};
 </script>
 
 <style scoped lang="less">
