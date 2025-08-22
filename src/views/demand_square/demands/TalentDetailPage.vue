@@ -131,7 +131,7 @@ const pageData = reactive({
 })
 
 const submit = async () => {
-  phoneAndEmailModal.value.opneModal()
+  phoneAndEmailModal.value.openModal()
 };
 const handleFinish = async (data) => {
   const response = await defHttp.post({ url: `/apm/apmTalent/newTodo/${props.IdProp}`, params: data });

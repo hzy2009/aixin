@@ -132,7 +132,7 @@ const navigateToHotNews = (newsItem) => {
   router.push({ name: 'IndustryDynamicDetail', params: { id: newsItem.id } });
 };
 const handleDefaultSubmit = () => {
-  phoneAndEmailModal.value.opneModal()
+  phoneAndEmailModal.value.openModal()
 }
 const handleFinish = async (data) => {
   const res = await defHttp.get({ url: `/apm/apmTodo/apmNewsForRd/newTodo/${currentItem.value.id}`, params: data });

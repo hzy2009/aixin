@@ -36,7 +36,7 @@ const handleClick = () => {
 		return message.error('请先勾选数据')
 	}
 	ids.value = records.map(item => item.id)
-  phoneAndEmailModal.value.opneModal()
+  phoneAndEmailModal.value.openModal()
 }
 
 const handleFinish = async (p) => {

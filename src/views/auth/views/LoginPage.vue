@@ -218,7 +218,7 @@ onMounted(() => {
   getCaptchaCode()
 });
 const handleRegister = () => {
-  phoneAndEmailModal.value.opneModal()
+  phoneAndEmailModal.value.openModal()
 }
 const handleFinish = async (data) => {
   const response = await defHttp.get({ url: `/apm/apmTodo/newVip/newTodo/front`, params: data });

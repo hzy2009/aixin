@@ -75,7 +75,7 @@ const handleLoginSuccess = (userData) => {
 const navigateToRegister = () => {
   // router.push({ name: 'RegisterPage' }); // 假设你有注册页的路由名
   // modalStore.hideLogin();
-  phoneAndEmailModal.value.opneModal()
+  phoneAndEmailModal.value.openModal()
 };
 const handleFinish = async (data) => {
   const response = await defHttp.get({ url: `/apm/apmTodo/newVip/newTodo/front`, params: data });

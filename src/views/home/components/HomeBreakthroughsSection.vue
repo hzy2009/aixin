@@ -65,7 +65,7 @@ const handleFinish = async (data) => {
 }
 const handleBreakthroughActionBtnClick = async (item) => {
   currentItem.value = item;
-  phoneAndEmailModal.value.opneModal()
+  phoneAndEmailModal.value.openModal()
 };
 
 onMounted(() => {

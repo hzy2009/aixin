@@ -112,11 +112,11 @@ const isRegisterSuccess = ref(false);
 const phoneAndEmailModal = ref()
 const handlePurchase = async () => {
   // if (authStore?.token) {
-  //   phoneAndEmailModal.value.opneModal()
+  //   phoneAndEmailModal.value.openModal()
   // } else {
   //   modalStore.showLogin();
   // }
-  phoneAndEmailModal.value.opneModal()
+  phoneAndEmailModal.value.openModal()
 };
 
 const handleFinish = async (data) => {

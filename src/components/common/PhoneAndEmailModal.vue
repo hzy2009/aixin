@@ -135,7 +135,7 @@
       console.log('error', error);
     });
 	};
-	const opneModal = () => {
+	const openModal = () => {
 		nextTick(() => {
 			props.customFields.forEach(item => {
 				formModel[item.field] = item.defaultValue
@@ -144,7 +144,7 @@
 		isVisible.value = true;
 	}
 	
-	defineExpose({ opneModal, handleClose });
+	defineExpose({ openModal, handleClose });
 </script>
 <style scoped lang="less">
 @import '@/assets/styles/_variables.less';
