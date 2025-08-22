@@ -59,35 +59,72 @@ const productPageConfig = ref({
   ]
 });
 const isLoading = ref(false);
-const internalDemandId = ref(props.IdProp);
+const internalDemandId = ref(props.IdProp || route.params.id);
 
+/**
+ * 获取产品详情
+ */
 async function fetchReportDetail() {
-  if (!props.IdProp) return;
+  const id = internalDemandId.value;
+  if (!id) {
+    console.error('缺少产品ID');
+    return;
+  }
+  
   isLoading.value = true;
   try {
-    // TODO: API 调用 - 获取报告详情
-    const response = await defHttp.get({ url: '/apm/apmDeviceOrigin/queryById', params: { id: internalDemandId.value } });
-    productData.value = response.result;
+    const response = await defHttp.get({ 
+      url: '/apm/apmDeviceOrigin/queryById', 
+      params: { id } 
+    });
+    
+    if (response.success) {
+      productData.value = response.result;
+    } else {
+      message.error(response.message || '获取详情失败');
+      productData.value = null;
+    }
   } catch (err) {
     console.error("获取详情失败:", err);
+    message.error('网络错误，请稍后重试');
     productData.value = null;
   } finally {
     isLoading.value = false;
   }
 }
-const handleAction = ({url, data}) => {
+/**
+ * 处理操作请求
+ * @param {Object} params - 参数对象
+ * @param {string} params.url - API地址
+ * @param {Object} params.data - 请求数据
+ */
+const handleAction = async ({ url, data }) => {
+  const id = internalDemandId.value;
+  if (!id) {
+    message.error('缺少产品ID');
+    return;
+  }
+
   isLoading.value = true;
-  defHttp.post({ url: `${url}/${internalDemandId.value}`, data: [data]}).then((res) => {
-    if (res.success) {
-      message.success(res.message);
-      fetchReportDetail();
+  try {
+    const response = await defHttp.post({ 
+      url: `${url}/${id}`, 
+      data: Array.isArray(data) ? data : [data]
+    });
+    
+    if (response.success) {
+      message.success(response.message || '操作成功');
+      await fetchReportDetail(); // 刷新数据
     } else {
-      message.error(res.message);
+      message.error(response.message || '操作失败');
     }
-  }).finally(() => {
+  } catch (error) {
+    console.error('操作失败:', error);
+    message.error('网络错误，请稍后重试');
+  } finally {
     isLoading.value = false;
-  });
-}
+  }
+};
 const confirmSell = (selectedRow) => {
  handleAction({url: '/apm/apmDeviceOrigin/sale/confirm', data: selectedRow})
 }
