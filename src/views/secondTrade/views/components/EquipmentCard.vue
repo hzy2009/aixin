@@ -24,7 +24,7 @@
           <span class="price-unit-text" v-if="item.priceType !== 'ask'">万元</span>
           <span class="price-suffix-text" v-if="item.priceType === 'auction'">起拍</span>
         </div>
-        <div class="price-note-text">{{ item.negotiableText || '固定价，不可议价'}}</div>
+        <div class="price-note-text">{{ purchaseMethodtext}}</div>
       </div>
     </div>
   </div>
@@ -33,27 +33,13 @@
 <script setup>
 import { computed, ref } from 'vue';
 import defaultPlaceholder from '@/assets/images/fallback/detailFall.jpg'; // 准备一个占位图
-
+import { selectOptions } from '@/utils/index';
+import { loading } from 'vxe-pc-ui';
 const props = defineProps({
   item: {
     type: Object,
     required: true,
     default: () => ({ // Default data structure matching the image
-        id: '1',
-        imageUrl: null, // Let it default to placeholder
-        title: 'Nikon NSR 2205i14E步进式光刻机',
-        tags: [
-            { text: '全新整机(原厂状态)', type: 'status' },
-            { text: '现货', type: 'stock' }
-        ],
-        specs: [
-            { label: '设备类型', value: '光刻设备(Lithography)' },
-            { label: '设备型号', value: 'NSR-2205i14E' },
-            { label: '设备厂商', value: 'Nikon' },
-        ],
-        price: 350,
-        priceType: 'fixed', // 'fixed', 'ask', 'auction'
-        negotiableText: '固定价, 不可议价',
     })
   },
   fieldList: {
@@ -72,6 +58,10 @@ const formattedPrice = computed(() => {
   if (props.item.priceType === 'ask') return '****';
   return props.item.price || '面议';
 });
+const purchaseMethodtext = computed(() => {
+  const purchaseMethodMap = selectOptions('purchase_method').reduce((acc, { value: key, label }) => ({ ...acc, [key]: label }), {});
+  return purchaseMethodMap[props.item.purchaseMethod] || '固定价，不可议价';
+})
 
 const onImageError = () => {
   // If the provided imageUrl fails to load, switch to the default placeholder

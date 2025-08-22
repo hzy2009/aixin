@@ -1,6 +1,6 @@
 <template>
     <DetailTemplate :product="productData" :page-config="productPageConfig" />
-    <SimilarProductsSection />
+    <SimilarProductsSection :config="similarConfig" :basedOnProductId="productData.id" :fieldList="fieldList"/>
 </template>
 
 <script setup>
@@ -57,6 +57,15 @@ const productPageConfig = ref({
     // { label: '税率', field: 'specs.taxRate', formatter: (val) => val ? `${val}%` : '-' },
   ]
 });
+const fieldList = [
+    { key: 'deviceType', label: '设备类型' },
+    { key: 'compatibleModels', label: '设备型号' },
+    { key: 'originalManufacturer', label: '设备厂商' },
+]
+const similarConfig = ref({
+  url: '/apm/apmDeviceOrigin/list/front',
+  params: {},
+})
 const isLoading = ref(false);
 const internalDemandId = ref(props.IdProp);
 

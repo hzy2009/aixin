@@ -1,13 +1,15 @@
 <template>
-  <div class="results-grid">
-    <EquipmentCard
-      v-for="item in formattedDataSource"
-      :key="item.id"
-      :item="item"
-      :fieldList="fieldList"
-      @details="handleDetails"
-    />
-  </div>
+  <a-spin :spinning="loading">
+    <div class="results-grid">
+      <EquipmentCard
+        v-for="item in formattedDataSource"
+        :key="item.id"
+        :item="item"
+        :fieldList="fieldList"
+        @details="handleDetails"
+      />
+    </div>
+  </a-spin>
 </template>
 
 <script setup>
@@ -23,6 +25,10 @@ const props = defineProps({
   fieldList: {
     type: Array,
     required: true
+  },
+  loading: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -43,6 +49,7 @@ const handleDetails = (item) => {
 
 <style scoped lang="less">
 .results-grid {
+  min-height: 500px;
   display: grid;
   // 响应式布局：在不同屏幕宽度下显示不同列数
   grid-template-columns: repeat(4, 1fr); // 默认4列

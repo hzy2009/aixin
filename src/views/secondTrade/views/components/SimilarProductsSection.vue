@@ -14,8 +14,10 @@
             <div class="scrollable-track">
               <EquipmentCard
                 v-for="product in products"
+                :item="product"
                 :key="product.id"
                 :product="product"
+                :fieldList="fieldList"
                 class="scroll-item"
               />
             </div>
@@ -28,7 +30,7 @@
                   <button class="control-arrow" @click="changePage(currentPage - 1)" :disabled="currentPage === 1">
                   <LeftOutlined />
                   </button>
-                  <span class="page-indicator">{{ currentPage }} / {{ totalPages }}</span>
+                  <span class="pageNo-indicator">{{ currentPage }} / {{ totalPages }}</span>
                   <button class="control-arrow" @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages">
                   <RightOutlined />
                   </button>
@@ -45,12 +47,20 @@ import { ref, onMounted, watch, computed } from 'vue';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons-vue';
 import { Spin as ASpin, Empty as AEmpty, message } from 'ant-design-vue';
 import EquipmentCard from './EquipmentCard.vue'; // Adjust path if necessary
-// import apiClient from '@/api'; // Your Axios instance
+import defHttp from '@/utils/http/axios'
 
 const props = defineProps({
   basedOnProductId: {
     type: String,
     default: null
+  },
+  config: {
+    type: Object,
+    default: () => ({})
+  },
+  fieldList: {
+    type: Array,
+    default: () => []
   }
 });
 
@@ -58,66 +68,24 @@ const products = ref([]);
 const isLoading = ref(false);
 const currentPage = ref(1);
 const totalItems = ref(0);
-const itemsPerPage = 10; // As per your requirement
+const pageSize = 10; // As per your requirement
 
 const totalPages = computed(() => {
   if (totalItems.value === 0) return 1;
-  return Math.ceil(totalItems.value / itemsPerPage);
+  return Math.ceil(totalItems.value / pageSize);
 });
 
-async function fetchSimilarProducts(page = 1) {
+async function fetchSimilarProducts(pageNo = 1) {
   isLoading.value = true;
   try {
-    // TODO: Replace with your actual API call.
-    // The API should support pagination (`page` and `limit` parameters).
-    // const response = await apiClient.get('/api/products/similar', {
-    //   params: {
-    //     id: props.basedOnProductId,
-    //     page: page,
-    //     limit: itemsPerPage
-    //   }
-    // });
-    // products.value = response.data.records;
-    // totalItems.value = response.data.total;
-
-    // --- Mock Data ---
-    console.log(`[MOCK API] Fetching page ${page} of similar products...`);
-    await new Promise(resolve => setTimeout(resolve, 500));
-
-    // Simulate a larger total dataset on the "backend"
-    const mockTotalItems = 25; // e.g., 25 items total, so there will be 3 pages
-    totalItems.value = mockTotalItems;
-
-    const mockItems = [];
-    const startIndex = (page - 1) * itemsPerPage;
-    // Generate only the items for the current page
-    for (let i = 1; i <= itemsPerPage; i++) {
-        const currentIndex = startIndex + i;
-        if (currentIndex > mockTotalItems) break; // Stop if we've generated all items
-
-        const priceTypes = ['fixed', 'negotiable', 'open', 'auction'];
-        const priceType = priceTypes[currentIndex % priceTypes.length];
-        let priceInfo = {};
-         switch (priceType) {
-            case 'fixed': priceInfo = { type: 'fixed', price: 350 + currentIndex, unit: '万元', subtitle: '固定价, 不可议价' }; break;
-            case 'negotiable': priceInfo = { type: 'negotiable', price: 350 + currentIndex, unit: '万元', subtitle: '可议价' }; break;
-            case 'open': priceInfo = { type: 'open', price: '****', unit: '万元', subtitle: '开放价格, 接受询价' }; break;
-            case 'auction': priceInfo = { type: 'auction', price: 350 + currentIndex, unit: '万元起拍', subtitle: '在线竞拍' }; break;
-        }
-
-        mockItems.push({
-          id: `prod-scroll-${currentIndex}`,
-          imageUrl: currentIndex % 3 === 1 ? '@/assets/images/some-machine.png' : null,
-          tags: [{ text: '全新整机(原厂状态)', type: 'primary' }, { text: currentIndex % 2 === 0 ? '现货' : '非现货', type: currentIndex % 2 === 0 ? 'stock' : 'secondary' }],
-          title: `Nikon NSR 2205i14E 类似光刻机 #${currentIndex}`,
-          details: [{ label: '设备类型', value: '光刻设备(Lithography)' }, { label: '设备型号', value: 'NSR-2205i14E' }, { label: '设备厂商', value: 'Nikon' }],
-          priceInfo: priceInfo
-        });
+    const {success, result, message } = await defHttp.get({ url: props.config.url, params: { pageNo, pageSize: pageSize, ...props.config.params } });
+    if (success) {
+      const {records, total, current} = result
+      products.value = records || [];
+      console.log(products.value);
+      totalItems.value = total;
+      currentPage.value = current; // Update current pageNo state
     }
-    products.value = mockItems;
-    currentPage.value = page; // Update current page state
-    // --- End Mock Data ---
-
   } catch (err) {
     console.error("Failed to fetch similar products:", err);
     message.error("加载类似商品失败");
@@ -136,10 +104,9 @@ const changePage = (newPage) => {
 };
 
 onMounted(() => {
-  fetchSimilarProducts(1); // Fetch the first page on mount
+  fetchSimilarProducts(1); // Fetch the first pageNo on mount
 });
 
-// Watch for changes in the base product ID to refetch similar items
 watch(() => props.basedOnProductId, () => {
     fetchSimilarProducts(1);
 });
@@ -204,7 +171,7 @@ watch(() => props.basedOnProductId, () => {
             }
         }
 
-        .page-indicator {
+        .pageNo-indicator {
             font-size: 14px;
             margin: 0 8px;
             user-select: none;

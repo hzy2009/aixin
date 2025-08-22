@@ -1,10 +1,10 @@
 <template>
     <div>
         <listPage :pageData="pageData" ref="refListPage">
-            <template #content="{ dataSource, paginationConfig }">
+            <template #content="{ dataSource, paginationConfig, loading }">
                 <div class="results-grid">
                     <SortFilters :filters="sortOptions" v-model:value="currentSort" @change="onSortChange" />
-                    <EquipmentList :dataSource="dataSource" @handleDetails="handleDetails" :fieldList="fieldList"/>
+                    <EquipmentList :dataSource="dataSource" @handleDetails="handleDetails" :fieldList="fieldList" :loading="loading"/>
                 </div>
                 <div class="pagination-wrapper">
                     <a-pagination size="small" v-model:current="paginationConfig.current" v-bind="{...paginationConfig, showSizeChanger: false}"

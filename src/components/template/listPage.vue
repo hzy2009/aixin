@@ -58,7 +58,7 @@
             </a-button>
         </div>
         <slot v-if="$slots['tableCustomOperations']" name="tableCustomOperations" :url="url" :dataSource="tableData" :loadTableData="loadTableData"></slot>
-        <slot name="content" :dataSource="tableData" :paginationConfig="pagination" :handleTablePaginationChange="handleTablePaginationChange">
+        <slot name="content" :dataSource="tableData" :paginationConfig="pagination" :handleTablePaginationChange="handleTablePaginationChange" :loading="isLoading">
             <div class="results-table-section">
                 <!-- VXE-GRID REPLACEMENT -->
                 <vxe-grid
@@ -104,6 +104,7 @@ import detailIcon from '@/assets/images/icon-detail.png';
 import delIcon from '@/assets/images/icon-delete.png';
 
 import { usePermissions } from '@/utils/usePermissions';
+import { loading } from 'vxe-pc-ui';
 const { withPermission, hasPermission } = usePermissions();
 
 const authStore = useAuthStore();
