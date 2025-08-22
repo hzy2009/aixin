@@ -37,6 +37,7 @@
             :danger="button.danger"
             :disabled="getButtonDisabledState(button, row)"
             class="actionButton"
+            size="small"
             @click="() => onButtonClick(button.key, row)"
           >
             {{ button.label }}
@@ -286,8 +287,7 @@ defineExpose({
   flex-wrap: wrap;
 
   .actionButton {
-    border-radius: @border-radius-sm;
-    padding: 4px 8px;
+    border-radius: 4px;
     font-size: 12px;
     min-width: 60px;
     

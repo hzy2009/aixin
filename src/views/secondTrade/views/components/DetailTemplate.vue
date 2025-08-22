@@ -29,8 +29,8 @@
             <div class="price-value-wrapper">
               <span class="price-amount">{{ priceInfo.price }}</span>
               <!-- <span class="price-unit">{{ priceInfo.unit }}</span> -->
-              <span class="price-unit">元</span>
-              <span v-if="props.product.purchaseMethod == 'AUCTION'">竞拍截止日期: {{ props.product.expiredDate }}</span>
+              <span class="price-unit">元<span v-if="props.product.purchaseMethod == 'AUCTION'">起拍</span></span>
+              <span v-if="props.product.purchaseMethod == 'AUCTION'" class="expiredDateText">竞拍截止日期: {{ props.product.expiredDate }}</span>
             </div>
           </div>
 
@@ -483,6 +483,13 @@ const handleFinish = async (data) => {
         margin-right: 6px;
       }
       .price-unit {
+      }
+      .expiredDateText{
+        margin-left: 10px;
+        font-family: PingFang SC;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 16px;
       }
     }
   }

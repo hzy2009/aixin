@@ -263,7 +263,7 @@ const handleQuantityChange = (value, row, field) => {
 const gridConfigs = {
   PUBLICATION_FIXED_PRICE: {
     columns: [
-      { type: 'seq', title: '序号', width: 60 },
+      { type: 'seq', title: '序号', width: 46 },
       { field: 'refUserName', title: '买方' },
       { field: 'fixedPrice', title: '固定价', formatter: formatCurrency },
       { field: 'quantity', title: '购买数量' },
@@ -283,12 +283,12 @@ const gridConfigs = {
   },
   PUBLICATION_NEGOTIABLE: {
     columns: [
-      { type: 'seq', title: '序号', width: 60 },
+      { type: 'seq', title: '序号', width: 46 },
       { field: 'fixedPrice', title: '固定价', formatter: formatCurrency },
       { field: 'refUserName', title: '买方' },
       { field: 'price', title: '买方议价', formatter: formatCurrency },
       { field: 'quantity', title: '购买数量' },
-      { field: 'negotiationTime', title: '议价时间' },
+      { field: 'createTime', title: '议价时间' },
       { 
         field: 'confirmedQuantity', 
         title: '交易数量',
@@ -297,7 +297,7 @@ const gridConfigs = {
       },
       { 
         field: 'priceExcludingTax', 
-        title: '卖方还价',
+        title: '我的还价',
         slots: { default: 'priceEdit' }
       },
       { title: '操作', slots: { default: 'buttons' }, width: 300 },
@@ -310,16 +310,18 @@ const gridConfigs = {
   },
   PUBLICATION_PRICE_ON_REQUEST: {
      columns: [
-      { type: 'seq', title: '序号', width: 60 },
-      { field: 'refUserName', title: '买方' },
-      { field: 'priceExcludingTax', title: '固定价', formatter: () => '*,***,***,**' },
-      { field: 'quantity', title: '购买数量' },
-      { field: 'totalPrice', title: '总价', formatter: () => '*,***,***,**' },
-      { field: 'approveTime', title: '购买时间' },
+      { type: 'seq', title: '序号', width: 46 },
+      { field: 'refUserName', title: '买方', width: 120 },
+      { field: 'priceExcludingTax', title: '固定价', formatter: () => '*,***,**', width: 80 },
+      { field: 'quantity', title: '购买数量', width: 80 },
+      { field: 'totalPrice', title: '总价', formatter: () => '*,***,**', width: 80 },
+      { field: 'createTime', title: '购买时间', width: 160 },
+      { field: 'remark', title: '备注' },
       { 
         field: 'confirmedQuantity', 
         title: '出售数量',
-        slots: { default: 'quantityEdit' }
+        slots: { default: 'quantityEdit' },
+        width: 120 
       },
       { title: '操作', slots: { default: 'buttons' }, width: 180 },
     ],
@@ -331,12 +333,12 @@ const gridConfigs = {
   // Config for "交易详情" when transactionType is 'bidding'
   PUBLICATION_AUCTION: {
     columns: [
-      { type: 'seq', title: '序号', width: 60 },
+      { type: 'seq', title: '序号', width: 46 },
       { field: 'refUserName', title: '买方' },
       { field: 'price', title: '买方出价', formatter: formatCurrency },
       { field: 'quantity', title: '购买数量' },
-      { field: 'offerTime', title: '出价时间' },
-      { field: 'deadline', title: '竞拍截止时间' },
+      { field: 'createTime', title: '出价时间' },
+      { field: 'expiredDate', title: '竞拍截止时间' },
       { field: 'isSelected', title: '选定买方', slots: { default: 'switch' }, width: 120 },
       { 
         field: 'confirmedQuantity', 
@@ -348,7 +350,7 @@ const gridConfigs = {
   },
   JOIN_FIXED_PRICE: {
     columns: [
-      { type: 'seq', title: '序号', width: 60 },
+      { type: 'seq', title: '序号', width: 46 },
       { field: 'refUserName', title: '卖方' },
       { field: 'fixedPrice', title: '固定价', formatter: formatCurrency },
       { field: 'confirmedQuantity', title: '可出售数量' },
@@ -368,19 +370,21 @@ const gridConfigs = {
   },
   JOIN_NEGOTIABLE: {
     columns: [
-      { type: 'seq', title: '序号', width: 60 },
-      { field: 'fixedPrice', title: '固定价', formatter: formatCurrency },
-      { field: 'refUserName', title: '卖方' },
-      { field: 'price', title: '我的议价', formatter: formatCurrency },
-      { field: 'confirmedQuantity', title: '购买数量' },
-      { field: 'approveTime', title: '议价时间' },
-      { field: 'priceExcludingTax', title: '卖方议价', formatter: formatCurrency },
+      { type: 'seq', title: '序号', width: 46 },
+      { field: 'refUserName', title: '卖方', width: 100  },
+      { field: 'price', title: '我的议价', formatter: formatCurrency, width: 90 },
+      { field: 'quantity', title: '购买数量', width: 72 },
+      { field: 'createTime', title: '议价时间' },
+      { field: 'priceExcludingTax', title: '卖方议价', formatter: formatCurrency, width: 90 },
+      { field: 'confirmedQuantity', title: '可卖数量', width: 72   },
       { 
-        field: 'quantity', 
-        title: '可卖数量',
+        field: 'dealedQuantity', 
+        title: '交易数量',
         slots: { default: 'quantityEdit' }
       },
-      { title: '操作', slots: { default: 'buttons' }, width: 220 },
+      { field: 'fixedPrice', title: '固定价', formatter: formatCurrency },
+      { field: 'remark', title: '备注', width: 90 },
+      { title: '操作', slots: { default: 'buttons' }, width: 210 },
     ],
     buttons: [
       { key: 'confirmBuy', label: '接受还价确认交易', type: 'primary', danger: true, getDisabledState: (row) => !isRowEditable(row) },
@@ -389,18 +393,20 @@ const gridConfigs = {
   },
   JOIN_PRICE_ON_REQUEST: {
     columns: [
-      { type: 'seq', title: '序号', width: 60 },
-      { field: 'refUserName', title: '卖方' },
-      { field: 'priceExcludingTax', title: '固定价', formatter: () => '*,***,***,**'},
-      { field: 'confirmedQuantity', title: '可卖数量'},
-      { field: 'totalPrice', title: '总价', formatter: () => '*,***,***,**' },
-      { field: 'approveTime', title: '购买时间' },
+      { type: 'seq', title: '序号', width: 46 },
+      { field: 'refUserName', title: '卖方', width: 120 },
+      { field: 'priceExcludingTax', title: '固定价', formatter: () => '*,***,**', width: 80},
+      { field: 'confirmedQuantity', title: '可卖数量', width: 80},
+      { field: 'totalPrice', title: '总价', formatter: () => '*,***,**', width: 80 },
+      { field: 'createTime', title: '购买时间', width: 160 },
+      { field: 'remark', title: '备注' },
       { 
         field: 'quantity', 
         title: '购买数量',
-        slots: { default: 'quantityEdit' }
+        slots: { default: 'quantityEdit' },
+        width: 120 
       },
-      { title: '操作', slots: { default: 'buttons' }, width: 220 },
+      { title: '操作', slots: { default: 'buttons' }, width: 160 },
     ],
     buttons: [
       { key: 'confirmBuy', label: '确认交易', type: 'primary', danger: true, getDisabledState: (row) => !isRowEditable(row) },
@@ -409,14 +415,15 @@ const gridConfigs = {
   },
   JOIN_AUCTION: {
     columns: [
-      { type: 'seq', title: '序号', width: 60 },
+      { type: 'seq', title: '序号', width: 46 },
       { field: 'refUserName', title: '卖方' },
       { field: 'price', title: '我的竞价', formatter: formatCurrency},
       { field: 'quantity', title: '购买数量'},
       { field: 'totalPrice', title: '我的竞价总价', formatter: ({ row }) => calculateTotalPrice(row) },
-      { field: 'approveTime', title: '竞价时间' },
+      { field: 'createTime', title: '竞价时间' },
       { field: 'expireDate', title: '竞拍截止时间' },
-      { field: 'bidStatus', title: '竞拍状态' },
+      { field: 'bidStatus', title: '竞拍状态', formatter: ({row}) => row.statusCode == 'success' ? '竞拍成功' : '竞拍失败 ' },
+      { field: 'remark', title: '备注' },
       { title: '交易', slots: { default: 'buttons' }, width: 220 },
     ],
     buttons: [
@@ -426,7 +433,7 @@ const gridConfigs = {
   },
   negotiation: {
     columns: [
-      { type: 'seq', title: '序号', width: 60 },
+      { type: 'seq', title: '序号', width: 46 },
       { field: 'refUserName', title: '对方' },
       { field: 'price', title: '议价金额', formatter: formatCurrency},
       { field: 'quantity', title: '议价数量'},

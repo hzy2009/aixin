@@ -124,6 +124,8 @@ const handleAction = async ({ url, data }) => {
   }
 };
 const confirmBuy = (selectedRow) => {
+  selectedRow.quantity = selectedRow.dealedQuantity || selectedRow.quantity
+  console.log('selectedRow', selectedRow)
  handleAction({url: '/apm/apmDeviceOrigin/buy/deal', data: selectedRow})
 }
 
