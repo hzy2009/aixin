@@ -49,11 +49,13 @@ export function useUserCenterTabs(tabsConfig = defaultTabsConfig) {
   });
 
   const selectMainTab = (mainKey) => {
-    if (activeMainTabKey.value !== mainKey) {
-      const path = tabsConfig[mainKey]?.path;
-      if (path) {
-        router.push({ path });
-      }
+    // 更新激活的tab
+    activeMainTabKey.value = mainKey;
+    
+    // 跳转到对应路由
+    const path = tabsConfig[mainKey]?.path;
+    if (path) {
+      router.push({ path });
     }
   };
   

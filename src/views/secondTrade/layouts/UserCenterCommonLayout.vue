@@ -1,25 +1,15 @@
 <template>
   <HomeHeroSection :height="160"/>
   <div class="user-center-common-layout">
-    <!-- Banner Section -->
-    <div class="page-title-header container">
-        <span class="title-decorator-bar"></span>
-        <h2 class="page-main-heading">{{ '二手交易' }}</h2>
-    </div>
     <!-- Main Tabs Section -->
     <section class="uc-main-tabs-wrapper container">
-      <div class="">
-        <div class="uc-main-tabs">
-          <div
-            v-for="tab in mainTabs"
-            :key="tab.key"
-            :class="['main-tab-item', { 'main-tab-item--active': activeMainTabKey === tab.key }]"
-            @click="handleMainTabClick(tab.key)"
-          >
-            {{ tab.label }}
-          </div>
-        </div>
-      </div>
+      <a-tabs v-model:activeKey="activeMainTabKey" class="page-tabs" @change="handleMainTabChange">
+        <a-tab-pane
+          v-for="tab in mainTabs"
+          :key="tab.key"
+          :tab="tab.label"
+        ></a-tab-pane>
+      </a-tabs>
     </section>
 
     <!-- Content Area for Child Routes -->
@@ -41,6 +31,7 @@ import HomeHeroSection from '@/views/home/components/HomeHeroSection.vue';
 import { useRoute } from 'vue-router';
 import { useUserCenterTabs } from './hooks/useUserCenterTabs'; // 调整路径
 import { useAuthStore } from '@/store/authStore'; // 用于获取用户信息
+import { Tabs as ATabs, TabPane as ATabPane } from 'ant-design-vue';
 
 const route = useRoute();
 const authStore = useAuthStore();
@@ -58,6 +49,15 @@ const {
 
 const handleMainTabClick = (key) => {
   selectMainTab(key);
+};
+
+const handleMainTabChange = (key) => {
+  // 直接调用 selectMainTab，不需要额外的条件判断
+  // 因为 a-tabs 的 change 事件已经处理了 activeKey 的更新
+  const targetTab = mainTabs.value.find(tab => tab.key === key);
+  if (targetTab) {
+    selectMainTab(key);
+  }
 };
 
 
@@ -155,34 +155,74 @@ const handleMainTabClick = (key) => {
 .uc-main-tabs-wrapper {
   background-color: @background-color-base; // 白色背景
   // box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  padding: 0;
+  border-bottom: 1px solid #E8E8E8;
 }
 
-.uc-main-tabs {
-  display: flex;
-  height: 60px; // 主页签高度
-
-  .main-tab-item {
-    // flex: 1;
-    width: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 @spacing-xxl; // 较大的左右 padding
-    font-size: 16px;
-    font-weight: 500;
-    color: @text-color-base;
-    cursor: pointer;
+.page-tabs {
+  :deep(.ant-tabs-nav) { 
+    margin-bottom: 0; 
+    background-color: @background-color-base;
+    padding: 0;
+    border-bottom: none;
+  }
+  
+  :deep(.ant-tabs-nav-list) {
+    border-bottom: 1px solid #E8E8E8;
+  }
+  
+  :deep(.ant-tabs-tab) { 
+    font-size: 16px; 
+    font-weight: 400;
+    padding: 16px 32px;
+    margin: 0;
+    min-width: 160px;
+    text-align: center;
+    transition: all 0.3s;
+    color: #666666;
+    border: none;
+    background: transparent;
     position: relative;
-    transition: color 0.3s, background-color 0.3s;
-    min-width: 160px; // 给主页签一个最小宽度
-
-    &--active {
-      background-color: #BC1A2C;
-      color: @text-color-light;
-    }
-    &:not(&--active):hover {
+    
+    &:hover {
       color: @primary-color;
     }
+    
+    // 移除默认的下边框
+    &::before {
+      display: none;
+    }
+  }
+  
+  :deep(.ant-tabs-ink-bar) { 
+    background-color: @primary-color; 
+    height: 3px;
+    bottom: 0;
+  }
+  
+  :deep(.ant-tabs-tab.ant-tabs-tab-active) {
+    background: transparent;
+    border-bottom: none;
+    
+    .ant-tabs-tab-btn {
+      color: @primary-color; 
+      font-weight: 500;
+    }
+    
+    // 添加底部红色边框效果
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background-color: @primary-color;
+    }
+  }
+
+  :deep(.ant-tabs-content-holder) {
+    display: none; // 隐藏内容区域，因为我们使用router-view
   }
 }
 
