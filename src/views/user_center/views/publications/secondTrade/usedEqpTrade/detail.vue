@@ -71,7 +71,7 @@ async function fetchReportDetail() {
   isLoading.value = true;
   try {
     const response = await defHttp.get({ 
-      url: '/apm/apmDeviceSecondhand/queryById/front', 
+      url: '/apm/apmDeviceSecondhand/queryById', 
       params: { id } 
     });
     
@@ -106,7 +106,7 @@ const handleAction = async ({ url, data }) => {
   try {
     const response = await defHttp.post({ 
       url: `${url}/${id}`, 
-      data 
+      data: Array.isArray(data) ? data : [data]
     });
     
     if (response.success) {
@@ -117,7 +117,6 @@ const handleAction = async ({ url, data }) => {
     }
   } catch (error) {
     console.error('操作失败:', error);
-    message.error('');
   } finally {
     isLoading.value = false;
   }

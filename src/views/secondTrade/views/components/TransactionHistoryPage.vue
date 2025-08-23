@@ -416,15 +416,21 @@ const gridConfigs = {
   JOIN_AUCTION: {
     columns: [
       { type: 'seq', title: '序号', width: 46 },
-      { field: 'refUserName', title: '卖方' },
+      { field: 'refUserName', title: '卖方', width: 80 },
       { field: 'price', title: '我的竞价', formatter: formatCurrency},
-      { field: 'quantity', title: '购买数量'},
+      { field: 'quantity', title: '购买数量', width: 80},
       { field: 'totalPrice', title: '我的竞价总价', formatter: ({ row }) => calculateTotalPrice(row) },
       { field: 'createTime', title: '竞价时间' },
       { field: 'expireDate', title: '竞拍截止时间' },
-      { field: 'bidStatus', title: '竞拍状态', formatter: ({row}) => row.statusCode == 'success' ? '竞拍成功' : '竞拍失败 ' },
+      { field: 'bidStatus', title: '竞拍状态', width: 80, formatter: ({row}) => row.statusCode == 'success' ? '竞拍成功' : '竞拍失败 ' },
       { field: 'remark', title: '备注' },
-      { title: '交易', slots: { default: 'buttons' }, width: 220 },
+      { field: 'confirmedQuantity', title: '可卖数量'},
+       { 
+        field: 'dealedQuantity', 
+        title: '交易数量',
+        slots: { default: 'quantityEdit' }
+      },
+      { title: '交易', slots: { default: 'buttons' }, width: 160 },
     ],
     buttons: [
       { key: 'confirmBuy', label: '确定交易', type: 'primary', danger: true, getDisabledState: (row) => !isRowEditable(row) },

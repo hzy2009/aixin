@@ -125,16 +125,16 @@ const handleAction = async ({ url, data }) => {
 };
 const confirmBuy = (selectedRow) => {
   selectedRow.quantity = selectedRow.dealedQuantity || selectedRow.quantity
-  console.log('selectedRow', selectedRow)
- handleAction({url: '/apm/apmDeviceOrigin/buy/deal', data: selectedRow})
+  handleAction({url: '/apm/apmDeviceOrigin/buy/deal', data: selectedRow})
 }
 
 const cancelBuy = (selectedRow) => {
- handleAction({url: '/apm/apmDeviceOrigin/buy/cancel', data: selectedRow})
+  handleAction({url: '/apm/apmDeviceOrigin/buy/cancel', data: selectedRow})
 }
 
 
 const handleButtonClick = ({ key, row }) => {
+  debugger
   console.log(key, row);
   switch (key) {
     case 'confirmBuy':

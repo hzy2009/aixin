@@ -8,15 +8,15 @@
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
-import { USEDEQPTRADE_COLUMNS } from '@/utils/const.jsx';
+import { OEMPARTS_COLUMNS } from '@/utils/const.jsx';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 
 const router = useRouter();
 const refListPage = ref();
 
-// 表格列配置 - 使用二手设备列定义
+// 表格列配置 - 使用原厂件列定义
 const tableColumns = reactive([
-  ...USEDEQPTRADE_COLUMNS
+  ...OEMPARTS_COLUMNS,
 ]);
 
 // 操作按钮配置
@@ -31,7 +31,7 @@ const actions = reactive([
 // 页面数据配置
 const pageData = ref({
   url: {
-    list: '/apm/apmDeviceSecondhand/list/owner',
+    list: '/apm/apmDeviceOrigin/list/owner',
   },
   tableColumns,
   actions,
@@ -49,6 +49,6 @@ function viewDetails({ id }) {
     console.error('缺少记录ID');
     return;
   }
-  router.push(`/user/published/usedEqpTrade/detail/${id}`);
+  router.push(`/user/published/oemParts/detail/${id}`);
 }
 </script>
