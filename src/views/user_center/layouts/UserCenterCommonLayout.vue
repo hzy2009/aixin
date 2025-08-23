@@ -72,7 +72,9 @@
     <div class="uc-content-area container">
       <router-view v-slot="{ Component }">
         <transition name="fade-fast" mode="out-in">
-            <component :is="Component" :key="route.path" />
+            <div>
+              <component :is="Component" :key="route.path" />
+            </div>
         </transition>
       </router-view>
     </div>

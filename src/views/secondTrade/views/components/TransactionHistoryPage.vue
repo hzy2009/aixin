@@ -338,8 +338,8 @@ const gridConfigs = {
       { field: 'price', title: '买方出价', formatter: formatCurrency },
       { field: 'quantity', title: '购买数量' },
       { field: 'createTime', title: '出价时间' },
-      { field: 'expiredDate', title: '竞拍截止时间' },
-      { field: 'isSelected', title: '选定买方', slots: { default: 'switch' }, width: 120 },
+      { field: 'expireDate', title: '竞拍截止时间' },
+      { field: 'isWinner', title: '选定买方', slots: { default: 'switch' }, width: 120 },
       { 
         field: 'confirmedQuantity', 
         title: '卖出数量',
@@ -471,16 +471,16 @@ const handleSwitchChange = ({ checked, row }) => {
   
   try {
     // 实现单选逻辑：如果选中，则取消其他项的选中状态
-    if (checked) {
-      gridData.value.forEach(item => {
-        if (item !== row && item.isSelected) {
-          item.isSelected = false;
-        }
-      });
-    }
+    // if (checked) {
+    //   gridData.value.forEach(item => {
+    //     if (item !== row && item.isWinner) {
+    //       item.isWinner = false;
+    //     }
+    //   });
+    // }
     
     // 更新当前行的选中状态
-    row.isSelected = checked;
+    row.isWinner = checked;
     
     // 向父组件发送事件
     emit('switchChange', { checked, row });
@@ -496,26 +496,28 @@ const handleSwitchChange = ({ checked, row }) => {
  * @returns {boolean} 验证是否通过
  */
 const validateSelectedRow = (selectedRow) => {
-  if (!selectedRow) {
-    message.warn('请先选定一个买方');
+  if (!selectedRow || selectedRow.length == 0) {
+    message.warn('请选择买方');
     return false;
   }
-  
+  let flag = true
+  for (let i = 0; i < selectedRow.length; i++) {
   // 验证出售数量
-  const confirmedQuantity = Number(selectedRow.confirmedQuantity);
-  if (!selectedRow.confirmedQuantity || confirmedQuantity <= 0) {
-    message.warn('请输入有效的卖出数量');
-    return false;
+    if (!selectedRow[i].confirmedQuantity || selectedRow[i].confirmedQuantity <= 0) {
+      message.warn('请输入有效的卖出数量');
+      flag = false
+      return false;
+    }
+    
+    // 验证数量不能超过可用数量
+    if (selectedRow[i].confirmedQuantity > selectedRow[i].quantity) {
+      message.warn(`卖出数量不能超过可用数量（${selectedRow[i].quantity}）`);
+      flag = false
+      return false;
+    }
   }
-  
-  // 验证数量不能超过可用数量
-  const availableQuantity = Number(selectedRow.quantity);
-  if (confirmedQuantity > availableQuantity) {
-    message.warn(`卖出数量不能超过可用数量（${availableQuantity}）`);
-    return false;
-  }
-  
-  return true;
+
+  return flag;
 };
 
 /**
@@ -539,7 +541,7 @@ const handleButtonClick = ({ key, row }) => {
 const handleConfirmSell = () => {
   try {
     // 查找选中的行
-    const selectedRow = gridData.value.find(item => item.isSelected);
+    const selectedRow = gridData.value.filter(item => item.isWinner);
     
     // 验证选中的数据
     if (!validateSelectedRow(selectedRow)) {
@@ -589,7 +591,7 @@ defineExpose({
    * 获取选中的行
    * @returns {Object|null} 选中的行数据
    */
-  getSelectedRow: () => gridData.value.find(item => item.isSelected) || null,
+  getSelectedRow: () => gridData.value.find(item => item.isWinner) || null,
   
   /**
    * 刷新表格数据
@@ -601,8 +603,8 @@ defineExpose({
    */
   clearSelection: () => {
     gridData.value.forEach(item => {
-      if (item.isSelected) {
-        item.isSelected = false;
+      if (item.isWinner) {
+        item.isWinner = false;
       }
     });
   }

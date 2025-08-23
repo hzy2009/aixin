@@ -7,7 +7,7 @@
       :loading="loading"
       :edit-config="editConfig"
       border="full"
-      height="auto"
+      height="400"
       align="center"
       header-align="center"
       class-name="custom-vxe-table"
@@ -20,7 +20,9 @@
         <div class="switch-container">
           <span>否</span>
           <a-switch 
-            v-model:checked="row.isSelected" 
+            v-model:checked="row.isWinner"
+            checkedValue="1"
+            unCheckedValue="0"
             @change="(checked) => onSwitchChange(checked, row)" 
           />
           <span>是</span>

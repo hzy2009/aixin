@@ -120,7 +120,6 @@ const handleAction = async ({ url, data }) => {
     }
   } catch (error) {
     console.error('操作失败:', error);
-    message.error('');
   } finally {
     isLoading.value = false;
   }
