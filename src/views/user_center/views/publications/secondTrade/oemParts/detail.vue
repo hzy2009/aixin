@@ -24,11 +24,7 @@ const productPageConfig = ref({
   mainImage: { field: 'url' },
   tags: [
     { field: 'productStatus' }, // 第一个标签来自 data.condition.label
-    { field: 'vendor.name' },      // 第二个标签来自 data.vendor.name
-    {
-      field: 'inventory.isAvailable',
-      formatter: (isAvailable) => isAvailable ? '现货供应' : '暂无现货' // 使用 formatter
-    },
+    { field: 'stockStatus' },      // 第二个标签来自 data.vendor.name
   ],  
 
   basicInfo: [
