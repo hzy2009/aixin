@@ -268,10 +268,11 @@ const gridConfigs = {
       { field: 'refUserName', title: '意向买方', width: 100}, // 交易详情列
       { field: 'fixedPrice', title: '固定价', formatter: formatCurrency, width: 120 }, // 交易详情列
       { field: 'quantity', title: '购买数量', width: 80}, // 交易详情列
-      { field: 'totalPrice', title: '总价', formatter: ({ row }) => calculateTotalPrice(row, 'price', 'quantity'), width: 120 }, // 交易详情列
+      { field: 'totalPrice', title: '总价', formatter: ({ row }) => calculateTotalPrice(row, 'priceExcludingTax', 'quantity'), width: 120 }, // 交易详情列
       { field: 'createTime', title: '购买时间', width: 160, columnType: 'both' }, // 交易详情和议价历史共用列
      
       { field: 'confirmedQuantity', title: '成交数量', columnType: 'negotiation', width: 80 }, // 议价历史列
+      { field: 'priceExcludingTaxTotal', title: '成交总价', columnType: 'negotiation', width: 80, formatter: ({ row }) => calculateTotalPrice(row, 'priceExcludingTax', 'confirmedQuantity') }, // 议价历史列
       { field: 'approveTime', title: '成交时间', columnType: 'negotiation', width: 160 }, // 议价历史列
       { field: 'remark', title: '备注' }, // 议价历史列
        { 
