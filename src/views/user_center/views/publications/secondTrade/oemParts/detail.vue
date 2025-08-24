@@ -1,17 +1,18 @@
 <template>
     <DetailTemplate :product="productData" :page-config="productPageConfig" />
-    <TransactionHistoryPage :product="productData" @confirmSell="confirmSell" @buttonClick="handleButtonClick"/>
+    <TransactionHistoryPage :product="productData" @confirmSell="confirmSell" @buttonClick="handleButtonClick" @goBack="goBack"/>
 </template>
 
 <script setup>
 import { ref, onMounted, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import DetailTemplate from '@/views/secondTrade/views/components/DetailTemplate.vue';
 import TransactionHistoryPage from '@/views/secondTrade/views/components/TransactionHistoryPage.vue';
 import { message  } from 'ant-design-vue';
 import defHttp from '@/utils/http/axios'
 
 const route = useRoute();
+const router = useRouter();
 const props = defineProps({
   IdProp: { type: String, default: null },
 });
@@ -151,6 +152,11 @@ const handleButtonClick = ({ key, row }) => {
       break;
   }
 }
+
+
+const goBack = () => {
+  router.push({ path: '/user/published/oemParts' });
+};
 
 onMounted(() => {
   fetchReportDetail();
