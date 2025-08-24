@@ -31,7 +31,7 @@ const actions = reactive([
 // 页面数据配置
 const pageData = ref({
   url: {
-    list: '/apm/apmDeviceOrigin/list/owner',
+    list: '/apm/apmDeviceSecondhand/list/owner',
   },
   tableColumns,
   actions,
