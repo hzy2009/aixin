@@ -4,7 +4,7 @@
             <template #content="{ dataSource, paginationConfig, loading }">
                 <div class="results-grid">
                     <SortFilters :filters="sortOptions" v-model:value="currentSort" @change="onSortChange" />
-                    <EquipmentList :dataSource="dataSource" @handleDetails="handleDetails" :fieldList="fieldList" :loading="loading"/>
+                    <EquipmentList :dataSource="dataSource" @handleDetails="handleDetails" :fieldList="fieldList" :loading="loading" :tagList="tagList"/>
                 </div>
                 <div class="pagination-wrapper">
                     <a-pagination size="small" v-model:current="paginationConfig.current" v-bind="{...paginationConfig, showSizeChanger: false}"
@@ -31,8 +31,8 @@ const refListPage = ref();
 const currentSort = ref({ key: 'default' });
 const sortOptions = [
     { key: 'default', label: '默认排序' },
-    { key: 'price', label: '价格排序', type: 'dropdown', options: [{label: '从高到低', value: 'desc'}, {label: '从低到高', value: 'asc'}] },
-    { key: 'time', label: '时间排序' }
+    // { key: 'price', label: '价格排序', type: 'dropdown', options: [{label: '从高到低', value: 'desc'}, {label: '从低到高', value: 'asc'}] },
+    { key: 'time', label: '时间排序', type: 'dropdown', options: [{label: '从高到低', value: 'desc'}, {label: '从低到高', value: 'asc'}]  }
 ];
 
 const onSortChange = (newSort) => {
@@ -43,9 +43,13 @@ const onSortChange = (newSort) => {
 };
 
 const fieldList = [
-    { key: 'deviceType', label: '设备类型' },
-    { key: 'compatibleModels', label: '设备型号' },
-    { key: 'originalManufacturer', label: '设备厂商' },
+    { key: 'partNumber', label: '零部件料号' },
+    { key: 'compatibleModels', label: '零部件型号' },
+    { key: 'originalManufacturer', label: '品牌/制造商' },
+]
+const tagList = [
+    'productStatus',
+    'stockStatus'
 ]
 const handleDetails = (item) => {
     console.log(item);

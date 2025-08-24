@@ -1,6 +1,6 @@
 <template>
     <DetailTemplate :product="productData" :page-config="productPageConfig" />
-    <SimilarProductsSection :config="similarConfig" :basedOnProductId="productData.id" :fieldList="fieldList"/>
+    <SimilarProductsSection :config="similarConfig" :basedOnProductId="productData.id" :fieldList="fieldList" :tagList="tagList"/>
 </template>
 
 <script setup>
@@ -22,11 +22,10 @@ const productPageConfig = ref({
   mainImage: { field: 'url' },
   tags: [
     { field: 'productStatus' }, // 第一个标签来自 data.condition.label
-    { field: 'vendor.name' },      // 第二个标签来自 data.vendor.name
-    {
-      field: 'inventory.isAvailable',
-      formatter: (isAvailable) => isAvailable ? '现货供应' : '暂无现货' // 使用 formatter
-    },
+    // {
+    //   field: 'inventory.isAvailable',
+    //   formatter: (isAvailable) => isAvailable ? '现货供应' : '暂无现货' // 使用 formatter
+    // },
   ],  
 
   basicInfo: [
@@ -62,9 +61,15 @@ const fieldList = [
     { key: 'compatibleModels', label: '设备型号' },
     { key: 'originalManufacturer', label: '设备厂商' },
 ]
+const tagList = [
+    'productStatus',
+    'stockStatus'
+]
 const similarConfig = ref({
   url: '/apm/apmDeviceOrigin/list/front',
-  params: {},
+  params: {
+    'productCategory': productData.value.productCategory
+  },
 })
 const isLoading = ref(false);
 const internalDemandId = ref(props.IdProp);

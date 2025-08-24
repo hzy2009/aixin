@@ -10,11 +10,12 @@
     </div>
     <div class="card-content-section">
       <div class="card-tags-area">
-        <span v-for="tag in item.tags" :key="tag.text" class="custom-tag-item" :class="tag.type">
-          {{ tag.text }}
-        </span>
+        <template v-for="(tag, index) in tagList" :key="index" >
+          <span class="custom-tag-item" v-if="item[tag]"> {{ item[tag] }}</span>
+        </template>
       </div>
       <h3 class="card-title-text">{{ item.productName }}</h3>
+      <h5 class="card-subtitle-text">{{ item.productCategory }}</h5>
       <div class="card-specs-list">
         <p class="spec-line" v-for="spec in fieldList" :key="spec.label">{{ spec.label }}：{{ item[spec.key] }}</p>
       </div>
@@ -46,6 +47,10 @@ const props = defineProps({
     type: Array,
     default: () => [],
     required: true
+  },
+  tagList: {
+    type: Array,
+    default: () => [],
   }
 });
 
@@ -164,6 +169,16 @@ const handleCardClick = () => {
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.card-subtitle-text{
+  font-family: PingFang SC;
+  font-weight: 400;
+  font-style: Bold;
+  font-size: 14px;
+  leading-trim: NONE;
+  line-height: 14px;
+  letter-spacing: 0%;
+  color: #9AA0A3;
 }
 
 .card-specs-list {

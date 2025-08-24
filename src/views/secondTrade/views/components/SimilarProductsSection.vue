@@ -18,6 +18,7 @@
                 :key="product.id"
                 :product="product"
                 :fieldList="fieldList"
+                :tagList="tagList"
                 class="scroll-item"
               />
             </div>
@@ -59,6 +60,10 @@ const props = defineProps({
     default: () => ({})
   },
   fieldList: {
+    type: Array,
+    default: () => []
+  },
+  tagList: {
     type: Array,
     default: () => []
   }

@@ -14,7 +14,6 @@
             <a-tag v-for="tag in tags" :key="tag" class="custom-tag">{{ tag }}</a-tag>
           </div>
           <h1 class="product-title">{{ title }}</h1>
-
           <div v-if="basicInfo.length" class="product-basic-info">
             <p v-for="info in basicInfo" :key="info.label" class="info-line">
               <span class="info-label">{{ info.label }}：</span>

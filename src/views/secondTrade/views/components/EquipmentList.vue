@@ -6,6 +6,7 @@
         :key="item.id"
         :item="item"
         :fieldList="fieldList"
+        :tagList="tagList"
         @details="handleDetails"
       />
     </div>
@@ -29,6 +30,10 @@ const props = defineProps({
   loading: {
     type: Boolean,
     default: false
+  },
+  tagList: {
+    type: Array,
+    default: () => []
   }
 });
 
