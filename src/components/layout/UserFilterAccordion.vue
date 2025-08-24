@@ -8,7 +8,7 @@
           <a-tag v-for="option in group.options.slice(0, group.maxVisibleWithoutMore || group.options.length)"
             :key="option.value"
             :class="['filter-tag', { 'filter-tag--active': selectedFilters[group.id]?.includes(option.value) }]"
-            @click="toggleFilter(group.id, option.value)">
+            @click="handleOptionClick(group, option)">
             {{ option.label }}
           </a-tag>
         </div>
@@ -30,7 +30,7 @@
             <!-- 折叠区域内的选项 -->
             <a-tag v-for="option in group.options.slice(group.maxVisibleWithoutMore || 0)" :key="option.value"
               :class="['filter-tag', { 'filter-tag--active': selectedFilters[group.id]?.includes(option.value) }]"
-              @click="toggleFilter(group.id, option.value)">
+              @click="handleOptionClick(group, option)">
               {{ option.label }}
             </a-tag>
           </div>
@@ -45,7 +45,37 @@ import { ref, watch, onMounted } from 'vue';
 import { Tag as ATag, Collapse as ACollapse, CollapsePanel as ACollapsePanel } from 'ant-design-vue';
 import { DownOutlined } from '@ant-design/icons-vue';
 
-// 定义组件的 props
+/**
+ * 筛选组件 Props 定义
+ * 
+ * filterGroups 数据结构：
+ * [
+ *   {
+ *     id: 'category', // 分组ID
+ *     label: '分类', // 分组显示名称
+ *     selectionType: 'single' | 'multiple', // 选择类型，默认为'multiple'
+ *     maxVisibleWithoutMore: 5, // 默认显示的选项数量
+ *     options: [
+ *       {
+ *         value: '', // 选项值，空字符串代表"全部"
+ *         label: '全部', // 选项显示名称
+ *         onClick: (group, option, helpers) => { ... } // 可选的自定义点击处理函数
+ *       },
+ *       {
+ *         value: 'electronics',
+ *         label: '电子产品',
+ *         onClick: (group, option, helpers) => {
+ *           // 自定义点击逻辑
+ *           // helpers 包含：
+ *           // - currentSelections: 当前选中的值数组
+ *           // - toggleFilter: (value) => void 默认切换函数
+ *           // - setGroupSelection: (selections) => void 设置分组选择
+ *         }
+ *       }
+ *     ]
+ *   }
+ * ]
+ */
 const props = defineProps({
   filterGroups: { type: Array, required: true, default: () => [] },
   initialFilters: { type: Object, default: () => ({}) }
@@ -86,36 +116,43 @@ onMounted(initializeFilters);
 // watch(() => props.initialFilters, initializeFilters, { deep: true });
 
 /**
- * 切换筛选选项，并处理“全部”选项的特殊逻辑
- * @param {string} groupId - 筛选分组的 ID
- * @param {string|number} optionValue - 被点击的选项的值 ("" 代表“全部”)
+ * 处理选项点击事件，支持自定义点击方法和单选/多选模式
+ * @param {Object} group - 筛选分组对象
+ * @param {Object} option - 被点击的选项对象
  */
-const toggleFilter = (groupId, optionValue) => {
-  const currentSelections = selectedFilters.value[groupId] || [""];
-  let newSelections;
-
-  if (optionValue === "") {
-    // 场景1：点击了“全部”按钮
-    newSelections = [""];
-  } else {
-    // 场景2：点击了“全部”之外的其他选项
-    newSelections = currentSelections.filter(v => v !== "");
-    
-    const index = newSelections.indexOf(optionValue);
-    if (index > -1) {
-      newSelections.splice(index, 1);
-    } else {
-      newSelections.push(optionValue);
-    }
+const handleOptionClick = (group, option) => {
+  // 如果选项有自定义的点击方法，优先调用自定义方法
+  if (typeof option.onClick === 'function') {
+    option.onClick(group, option, {
+      currentSelections: selectedFilters.value[group.id] || [""],
+      toggleFilter: (value) => toggleFilter(group.id, value, false), // 不自动触发事件
+      setGroupSelection: (selections) => setGroupSelection(group.id, selections, false), // 不自动触发事件
+      emitFiltersChanged: () => emitFiltersChanged(), // 手动触发事件的方法
+    });
+    return;
   }
+  
+  // 使用默认的切换逻辑
+  toggleFilter(group.id, option.value);
+};
 
-  // 场景3：如果所有具体选项都被取消了，则自动切回“全部”
-  if (newSelections.length === 0) {
-    newSelections = [""];
+/**
+ * 设置分组的选中值
+ * @param {string} groupId - 筛选分组的 ID
+ * @param {Array} selections - 选中的值数组
+ * @param {boolean} shouldEmit - 是否触发事件，默认为true
+ */
+const setGroupSelection = (groupId, selections, shouldEmit = true) => {
+  selectedFilters.value[groupId] = selections;
+  if (shouldEmit) {
+    emitFiltersChanged();
   }
+};
 
-  selectedFilters.value[groupId] = newSelections;
-
+/**
+ * 触发筛选条件变化事件
+ */
+const emitFiltersChanged = () => {
   // 在触发事件前，对数据进行格式化处理
   const formattedFilters = {};
   for (const key in selectedFilters.value) {
@@ -135,6 +172,54 @@ const toggleFilter = (groupId, optionValue) => {
 };
 
 /**
+ * 切换筛选选项，支持单选和多选模式
+ * @param {string} groupId - 筛选分组的 ID
+ * @param {string|number} optionValue - 被点击的选项的值 ("" 代表"全部")
+ * @param {boolean} shouldEmit - 是否触发事件，默认为true
+ */
+const toggleFilter = (groupId, optionValue, shouldEmit = true) => {
+  const group = props.filterGroups.find(g => g.id === groupId);
+  const selectionType = group?.selectionType || 'multiple'; // 默认为多选
+  const currentSelections = selectedFilters.value[groupId] || [""];
+  let newSelections;
+
+  if (optionValue === "") {
+    // 场景1：点击了"全部"按钮
+    newSelections = [""];
+  } else if (selectionType === 'single') {
+    // 单选模式：只允许选择一个选项
+    const isCurrentlySelected = currentSelections.includes(optionValue) && currentSelections.length === 1;
+    if (isCurrentlySelected) {
+      // 如果当前选项已被选中，则切换到"全部"
+      newSelections = [""];
+    } else {
+      // 否则选择当前选项
+      newSelections = [optionValue];
+    }
+  } else {
+    // 多选模式：原有的逻辑
+    newSelections = currentSelections.filter(v => v !== "");
+    
+    const index = newSelections.indexOf(optionValue);
+    if (index > -1) {
+      newSelections.splice(index, 1);
+    } else {
+      newSelections.push(optionValue);
+    }
+  }
+
+  // 场景3：如果所有具体选项都被取消了，则自动切回"全部"
+  if (newSelections.length === 0) {
+    newSelections = [""];
+  }
+
+  selectedFilters.value[groupId] = newSelections;
+  if (shouldEmit) {
+    emitFiltersChanged();
+  }
+};
+
+/**
  * 切换“更多/收起”的展开状态
  */
 const toggleExpand = (groupId) => {
@@ -151,11 +236,62 @@ const resetAllFilters = () => {
     expandedGroups.value[group.id] = false;
   });
   selectedFilters.value = newFilters;
-  emit('filtersChanged', {});
+  emitFiltersChanged();
 };
 
 // 将 resetAllFilters 方法暴露出去，允许父组件通过 ref 调用
 defineExpose({ resetAllFilters });
+
+/**
+ * 使用示例：
+ * 
+ * <template>
+ *   <UserFilterAccordion 
+ *     :filterGroups="filterGroups" 
+ *     :initialFilters="initialFilters"
+ *     @filtersChanged="handleFiltersChanged" 
+ *   />
+ * </template>
+ * 
+ * <script setup>
+ * const filterGroups = [
+ *   {
+ *     id: 'category',
+ *     label: '产品分类',
+ *     selectionType: 'single', // 单选模式
+ *     maxVisibleWithoutMore: 4,
+ *     options: [
+ *       { value: '', label: '全部' },
+ *       { value: 'ic', label: '集成电路' },
+ *       { value: 'pcb', label: 'PCB电路板' },
+ *       { value: 'components', label: '电子元器件' }
+ *     ]
+ *   },
+ *   {
+ *     id: 'status',
+ *     label: '状态',
+ *     selectionType: 'multiple', // 多选模式（默认）
+ *     options: [
+ *       { value: '', label: '全部' },
+ *       { 
+ *         value: 'active', 
+ *         label: '活跃',
+ *         onClick: (group, option, helpers) => {
+ *           // 自定义点击逻辑
+ *           console.log('点击了活跃状态', helpers.currentSelections);
+ *           helpers.toggleFilter(option.value); // 执行默认切换
+ *         }
+ *       },
+ *       { value: 'inactive', label: '非活跃' }
+ *     ]
+ *   }
+ * ];
+ * 
+ * const handleFiltersChanged = (filters) => {
+ *   console.log('筛选条件变化:', filters);
+ *   // 例如: { category_MultiString: 'ic', status_MultiString: 'active,inactive' }
+ * };
+ */
 
 </script>
 

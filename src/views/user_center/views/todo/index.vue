@@ -1,11 +1,11 @@
 <template>
   <div>
-    <listPage :pageData="pageData" >
+    <listPage :pageData="pageData" ref="refListPage">
       <template #tableCustomOperations="{ url, loadTableData }">
-        <div class="table-operations">
+        <div class="table-operations" >
           <a-tabs v-model:activeKey="activeKey" @change="(v) => handleTabChange(v, loadTableData)">
             <a-tab-pane key="1" tab="全部待办"></a-tab-pane>
-            <a-tab-pane key="2" tab="已办理"></a-tab-pane>
+            <a-tab-pane key="2" tab="已办理" v-if="!isSecondTrade"></a-tab-pane>
           </a-tabs>
         </div>
       </template>
@@ -18,31 +18,99 @@ import { ref, reactive } from 'vue'; // onMounted removed as hook handles it
 import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
+import { selectOptions } from '@/utils/index';
+import { message as AntMessage } from 'ant-design-vue';
 const router = useRouter();
 
 import { DOMESTIC_SOURCING_COLUMNS } from '@/utils/const.jsx';
 
+const refListPage = ref();
+const isSecondTrade = ref(false);
+
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
-  { id: 'businessName', label: '业务类型', maxVisibleWithoutMore: 9, dictKey: 'business_type', options: 
+  { id: 'businessName', label: '业务类型', maxVisibleWithoutMore: 9, dictKey: 'business_type', selectionType: 'single', options: 
     [
-      { label: '原厂件寻源', value: '原厂件寻源' },
-      { label: '线下活动', value: '线下活动' },
+      { label: '原厂件寻源', value: '原厂件寻源',
+        onClick: (group, option, helpers) => {
+            isSecondTrade.value = false
+            changeBusinessName(option.value);
+            helpers.toggleFilter(option.value); // 执行默认切换
+        }
+      },
+      { label: '线下活动', value: '线下活动',
+        onClick: (group, option, helpers) => {
+            isSecondTrade.value = false
+            changeBusinessName(option.value);
+            helpers.toggleFilter(option.value); // 执行默认切换
+        } },
+      { label: '原厂件库存处理', value: '原厂件库存处理',
+        onClick: (group, option, helpers) => {
+            isSecondTrade.value = true
+            changeBusinessName(option.value);
+            helpers.toggleFilter(option.value); // 执行默认切换
+        } },
+      { label: '二手设备处理', value: '二手设备处理',
+        onClick: (group, option, helpers) => {
+            isSecondTrade.value = true
+            changeBusinessName(option.value);
+            helpers.toggleFilter(option.value); // 执行默认切换
+        } },
     ]
    },
 ]);
 
-const tableColumns = reactive([
-  {type: 'checkbox', width: 34},
-  {type: 'seq', title: '序号', width: 74, align: 'center'},
- { title: '单号', field: 'code', align: 'center', width: 180 },
- { title: '业务类型', field: 'businessName', align: 'center', width: 180},
- { title: '需求创建日期', field: 'createTime', align: 'center', fieldType: 'date' },
- { title: '需求状态', field: 'statusName', align: 'center' },
- { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
-]);
 const activeKey = ref('1');
 
+const tableColumns1 = [
+  {type: 'seq', title: '序号', width: 74, align: 'center'},
+  { title: '单号', field: 'code', align: 'center', width: 180 },
+  { title: '业务类型', field: 'businessName', align: 'center', width: 180},
+  { title: '需求创建日期', field: 'createTime', align: 'center', fieldType: 'date' },
+  { title: '需求状态', field: 'statusName', align: 'center' },
+  { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
+]
+const tableColumns2 = [
+  {type: 'seq', title: '序号', width: 74, align: 'center'},
+  { title: '产品编号', field: 'code', align: 'center' },
+  { title: '设备号/零部件料号', field: 'partNumber', align: 'center' },
+  // { title: '业务类型', field: 'purchaseMethod', align: 'center', width: 180 },
+  { title: '价格类型', field: 'purchaseMethod', align: 'center', width: 180,
+    formatter: ({cellValue}) => {
+      const purchaseMethodMap = selectOptions('purchase_method').reduce((acc, { value: key, label }) => ({ ...acc, [key]: label }), {});
+      const text = purchaseMethodMap[cellValue] || '固定价，不可议价';
+      return text;
+    }
+  },
+  { title: '标价', field: 'priceExcludingTax', align: 'center', width: 180,
+    formatter: ({cellValue, row}) => {
+      if (row.purchaseMethod == 'PRICE_ON_REQUEST') {
+        return '**,***,**'
+      }
+      return cellValue
+    }
+   },
+  { title: '出售数量', field: 'quantity', align: 'center', width: 180 },
+  { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
+]
+const tableConfig = {
+  '原厂件寻源': {
+    url: 'apm/apmTodo/join/newTodo/list',
+    tableColumns: tableColumns1
+  },
+  '线下活动': {
+    url: 'apm/apmTodo/join/newTodo/list',
+    tableColumns: tableColumns1
+  },
+  '原厂件库存处理': {
+    url: 'apm/apmDeviceOrigin/list/todo',
+    tableColumns: tableColumns2
+  },
+  '二手设备处理': {
+    url: 'apm/apmDeviceSecondhand/list/todo',
+    tableColumns: tableColumns2
+  },
+}
 
 
 const actions = reactive([
@@ -53,8 +121,10 @@ const actions = reactive([
     formatText: (record) => {
       if (record.businessName === '原厂件寻源') {
         return '报价';
-      } else {
+      } else if ( record.businessName === '线下活动') {
         return '报名';
+      }else {
+        return '办理';
       }
     }
     // isVisible: (record) => record.statusCode !== '已完成' // Example condition
@@ -66,7 +136,10 @@ const pageData = reactive({
     list: 'apm/apmTodo/join/newTodo/list',
   },
   filterConfigForPage,
-  tableColumns,
+  initialFilters: {
+    businessName_MultiString: '原厂件寻源',
+  },
+  tableColumns: tableColumns1,
   searchTitle: '待办事项',
   actions,
   tableOperations: [
@@ -95,7 +168,10 @@ function viewDetails({businessName, id }) {
         '线下活动': '/user/join/OfflineEvent/detail',
     };
     const path = map[businessName];
-    console.log(map[businessName]);
+    if (!path) {
+      AntMessage.error('暂时没确定是跳转到我的发布还是我的参与');
+      return
+    };
     router.push(`${path}/${id}`);
 };
 function createNewSourcing() {
@@ -109,6 +185,14 @@ const handleTabChange = (key, loadTableData) => {
   }
   loadTableData()
 }
+
+const changeBusinessName = (value) => {
+  const { url, tableColumns} = tableConfig[value] || {}
+  pageData.url.list = url
+  pageData.tableColumns = tableColumns
+  // 重新加载数据以应用新的配置
+  refListPage.value.loadTableData()
+};
 </script>
 <style scoped lang="less">
 .table-operations{

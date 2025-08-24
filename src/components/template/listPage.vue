@@ -13,7 +13,7 @@
             </UserStatCardSm>
         </div> -->
         <UserStatCardSm :stats=stats.list @statsChanged="handleStatMimixin" v-if="userStatCardVisible"></UserStatCardSm>
-        <UserFilterAccordion :filter-groups="filterConfigForPage" :initial-filters="currentFilters" v-if="filterConfigForPage && filterConfigForPage.length > 0"
+        <UserFilterAccordion :filter-groups="filterConfigForPage" :initial-filters="initialFilters" v-if="filterConfigForPage && filterConfigForPage.length > 0"
             @filters-changed="handleFiltersChange" class="filter-accordion-section" ref="userFilterAccordionRef" />
 
         <MultiDateRangePickerGroup
@@ -120,11 +120,14 @@ const props = defineProps({
 });
 
 const { 
-    url, filterConfigForPage, tableColumns, actions, otherParams,
+    url, filterConfigForPage, actions, otherParams,
     statusDictKey, userStatCardVisible, showBanner = false, pageTitle,
     tableOperations = [], dateRangeConfig = [], searchTitle, listPageisPadding = true,
-    userSearchTitle = true, requiredRoles = [], isUseFilterDelete, initialPageSize
+    userSearchTitle = true, requiredRoles = [], isUseFilterDelete, initialPageSize, initialFilters
 } = props.pageData;
+
+// 保持tableColumns的响应性
+const tableColumns = computed(() => props.pageData.tableColumns || []);
 
 const {
     selectOptions, stats, currentFilters, search, isLoading, tableData,searchParams,
@@ -150,7 +153,7 @@ const vxeTableColumns = computed(() => {
     const columns = [
         // { type: 'checkbox', width: 50, fixed: 'left' },
     ];
-    tableColumns.forEach(col => {
+    tableColumns.value.forEach(col => {
         const vxeCol = {
             ...col
         };
@@ -305,7 +308,8 @@ const getCheckboxRecords = () => {
 
 defineExpose({
     handleTablePaginationChange,
-    getCheckboxRecords
+    getCheckboxRecords,
+    loadTableData
 });
 </script>
 
