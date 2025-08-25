@@ -14,15 +14,17 @@
 </template>
 
 <script setup lang="jsx">// jsx for custom pagination render if kept
-import { ref, reactive } from 'vue'; // onMounted removed as hook handles it
+import { ref, reactive, computed } from 'vue'; // onMounted removed as hook handles it
 import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 import { selectOptions } from '@/utils/index';
 import { message as AntMessage } from 'ant-design-vue';
+import { useAuthStore } from '@/store/authStore'; // 用于获取用户信息
 const router = useRouter();
 
-import { DOMESTIC_SOURCING_COLUMNS } from '@/utils/const.jsx';
+const authStore = useAuthStore();
+const userInfo = computed(() => authStore.userInfo);
 
 const refListPage = ref();
 const isSecondTrade = ref(false);
@@ -162,16 +164,37 @@ const pageData = reactive({
 })
 
 
-function viewDetails({businessName, id }) {
-    const map = {
-        '原厂件寻源': '/user/join/OEMPartsSourcing/detail',
-        '线下活动': '/user/join/OfflineEvent/detail',
-    };
-    const path = map[businessName];
-    if (!path) {
-      AntMessage.error('暂时没确定是跳转到我的发布还是我的参与');
-      return
-    };
+function viewDetails({businessName, id, postedBy }) {
+    // const map = {
+    //     '原厂件寻源': '/user/join/OEMPartsSourcing/detail',
+    //     '线下活动': '/user/join/OfflineEvent/detail',
+    //     '原厂件库存处理': '/user/join/OEMPartsSourcing/detail',
+    //     '二手设备处理': '/user/join/OEMPartsSourcing/detail',
+    // };
+    // const path = map[businessName];
+    let path = ''
+    switch (businessName) {
+        case '原厂件寻源':
+            path = '/user/join/OEMPartsSourcing/detail'
+            break;
+        case '线下活动':
+            path = '/user/join/OfflineEvent/detail'
+            break;
+        case '原厂件库存处理':
+            if (postedBy == userInfo.value.realname) {
+                path = '/user/published/oemParts/detail'
+            } else {
+                path = '/user/join/oemParts/detail'
+            }
+            break;
+        case '二手设备处理':
+          if (postedBy == userInfo.value.realname) {
+                path = '/user/published/usedEqpTrade/detail'
+            } else {
+                path = '/user/join/usedEqpTrade/detail'
+            }
+            break;
+    }
     router.push(`${path}/${id}`);
 };
 function createNewSourcing() {
