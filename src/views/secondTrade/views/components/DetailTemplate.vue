@@ -68,7 +68,7 @@
           <h3 class="details-title-text">{{ pageConfig.productDetailsTitle || '产品详情' }}</h3>
         </div>
         <div class="details-content-wrapper">
-          <!-- <div v-if="productDetailsHtml" class="rich-text-description" v-html="productDetailsHtml"></div> -->
+          <div v-if="productDetailsHtml" class="rich-text-description" v-html="productDetailsHtml"></div>
           <div v-if="specifications.length" class="specifications-list">
             <div v-for="spec in specifications" :key="spec.label" class="spec-item">
               <span class="spec-label">{{ spec.label }}：</span>
@@ -176,7 +176,9 @@ const tags = computed(() => {
     })
     .filter(tag => tag !== null); // Filter out the nulls
 });
-// const productDetailsHtml = computed(() => extractData(props.pageConfig.productDetailsHtml));
+const productDetailsHtml = computed(() => extractData({
+  field: 'remark',
+}));
 
 const basicInfo = computed(() => {
   if (!Array.isArray(props.pageConfig.basicInfo)) return [];
@@ -576,14 +578,14 @@ const handleFinish = async (data) => {
 .product-details-section {
   
   .details-content-wrapper {
-    padding: 30px 20px;
+    padding: 26px 20px;
     font-size: 14px;
     line-height: 22px;
     // color: @text-color-secondary;
       color: #272A30;
 
     .rich-text-description {  
-      margin-bottom: @spacing-xl;
+      margin-bottom: @spacing-md;
       :deep(p) { margin-bottom: 1em; }
     }
 
@@ -592,8 +594,12 @@ const handleFinish = async (data) => {
         display: flex;
         margin-bottom: 12px;
         &:last-child { margin-bottom: 0; }
+        font-family: PingFang SC;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 22px;
+        color: #656C74;
         .spec-label {
-          color: @text-color-secondary;
           width: 120px;
           flex-shrink: 0;
           text-align: right;
@@ -602,6 +608,7 @@ const handleFinish = async (data) => {
         .spec-value {
           color: @text-color-base;
           flex-grow: 1;
+          color: #272A30;
         }
       }
     }

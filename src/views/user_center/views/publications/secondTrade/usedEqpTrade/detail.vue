@@ -38,7 +38,7 @@ const productPageConfig = ref({
   ],
 
   productDetailsTitle: '产品详情',
-
+  productDetailsHtml: 'description',
   specifications: [
     { label: '设备名称', field: 'productName' },
     { label: '设备型号', field: 'compatibleModels' },

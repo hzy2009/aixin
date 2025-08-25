@@ -41,19 +41,17 @@ const productPageConfig = ref({
 
   productDetailsTitle: '产品详情',
 
+  productDetailsHtml: 'description',
   specifications: [
+    { label: '产品名称', field: 'productName' },
     { label: '规格', field: 'specification' },
-    { label: '生产日期', field: 'productionDate' },
-    { label: '设备名称', field: 'productName' },
-    { label: '设备型号', field: 'compatibleModels' },
-    { label: '规格描述', field: 'specification' },
-    { label: '品牌厂商', field: 'originalManufacturer' },
-    { label: '出厂日期', field: 'productionDate' },
-    { label: '工艺段', field: 'processSection' },
-    { label: '设备状态', field: 'productStatus' },
+    { label: '适用设备型号', field: 'compatibleModels' },
+    { label: '品牌/制造商', field: 'originalManufacturer' },
+    { label: '产品状态', field: 'productStatus' },
     { label: '数量', field: 'quantity' },
-    // { label: '产品使用说明书', field: 'specs.manualIncluded', formatter: (val) => val === true ? '有' : (val === false ? '无' : val) },
-    // { label: '税率', field: 'specs.taxRate', formatter: (val) => val ? `${val}%` : '-' },
+    { label: '质保期', field: 'guaranteePeriod' },
+    { label: '付款条件', field: 'paymentTermsName' },
+    { label: '物流方式', field: 'shippingTypeName' },
   ]
 });
 const isLoading = ref(false);
