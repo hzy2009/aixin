@@ -36,8 +36,10 @@ const formConfigs = [
   },
   { label: '需求创建日期', field: 'createTime', fieldType: 'date', span: 24},
   { label: '期望完成日期', field: 'expireDate', fieldType: 'date', span: 24 },
-  { label: '电话', field: 'phone', fieldType: 'phone', span: 24 },
-  { label: '邮箱', field: 'email', fieldType: 'email', span: 24 },
+    { label: '电话', field: 'phone', fieldType: 'phone', span: 24, tips: '仅供内部联络使用，不对外展示' },
+,
+    { label: '邮箱', field: 'email', fieldType: 'email', span: 24, tips: '仅供内部联络使用，不对外展示' },
+,
   // {
   //   label: '期望匹配周期', field: 'matchPeriodCode', fieldType: 'select', dictKey: 'rd_breakthrough_period', span: 24,
   //   onChange: ({ value, form, option }) => {
@@ -51,8 +53,10 @@ const statusHistoryColumns = [
   { title: '状态', field: 'operateName', key: 'operateName' },
   { title: '完成日期', field: 'createTime', key: 'createTime' },
   { title: '备注', field: 'remark', key: 'remark' },
-  { label: '电话', field: 'phone', fieldType: 'phone', span: 24 },
-  { label: '邮箱', field: 'email', fieldType: 'email', span: 24 },
+    { label: '电话', field: 'phone', fieldType: 'phone', span: 24, tips: '仅供内部联络使用，不对外展示' },
+,
+    { label: '邮箱', field: 'email', fieldType: 'email', span: 24, tips: '仅供内部联络使用，不对外展示' },
+,
 ]
 
 // const demandTypeDisplayName = '研发攻关';

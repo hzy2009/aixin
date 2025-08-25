@@ -7,84 +7,85 @@
           <!-- 关键修改点：将 allRules(field.rules) 修改为 allRules(field)，以便函数能获取到 fieldType -->
           <a-form-item :label="field.label" :name="field.field" :rules="allRules(field)" class="form-item-custom"
             :class="{ 'form-item-full-width-input': field.fieldType === 'textarea' || field.fullWidthInput, 'phoneOrEmail': field.fieldType === 'phone' || field.fieldType === 'email' }">
-            <a-input v-if="field.fieldType === 'input'" v-model:value="internalFormModel[field.field]"
-              :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear />
-            <a-input-password v-else-if="field.fieldType === 'password'" v-model:value="internalFormModel[field.field]"
-              :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear />
+            <div class="field-with-tips">
+              <a-input v-if="field.fieldType === 'input'" v-model:value="internalFormModel[field.field]"
+                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear />
+              <a-input-password v-else-if="field.fieldType === 'password'" v-model:value="internalFormModel[field.field]"
+                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear />
 
-            <a-input-number v-else-if="field.fieldType === 'number'" v-model:value="internalFormModel[field.field]"
-              :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" style="width: 100%;"
-              :min="field.min" :max="field.max" />
+              <a-input-number v-else-if="field.fieldType === 'number'" v-model:value="internalFormModel[field.field]"
+                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" style="width: 100%;"
+                :min="field.min" :max="field.max" />
 
-            <a-select v-else-if="field.fieldType === 'select'" v-model:value="internalFormModel[field.field]"
-              :placeholder="field.placeholder || `请选择${field.label}`"
-              :options="field.options || selectOptions(field.dictKey)" :mode="field.selectMode"
-              :filter-option="field.remoteSearch ? false : filterOption" :loading="field.loading"
-              :disabled="field.disabled" @change="(v, option) => handleSelectChange(v, field, option)" allow-clear />
+              <a-select v-else-if="field.fieldType === 'select'" v-model:value="internalFormModel[field.field]"
+                :placeholder="field.placeholder || `请选择${field.label}`"
+                :options="field.options || selectOptions(field.dictKey)" :mode="field.selectMode"
+                :filter-option="field.remoteSearch ? false : filterOption" :loading="field.loading"
+                :disabled="field.disabled" @change="(v, option) => handleSelectChange(v, field, option)" allow-clear />
 
-            <a-radio-group v-else-if="field.fieldType === 'radio'" v-model:value="internalFormModel[field.field]"
-              :options="field.options" :disabled="field.disabled" />
+              <a-radio-group v-else-if="field.fieldType === 'radio'" v-model:value="internalFormModel[field.field]"
+                :options="field.options" :disabled="field.disabled" />
 
-            <a-date-picker v-else-if="field.fieldType === 'date'" v-model:value="internalFormModel[field.field]"
-              :placeholder="field.placeholder || `请选择${field.label}`"
-              :disabled-date="field.disabledDate || function(e) {return disabledDate(e, field)}"
-              :value-format="field.valueFormat || 'YYYY-MM-DD HH:mm:ss'" :show-time="field.showTime"
-              @change="(v) => handleDateChange(v, field)"
-              style="width: 100%;" :disabled="field.disabled" />
+              <a-date-picker v-else-if="field.fieldType === 'date'" v-model:value="internalFormModel[field.field]"
+                :placeholder="field.placeholder || `请选择${field.label}`"
+                :disabled-date="field.disabledDate || function(e) {return disabledDate(e, field)}"
+                :value-format="field.valueFormat || 'YYYY-MM-DD HH:mm:ss'" :show-time="field.showTime"
+                @change="(v) => handleDateChange(v, field)"
+                style="width: 100%;" :disabled="field.disabled" />
 
-            <a-range-picker v-else-if="field.fieldType === 'dateRange'" v-model:value="internalFormModel[field.field]"
-              :value-format="field.valueFormat || 'YYYY-MM-DD'" :show-time="field.showTime" style="width: 100%;"
-              :disabled="field.disabled" />
+              <a-range-picker v-else-if="field.fieldType === 'dateRange'" v-model:value="internalFormModel[field.field]"
+                :value-format="field.valueFormat || 'YYYY-MM-DD'" :show-time="field.showTime" style="width: 100%;"
+                :disabled="field.disabled" />
 
-            <a-textarea v-else-if="field.fieldType === 'textarea'" v-model:value="internalFormModel[field.field]"
-              :placeholder="field.placeholder || `请输入${field.label}`" :rows="field.rows || 4" :disabled="field.disabled"
-              allow-clear :maxlength="field.maxLength" show-count />
+              <a-textarea v-else-if="field.fieldType === 'textarea'" v-model:value="internalFormModel[field.field]"
+                :placeholder="field.placeholder || `请输入${field.label}`" :rows="field.rows || 4" :disabled="field.disabled"
+                allow-clear :maxlength="field.maxLength" show-count />
 
-            <a-input-number v-else-if="field.fieldType === 'amount'" v-model:value="internalFormModel[field.field]"
-              :formatter="value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
-              :parser="value => value.replace(/\$\s?|(,*)/g, '')"
-              :precision="field.precision !== undefined ? field.precision : 2" style="width: 100%;"
-              :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled"
-              :min="field.min !== undefined ? field.min : 0" />
-            <!-- New Image Upload Field -->
-            <div v-else-if="field.fieldType === 'imageUpload'" class="image-upload-container">
-              <a-upload v-model:file-list="internalFormModel[field.field]" :name="field.uploadName || 'file'"
-                list-type="picture-card" class="custom-image-uploader"
-                :show-upload-list="field.showUploadList !== undefined ? field.showUploadList : true" :action="uploadUrl"
-                :before-upload="field.beforeUpload || beforeUpload" accept="image/*" :headers="getHeaders()"
-                :data="{ biz: 'temp' }" @change="(info) => handleImageUploadChange(info, field)"
-                @preview="handleImagePreview" :max-count="field.maxCount || 1" :disabled="field.disabled">
-                <div
-                  v-if="(!internalFormModel[field.field] || internalFormModel[field.field].length < (field.maxCount || 1))">
-                  <PlusOutlined />
-                  <div style="margin-top: 8px">上传</div>
-                </div>
-              </a-upload>
-              <div v-if="field.uploadHint" class="upload-hint">{{ field.uploadHint }}</div>
+              <a-input-number v-else-if="field.fieldType === 'amount'" v-model:value="internalFormModel[field.field]"
+                :formatter="value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+                :parser="value => value.replace(/\$\s?|(,*)/g, '')"
+                :precision="field.precision !== undefined ? field.precision : 2" style="width: 100%;"
+                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled"
+                :min="field.min !== undefined ? field.min : 0" />
+              <!-- New Image Upload Field -->
+              <div v-else-if="field.fieldType === 'imageUpload'" class="image-upload-container">
+                <a-upload v-model:file-list="internalFormModel[field.field]" :name="field.uploadName || 'file'"
+                  list-type="picture-card" class="custom-image-uploader"
+                  :show-upload-list="field.showUploadList !== undefined ? field.showUploadList : true" :action="uploadUrl"
+                  :before-upload="field.beforeUpload || beforeUpload" accept="image/*" :headers="getHeaders()"
+                  :data="{ biz: 'temp' }" @change="(info) => handleImageUploadChange(info, field)"
+                  @preview="handleImagePreview" :max-count="field.maxCount || 1" :disabled="field.disabled">
+                  <div
+                    v-if="(!internalFormModel[field.field] || internalFormModel[field.field].length < (field.maxCount || 1))">
+                    <PlusOutlined />
+                    <div style="margin-top: 8px">上传</div>
+                  </div>
+                </a-upload>
+                <div v-if="field.uploadHint" class="upload-hint">{{ field.uploadHint }}</div>
+              </div>
+              <div v-else-if="field.fieldType === 'erjisb'">
+                <a-select v-model:value="internalFormModel['productMainTypeCode']" :placeholder="`请选择`"
+                  style="width: 48%; margin-right: 4%" :options="selectOptions('product_main_type')"
+                  :disabled="field.disabled" @change="(v, option) => handleSelectProductMainTypeChange(v, field, option)"
+                  allow-clear />
+
+                <a-select v-model:value="internalFormModel['productType']" :placeholder="`请选择`"
+                  :disabled="!internalFormModel['productMainTypeCode']" style="width: 48%;"
+                  :options="internalFormModel['productMainTypeCode'] == 'product_type' ? selectOptions('product_type') : selectOptions('product_type_material')"
+                  @change="(v, option) => handleSelectProductTypeChange(v, field, option)" allow-clear />
+              </div>
+              <a-input v-else-if="field.fieldType === 'email'" v-model:value="internalFormModel[field.field]" 
+                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear />
+              <a-input v-else-if="field.fieldType === 'phone'" v-model:value="internalFormModel[field.field]" 
+                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear />
+              <span v-else-if="field.fieldType === 'slot'">
+                <slot :name="field.field" :dataSource="internalFormModel"></slot>
+              </span>
+              <!-- Add more field types as needed -->
+              
+              <!-- Tips 显示在所有字段类型下方 -->
+              <div v-if="field.tips" class="field-tips">{{ field.tips }}</div>
             </div>
-            <div v-else-if="field.fieldType === 'erjisb'">
-              <a-select v-model:value="internalFormModel['productMainTypeCode']" :placeholder="`请选择`"
-                style="width: 48%; margin-right: 4%" :options="selectOptions('product_main_type')"
-                :disabled="field.disabled" @change="(v, option) => handleSelectProductMainTypeChange(v, field, option)"
-                allow-clear />
-
-              <a-select v-model:value="internalFormModel['productType']" :placeholder="`请选择`"
-                :disabled="!internalFormModel['productMainTypeCode']" style="width: 48%;"
-                :options="internalFormModel['productMainTypeCode'] == 'product_type' ? selectOptions('product_type') : selectOptions('product_type_material')"
-                @change="(v, option) => handleSelectProductTypeChange(v, field, option)" allow-clear />
-            </div>
-            <div v-else-if="field.fieldType === 'email'" class="tips">
-              <a-input v-model:value="internalFormModel[field.field]" :placeholder="field.placeholder || `请输入${field.label}`"
-                :disabled="field.disabled" allow-clear />
-            </div>
-            <div v-else-if="field.fieldType === 'phone'" class="tips">
-              <a-input v-model:value="internalFormModel[field.field]" :placeholder="field.placeholder || `请输入${field.label}`"
-                :disabled="field.disabled" allow-clear />
-            </div>
-            <span v-else-if="field.fieldType === 'slot'">
-              <slot :name="field.field" :dataSource="internalFormModel"></slot>
-            </span>
-            <!-- Add more field types as needed -->
           </a-form-item>
         </a-col>
       </template>
@@ -511,24 +512,21 @@ defineExpose({ validate, resetFields, clearValidate, getAllData, formModel: inte
 }
 
 .phoneOrEmail{
-    margin-bottom: @spacing-lg + 16px; 
+    margin-bottom:  16px; 
 }
-.tips{
-  &::before {
-    content: '仅供内部联络使用，不对外展示';
+
+.field-with-tips {
+  position: relative;
+  
+  .field-tips {
     color: #656C74;
     font-family: PingFang SC;
     font-weight: 400;
     font-size: 12px;
     letter-spacing: 0%;
     text-align: right;
-    display: block;
-    width: 100%; // Underline width matches text
-    height: 2px;
-    position: absolute;
-    bottom: 0; // (padding-bottom of container + border-width)
-    right: 0;
+    margin-top: 4px;
+    line-height: 1.4;
   }
-  
 }
 </style>

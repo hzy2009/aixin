@@ -45,8 +45,10 @@ const formConfigs = [
   // },
   { label: '需求创建日期', field: 'createTime', fieldType: 'date', span: 24},
   { label: '期望完成日期', field: 'expireDate', fieldType: 'date', span: 24 },
-  { label: '电话', field: 'phone', fieldType: 'phone', span: 24 },
-  { label: '邮箱', field: 'email', fieldType: 'email', span: 24 },
+    { label: '电话', field: 'phone', fieldType: 'phone', span: 24, tips: '仅供内部联络使用，不对外展示' },
+,
+    { label: '邮箱', field: 'email', fieldType: 'email', span: 24, tips: '仅供内部联络使用，不对外展示' },
+,
   // {
   //   label: '需求状态', field: 'statusName', detailField: 'statusName', fieldType: 'select', span: 24, disabled: true,
   // },
