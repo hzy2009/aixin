@@ -58,9 +58,9 @@ const validatePass2 = async (_rule, value) => {
 
 // // --- 表单配置 ---
 const formConfigs = [
-	{ label: '原密码', field: 'oldpassword', span: 24, fieldType: 'password', rules: [{ required: true }] },
+	{ label: '原密码', field: 'oldpassword', span: 24, fieldType: 'password', rules: [{ required: true }], tips: '密码由8位以上的英文字母、数字和符号组成，英文字母需含大小写' },
 	{
-		label: '新密码', field: 'password', fieldType: 'password', span: 24, rules: [{ required: true, validator: validatePass, trigger: 'change' }]
+		label: '新密码', field: 'password', fieldType: 'password', span: 24, rules: [{ required: true, validator: validatePass, trigger: 'change' }], tips: '密码由8位以上的英文字母、数字和符号组成，英文字母需含大小写'
 	},
 	{ label: '确定新密码', field: 'confirmpassword', fieldType: 'password', span: 24, rules: [{ required: true, validator: validatePass2, trigger: 'change' }] },
 ]
