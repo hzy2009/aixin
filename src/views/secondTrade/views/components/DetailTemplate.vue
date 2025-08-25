@@ -89,7 +89,7 @@ import { Tag as ATag, InputNumber as AInputNumber, Button as AButton, message } 
 import defaultImagePlaceholder from '@/assets/images/fallback/detailFall.jpg'; // 准备一个占位图
 import { safeGet } from '@/utils/index'; // 引入我们自己的工具函数
 import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
-import { selectOptions } from '@/utils/index';
+import { selectOptions, getFileAccessHttpUrl } from '@/utils/index';
 import { useModalStore } from '@/store/modalStore'; 
 import defHttp from '@/utils/http/axios'
 const modalStore = useModalStore();
@@ -159,7 +159,10 @@ const extractData = (config) => {
 };
 const isEdit = computed(() => props.pageConfig.pageState == 'edit');
 const title = computed(() => extractData(props.pageConfig.title));
-const mainImage = computed(() => extractData(props.pageConfig.mainImage) || defaultImagePlaceholder);
+const mainImage = computed(() => {
+  const imageUrl = extractData(props.pageConfig.mainImage);
+  return imageUrl ? getFileAccessHttpUrl(imageUrl) : defaultImagePlaceholder
+});
 const tags = computed(() => {
   if (!Array.isArray(props.pageConfig.tags)) return [];
   

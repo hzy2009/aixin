@@ -1,6 +1,6 @@
 <template>
     <DetailTemplate :product="productData" :page-config="productPageConfig" />
-    <SimilarProductsSection />
+    <SimilarProductsSection :similarConfig="similarConfig" :basedOnProductId="productData.id" :fieldList="fieldList" :tagList="tagList"/>
 </template>
 
 <script setup>
@@ -57,6 +57,12 @@ const productPageConfig = ref({
 const isLoading = ref(false);
 const internalDemandId = ref(props.IdProp);
 
+const similarConfig = ref({
+  url: '/apm/apmDeviceSecondhand/list/front',
+  params: {
+    'productGroup': productData.value.productGroup
+  },
+})
 async function fetchReportDetail() {
   if (!props.IdProp) return;
   isLoading.value = true;

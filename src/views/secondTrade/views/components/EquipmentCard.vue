@@ -2,7 +2,7 @@
   <div class="equipment-card-precise" @click="handleCardClick">
     <div class="card-image-section">
       <img
-        :src="item.imageUrl || defaultPlaceholder"
+        :src="getImgUrl(item.imageUrl)"
         :alt="item.title"
         class="equipment-image-asset"
         @error="onImageError"
@@ -34,8 +34,8 @@
 <script setup>
 import { computed, ref } from 'vue';
 import defaultPlaceholder from '@/assets/images/fallback/detailFall.jpg'; // 准备一个占位图
-import { selectOptions } from '@/utils/index';
-import { loading } from 'vxe-pc-ui';
+import { selectOptions , getFileAccessHttpUrl} from '@/utils/index';
+
 const props = defineProps({
   item: {
     type: Object,
@@ -76,6 +76,10 @@ const onImageError = () => {
 const handleCardClick = () => {
   emit('details', props.item);
 };
+
+const getImgUrl = (url) => {
+  return url ? getFileAccessHttpUrl(url) : defaultPlaceholder
+}
 
 </script>
 

@@ -68,7 +68,7 @@ const tagList = [
 const similarConfig = ref({
   url: '/apm/apmDeviceOrigin/list/front',
   params: {
-    'productCategory': productData.value.productCategory
+    'productGroup': productData.value.productGroup
   },
 })
 const isLoading = ref(false);
