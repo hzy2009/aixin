@@ -80,6 +80,9 @@ export function useNavigation() {
         { key: 'jingdongqiyegou', label: '京东工业', path: 'https://b.jd.com', fn: () =>  {
           handlePurchaseClick('jd');
         }},
+         { key: 'guoptics', label: '联合光科', path: 'https://www.gu-optics.com/', fn: () =>  {
+          handlePurchaseClick('guoptics');
+        }},
       ]
     },
       { 
@@ -216,7 +219,13 @@ export function useNavigation() {
   const handlePurchaseClick = (partnerKey) => {
     const authStore = useAuthStore();
     if (authStore.isLogin) {
-      let url = partnerKey === 'aian' ? '/apm/jicai/redirectToAtEdiJson' : '/apm/jicai/redirectToJdJson ';
+      let url = ''
+      const urlMap = {
+        'aian': '/apm/jicai/redirectToAtEdiJson',
+        'jd': '/apm/jicai/redirectToJdJson',
+        'guoptics': '/apm/jicai/redirectToLianHeGuangKeiJson'
+      }
+      url = urlMap[partnerKey]
       defHttp.get({ url }).then((res) => {
         if(res.success){
           window.open(res.result, '_blank');

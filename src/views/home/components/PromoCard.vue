@@ -5,7 +5,7 @@
       <div class="purchase-blocks-container">
         <!-- Left Block -->
         <div class="purchase-block special-hover-effect">
-          <img src="@/assets/images/home/PromoCard1.png" alt="FA工厂自动化零件一站式采购平台" class="block-background-image"/>
+          <img src="@/assets/images/home/PromoCard1.jpg" alt="FA工厂自动化零件一站式采购平台" class="block-background-image"/>
           <!-- <div class="block-content">
             <a-button type="primary" class="purchase-button" @click="handlePurchaseClick('aian')">
               点击采购，享受爱芯享会员折扣
@@ -18,13 +18,24 @@
 
         <!-- Right Block -->
         <div class="purchase-block special-hover-effect">
-          <img src="@/assets/images/home/PromoCard2.png" alt="打造多元化资产管理服务生态" class="block-background-image"/>
+          <img src="@/assets/images/home/PromoCard2.jpg" alt="打造多元化资产管理服务生态" class="block-background-image"/>
           <!-- <div class="block-content">
             <a-button type="primary" class="purchase-button" @click="handlePurchaseClick('jd')">
               点击采购，享受爱芯享会员折扣
             </a-button>
           </div> -->
-          <div class="block-hover-overlay" @click="handlePurchaseClick('jd_overlay')">
+          <div class="block-hover-overlay" @click="handlePurchaseClick('jd')">
+            <span class="hover-action-text">点击采购，享受爱芯享会员折扣</span>
+          </div>
+        </div>
+         <div class="purchase-block special-hover-effect">
+          <img src="@/assets/images/home/PromoCard3.jpg" alt="为客户提供质量可靠优质的一站式采购服务" class="block-background-image"/>
+          <!-- <div class="block-content">
+            <a-button type="primary" class="purchase-button" @click="handlePurchaseClick('jd')">
+              点击采购，享受爱芯享会员折扣
+            </a-button>
+          </div> -->
+          <div class="block-hover-overlay" @click="handlePurchaseClick('guoptics')">
             <span class="hover-action-text">点击采购，享受爱芯享会员折扣</span>
           </div>
         </div>
@@ -46,8 +57,14 @@ const handlePurchaseClick = (partnerKey) => {
   // TODO: Implement actual navigation or action for purchase
   // message.info(`即将跳转到 ${partnerKey === 'aian' ? '爱安特' : '京东工业'} 采购页面... (功能开发中)`);
   // message.info(`业务即将上线，敬请期待`);
-  let uri = partnerKey === 'aian' ? 'https://www.ant-fa.com' : 'https://b.jd.com/';
-  window.open(uri, '_blank');
+  let url = ''
+  const urlMap = {
+    'aian': 'https://www.ant-fa.com',
+    'jd': 'https://b.jd.com',
+    'guoptics': 'https://www.gu-optics.com/'
+  }
+  url = urlMap[partnerKey]
+  window.open(url, '_blank');
   // Example: window.open('https://partner-url.com', '_blank');
 };
 </script>

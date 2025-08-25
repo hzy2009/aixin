@@ -25,9 +25,15 @@
             <span class="hover-action-text">点击采购，享受爱芯享会员折扣</span>
           </div>
         </div>
-          <div class="member-logo-item-wrapper special-hover-effect" >
+        <div class="member-logo-item-wrapper special-hover-effect" >
             <img src="@/assets/images/home/PromoCard2.png" alt="通用件集采" class="member-logo-image" />
             <div class="block-hover-overlay" @click="handlePurchaseClick('jd_overlay')">
+            <span class="hover-action-text">点击采购，享受爱芯享会员折扣</span>
+          </div>
+        </div>
+         <div class="member-logo-item-wrapper special-hover-effect" >
+            <img src="@/assets/images/home/PromoCard3m.jpg" alt="通用件集采" class="member-logo-image" />
+            <div class="block-hover-overlay" @click="handlePurchaseClick('guoptics')">
             <span class="hover-action-text">点击采购，享受爱芯享会员折扣</span>
           </div>
         </div>
@@ -96,13 +102,19 @@ const handleImageError = (event) => {
 };
 const handlePurchaseClick = (partnerKey) => {
   if (authStore.isLogin) {
-    let url = partnerKey === 'aian' ? '/apm/jicai/redirectToAtEdiJson' : '/apm/jicai/redirectToJdJson ';
+    let url = ''
+    const urlMap = {
+      'aian': '/apm/jicai/redirectToAtEdiJson',
+      'jd': '/apm/jicai/redirectToJdJson',
+      'guoptics': '/apm/jicai/redirectToLianHeGuangKeiJson'
+    }
+    url = urlMap[partnerKey]
     defHttp.get({ url }).then((res) => {
       if(res.success){
-          window.open(res.result, '_blank');
-        } else {
-          message.error(res.message);
-        }
+        window.open(res.result, '_blank');
+      } else {
+        message.error(res.message);
+      }
     });
   } else {
     modalStore.showLogin();
