@@ -10,6 +10,7 @@ import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import { OEMPARTS_COLUMNS } from '@/utils/const.jsx';
 import { FileTextOutlined } from '@ant-design/icons-vue';
+import { selectOptions } from '@/utils/index';
 
 const router = useRouter();
 const refListPage = ref();
@@ -27,7 +28,11 @@ const actions = reactive([
     clickFn: viewDetails,
   }
 ]);
-
+const getALLProductTypes = () => {
+   const allProductTypes = selectOptions('product_type')  
+   const allProductTypeMaterials = selectOptions('product_type_material')
+   return [{ value: '', label: '全部' }, ...allProductTypes, ...allProductTypeMaterials]
+}
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
     { id: 'productType', label: '零部件状态', maxVisibleWithoutMore: 9, dictKey: 'productType', options: [

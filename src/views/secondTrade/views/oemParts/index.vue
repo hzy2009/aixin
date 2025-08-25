@@ -23,6 +23,7 @@ import SortFilters from '../components/SortFilters.vue';
 import EquipmentList from '../components/EquipmentList.vue';
 import { USEDEQPTRADE_COLUMNS } from '@/utils/const.jsx';
 import { message } from 'ant-design-vue';
+import { selectOptions } from '@/utils/index';
 import defHttp from '@/utils/http/axios'
 
 
@@ -32,14 +33,17 @@ const currentSort = ref({ key: 'default' });
 const sortOptions = [
     { key: 'default', label: '默认排序' },
     // { key: 'price', label: '价格排序', type: 'dropdown', options: [{label: '从高到低', value: 'desc'}, {label: '从低到高', value: 'asc'}] },
-    { key: 'time', label: '时间排序', type: 'dropdown', options: [{label: '从高到低', value: 'desc'}, {label: '从低到高', value: 'asc'}]  }
+    { key: 'createTime', label: '时间排序', type: 'dropdown', options: [{label: '从高到低', value: 'desc'}, {label: '从低到高', value: 'asc'}]  }
 ];
 
 const onSortChange = (newSort) => {
-    console.log('排序改变:', newSort);
-    // TODO: 调用 refListPage.value 的方法，传入新的排序参数并重新加载列表
-    // refListPage.value.setQueryParams({ sortKey: newSort.key, sortOrder: newSort.order });
-    // refListPage.value.reload();
+    let params = {}
+    if (newSort.key === 'default') {
+        params = { order: 'desc', column: 'createTime' };
+    } else {
+       params = { order: newSort.order, column: newSort.key };
+    }
+    refListPage.value.loadTableData(params);
 };
 
 const fieldList = [
@@ -70,6 +74,12 @@ const onChange = (page, pageSize) => {
             });
         })
     })
+}
+
+const getALLProductTypes = () => {
+   const allProductTypes = selectOptions('product_type')  
+   const allProductTypeMaterials = selectOptions('product_type_material')
+   return [{ value: '', label: '全部' }, ...allProductTypes, ...allProductTypeMaterials]
 }
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
