@@ -50,21 +50,21 @@ export function useNavigation() {
       ] 
     },
     { 
-      key: 'alternativeSourcing', 
-      label: '多元化寻源', 
-      path: '/demands/DomesticSourcing', 
+      key: 'secondTrade', 
+      label: '二手交易', 
+      path: '/secondTrade/oemParts', 
       matchPaths: [
-        '/demands/DomesticSourcing',
-        '/user/published/DomesticSourcing',
-        '/user/join/DomesticSourcing',
-        '/user/published/DomesticSourcing/create'
+        '/secondTrade/oemParts',
+        '/secondTrade/standard',
+        '/secondTrade/notStandard',
+        '/secondTrade/usedEqpTrade',
       ],
       subItems: [
-        { key: 'demand_squareDomesticSourcing', label: '需求广场', path: '/demands/DomesticSourcing' },
-        { key: 'publishedDomesticSourcing', label: '我发布的', path: '/user/published/DomesticSourcing' },
-        { key: 'joinDomesticSourcing', label: '我参与的', path: '/user/join/DomesticSourcing' },
-        { key: 'createDomesticSourcing', label: '创建多元化寻源', path: '/user/published/DomesticSourcing/create' },
-      ] 
+        { key: 'oemParts', label: '原厂件库存处理', path: '/secondTrade/oemParts'},
+        { key: 'standard', label: '标准件库存处理', path: '/secondTrade/standard'},
+        { key: 'notStandard', label: '非标件库存处理', path: '/secondTrade/notStandard'},
+        { key: 'usedEqpTrade', label: '二手设备交易', path: '/secondTrade/usedEqpTrade'},
+      ]
     },
     { 
       key: 'tongyongcaiji', 
@@ -82,22 +82,39 @@ export function useNavigation() {
         }},
       ]
     },
-    { 
-      key: 'secondTrade', 
-      label: '二手交易', 
-      path: '/secondTrade/oemParts', 
+      { 
+      key: 'testingValidation', 
+      label: '检测验证', 
+      path: '/demands/Verification', 
       matchPaths: [
-        '/secondTrade/oemParts',
-        '/secondTrade/standard',
-        '/secondTrade/notStandard',
-        '/secondTrade/usedEqpTrade',
+        '/demands/Verification',
+        '/user/published/Verification',
+        '/user/join/Verification',
+        '/user/published/Verification/create'
       ],
       subItems: [
-        { key: 'oemParts', label: '原厂件库存处理', path: '/secondTrade/oemParts'},
-        { key: 'standard', label: '标准件库存处理', path: '/secondTrade/standard'},
-        { key: 'notStandard', label: '非标件库存处理', path: '/secondTrade/notStandard'},
-        { key: 'usedEqpTrade', label: '二手设备交易', path: '/secondTrade/usedEqpTrade'},
+        { key: 'demand_squareVerification', label: '需求广场', path: '/demands/Verification' },
+        { key: 'publishedVerification', label: '我发布的', path: '/user/published/Verification' },
+        { key: 'joinVerification', label: '我参与的', path: '/user/join/Verification' },
+        { key: 'createVerification', label: '创建检测验证', path: '/user/published/Verification/create' },
       ]
+    },
+    { 
+      key: 'alternativeSourcing', 
+      label: '多元化寻源', 
+      path: '/demands/DomesticSourcing', 
+      matchPaths: [
+        '/demands/DomesticSourcing',
+        '/user/published/DomesticSourcing',
+        '/user/join/DomesticSourcing',
+        '/user/published/DomesticSourcing/create'
+      ],
+      subItems: [
+        { key: 'demand_squareDomesticSourcing', label: '需求广场', path: '/demands/DomesticSourcing' },
+        { key: 'publishedDomesticSourcing', label: '我发布的', path: '/user/published/DomesticSourcing' },
+        { key: 'joinDomesticSourcing', label: '我参与的', path: '/user/join/DomesticSourcing' },
+        { key: 'createDomesticSourcing', label: '创建多元化寻源', path: '/user/published/DomesticSourcing/create' },
+      ] 
     },
     { 
       key: 'rndCollaboration', 
@@ -116,23 +133,7 @@ export function useNavigation() {
         { key: 'createPublicRelations', label: '创建研发攻关', path: '/user/published/PublicRelations/create' },
       ] 
     },
-    { 
-      key: 'testingValidation', 
-      label: '检测验证', 
-      path: '/demands/Verification', 
-      matchPaths: [
-        '/demands/Verification',
-        '/user/published/Verification',
-        '/user/join/Verification',
-        '/user/published/Verification/create'
-      ],
-      subItems: [
-        { key: 'demand_squareVerification', label: '需求广场', path: '/demands/Verification' },
-        { key: 'publishedVerification', label: '我发布的', path: '/user/published/Verification' },
-        { key: 'joinVerification', label: '我参与的', path: '/user/join/Verification' },
-        { key: 'createVerification', label: '创建检测验证', path: '/user/published/Verification/create' },
-      ]
-    },
+  
     { 
       key: 'offlineEvents', 
       label: '线下活动', 
