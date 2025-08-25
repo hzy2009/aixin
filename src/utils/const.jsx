@@ -130,7 +130,7 @@ export const DOMESTIC_SOURCING_COLUMNS = [
     { title: '需求创建日期', field: 'createTime', align: 'center', fieldType: 'date', width: 120 },
     { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date', width: 120 },
     { title: '内部管理单号', field: 'materialCode', align: 'center', width: 160 },
-    { title: '选定厂商', field: 'refUserCode', align: 'center', width: 160 },
+    { title: '已寻到厂商', field: 'refUserCode', align: 'center', width: 160 },
     { title: '需求状态', field: 'statusName', align: 'center', width: 120 },
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 90 },
@@ -143,7 +143,7 @@ export const OEM_PARTS_SOURCING_COLUMNS = [
     { title: '需求创建日期', field: 'createTime', align: 'center', fieldType: 'date', width: 110 },
     { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date', width: 110 },
     { title: '内部管理单号', field: 'materialCode', align: 'center', width: 160 },
-    { title: '选定厂商', field: 'refUserCode', align: 'center', width: 160 },
+    { title: '已寻到厂商', field: 'refUserCode', align: 'center', width: 160 },
     { title: '需求状态', field: 'statusName', align: 'center', width: 120 },
     // 操作列通常没有 field，通过插槽（slot）来定义其内容
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 100 },

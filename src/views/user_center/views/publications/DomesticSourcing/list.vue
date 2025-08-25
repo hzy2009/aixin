@@ -25,7 +25,7 @@ const tableColumns = reactive([
   { title: '需求创建日期', field: 'createTime', align: 'center', fieldType: 'date', width: 100},
   { title: '期望完成日期', field: 'expireDate', align: 'center', fieldType: 'date', width: 100},
   { title: '内部管理单号', field: 'materialCode', align: 'center', width: 130 },
-  { title: '选定厂商', field: 'refUserCode', align: 'center', width: 160  },
+  { title: '已寻到厂商', field: 'refUserCode', align: 'center', width: 160  },
   { title: '需求状态', field: 'statusName', align: 'center', width: 100 },
   { title: '操作', width: '160px', align: 'center', fixed: 'right', key: 'actions' },
 ]);
