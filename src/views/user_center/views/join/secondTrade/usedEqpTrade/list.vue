@@ -28,6 +28,34 @@ const actions = reactive([
   }
 ]);
 
+// --- Filter Configuration (remains in component as it's UI specific) ---
+const filterConfigForPage = reactive([
+    { id: 'productType', label: '设备状态', maxVisibleWithoutMore: 9, dictKey: 'productType', options: [
+        { label: '全部', value: '',},
+        { label: '全新整机(原厂状态)', value: '全新整机(原厂状态)',},
+        { label: '二手整机(功能正常)', value: '二手整机(功能正常)',},
+        { label: '二手整机(功能待测) ', value: '二手整机(功能待测) ',},
+        { label: '非整机(拆修使用)', value: '非整机(拆修使用)',},
+    ] },
+    { id: 'purchaseMethod', label: '购买形式', maxVisibleWithoutMore: 9, dictKey: 'purchase_method'},
+    { id: 'deviceType', label: '设备类型', maxVisibleWithoutMore: 9, options: [
+        { label: '全部', value: ''},
+        { label: '光刻设备(Lithography)', value: '光刻设备(Lithography)',},
+        { label: '刻蚀设备(Etch)', value: '刻蚀设备(Etch)',},
+        { label: '化学机械抛光设备(CMP)', value: '化学机械抛光设备(CMP)',},
+        { label: '物理气相沉积设备(PVD)', value: '物理气相沉积设备(PVD)',},
+        { label: '化学气相沉积设备(CVD)', value: '化学气相沉积设备(CVD)',},
+        { label: '离子注入设备(Implant)', value: '离子注入设备(Implant)',},
+        { label: '快速热处理设备(RTP)', value: '快速热处理设备(RTP)',},
+        { label: '量测设备(Metrology)', value: '量测设备(Metrology)',}
+    ]},
+    { id: 'stockStatus', label: '库存状态', maxVisibleWithoutMore: 9, selectionType: 'single', options: [
+        { label: '全部', value: '',},
+        { label: '现货', value: '现货',},
+        { label: '非现货', value: '非现货',},
+    ] },
+]);
+
 // 页面数据配置
 const pageData = ref({
   url: {
@@ -35,6 +63,7 @@ const pageData = ref({
   },
   tableColumns,
   actions,
+  filterConfigForPage,
   // 可以根据需要启用权限控制
   // requiredRoles: ['apm-vip', 'apm-register'],
 });

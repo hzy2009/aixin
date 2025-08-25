@@ -27,12 +27,28 @@ const actions = reactive([
     clickFn: viewDetails,
   }
 ]);
-
+// --- Filter Configuration (remains in component as it's UI specific) ---
+const filterConfigForPage = reactive([
+    { id: 'productType', label: '零部件状态', maxVisibleWithoutMore: 9, dictKey: 'productType', options: [
+        { label: '全部', value: '',},
+        { label: '全新未拆封', value: '全新未拆封',},
+        { label: '拆封未使用', value: '拆封未使用',},
+        { label: '拆封已使用 ', value: '拆封已使用',},
+    ] },
+    { id: 'purchaseMethod', label: '购买形式', maxVisibleWithoutMore: 9, dictKey: 'purchase_method'},
+    { id: 'productCategory', label: '产品类别', maxVisibleWithoutMore: 14, dictKey: 'product_type', options: getALLProductTypes() },
+    { id: 'stockStatus', label: '库存状态', maxVisibleWithoutMore: 9, selectionType: 'single', options: [
+        { label: '全部', value: '',},
+        { label: '现货', value: '现货',},
+        { label: '非现货', value: '非现货',},
+    ] },
+]);
 // 页面数据配置
 const pageData = ref({
   url: {
     list: '/apm/apmDeviceOrigin/list/owner',
   },
+  filterConfigForPage,
   tableColumns,
   actions,
   // 可以根据需要启用权限控制
