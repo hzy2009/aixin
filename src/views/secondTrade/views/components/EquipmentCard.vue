@@ -22,7 +22,7 @@
       <div class="card-price-area">
         <div class="price-main">
           <span class="price-value-text">{{ formattedPrice }}</span>
-          <span class="price-unit-text" v-if="item.priceType !== 'ask'">万元</span>
+          <!-- <span class="price-unit-text" v-if="item.priceType !== 'ask'">万元</span> -->
           <span class="price-suffix-text" v-if="item.purchaseMethod === 'AUCTION'">起拍</span>
         </div>
         <div class="price-note-text">{{ purchaseMethodtext}}</div>
