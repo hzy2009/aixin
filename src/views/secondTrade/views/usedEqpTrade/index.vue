@@ -2,7 +2,7 @@
     <div>
         <listPage :pageData="pageData" ref="refListPage">
             <template #content="{ dataSource, paginationConfig }">
-                <div class="results-grid">
+                <div class="results-grid content-section">
                     <SortFilters :filters="sortOptions" v-model:value="currentSort" @change="onSortChange" />
                     <EquipmentList :dataSource="dataSource" @handleDetails="handleDetails" :fieldList="fieldList"/>
                 </div>
@@ -53,10 +53,11 @@ const handleDetails = (item) => {
         path: `/secondTrade/usedEqpTrade/details/${item.id}`,
     })
 };
+const initialPageSize = 12
 const onChange = (page, pageSize) => {
     const res = refListPage.value.handleTablePaginationChange({
         current: page,
-        pageSize
+        pageSize: initialPageSize
     });
     res.then(() => {
         nextTick(() => {
@@ -72,7 +73,24 @@ const pageData = ref({
         list: 'apm/apmDeviceSecondhand/list/front',
         // overview: 'apm/apmSourcingOriginSubstitute/overview/front'
     },
+    initialPageSize: initialPageSize
     // requiredRoles: ['apm-vip', 'apm-vip-inspection', 'apm-register'],
 })
 
 </script>
+
+<style scoped lang="less">
+@import '@/assets/styles/_variables.less';
+
+.content-section {
+    margin-bottom: @spacing-lg;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+.pagination-wrapper{
+  text-align: right;
+  margin-bottom: @spacing-lg;
+}
+</style>
