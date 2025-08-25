@@ -23,7 +23,7 @@
         <div class="price-main">
           <span class="price-value-text">{{ formattedPrice }}</span>
           <span class="price-unit-text" v-if="item.priceType !== 'ask'">万元</span>
-          <span class="price-suffix-text" v-if="item.priceType === 'auction'">起拍</span>
+          <span class="price-suffix-text" v-if="item.purchaseMethod === 'AUCTION'">起拍</span>
         </div>
         <div class="price-note-text">{{ purchaseMethodtext}}</div>
       </div>
@@ -60,8 +60,8 @@ const emit = defineEmits(['details']);
 const imageSrc = ref(props.item.imageUrl || defaultPlaceholder);
 
 const formattedPrice = computed(() => {
-  if (props.item.priceType === 'ask') return '****';
-  return props.item.price || '面议';
+  if (props.item.purchaseMethod === 'PRICE_ON_REQUEST') return '****';
+  return props.item.priceExcludingTax || '面议';
 });
 const purchaseMethodtext = computed(() => {
   const purchaseMethodMap = selectOptions('purchase_method').reduce((acc, { value: key, label }) => ({ ...acc, [key]: label }), {});
