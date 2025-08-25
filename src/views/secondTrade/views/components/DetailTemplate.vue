@@ -58,7 +58,7 @@
               {{ actionText }}
             </a-button>
           </div>
-          <div >需求发布者: {{ props.product.postedBy }}</div>
+          <div v-if="pageConfig.showPostedBy">需求发布者: {{ props.product.postedBy }}</div>
         </div>
       </div>
 

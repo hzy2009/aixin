@@ -19,6 +19,7 @@ const props = defineProps({
 const productData = ref({});
 // --- Page Configuration (定义了如何从 `productData` 映射到UI) ---
 const productPageConfig = ref({
+  showPostedBy: true,
   pageState: 'detail',
   title: { field: 'productName' },
   mainImage: { field: 'url' },
