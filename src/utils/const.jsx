@@ -221,7 +221,7 @@ export const OEMPARTS_COLUMNS = [
     { title: '序号', type: 'seq', width: 50, align: 'center' },
     { title: '料号', field: 'partNumber', align: 'center' },
     { title: '产品名称', field: 'productName', align: 'center' },
-    { title: '产品类别', field: 'productCategory', align: 'center' },
+    { title: '产品类别', field: 'productTypeName', align: 'center' },
     { title: '规格描述', field: 'specification', align: 'center', width: 90 },
     { title: '适用设备型号', field: 'compatibleModels', align: 'center', width: 100 },
     { title: '原厂', field: 'originalManufacturer', align: 'center', width: 100 },
