@@ -37,6 +37,22 @@
 							v-model:value="formModel[field.field]" 
 							:placeholder="field.placeholder"
 							:min="field.min" :max="field.max"
+							:step="1"
+							:precision="0"
+							:parser="value => value.replace(/\D/g, '')"
+							:formatter="value => `${value}`"
+							class="iteminput" 
+						/>
+						<a-input-number 
+							v-else-if="field.type === 'positiveInteger'"
+							v-model:value="formModel[field.field]" 
+							:placeholder="field.placeholder"
+							:min="field.min || 1" 
+							:max="field.max"
+							:step="1"
+							:precision="0"
+							:parser="value => value.replace(/[^\d]/g, '')"
+							:formatter="value => value ? `${Math.max(1, Math.floor(Math.abs(Number(value))))}` : ''"
 							class="iteminput" 
 						/>
 						<a-date-picker 

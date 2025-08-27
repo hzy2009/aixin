@@ -39,6 +39,10 @@
               v-model:value="purchaseQuantity"
               :min="1"
               :max="priceInfo.quantity"
+              :step="1"
+              :precision="0"
+              :parser="value => value.replace(/\D/g, '')"
+              :formatter="value => `${value}`"
               class="quantity-input"
               :disabled="!isPurchasable"
             />
