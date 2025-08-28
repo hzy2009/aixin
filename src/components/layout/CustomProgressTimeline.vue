@@ -12,7 +12,8 @@
             'is-completed': step.isCompleted,
             'is-active': step.isActive,
             'is-first': index === 0,
-            'is-last': index === formattedSteps.length - 1
+            'is-last': index === formattedSteps.length - 1,
+            'no-date': !step.displayDate
           }]"
          
         >
@@ -245,6 +246,22 @@ const formattedSteps = computed(() => {
   &.is-active {
     .milestone-connector-line {
       background-color: @inactive-color-final;
+    }
+  }
+
+  // If this step has no date, make dot, title and connector line gray
+  &.no-date {
+    .milestone-dot {
+      background-color: @inactive-color-final !important;
+    }
+    .milestone-title {
+      color: @title-inactive-final !important;
+    }
+    .milestone-date {
+      color: @date-inactive-final !important;
+    }
+    .milestone-connector-line {
+      background-color: @inactive-color-final !important;
     }
   }
 }
