@@ -25,7 +25,7 @@
               <div>
                 VIP会员价: <span class="vip-price-value">***</span>元
               </div>
-              <div class="vip-price-tips"> (可分章节单独购买)</div>
+              <div class="vip-price-tips" v-if="props.report.isModularSale"> (可分章节单独购买)</div>
             </div>
             <!-- <p class="original-price">原价: {{ props.report.unitPrice }}元</p>
             <p class="member-price">会员价: {{ props.report.memberUnitPrice }}元</p>
