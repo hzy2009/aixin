@@ -72,7 +72,7 @@
           <h3 class="details-title-text">{{ pageConfig.productDetailsTitle || '产品详情' }}</h3>
         </div>
         <div class="details-content-wrapper">
-          <div v-if="productDetailsHtml" class="rich-text-description" v-html="productDetailsHtml"></div>
+          <div v-if="productDetailsHtml" class="rich-text-description">{{ productDetailsHtml }}</div>
           <div v-if="specifications.length" class="specifications-list">
             <div v-for="spec in specifications" :key="spec.label" class="spec-item">
               <span class="spec-label">{{ spec.label }}：</span>
@@ -181,7 +181,7 @@ const tags = computed(() => {
     .filter(tag => tag !== null); // Filter out the nulls
 });
 const productDetailsHtml = computed(() => extractData({
-  field: 'remark',
+  field: 'description',
 }));
 
 const basicInfo = computed(() => {
@@ -457,6 +457,12 @@ const handleFinish = async (data) => {
       font-family: PingFang SC;
       line-height: 16px;
       margin-bottom: 12px;
+
+      font-family: PingFang SC;
+      font-weight: 400;
+      font-style: Bold;
+      leading-trim: NONE;
+
       
       &:last-child { margin-bottom: 0; }
       .info-label {
@@ -589,7 +595,17 @@ const handleFinish = async (data) => {
       color: #272A30;
 
     .rich-text-description {  
+      font-family: PingFang SC;
+      font-weight: 400;
+      font-style: Regular;
+      font-size: 14px;
+      leading-trim: NONE;
+      line-height: 22px;
+      letter-spacing: 0%;
+      text-align: justify;
+
       margin-bottom: @spacing-md;
+      color: #272A30;
       :deep(p) { margin-bottom: 1em; }
     }
 
@@ -604,10 +620,11 @@ const handleFinish = async (data) => {
         line-height: 22px;
         color: #656C74;
         .spec-label {
-          width: 120px;
+          min-width: 120px;
           flex-shrink: 0;
           text-align: right;
           padding-right: 10px;
+          color: #656C74;
         }
         .spec-value {
           color: @text-color-base;
