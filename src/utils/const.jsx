@@ -226,7 +226,7 @@ export const OEMPARTS_COLUMNS = [
     { title: '适用设备型号', field: 'compatibleModels', align: 'center', width: 100 },
     { title: '原厂', field: 'originalManufacturer', align: 'center', width: 100 },
     { title: '生产日期', field: 'productionDate', align: 'center', width: 100, fieldType: 'date' },
-    { title: '产品状态', field: 'productStatus', align: 'center', width: 100 },
+    { title: '零部件状态', field: 'productStatus', align: 'center', width: 100 },
     { title: '数量', field: 'quantity', align: 'center', width: 90 },
     { title: '需求发布者', field: 'postedBy', align: 'center', width: 100, formatter: ({ cellValue }) => maskMiddle(cellValue) },
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 90 },
