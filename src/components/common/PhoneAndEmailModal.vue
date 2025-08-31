@@ -32,7 +32,7 @@
 							:placeholder="field.placeholder" 
 							class="iteminput" 
 						/>
-						<a-textarea  v-else-if="field.type === 'textarea'" v-model:value="formModel[field.field]"  :placeholder="field.placeholder" class="iteminput"  :rows="4" />
+						<a-textarea  v-else-if="field.type === 'textarea'" v-model:value="formModel[field.field]"  :placeholder="field.placeholder"   :rows="4" />
 						<a-input-number 
 							v-else-if="field.type === 'number'"
 							v-model:value="formModel[field.field]" 

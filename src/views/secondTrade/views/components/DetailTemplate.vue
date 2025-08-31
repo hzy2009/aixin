@@ -260,7 +260,7 @@ const handlePurchase = async () => {
         },
         { 
           field: 'remark', 
-          placeholder: '备注', 
+          placeholder: '请填写您的优势或者需要咨询的问题', 
           type: 'textarea',
         },
       ],
@@ -282,7 +282,7 @@ const handlePurchase = async () => {
         },
         { 
           field: 'remark', 
-          placeholder: '备注', 
+          placeholder: '请填写您的优势或者需要咨询的问题', 
           type: 'textarea',
         },
       ],
@@ -298,7 +298,7 @@ const handlePurchase = async () => {
         },
         { 
           field: 'remark', 
-          placeholder: '备注', 
+          placeholder: '请填写您的优势或者需要咨询的问题', 
           type: 'textarea',
         },
       ],
@@ -320,7 +320,7 @@ const handlePurchase = async () => {
         },
         { 
           field: 'remark', 
-          placeholder: '备注', 
+          placeholder: '请填写您的优势或者需要咨询的问题', 
           type: 'textarea',
         },
       ],
