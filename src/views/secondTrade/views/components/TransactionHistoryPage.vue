@@ -456,7 +456,10 @@ const gridConfigs = {
       { field: 'totalPrice', title: '我的竞价总价', formatter: ({ row }) => calculateTotalPrice(row, 'price',  'quantity'), columnType: 'transaction' }, // 交易详情列
       { field: 'createTime', title: '竞价时间' }, // 交易详情列
       { field: 'expireDate', title: '竞拍截止时间' }, // 交易详情列
-      { field: 'bidStatus', title: '竞拍状态', width: 80, formatter: ({row}) => row.statusCode == 'success' ? '竞拍成功' : '竞拍失败 ', columnType: 'transaction' }, // 交易详情列
+      { field: 'bidStatus', title: '竞拍状态', width: 80, formatter: ({row}) => {
+        if (!row.statusCode) return ''
+        return row.statusCode == 'success' ? '竞拍成功' : '竞拍失败'
+      }, columnType: 'transaction' }, // 交易详情列
       { field: 'totalPrice', title: '成交总价', formatter: ({ row }) => calculateTotalPrice(row, 'price',  'confirmedQuantity'), columnType: 'negotiation' }, // 交易详情列
       { field: 'confirmedQuantity', title: '成交数量', columnType: 'negotiation', width: 80 }, // 议价历史列
       { field: 'remark', title: '备注', columnType: 'both' }, // 交易详情和议价历史共用列
