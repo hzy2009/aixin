@@ -10,6 +10,12 @@ const defaultTabsConfig = {
     defaultSubTabKey: 'oemParts', // 第一个子页签作为默认
     path: '/secondTrade/oemParts',
   },
+  usedEqpTrade: {
+    key: 'usedEqpTrade',
+    label: '二手设备交易',
+    defaultSubTabKey: 'usedEqpTrade', // 第一个子页签作为默认
+    path: '/secondTrade/usedEqpTrade',
+  },
   standard: {
     key: 'standard',
     label: '标准件库存处理',
@@ -22,12 +28,7 @@ const defaultTabsConfig = {
     defaultSubTabKey: 'notStandard', // 第一个子页签作为默认
     path: '/secondTrade/notStandard',
   },
-  usedEqpTrade: {
-    key: 'usedEqpTrade',
-    label: '二手设备交易',
-    defaultSubTabKey: 'usedEqpTrade', // 第一个子页签作为默认
-    path: '/secondTrade/usedEqpTrade',
-  }
+  
 };
 
 export function useUserCenterTabs(tabsConfig = defaultTabsConfig) {
