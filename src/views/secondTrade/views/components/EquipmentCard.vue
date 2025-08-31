@@ -15,7 +15,7 @@
         </template>
       </div>
       <h3 class="card-title-text">{{ item.productName }}</h3>
-      <h5 class="card-subtitle-text">{{ item.productCategory }}</h5>
+      <h5 class="card-subtitle-text">{{ item.productTypeName }}</h5>
       <div class="card-specs-list">
         <p class="spec-line" v-for="spec in fieldList" :key="spec.label">{{ spec.label }}：{{ item[spec.key] }}</p>
       </div>
