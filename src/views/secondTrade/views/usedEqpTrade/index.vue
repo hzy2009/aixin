@@ -85,7 +85,7 @@ const filterConfigForPage = reactive([
         { label: '非整机(拆修使用)', value: '非整机(拆修使用)',},
     ] },
     { id: 'purchaseMethod', label: '购买形式', maxVisibleWithoutMore: 9, dictKey: 'purchase_method'},
-    { id: 'deviceType', label: '设备类型', maxVisibleWithoutMore: 9, options: [
+    { id: 'deviceType', label: '设备类型', maxVisibleWithoutMore: 6, options: [
         { label: '全部', value: ''},
         { label: '光刻设备(Lithography)', value: '光刻设备(Lithography)',},
         { label: '刻蚀设备(Etch)', value: '刻蚀设备(Etch)',},
