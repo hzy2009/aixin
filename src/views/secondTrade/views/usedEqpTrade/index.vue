@@ -1,10 +1,10 @@
 <template>
     <div>
         <listPage :pageData="pageData" ref="refListPage">
-            <template #content="{ dataSource, paginationConfig }">
+            <template #content="{ dataSource, paginationConfig, loading }">
                 <div class="results-grid content-section">
                     <SortFilters :filters="sortOptions" v-model:value="currentSort" @change="onSortChange" />
-                    <EquipmentList :dataSource="dataSource" @handleDetails="handleDetails" :fieldList="fieldList"/>
+                    <EquipmentList :dataSource="dataSource" @handleDetails="handleDetails" :fieldList="fieldList" :loading="loading" :tagList="tagList"/>
                 </div>
                 <div class="pagination-wrapper">
                     <a-pagination size="small" v-model:current="paginationConfig.current" v-bind="{...paginationConfig, showSizeChanger: false}"
@@ -45,7 +45,10 @@ const onSortChange = (newSort) => {
     }
     refListPage.value.loadTableData(params);
 };
-
+const tagList = [
+    'productStatus',
+    'stockStatus'
+]
 const fieldList = [
     { key: 'deviceType', label: '设备类型' },
     { key: 'compatibleModels', label: '设备型号' },
