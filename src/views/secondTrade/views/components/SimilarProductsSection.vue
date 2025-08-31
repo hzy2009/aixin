@@ -100,6 +100,7 @@ const relatedDevices = computed(() => {
 }
 .details-title-bar {
     padding-bottom: @spacing-xs;
+    margin-bottom: @spacing-sm;
     border-bottom: 1px solid @border-color-light;
     position: relative;
 
