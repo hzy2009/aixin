@@ -113,7 +113,7 @@ const tableConfig = {
     tableColumns: tableColumns2
   },
 }
-
+const currentBusiness = ref('原厂件寻源')
 
 const actions = reactive([
   {
@@ -173,7 +173,7 @@ function viewDetails({businessName, id, postedBy }) {
     // };
     // const path = map[businessName];
     let path = ''
-    switch (businessName) {
+    switch (currentBusiness.value) {
         case '原厂件寻源':
             path = '/user/join/OEMPartsSourcing/detail'
             break;
@@ -213,6 +213,7 @@ const changeBusinessName = (value) => {
   const { url, tableColumns} = tableConfig[value] || {}
   pageData.url.list = url
   pageData.tableColumns = tableColumns
+  currentBusiness.value = value
   // 重新加载数据以应用新的配置
   refListPage.value.loadTableData()
 };
