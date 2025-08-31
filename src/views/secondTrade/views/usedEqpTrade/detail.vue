@@ -1,6 +1,6 @@
 <template>
     <DetailTemplate :product="productData" :page-config="productPageConfig" />
-    <SimilarProductsSection :similarConfig="similarConfig" :basedOnProductId="productData.id" :fieldList="fieldList" :tagList="tagList"/>
+    <SimilarProductsSection :config="similarConfig" :basedOnProductId="productData.id" :fieldList="fieldList" :tagList="tagList"/>
 </template>
 
 <script setup>
@@ -17,12 +17,13 @@ const props = defineProps({
 const productData = ref({});
 // --- Page Configuration (定义了如何从 `productData` 映射到UI) ---
 const productPageConfig = ref({
+  newTodoUrl: '/apm/apmDeviceSecondhand/buy/newTodo',
   pageState: 'edit',
   title: { field: 'productName' },
   mainImage: { field: 'imageUrl' },
   tags: [
     { field: 'productStatus' }, // 第一个标签来自 data.condition.label
- 
+    { field: 'productTypeName' },      // 第二个标签来自 data.vendor.name
   ],  
 
   basicInfo: [
@@ -36,7 +37,7 @@ const productPageConfig = ref({
   ],
 
   productDetailsTitle: '产品详情',
-
+  productDetailsHtml: 'description',
   specifications: [
     { label: '规格', field: 'specification' },
     { label: '生产日期', field: 'productionDate' },
@@ -50,13 +51,19 @@ const productPageConfig = ref({
     { label: '物流方式', field: 'shippingTypeName' },
     { label: '交期', field: 'deliveryDuration' },
     { label: '到货时间', field: 'deliveryDate' },
-    // { label: '产品使用说明书', field: 'specs.manualIncluded', formatter: (val) => val === true ? '有' : (val === false ? '无' : val) },
-    // { label: '税率', field: 'specs.taxRate', formatter: (val) => val ? `${val}%` : '-' },
   ]
 });
 const isLoading = ref(false);
 const internalDemandId = ref(props.IdProp);
-
+const fieldList = [
+    { key: 'deviceType', label: '设备类型' },
+    { key: 'compatibleModels', label: '设备型号' },
+    { key: 'originalManufacturer', label: '设备厂商' },
+]
+const tagList = [
+    'productStatus',
+    'stockStatus'
+]
 const similarConfig = ref({
   url: '/apm/apmDeviceSecondhand/list/front',
   params: {

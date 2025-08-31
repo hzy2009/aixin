@@ -345,9 +345,9 @@ const handleFinish = async (data) => {
   
   try {
     isSubmitting.value = true;
-    
+    let url = `${props.pageConfig.newTodoUrl}/${productId}`;
     const response = await defHttp.post({
-      url: `/apm/apmDeviceOrigin/buy/newTodo/${productId}`,
+      url,
       data
     });
     
