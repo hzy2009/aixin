@@ -21,7 +21,7 @@ const productPageConfig = ref({
   showPostedBy: true,
   pageState: 'detail',
   title: { field: 'productName' },
-  mainImage: { field: 'url' },
+  mainImage: { field: 'imageUrl' },
   tags: [
     { field: 'productStatus' }, // 第一个标签来自 data.condition.label
     { field: 'stockStatus' },      // 第二个标签来自 data.vendor.name

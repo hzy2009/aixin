@@ -22,7 +22,7 @@ const productPageConfig = ref({
   showPostedBy: true,
   pageState: 'detail',
   title: { field: 'productName' },
-  mainImage: { field: 'url' },
+  mainImage: { field: 'imageUrl' },
   tags: [
     { field: 'productStatus' }, // 第一个标签
     { field: 'productTypeName' },      // 第二个标签
