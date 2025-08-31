@@ -258,6 +258,11 @@ const handlePurchase = async () => {
           type: 'number', 
           rules: [{ required: true, message: '请输入数量' }] 
         },
+        { 
+          field: 'remark', 
+          placeholder: '备注', 
+          type: 'textarea',
+        },
       ],
       'NEGOTIABLE': [
         { 
@@ -275,6 +280,11 @@ const handlePurchase = async () => {
           type: 'number', 
           rules: [{ required: true, message: '请输入数量' }] 
         },
+        { 
+          field: 'remark', 
+          placeholder: '备注', 
+          type: 'textarea',
+        },
       ],
       'PRICE_ON_REQUEST': [
         { 
@@ -285,6 +295,11 @@ const handlePurchase = async () => {
           defaultValue: purchaseQuantity.value, 
           type: 'number', 
           rules: [{ required: true, message: '请输入数量' }] 
+        },
+        { 
+          field: 'remark', 
+          placeholder: '备注', 
+          type: 'textarea',
         },
       ],
       'AUCTION': [
@@ -302,6 +317,11 @@ const handlePurchase = async () => {
           defaultValue: purchaseQuantity.value, 
           type: 'number', 
           rules: [{ required: true, message: '请输入数量' }] 
+        },
+        { 
+          field: 'remark', 
+          placeholder: '备注', 
+          type: 'textarea',
         },
       ],
     };

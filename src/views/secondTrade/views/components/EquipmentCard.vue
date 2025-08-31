@@ -51,7 +51,7 @@ const props = defineProps({
   tagList: {
     type: Array,
     default: () => [],
-  }
+  },
 });
 
 const emit = defineEmits(['details']);

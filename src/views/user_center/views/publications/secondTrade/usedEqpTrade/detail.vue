@@ -52,6 +52,7 @@ const productPageConfig = ref({
     { label: '物流方式', field: 'shippingTypeName' },
     { label: '交期', field: 'deliveryDuration' },
     { label: '到货时间', field: 'deliveryDate' },
+    { label: '备注', field: 'remark' },
     // { label: '产品使用说明书', field: 'specs.manualIncluded', formatter: (val) => val === true ? '有' : (val === false ? '无' : val) },
     // { label: '税率', field: 'specs.taxRate', formatter: (val) => val ? `${val}%` : '-' },
   ]
