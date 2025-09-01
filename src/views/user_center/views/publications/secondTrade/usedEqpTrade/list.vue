@@ -78,6 +78,6 @@ function viewDetails({ id }) {
     console.error('缺少记录ID');
     return;
   }
-  router.push(`/user/published/oemParts/detail/${id}`);
+  router.push(`/user/published/usedEqpTrade/detail/${id}`);
 }
 </script>
