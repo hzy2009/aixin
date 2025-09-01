@@ -13,7 +13,7 @@ const defaultTabsConfig = {
   published: {
     key: 'published',
     label: '我发布的',
-    defaultSubTabKey: 'publishedAlternativeSourcing', // 第一个子页签作为默认
+    defaultSubTabKey: 'AlternativeSourcing', // 第一个子页签作为默认
     subTabs: [
       { key: 'AlternativeSourcing', label: '多元化寻源', path: '/user/published/DomesticSourcing' },
       { key: 'OriginalSourcing', label: '原厂件寻源', path: '/user/published/OEMPartsSourcing' },
@@ -28,7 +28,7 @@ const defaultTabsConfig = {
   join: {
     key: 'join',
     label: '我参与的',
-    defaultSubTabKey: 'joinAlternativeSourcing',
+    defaultSubTabKey: 'AlternativeSourcing',
     subTabs: [
       { key: 'AlternativeSourcing', label: '多元化寻源', path: '/user/join/DomesticSourcing' },
       { key: 'OriginalSourcing', label: '原厂件寻源', path: '/user/join/OEMPartsSourcing' },
@@ -55,7 +55,9 @@ export function useUserCenterTabs(tabsConfig = defaultTabsConfig) {
   const route = useRoute();
   const router = useRouter();
 
-  const activeMainTabKey = ref(Object.keys(tabsConfig)[0]); // 默认激活第一个主页签
+  // 找到第一个有subTabs的主标签作为默认值
+  const defaultMainTab = Object.values(tabsConfig).find(tab => tab.subTabs && tab.subTabs.length > 0);
+  const activeMainTabKey = ref(defaultMainTab?.key || Object.keys(tabsConfig)[0]);
   const activeSubTabKey = ref(tabsConfig[activeMainTabKey.value]?.defaultSubTabKey || '');
   const mainTabs = computed(() => {
     return Object.values(tabsConfig).map(tab => ({
@@ -63,7 +65,6 @@ export function useUserCenterTabs(tabsConfig = defaultTabsConfig) {
       label: tab.label,
     }));
   });
-  console.log('mainTabs', mainTabs);
 
   const currentSubTabs = computed(() => {
     return tabsConfig[activeMainTabKey.value]?.subTabs || [];
@@ -132,13 +133,12 @@ export function useUserCenterTabs(tabsConfig = defaultTabsConfig) {
         return;
       }
     }
-    console.log('没有匹配的子页签');
     // 如果没有子页签匹配，但路径可能属于某个主页签的根 (例如 /user/published/)
     // 则激活主页签，并尝试激活其默认子页签
     const pathSegments = currentPath.split('/').filter(Boolean);
     if (pathSegments.length >= 2) { // e.g., ['user', 'published']
         const potentialMainKey = pathSegments[1];
-        if (tabsConfig[potentialMainKey]) {
+        if (tabsConfig[potentialMainKey] && tabsConfig[potentialMainKey].subTabs) {
             activeMainTabKey.value = potentialMainKey;
             activeSubTabKey.value = tabsConfig[potentialMainKey].defaultSubTabKey || tabsConfig[potentialMainKey]?.subTabs?.[0]?.key || '';
         }

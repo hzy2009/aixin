@@ -1,17 +1,18 @@
 <template>
     <DetailTemplate :product="productData" :page-config="productPageConfig" />
-    <TransactionHistoryPage :product="productData" @confirmSell="confirmSell" @buttonClick="handleButtonClick"/>
+    <TransactionHistoryPage :product="productData" @confirmSell="confirmSell" @buttonClick="handleButtonClick" @goBack="goBack"/>
 </template>
 
 <script setup>
 import { ref, onMounted, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import DetailTemplate from '@/views/secondTrade/views/components/DetailTemplate.vue';
 import TransactionHistoryPage from '@/views/secondTrade/views/components/TransactionHistoryPage.vue';
 import { message  } from 'ant-design-vue';
 import defHttp from '@/utils/http/axios'
 
 const route = useRoute();
+const router = useRouter();
 const props = defineProps({
   IdProp: { type: String, default: null },
 });
@@ -38,6 +39,7 @@ const productPageConfig = ref({
   ],
 
   productDetailsTitle: '产品详情',
+
   productDetailsHtml: 'description',
   specifications: [
     { label: '规格', field: 'specification' },
@@ -53,8 +55,6 @@ const productPageConfig = ref({
     { label: '交期', field: 'deliveryDuration' },
     { label: '到货时间', field: 'deliveryDate' },
     { label: '备注', field: 'remark' },
-    // { label: '产品使用说明书', field: 'specs.manualIncluded', formatter: (val) => val === true ? '有' : (val === false ? '无' : val) },
-    // { label: '税率', field: 'specs.taxRate', formatter: (val) => val ? `${val}%` : '-' },
   ]
 });
 const isLoading = ref(false);
@@ -72,6 +72,7 @@ async function fetchReportDetail() {
   
   isLoading.value = true;
   try {
+    debugger
     const response = await defHttp.get({ 
       url: '/apm/apmDeviceSecondhand/queryById', 
       params: { id } 
@@ -150,6 +151,11 @@ const handleButtonClick = ({ key, row }) => {
       break;
   }
 }
+
+
+const goBack = () => {
+  router.push({ path: '/user/published/oemParts' });
+};
 
 onMounted(() => {
   fetchReportDetail();
