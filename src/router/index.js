@@ -101,6 +101,9 @@ router.beforeEach((to, from, next) => {
       // });
       const modalStore = useModalStore();
       modalStore.showLogin();
+      progressBar.finish();
+      const loadingStore = useLoadingStore();
+      loadingStore.finishRouteLoading();
     }
   } else {
      // 如果用户已登录，且尝试访问“仅访客”页面（如登录页），则重定向到首页

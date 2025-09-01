@@ -219,16 +219,16 @@ export const VERIFICATION_COLUMNS = [
 export const OEMPARTS_COLUMNS = [
     { type: 'checkbox', width: 40 },
     { title: '序号', type: 'seq', width: 50, align: 'center' },
-    { title: '料号', field: 'partNumber', align: 'center' },
-    { title: '产品名称', field: 'productName', align: 'center' },
-    { title: '产品类别', field: 'productTypeName', align: 'center' },
+    { title: '零部件料号', field: 'partNumber', align: 'center' },
+    { title: '零部件名称', field: 'productName', align: 'center' },
+    { title: '零部件品类', field: 'productTypeName', align: 'center' },
     { title: '规格描述', field: 'specification', align: 'center', width: 90 },
     { title: '适用设备型号', field: 'compatibleModels', align: 'center', width: 100 },
-    { title: '原厂', field: 'originalManufacturer', align: 'center', width: 100 },
-    { title: '生产日期', field: 'productionDate', align: 'center', width: 100, fieldType: 'date' },
+    { title: '品牌/制造商', field: 'originalManufacturer', align: 'center', width: 100 },
+    { title: '交期', field: 'deliveryDuration', align: 'center', width: 100, fieldType: 'date' },
     { title: '零部件状态', field: 'productStatus', align: 'center', width: 100 },
-    { title: '数量', field: 'quantity', align: 'center', width: 90 },
-    { title: '需求发布者', field: 'postedBy', align: 'center', width: 100, formatter: ({ cellValue }) => maskMiddle(cellValue) },
+    { title: '可售数量', field: 'quantity', align: 'center', width: 90 },
+    { title: '发布时间', field: 'createTime', align: 'center', width: 100 },
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 90 },
 ]
 

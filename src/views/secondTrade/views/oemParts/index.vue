@@ -33,7 +33,7 @@ const currentSort = ref({ key: 'default' });
 const sortOptions = [
     { key: 'default', label: '默认排序' },
     { key: 'priority,priceExcludingTax', label: '价格排序', type: 'dropdown', options: [{label: '从高到低', value: 'desc'}, {label: '从低到高', value: 'asc'}] },
-    { key: 'createTime', label: '时间排序', type: 'dropdown', options: [{label: '从高到低', value: 'desc'}, {label: '从低到高', value: 'asc'}]  }
+    { key: 'createTime', label: '时间排序', type: 'dropdown', options: [{label: '从远到近', value: 'desc'}, {label: '从近到远', value: 'asc'}]  }
 ];
 
 const onSortChange = (newSort) => {
