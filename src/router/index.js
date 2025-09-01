@@ -62,8 +62,8 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   // 开始进度条和全局loading
   progressBar.start();
-  const loadingStore = useLoadingStore();
-  loadingStore.startRouteLoading();
+  // const loadingStore = useLoadingStore();
+  // loadingStore.startRouteLoading();
 
   const authStore = useAuthStore();
   const isLogin = authStore.isLogin;
@@ -102,8 +102,8 @@ router.beforeEach((to, from, next) => {
       const modalStore = useModalStore();
       modalStore.showLogin();
       progressBar.finish();
-      const loadingStore = useLoadingStore();
-      loadingStore.finishRouteLoading();
+      // const loadingStore = useLoadingStore();
+      // loadingStore.finishRouteLoading();
     }
   } else {
      // 如果用户已登录，且尝试访问“仅访客”页面（如登录页），则重定向到首页
@@ -121,16 +121,16 @@ router.beforeEach((to, from, next) => {
 router.afterEach((to, from) => {
   // 完成进度条和全局loading
   progressBar.finish();
-  const loadingStore = useLoadingStore();
-  loadingStore.finishRouteLoading();
+  // const loadingStore = useLoadingStore();
+  // loadingStore.finishRouteLoading();
 });
 
 // 路由错误处理
 router.onError((error) => {
   // 出错时显示错误状态的进度条和停止loading
   progressBar.error();
-  const loadingStore = useLoadingStore();
-  loadingStore.stopRouteLoading();
+  // const loadingStore = useLoadingStore();
+  // loadingStore.stopRouteLoading();
   console.error('路由错误:', error);
 });
 
