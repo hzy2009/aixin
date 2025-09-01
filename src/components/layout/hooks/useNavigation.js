@@ -77,24 +77,24 @@ export function useNavigation() {
         {
           key: 'publishedSecondTrade',
           label: '我发布的',
-          path: '/user/published/secondTrade',
-          subItems: [
-            { key: 'publishedOemParts', label: '原厂件库存处理', path: '/user/published/oemParts'},
-            { key: 'publishedUsedEqp', label: '二手设备处理', path: '/user/published/usedEqpTrade'},
-            { key: 'publishedStandard', label: '标准件库存处理', fn: () => { handleDevelopingFeature(); }},
-            { key: 'publishedNotStandard', label: '非标准件库存处理', fn: () => { handleDevelopingFeature(); }},
-          ]
+          path: '/user/published/oemParts',
+          // subItems: [
+          //   { key: 'publishedOemParts', label: '原厂件库存处理', path: '/user/published/oemParts'},
+          //   { key: 'publishedUsedEqp', label: '二手设备处理', path: '/user/published/usedEqpTrade'},
+          //   { key: 'publishedStandard', label: '标准件库存处理', fn: () => { handleDevelopingFeature(); }},
+          //   { key: 'publishedNotStandard', label: '非标准件库存处理', fn: () => { handleDevelopingFeature(); }},
+          // ]
         },
         {
           key: 'joinSecondTrade',
           label: '我参与的',
-          path: '/user/join/secondTrade',
-          subItems: [
-            { key: 'joinOemParts', label: '原厂件库存处理', path: '/user/join/oemParts'},
-            { key: 'joinUsedEqp', label: '二手设备处理', path: '/user/join/usedEqpTrade'},
-            { key: 'joinStandard', label: '标准件库存处理', fn: () => { handleDevelopingFeature(); }},
-            { key: 'joinNotStandard', label: '非标准件库存处理', fn: () => { handleDevelopingFeature(); }},
-          ]
+          path: '/user/join/oemParts',
+          // subItems: [
+          //   { key: 'joinOemParts', label: '原厂件库存处理', path: '/user/join/oemParts'},
+          //   { key: 'joinUsedEqp', label: '二手设备处理', path: '/user/join/usedEqpTrade'},
+          //   { key: 'joinStandard', label: '标准件库存处理', fn: () => { handleDevelopingFeature(); }},
+          //   { key: 'joinNotStandard', label: '非标准件库存处理', fn: () => { handleDevelopingFeature(); }},
+          // ]
         }
       ]
     },

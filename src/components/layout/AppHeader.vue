@@ -371,15 +371,15 @@ onMounted(() => {
         .css-submenu-link {
           cursor: default; // Override cursor for parent items with sub-menus
           
-          &::after {
-            content: '>';
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #656C74;
-            font-size: 12px;
-          }
+          // &::after {
+          //   content: '>';
+          //   position: absolute;
+          //   right: 12px;
+          //   top: 50%;
+          //   transform: translateY(-50%);
+          //   color: #656C74;
+          //   font-size: 12px;
+          // }
         }
         
         &:hover .css-submenu-link {

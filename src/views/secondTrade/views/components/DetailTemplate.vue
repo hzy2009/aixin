@@ -28,7 +28,10 @@
             <div class="price-value-wrapper">
               <span class="price-amount">{{props.product.purchaseMethod == 'PRICE_ON_REQUEST' ? '**,***,***' : priceInfo.price }}</span>
               <!-- <span class="price-unit">{{ priceInfo.unit }}</span> -->
-              <span class="price-unit">元<span v-if="props.product.purchaseMethod == 'AUCTION'">起拍</span><span class="expiredDateText">(含税价)</span></span>
+              <span class="price-unit">元
+                <span v-if="props.product.purchaseMethod == 'AUCTION'">起拍</span>
+                <span class="expiredDateText" v-if="['AUCTION', 'PRICE_ON_REQUEST'].includes(props.product.purchaseMethod)">({{ handleTaxPrice(props.product) }})</span>
+              </span>
               <span v-if="props.product.purchaseMethod == 'AUCTION'" class="expiredDateText">竞拍截止日期: {{ props.product.expireDate }}</span>
             </div>
           </div>
@@ -96,6 +99,7 @@ import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
 import { selectOptions, getFileAccessHttpUrl } from '@/utils/index';
 import { useModalStore } from '@/store/modalStore'; 
 import defHttp from '@/utils/http/axios'
+import { Decimal } from 'decimal.js';
 const modalStore = useModalStore();
 
 
@@ -396,6 +400,18 @@ const handleFinish = async (data) => {
   } finally {
     isSubmitting.value = false;
   }
+};
+
+/**
+ * 含税单价计算
+ * @param {Object} data - 表单数据
+ */
+const handleTaxPrice = (data) => {
+  let txt = ''
+  if (data.price && data.tax) {
+    txt = new Decimal(data.price).mul(1 + data.tax / 100);
+  }
+  return txt
 };
 </script>
 
