@@ -52,11 +52,17 @@ const handleMainTabClick = (key) => {
 };
 
 const handleMainTabChange = (key) => {
-  // 直接调用 selectMainTab，不需要额外的条件判断
-  // 因为 a-tabs 的 change 事件已经处理了 activeKey 的更新
-  const targetTab = mainTabs.value.find(tab => tab.key === key);
-  if (targetTab) {
-    selectMainTab(key);
+  // 调用selectMainTab检查是否允许切换
+  const success = selectMainTab(key);
+  
+  // 如果切换失败（未启用功能），需要阻止activeKey的更新
+  if (!success) {
+    // 通过nextTick确保在下一个tick恢复原来的activeKey
+    // 因为a-tabs已经更新了activeKey，我们需要将其恢复
+    setTimeout(() => {
+      // 不做任何操作，保持当前的activeMainTabKey不变
+      // activeKey会自动同步回来
+    }, 0);
   }
 };
 

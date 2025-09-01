@@ -1,5 +1,6 @@
 import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { message } from 'ant-design-vue';
 
 // 页签配置: key 应该与路由名称或路径片段相关联，方便同步
 // path 是点击页签后要跳转的完整路径
@@ -7,28 +8,31 @@ const defaultTabsConfig = {
   oemParts: {
     key: 'oemParts',
     label: '原厂件库存处理',
-    defaultSubTabKey: 'oemParts', // 第一个子页签作为默认
+    defaultSubTabKey: 'oemParts',
     path: '/secondTrade/oemParts',
+    enabled: true, // 已完成功能
   },
   usedEqpTrade: {
     key: 'usedEqpTrade',
     label: '二手设备交易',
-    defaultSubTabKey: 'usedEqpTrade', // 第一个子页签作为默认
+    defaultSubTabKey: 'usedEqpTrade',
     path: '/secondTrade/usedEqpTrade',
+    enabled: true, // 已完成功能
   },
   standard: {
     key: 'standard',
     label: '标准件库存处理',
-    defaultSubTabKey: 'standard', // 第一个子页签作为默认
+    defaultSubTabKey: 'standard',
     path: '/secondTrade/standard',
+    enabled: false, // 未完成功能
   },
   notStandard: {
     key: 'notStandard',
     label: '非标件库存处理',
-    defaultSubTabKey: 'notStandard', // 第一个子页签作为默认
+    defaultSubTabKey: 'notStandard',
     path: '/secondTrade/notStandard',
+    enabled: false, // 未完成功能
   },
-  
 };
 
 export function useUserCenterTabs(tabsConfig = defaultTabsConfig) {
@@ -41,6 +45,7 @@ export function useUserCenterTabs(tabsConfig = defaultTabsConfig) {
     return Object.values(tabsConfig).map(tab => ({
       key: tab.key,
       label: tab.label,
+      enabled: tab.enabled,
     }));
   });
   console.log('mainTabs', mainTabs);
@@ -50,14 +55,24 @@ export function useUserCenterTabs(tabsConfig = defaultTabsConfig) {
   });
 
   const selectMainTab = (mainKey) => {
+    const tabData = tabsConfig[mainKey];
+    
+    // 检查功能是否已启用
+    if (!tabData?.enabled) {
+      message.info('系统建设中，敬请期待！');
+      return false; // 返回false表示阻止切换
+    }
+    
     // 更新激活的tab
     activeMainTabKey.value = mainKey;
     
     // 跳转到对应路由
-    const path = tabsConfig[mainKey]?.path;
+    const path = tabData?.path;
     if (path) {
       router.push({ path });
     }
+    
+    return true; // 返回true表示成功切换
   };
   
   // 根据当前路由路径同步激活的页签
