@@ -142,7 +142,6 @@ const handleFinish = async (data) => {
       message: '一键敲门后，客服人员将在30分钟内与您联系',
       contactInfo: { name: '陈靖玮', phone: '4000118892', email: 'info-service@icshare.com' },
       buttonText: '返回首页',
-      showButton: false,
       onAction: null, // Default onAction is handled in store to go home
     };
     modalStore.showSuccessPrompt({ ...defaultConfig });

@@ -11,7 +11,8 @@ export const useModalStore = defineStore('modal', {
       title: '操作成功',
       message: '您的操作已成功处理。',
       contactInfo: { name: '陈靖玮', phone: '4000118892', email: 'info-service@icshare.com' },
-      buttonText: '确定',
+      buttons: null, // Array of button objects [{ text: string, action: function }]
+      buttonText: '确定', // 保持向后兼容
       onActionCallback: null, // Function to call when action button is clicked
       onCloseCallback: null,  // Function to call when modal is closed (X or cancel)
       showButton: true
@@ -38,9 +39,9 @@ export const useModalStore = defineStore('modal', {
         title: config.title || '操作成功',
         message: config.message || '您的操作已成功处理。',
         contactInfo: config.contactInfo || null,
-        buttonText: config.buttonText || '确定',
-        showButton: config.showButton || true,
-        // showButton: config.showButton !== undefined ? config.showButton : true,
+        buttons: config.buttons || null, // 新增：支持按钮数组
+        buttonText: config.buttonText || '确定', // 保持向后兼容
+        showButton: config.showButton !== undefined ? config.showButton : true,
         onActionCallback: config.onAction || null,
         onCloseCallback: config.onClose || null,
       };
@@ -56,6 +57,7 @@ export const useModalStore = defineStore('modal', {
         title: '操作成功',
         message: '您的操作已成功处理。',
         contactInfo: { name: '陈靖玮', phone: '4000118892', email: 'info-service@icshare.com' },
+        buttons: null,
         buttonText: '确定',
         onActionCallback: null,
         onCloseCallback: null,

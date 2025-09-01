@@ -380,15 +380,25 @@ const handleFinish = async (data) => {
       
       const successConfig = {
         title: '一键敲门成功',
-        message: '一键敲门后，客服人员将在30分钟内与您联系',
+        message: '客服人员将在30分钟内与您联系',
         contactInfo: { 
           name: '陈靖玮', 
           phone: '4000118892', 
           email: 'info-service@icshare.com' 
         },
-        buttonText: '返回列表',
-        showButton: false,
-        onAction: props.pageConfig.successAction, // Store默认处理返回首页
+        buttons: [
+          {
+            text: '返回详情',
+            type: 'primary',
+          },
+          {
+            text: '返回列表',
+            type: 'primary',
+            onClick: () => {
+              props.pageConfig.successAction?.();
+            }
+          }
+        ],
       };
       
       modalStore.showSuccessPrompt(successConfig);

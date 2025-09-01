@@ -26,9 +26,18 @@
             <div>E-MAIL：{{ contactInfo.email }}</div>
         </div>
       </div>
-      <a-button class="action-button" @click="handleAction" v-if="props.showButton">
-        {{ buttonText }}
-      </a-button>
+      <div class="action-buttons" v-if="props.showButton">
+        <a-button 
+          v-for="(button, index) in computedButtons" 
+          :key="index"
+          class="action-button"
+          :type="button.type"
+          :danger="button.danger"
+          @click="handleButtonClick(button)"
+        >
+          {{ button.text }}
+        </a-button>
+      </div>
     </div>
   </a-modal>
 </template>
@@ -37,6 +46,8 @@
 import { Modal as AModal, Button as AButton } from 'ant-design-vue';
 import { CheckCircleFilled, CloseOutlined } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
+import { computed } from 'vue';
+
 const props = defineProps({
   isVisible: {
     type: Boolean,
@@ -48,12 +59,17 @@ const props = defineProps({
   },
   message: {
     type: String,
-    default: '“一键敲门”后，客服人员将在30分钟内与您联系',
+    default: '"一键敲门"后，客服人员将在30分钟内与您联系',
   },
   contactInfo: {
     type: Object, // { name: '陈靖玮', phone: '4000118892', email: 'info-service@icshare.com' }
     default: null,
   },
+  buttons: {
+    type: Array,
+    default: () => []
+  },
+  // 保留旧的props以保持向后兼容
   buttonText: {
     type: String,
     default: '返回首页',
@@ -75,6 +91,19 @@ const props = defineProps({
 const emit = defineEmits(['close', 'action']); // Standard close event
 const router = useRouter();
 
+// 计算按钮数组，如果没有传入buttons则使用默认的返回首页按钮
+const computedButtons = computed(() => {
+  if (props.buttons && props.buttons.length > 0) {
+    return props.buttons;
+  }
+  
+  // 默认返回首页按钮
+  return [{
+    text: props.buttonText,
+    action: props.onAction || (() => router.push({ path: '/' }))
+  }];
+});
+
 const handleClose = () => {
   if (props.onClose) {
     props.onClose();
@@ -82,6 +111,15 @@ const handleClose = () => {
   emit('close'); // Also emit a standard close event for parent v-model like usage
 };
 
+const handleButtonClick = (button) => {
+  if (button.action && typeof button.action === 'function') {
+    button.action();
+  }
+  emit('action', button); // Emit an action event with button info
+  handleClose(); // Close modal after action
+};
+
+// 保持向后兼容的handleAction方法
 const handleAction = () => {
   if (props.onAction) {
     // 执行传入的回调函数
@@ -183,17 +221,24 @@ letter-spacing: 0%;
   }
 }
 
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 .action-button {
   min-width: 120px;
   height: 36px;
   font-size: 14px;
   border-color: #C3CBCF; // Gray border
-  color: #C3CBCF; // Dark text
+  // color: #C3CBCF; // Dark text
   border-radius: @border-radius-sm;
     
   &:hover, &:focus {
-    color: @primary-color;
-    border-color: @primary-color;
+    // color: @primary-color;
+    // border-color: @primary-color;
     // background-color: fade(@primary-color, 5%); // Optional light bg on hover
   }
 }

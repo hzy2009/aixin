@@ -53,7 +53,8 @@ const fieldList = [
 ]
 const tagList = [
     'productStatus',
-    'stockStatus'
+    'stockStatus',
+    'productSource'
 ]
 const handleDetails = (item) => {
     console.log(item);

@@ -23,6 +23,7 @@
       :title="getSuccessPromptConfig.title"
       :message="getSuccessPromptConfig.message"
       :contact-info="getSuccessPromptConfig.contactInfo"
+      :buttons="getSuccessPromptConfig.buttons"
       :button-text="getSuccessPromptConfig.buttonText"
       :on-action="getSuccessPromptConfig.onActionCallback"
       :on-close="getSuccessPromptConfig.onCloseCallback"

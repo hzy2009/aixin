@@ -25,6 +25,7 @@ const productPageConfig = ref({
   tags: [
     { field: 'productStatus' }, // 第一个标签来自 data.condition.label
     { field: 'productTypeName' },      // 第二个标签来自 data.vendor.name
+    { field: 'productSource'}
   ],  
 
   basicInfo: [
