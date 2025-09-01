@@ -1,6 +1,6 @@
 <template>
     <DetailTemplate :product="productData" :page-config="productPageConfig" />
-    <SimilarProductsSection :config="similarConfig" :basedOnProductId="productData.id" :fieldList="fieldList" :tagList="tagList" :product="productData"/>
+    <SimilarProductsSection @handleDetails="handleDetails" :config="similarConfig" :basedOnProductId="productData.id" :fieldList="fieldList" :tagList="tagList" :product="productData"/>
 </template>
 
 <script setup>
@@ -85,7 +85,11 @@ async function fetchReportDetail() {
     isLoading.value = false;
   }
 }
-
+const handleDetails = (item) => {
+    router.push({
+        path: `/secondTrade/usedEqpTrade/details/${item.id}`,
+    })
+};
 onMounted(() => {
   fetchReportDetail();
 });

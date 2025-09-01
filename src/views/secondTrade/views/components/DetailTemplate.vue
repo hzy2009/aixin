@@ -30,7 +30,7 @@
               <!-- <span class="price-unit">{{ priceInfo.unit }}</span> -->
               <span class="price-unit">元
                 <span v-if="props.product.purchaseMethod == 'AUCTION'">起拍</span>
-                <span class="expiredDateText" v-if="['AUCTION', 'PRICE_ON_REQUEST'].includes(props.product.purchaseMethod)">({{ handleTaxPrice(props.product) }})</span>
+                <span class="expiredDateText" v-if="!['AUCTION', 'PRICE_ON_REQUEST'].includes(props.product.purchaseMethod)">{{ handleTaxPrice(props.product) }}</span>
               </span>
               <span v-if="props.product.purchaseMethod == 'AUCTION'" class="expiredDateText">竞拍截止日期: {{ props.product.expireDate }}</span>
             </div>
@@ -411,7 +411,7 @@ const handleTaxPrice = (data) => {
   if (data.price && data.tax) {
     txt = new Decimal(data.price).mul(1 + data.tax / 100);
   }
-  return txt
+  return txt ? `（${txt}）` : ''
 };
 </script>
 

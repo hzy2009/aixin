@@ -16,6 +16,7 @@
                 :product="device"
                 :fieldList="fieldList"
                 :tagList="tagList"
+                @details="handleDetails"
                 class="scroll-item"
               />
             </div>
@@ -48,6 +49,12 @@ const props = defineProps({
     default: () => ({})
   }
 });
+const emit = defineEmits(['handleDetails']);
+
+const handleDetails = (item) => {
+  // 将事件继续向上冒泡到父页面 (listPage)
+  emit('handleDetails', item);
+};
 
 // 使用 product 中的 relatedDeviceList 作为数据源
 const relatedDevices = computed(() => {
