@@ -1,66 +1,29 @@
 <template>
-  <div class="recommended-reports-list">
-    <div v-if="isLoading || !props.code" class="loading-placeholder">
-      <a-skeleton active :paragraph="{ rows: 4 }" v-for="i in skeletonCount" :key="`ske-${i}`" class="skeleton-item" />
-    </div>
-    <div v-else-if="tableData.length > 0" class="reports-list-items">
-      <router-link v-for="item in tableData.slice(0, props.count)" :key="item.id"
-        :to="`/demands/OEMPartsDetailPage/${item.id}`" class="report-item-link">
-        <div class="report-item-content">
-          <h2 class="report-item-title">{{ item.code }}</h2>
-          <p class="report-item-meta fontSizeitem">物料：{{ item.materialCode }}</p>
-          <div class="report-item-footer report-item-summary fontSizeitem">
-            <span>期望完成日期：{{ item.expireDate ?formatDate(item.expireDate) : '' }}</span>
-            <ArrowRightOutlined class="arrow-icon" />
-          </div>
-        </div>
-      </router-link>
-    </div>
-    <a-empty v-else description="暂无相关报告" class="empty-state" />
-  </div>
+  <BaseSidebar
+    :currentReportId="props.currentReportId"
+    :category="props.category"
+    :count="props.count"
+    :code="props.code"
+    variant="oem"
+    apiUrl="/apm/apmSourcingOriginSubstitute/material/list/front"
+    sourcingType="原厂件寻源"
+    routePrefix="/demands/OEMPartsDetailPage"
+    emptyDescription="暂无相关报告"
+  />
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed } from 'vue';
-import { Skeleton as ASkeleton, Empty as AEmpty } from 'ant-design-vue';
-import { ArrowRightOutlined } from '@ant-design/icons-vue';
-import { useUserDemandList } from '@/components/template/hooks/useUserDemandList.js'; // Adjust path
-import {formatDate} from '@/utils/index.js';
-// import apiClient from '@/api';
+import BaseSidebar from '@/components/common/BaseSidebar.vue';
 
+// 保持与原组件完全相同的props接口
 const props = defineProps({
   currentReportId: { type: [String, Number], default: null },
   category: { type: String, default: null },
   count: { type: Number, default: 4 },
   code: { type: String, default: '' },
 });
-
-const skeletonCount = computed(() => props.count); // For skeleton loader
-
-const {
-  isLoading,
-  tableData,
-  loadTableData,
-} = useUserDemandList({
-  url: {
-    list: '/apm/apmSourcingOriginSubstitute/material/list/front',
-  },
-  otherParams: {
-      sourcingType: '原厂件寻源',
-      code: `!${props.code}`
-  },
-})
-
-watch(() => props.code, () => {
-  loadTableData(
-    {
-      code: `!${props.code}`
-    }
-  );
-})
 </script>
 
 <style scoped lang="less">
-@import '@/assets/styles/_variables.less';
-@import './sidebar.less';
+// 样式已迁移到BaseSidebar中，保持完全兼容
 </style>

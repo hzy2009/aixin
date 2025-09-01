@@ -1,21 +1,27 @@
 // src/assets/styles/index.less
-@import '_fonts.less'; // 导入你定义的字体
+// 设计系统核心（临时禁用以避免样式冲突）
+// @import '_tokens.less';    // 设计令牌
+// @import '_utilities.less'; // 实用工具类
+
+// 传统样式文件
+@import '_fonts.less';
 @import '_variables.less';
 @import '_mixins.less';
 @import '_base.less';
 
-// You can also import antd-theme.less here if you use it
+// 主题文件
 // @import 'antd-theme.less';
 
-// Example of a global utility class (BEM-like)
-// .container {
-//   .centered-content();
-// }
+// 确保版心样式不丢失 - 兼容现有代码
 .container {
-  max-width: @content-max-width;
+  max-width: @content-max-width; // 1200px固定版心
   margin-left: auto;
   margin-right: auto;
-  // padding-left: @content-padding-horizontal;
-  // padding-right: @content-padding-horizontal;
-  width: 100%; // Important for responsiveness
+  width: 100%;
+  
+  // 如果页面已经有padding，保持现有逻辑
+  &.with-padding {
+    padding-left: @content-padding-horizontal;
+    padding-right: @content-padding-horizontal;
+  }
 }

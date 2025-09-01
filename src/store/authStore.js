@@ -11,52 +11,52 @@ export const useAuthStore = defineStore('auth', {
     isLoginModalVisible: false
   }),
   getters: {
-    isAuthenticated: (state) => !!state.token && !!state.user,
-    isLogin: (state) => !!state.userInfo,
+    isAuthenticated: (state) => !!state.token && !!state.userInfo,
+    isLogin: (state) => !!state.userInfo && !!state.token,
   },
   actions: {
     async login(params) {
       const data = await loginApi(params);
       const { result: { userInfo, token, sysAllDictItems } } = data;
       this.setToken(token);
-      this.setUserInof(userInfo);
+      this.setUserInfo(userInfo);
       this.setSysAllDictItems(sysAllDictItems);
       return data;
     },
     async getUserRole() {
       const {result} = await getUserRoleApi();
-      this.setUserRose(result);
+      this.setUserRole(result);
       return result;
     },
 
     async logout() {
       await logoutApi()
       this.setToken(null);
-      this.setUserInof(null);
+      this.setUserInfo(null);
       this.setSysAllDictItems([]);
-      this.setUserRose({});
+      this.setUserRole({});
       // Optionally, clear other stores or redirect
     },
     clearUser() {
       this.setToken(null);
-      this.setUserInof(null);
+      this.setUserInfo(null);
       this.setSysAllDictItems([]);
-      this.setUserRose({});
+      this.setUserRole({});
     },
     async getDictItems() {
       const res =  await getAllDictApi()
       this.setSysAllDictItems(res.result || []);
     },
     setToken(info) {
-      this.token = info ? info : ''; // for null or undefined value
+      this.token = info || null; // for null or undefined value
       // setAuthCache(TOKEN_KEY, info);
     },
-     setUserInof(info) {
-      this.userInfo = info ? info : ''; // for null or undefined value
+     setUserInfo(info) {
+      this.userInfo = info || null; // for null or undefined value
       // setAuthCache(TOKEN_KEY, info);
     },
-    setUserRose(info) {
-      this.userRole = info ? info : {}; // for null or undefined value
+    setUserRole(info) {
+      this.userRole = info || {}; // for null or undefined value
     },
     setSysAllDictItems(info) {
       this.sysAllDictItems = info ? info : []; // for null or undefined value
@@ -68,6 +68,6 @@ export const useAuthStore = defineStore('auth', {
   persist: { // Configuration for pinia-plugin-persistedstate
     key: 'auth', // Key for localStorage
     storage: localStorage, // or sessionStorage
-    paths: ['user', 'token'], // Which state properties to persist
+    paths: ['userInfo', 'token', 'userRole', 'sysAllDictItems'], // Which state properties to persist
   },
 });

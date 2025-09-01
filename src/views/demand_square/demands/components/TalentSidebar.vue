@@ -1,39 +1,21 @@
 <template>
-  <div class="recommended-reports-list">
-    <div v-if="isLoading || !props.code" class="loading-placeholder">
-      <a-skeleton active :paragraph="{ rows: 4 }" v-for="i in skeletonCount" :key="`ske-${i}`" class="skeleton-item" />
-    </div>
-    <div v-else-if="tableData.length > 0" class="reports-list-items">
-      <router-link v-for="item in tableData.slice(0, props.count)" :key="item.id"
-        :to="`/demands/TalentDetailPage/${item.id}`" class="report-item-link" @click="handleReportClick">
-        <div class="report-item-content">
-    
-          <h2 class="report-item-title">
-            <img src="@/assets/images/auth/avatar.png" alt="">
-            <span>{{ item.code }}</span>
-            <ArrowRightOutlined class="arrow-icon" />
-          </h2>
-          <p class="report-item-title">{{ item.skillAreaName }}</p>
-          <p class="report-item-meta">意愿合作方向：{{ item.desiredCooperationDirection }}</p>
-          <p class="report-item-meta">主要研究方向：{{ item.skillDesc }}</p>
-        <!-- <div class="report-item-footer report-item-summary">
-            <span>期望匹配周期：{{ item.matchPeriodName }}</span>
-            <ArrowRightOutlined class="arrow-icon" />
-          </div> -->
-        </div>
-      </router-link>
-    </div>
-    <a-empty v-else description="暂无相关报告" class="empty-state" />
-  </div>
+  <BaseSidebar
+    :currentReportId="props.currentReportId"
+    :category="props.category"
+    :count="props.count"
+    :code="props.code"
+    variant="talent"
+    apiUrl="/apm/apmTalent/list/front"
+    routePrefix="/demands/TalentDetailPage"
+    emptyDescription="暂无相关报告"
+    @reportClick="handleReportClick"
+  />
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed } from 'vue';
-import { Skeleton as ASkeleton, Empty as AEmpty } from 'ant-design-vue';
-import { ArrowRightOutlined } from '@ant-design/icons-vue';
-import { useUserDemandList } from '@/components/template/hooks/useUserDemandList.js'; // Adjust path
-// import apiClient from '@/api';
+import BaseSidebar from '@/components/common/BaseSidebar.vue';
 
+// 保持与原组件完全相同的props接口
 const props = defineProps({
   currentReportId: { type: [String, Number], default: null },
   category: { type: String, default: null },
@@ -41,30 +23,9 @@ const props = defineProps({
   code: { type: String, default: '' },
 });
 
+// 保持与原组件完全相同的events接口
 const emit = defineEmits(['reportClick']);
 
-const skeletonCount = computed(() => props.count); // For skeleton loader
-
-const {
-  isLoading,
-  tableData,
-  loadTableData
-} = useUserDemandList({
-  url: {
-    list: '/apm/apmTalent/list/front',
-  },
-  otherParams: {
-    code: `!${props.code}`
-  },
-})
-watch(() => props.code, () => {
-  if (!props.code) return
-  loadTableData(
-    {
-      code: `!${props.code}`
-    }
-  )
-})
 const handleReportClick = () => emit('reportClick');
 
 </script>
