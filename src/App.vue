@@ -31,6 +31,9 @@
       @action="() => { /* Modal internal action also calls its onClose */ }"
     />
   <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" title="填写信息获取交易信息" actionText="联系平台获取最新进展"></PhoneAndEmailModal>
+  
+  <!-- 全局Loading组件 -->
+  <GlobalLoading :loading="loadingStore.isGlobalLoading" />
 
 </template>
 
@@ -40,8 +43,10 @@ import zhCN from 'ant-design-vue/es/locale/zh_CN';
 import LoginPromptModal from '@/components/layout/LoginPromptModal.vue';
 import SuccessPromptModal from '@/components/common/SuccessPromptModal.vue';
 import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
+import GlobalLoading from '@/components/common/GlobalLoading.vue';
 import { useAuthStore } from '@/store/authStore';
-import { useModalStore } from '@/store/modalStore'; 
+import { useModalStore } from '@/store/modalStore';
+import { useLoadingStore } from '@/store/loadingStore';
 import { message } from 'ant-design-vue';
 import defHttp from '@/utils/http/axios'
 const authStore = useAuthStore();
@@ -50,6 +55,7 @@ authStore.getDictItems();
 const phoneAndEmailModal = ref()
 
 const modalStore = useModalStore();
+const loadingStore = useLoadingStore();
 // const router = useRouter();
 // const route = useRoute(); // For redirect after login
 
