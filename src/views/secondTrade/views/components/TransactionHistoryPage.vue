@@ -433,6 +433,7 @@ const gridConfigs = {
       { field: 'postedBy', title: '卖方', columnType: 'both', width: 80, formatter: postedBy }, 
       { field: 'priceExcludingTax', title: '卖方售价', formatter: () => '*,***,**', width: 80 }, // 交易详情列
       { field: 'confirmedQuantity', title: '可出售数量', width: 90 }, // 交易详情列
+      { field: 'productquantity', title: '库存数量', width: 90, formatter: () => props.product.quantity }, // 交易详情列
       // { field: 'totalPrice', title: '总价', formatter: () => '*,***,**', width: 80 }, // 交易详情列
       { field: 'createTime', title: '交易时间', width: 160}, // 交易详情列
       { field: 'quantity', title: '交易数量', columnType: 'negotiation', width: 80 }, // 议价历史列
