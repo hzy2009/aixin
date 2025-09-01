@@ -1,6 +1,6 @@
 <template>
     <DetailTemplate :product="productData" :page-config="productPageConfig" />
-    <TransactionHistoryPage :product="productData" @confirmSell="confirmSell" @buttonClick="handleButtonClick"/>
+    <TransactionHistoryPage :product="productData" @confirmSell="confirmSell" @buttonClick="handleButtonClick" @goBack="goBack"/>
 </template>
 
 <script setup>
@@ -41,6 +41,7 @@ const productPageConfig = ref({
 
   specifications: [
     { label: '规格', field: 'specification' },
+    { label: '适用设备型号', field: 'compatibleModels' },
     { label: '生产日期', field: 'productionDate' },
     { label: '使用时长', field: 'usageDuration' },
     { label: '质保期', field: 'guaranteePeriod' },
@@ -48,7 +49,6 @@ const productPageConfig = ref({
     { label: '产品使用说明书', field: 'hasUserManual',formatter: (value) => value ? '有' : '无' },
     { label: '税率', field: 'tax', formatter: (value) => value + '%' },
     { label: '付款条件', field: 'paymentTermsName' },
-    { label: '适用设备型号', field: 'compatibleModels' },
     { label: '物流方式', field: 'shippingTypeName' },
     { label: '交期', field: 'deliveryDuration' },
     { label: '到货时间', field: 'deliveryDate' },
@@ -130,7 +130,9 @@ const cancelBuy = (selectedRow) => {
  handleAction({url: '/apm/apmDeviceSecondhand/buy/cancel', data: selectedRow})
 }
 
-
+const goBack = () => {
+  router.push({ path: '/user/join/usedEqpTrade' });
+};
 const handleButtonClick = ({ key, row }) => {
   console.log(key, row);
   switch (key) {
