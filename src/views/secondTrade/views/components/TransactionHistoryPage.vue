@@ -70,6 +70,7 @@ import { useRouter } from 'vue-router';
 import { Tabs as ATabs, TabPane as ATabPane, Button as AButton, InputNumber as AInputNumber, message } from 'ant-design-vue';
 import VxeGridWrapper from './VxeGridWrapper.vue';
 import { Decimal } from 'decimal.js';
+import {maskMiddle} from '@/utils/index';
 
 const props = defineProps({
   product: {
@@ -166,6 +167,11 @@ const formatCurrency = ({ cellValue, column  }) => {
     maximumFractionDigits: 2 
   })}`;
 };
+const postedBy = () => {
+  if (props.product.postedBy) {
+    return maskMiddle(props.product.postedBy);
+  }
+}
 
 /**
  * 安全计算总价
@@ -375,7 +381,7 @@ const gridConfigs = {
   JOIN_FIXED_PRICE: {
     columns: [
       { type: 'seq', title: '序号', width: 46 },
-      { field: 'refUserName', title: '卖方', columnType: 'both', width: 120 }, // 交易详情和议价历史共用列 (议价历史时显示为'对方')
+      { field: 'postedBy', title: '卖方', columnType: 'both', width: 80, formatter: postedBy }, 
       { field: 'fixedPrice', title: '固定价', formatter: formatCurrency, width: 100}, // 交易详情列
       { field: 'confirmedQuantity', title: '可出售数量', width: 100 }, // 交易详情列
       { field: 'totalPrice', title: '总价', formatter: ({ row }) => calculateTotalPrice(row, 'priceExcludingTax', 'confirmedQuantity'), columnType: 'transaction' }, // 交易详情列
@@ -399,7 +405,7 @@ const gridConfigs = {
   JOIN_NEGOTIABLE: {
     columns: [
       { type: 'seq', title: '序号', width: 46 },
-      { field: 'refUserName', title: '卖方', width: 100, columnType: 'both', width: 120 }, // 交易详情和议价历史共用列 (议价历史时显示为'对方')
+      { field: 'postedBy', title: '卖方', columnType: 'both', width: 80, formatter: postedBy }, 
       { field: 'price', title: '我的议价', formatter: formatCurrency, width: 90, columnType: 'both' }, // 交易详情和议价历史共用列 (议价历史时显示为'议价金额')
       { field: 'quantity', title: '购买数量', width: 80, columnType: 'both' }, // 交易详情和议价历史共用列 (议价历史时显示为'议价数量')
       { field: 'createTime', title: '议价时间', columnType: 'both' }, // 交易详情和议价历史共用列
@@ -424,9 +430,9 @@ const gridConfigs = {
   JOIN_PRICE_ON_REQUEST: {
     columns: [
       { type: 'seq', title: '序号', width: 46 },
-      { field: 'refUserName', title: '卖方', width: 120, columnType: 'both' }, // 交易详情和议价历史共用列 (议价历史时显示为'对方')
+      { field: 'postedBy', title: '卖方', columnType: 'both', width: 80, formatter: postedBy }, 
       { field: 'priceExcludingTax', title: '固定价', formatter: () => '*,***,**', width: 80 }, // 交易详情列
-      { field: 'confirmedQuantity', title: '可出售数量', width: 80 }, // 交易详情列
+      { field: 'confirmedQuantity', title: '可出售数量', width: 90 }, // 交易详情列
       { field: 'totalPrice', title: '总价', formatter: () => '*,***,**', width: 80 }, // 交易详情列
       { field: 'createTime', title: '购买时间', width: 160}, // 交易详情列
       { field: 'quantity', title: '成交数量', columnType: 'negotiation', width: 80 }, // 议价历史列
@@ -449,7 +455,7 @@ const gridConfigs = {
   JOIN_AUCTION: {
     columns: [
       { type: 'seq', title: '序号', width: 46 },
-      { field: 'refUserName', title: '卖方', width: 80, columnType: 'both' }, // 交易详情和议价历史共用列 (议价历史时显示为'对方')
+      { field: 'postedBy', title: '卖方', columnType: 'both', width: 80, formatter: postedBy }, 
       { field: 'price', title: '我的竞价', formatter: formatCurrency, columnType: 'both' }, // 交易详情和议价历史共用列 (议价历史时显示为'议价金额')
       { field: 'quantity', title: '购买数量', width: 80, columnType: 'both' }, // 交易详情和议价历史共用列 (议价历史时显示为'议价数量')
       { field: 'totalPrice', title: '我的竞价总价', formatter: ({ row }) => calculateTotalPrice(row, 'price',  'quantity'), columnType: 'transaction' }, // 交易详情列
