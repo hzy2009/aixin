@@ -2,6 +2,7 @@ import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore'; 
+import { message } from 'ant-design-vue';
 import defHttp from '@/utils/http/axios'; // Your Axios instance
 
 /**
@@ -51,19 +52,50 @@ export function useNavigation() {
     },
     { 
       key: 'secondTrade', 
-      label: '二手交易', 
+      label: '二手设备', 
       path: '/secondTrade/oemParts', 
       matchPaths: [
         '/secondTrade/oemParts',
         '/secondTrade/standard',
         '/secondTrade/notStandard',
         '/secondTrade/usedEqpTrade',
+        '/user/published/secondTrade',
+        '/user/join/secondTrade',
       ],
       subItems: [
-        { key: 'oemParts', label: '原厂件库存处理', path: '/secondTrade/oemParts'},
-        { key: 'standard', label: '标准件库存处理', path: '/secondTrade/standard'},
-        { key: 'notStandard', label: '非标件库存处理', path: '/secondTrade/notStandard'},
-        { key: 'usedEqpTrade', label: '二手设备交易', path: '/secondTrade/usedEqpTrade'},
+        {
+          key: 'demandSquare',
+          label: '需求广场',
+          path: '/demands/secondTrade',
+          subItems: [
+            { key: 'oemPartsProcessing', label: '原厂件库存处理', path: '/secondTrade/oemParts'},
+            { key: 'usedEqpTrade', label: '二手设备处理', path: '/secondTrade/usedEqpTrade'},
+            { key: 'standard', label: '标准件库存处理', fn: () => { handleDevelopingFeature(); }},
+            { key: 'notStandard', label: '非标准件库存处理', fn: () => { handleDevelopingFeature(); }},
+          ]
+        },
+        {
+          key: 'publishedSecondTrade',
+          label: '我发布的',
+          path: '/user/published/secondTrade',
+          subItems: [
+            { key: 'publishedOemParts', label: '原厂件库存处理', path: '/user/published/oemParts'},
+            { key: 'publishedUsedEqp', label: '二手设备处理', path: '/user/published/usedEqpTrade'},
+            { key: 'publishedStandard', label: '标准件库存处理', fn: () => { handleDevelopingFeature(); }},
+            { key: 'publishedNotStandard', label: '非标准件库存处理', fn: () => { handleDevelopingFeature(); }},
+          ]
+        },
+        {
+          key: 'joinSecondTrade',
+          label: '我参与的',
+          path: '/user/join/secondTrade',
+          subItems: [
+            { key: 'joinOemParts', label: '原厂件库存处理', path: '/user/join/oemParts'},
+            { key: 'joinUsedEqp', label: '二手设备处理', path: '/user/join/usedEqpTrade'},
+            { key: 'joinStandard', label: '标准件库存处理', fn: () => { handleDevelopingFeature(); }},
+            { key: 'joinNotStandard', label: '非标准件库存处理', fn: () => { handleDevelopingFeature(); }},
+          ]
+        }
       ]
     },
     { 
@@ -237,6 +269,10 @@ export function useNavigation() {
       const modalStore = useModalStore(); 
       modalStore.showLogin();
     }
+  }
+
+  const handleDevelopingFeature = () => {
+    message.info('功能正在开发中，敬请期待');
   }
 
   return {

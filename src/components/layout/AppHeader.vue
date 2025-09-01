@@ -60,8 +60,22 @@
 
           <!-- Pure CSS Hover Submenu -->
           <ul v-if="item.subItems && item.subItems.length > 0" class="css-submenu">
-            <li v-for="subItem in item.subItems" :key="subItem.key" class="css-submenu-item">
-              <span :to="subItem.path" class="css-submenu-link" @click="handleMenuClick(subItem)">{{ subItem.label }}</span >
+            <li v-for="subItem in item.subItems" :key="subItem.key" class="css-submenu-item"
+                :class="{ 'has-third-level': subItem.subItems && subItem.subItems.length > 0 }">
+              <span 
+                class="css-submenu-link" 
+                @click="subItem.subItems && subItem.subItems.length > 0 ? null : handleMenuClick(subItem)"
+                :style="{ cursor: subItem.subItems && subItem.subItems.length > 0 ? 'default' : 'pointer' }"
+              >
+                {{ subItem.label }}
+              </span>
+              
+              <!-- Third level submenu -->
+              <ul v-if="subItem.subItems && subItem.subItems.length > 0" class="css-third-level-submenu">
+                <li v-for="thirdItem in subItem.subItems" :key="thirdItem.key" class="css-third-level-item">
+                  <span class="css-third-level-link" @click="handleMenuClick(thirdItem)">{{ thirdItem.label }}</span>
+                </li>
+              </ul>
             </li>
           </ul>
         </div>
@@ -350,8 +364,37 @@ onMounted(() => {
     border-top: 1px solid darken(@primary-color, 10%); // Separator from main nav
 
     .css-submenu-item {
-      cursor: pointer;
-      // No specific styling needed if link takes full space
+      position: relative; // For positioning third level menu
+      
+      &.has-third-level {
+        // Add arrow indicator for items with third level
+        .css-submenu-link {
+          cursor: default; // Override cursor for parent items with sub-menus
+          
+          &::after {
+            content: '>';
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #656C74;
+            font-size: 12px;
+          }
+        }
+        
+        &:hover .css-submenu-link {
+          background-color: @primary-color;
+          color: @text-color-light;
+          
+          &::after {
+            color: @text-color-light;
+          }
+        }
+      }
+      
+      &:not(.has-third-level) {
+        cursor: pointer;
+      }
     }
 
     .css-submenu-link {
@@ -368,10 +411,52 @@ onMounted(() => {
       font-weight: 400;
       font-size: 14px;
       letter-spacing: 0%;
+      position: relative;
 
       &:hover {
         background-color: @primary-color;
         color: @text-color-light;
+      }
+    }
+    
+    // Third level submenu
+    .css-third-level-submenu {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 100%; // Position to the right of second level
+      min-width: 160px;
+      background-color: #fff;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      z-index: @zindex-header + 20;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      border-radius: @border-radius-sm;
+      
+      .css-third-level-item {
+        cursor: pointer;
+      }
+      
+      .css-third-level-link {
+        display: block;
+        font-size: 14px;
+        color: #656C74;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: background-color 0.2s, color 0.2s;
+        height: 47px;
+        line-height: 47px;
+        padding: 0 12px;
+        font-family: PingFang SC;
+        font-weight: 400;
+        font-size: 14px;
+        letter-spacing: 0%;
+
+        &:hover {
+          background-color: @primary-color;
+          color: @text-color-light;
+        }
       }
     }
   }
@@ -383,6 +468,13 @@ onMounted(() => {
     }
     .unified-nav-link .nav-arrow-icon { // Rotate arrow on hover
         transform: rotate(180deg);
+    }
+  }
+  
+  // Show third level submenu on hover of second level item
+  .css-submenu-item.has-third-level:hover {
+    .css-third-level-submenu {
+      display: block;
     }
   }
   .is-active {
