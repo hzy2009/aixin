@@ -329,9 +329,8 @@ const gridConfigs = {
      columns: [
       { type: 'seq', title: '序号', width: 46 },
       { field: 'refUserName', title: '意向买方', width: 120 },
-      { field: 'priceExcludingTax', title: '固定价', formatter: () => '*,***,**', width: 80 }, // 交易详情列
+      { field: 'priceExcludingTax', title: '卖方售价', formatter: () => '*,***,**', width: 80 }, // 交易详情列
       { field: 'quantity', title: '购买数量', width: 80, columnType: 'both' }, // 交易详情和议价历史共用列 (议价历史时显示为'议价数量')
-      { field: 'totalPrice', title: '总价', formatter: () => '*,***,**', width: 80 }, // 交易详情列
       { field: 'createTime', title: '购买时间', width: 160 }, // 交易详情列
       { field: 'confirmedQuantity', title: '成交数量', width: 120, columnType: 'negotiation' },
       { field: 'approveTime', title: '成交时间', columnType: 'negotiation' }, 
