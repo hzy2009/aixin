@@ -431,16 +431,16 @@ const gridConfigs = {
     columns: [
       { type: 'seq', title: '序号', width: 46 },
       { field: 'postedBy', title: '卖方', columnType: 'both', width: 80, formatter: postedBy }, 
-      { field: 'priceExcludingTax', title: '固定价', formatter: () => '*,***,**', width: 80 }, // 交易详情列
+      { field: 'priceExcludingTax', title: '卖方售价', formatter: () => '*,***,**', width: 80 }, // 交易详情列
       { field: 'confirmedQuantity', title: '可出售数量', width: 90 }, // 交易详情列
-      { field: 'totalPrice', title: '总价', formatter: () => '*,***,**', width: 80 }, // 交易详情列
-      { field: 'createTime', title: '购买时间', width: 160}, // 交易详情列
-      { field: 'quantity', title: '成交数量', columnType: 'negotiation', width: 80 }, // 议价历史列
+      // { field: 'totalPrice', title: '总价', formatter: () => '*,***,**', width: 80 }, // 交易详情列
+      { field: 'createTime', title: '交易时间', width: 160}, // 交易详情列
+      { field: 'quantity', title: '交易数量', columnType: 'negotiation', width: 80 }, // 议价历史列
       { field: 'approveTime', title: '成交时间', columnType: 'negotiation', width: 160 }, // 议价历史列
       { field: 'remark', title: '备注', columnType: 'both' }, // 交易详情和议价历史共用列
       { 
         field: 'quantity', 
-        title: '购买数量',
+        title: '交易数量',
         slots: { default: 'quantityEdit' },
         width: 120,
         columnType: 'transaction' // 交易详情列
