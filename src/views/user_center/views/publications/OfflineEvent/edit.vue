@@ -31,10 +31,8 @@ const formConfigs = [
   { label: '活动内容', field: 'description', fieldType: 'textarea', span: 24 },
   { label: '活动开始日期', field: 'activityDate', fieldType: 'date', span: 24 },
   { label: '活动结束日期', field: 'activityEndDate', fieldType: 'date', span: 24 },
-    { label: '电话', field: 'phone', fieldType: 'phone', span: 24, tips: '仅供内部联络使用，不对外展示' },
-,
-    { label: '邮箱', field: 'email', fieldType: 'email', span: 24, tips: '仅供内部联络使用，不对外展示' },
-,
+  { label: '电话', field: 'phone', fieldType: 'phone', span: 24, tips: '仅供内部联络使用，不对外展示' },
+  { label: '邮箱', field: 'email', fieldType: 'email', span: 24, tips: '仅供内部联络使用，不对外展示' },
 ]
 
 const statusHistoryColumns = [
