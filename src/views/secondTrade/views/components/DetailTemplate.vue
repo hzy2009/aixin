@@ -388,7 +388,7 @@ const handleFinish = async (data) => {
         },
         buttons: [
           {
-            text: '返回详情',
+            text: '查看详情',
             type: 'primary',
           },
           {
