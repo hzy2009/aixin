@@ -28,7 +28,6 @@
       :on-close="getSuccessPromptConfig.onCloseCallback"
       :show-button="getSuccessPromptConfig.showButton"
       @close="modalStore.hideSuccessPrompt"
-      @action="() => { /* Modal internal action also calls its onClose */ }"
     />
   <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" title="填写信息获取交易信息" actionText="联系平台获取最新进展"></PhoneAndEmailModal>
   
@@ -93,7 +92,14 @@ const handleFinish = async (data) => {
       contactInfo: { name: '陈靖玮', phone: '4000118892', email: 'info-service@icshare.com' },
       buttonText: '返回首页',
       showButton: false,
-      onAction: null, // Default onAction is handled in store to go home
+      onAction: () => {
+        // 自定义回调函数：可以在这里添加任何需要的逻辑
+        console.log('一键敲门成功回调执行');
+        // 例如：记录用户行为、发送统计数据等
+      },
+      onClose: () => {
+        console.log('成功提示弹窗关闭');
+      }
     };
     modalStore.showSuccessPrompt({ ...defaultConfig });
   } else {

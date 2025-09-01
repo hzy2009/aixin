@@ -19,7 +19,7 @@
       </div>
 
       <h2 class="success-title">{{ title }}</h2>
-      <div class="meessage-container">
+      <div class="message-container">
         <div class="success-message">{{ message }}</div>
         <div v-if="contactInfo" class="contact-info">
             <div>热线电话：{{ contactInfo.phone }}</div>
@@ -83,15 +83,15 @@ const handleClose = () => {
 };
 
 const handleAction = () => {
-    console.log(props)
-//   if (props.onAction) {
-//     props.onAction();
-//   } else {
-//     router.push({ path: '/' });
-//   }
-//   emit('action'); // Emit an action event
-  handleClose(); // Usually close modal after action
-  router.push({ path: '/' });
+  if (props.onAction) {
+    // 执行传入的回调函数
+    props.onAction();
+  } else {
+    // 默认行为：返回首页
+    router.push({ path: '/' });
+  }
+  emit('action'); // Emit an action event
+  handleClose(); // Close modal after action
 };
 </script>
 
@@ -159,7 +159,7 @@ letter-spacing: 0%;
   color: @text-color-base;
   margin-bottom: 10px;
 }
-.meessage-container{
+.message-container {
     font-family: PingFang SC;
     font-weight: 400;
     font-size: 16px;
@@ -167,26 +167,16 @@ letter-spacing: 0%;
     letter-spacing: 0%;
     text-align: center;
     color: #656C74;
-    margin-bottom: 10px;
+    margin-bottom: 24px;
 }
 
 .success-message {
-//   font-size: 14px;
-//   color: @text-color-secondary; // Gray text
-//   line-height: 1.6;
-  margin-bottom: 0;
-//   max-width: 320px; // Prevent message from being too wide
-  margin-left: auto;
-  margin-right: auto;
+  margin-bottom: 16px;
 }
 
 .contact-info {
-//   font-size: 14px;
-//   color: @text-color-secondary;
-//   line-height: 1.7;
-//   margin-bottom: 24px;
-  p {
-    margin-bottom:04px;
+  div {
+    margin-bottom: 4px;
     &:last-child {
       margin-bottom: 0;
     }

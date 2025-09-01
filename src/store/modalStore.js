@@ -40,15 +40,8 @@ export const useModalStore = defineStore('modal', {
         contactInfo: config.contactInfo || null,
         buttonText: config.buttonText || '确定',
         showButton: config.showButton || true,
-        onActionCallback: config.onAction || (() => {
-          if (router.currentRoute.value.path !== '/') {
-            const router = useRouter();
-            router.push('/');
-          }
-        }),
-        onActionCallback: () => {
-          console.log(22222)
-        },
+        // showButton: config.showButton !== undefined ? config.showButton : true,
+        onActionCallback: config.onAction || null,
         onCloseCallback: config.onClose || null,
       };
       this.isSuccessPromptVisible = true;
@@ -58,8 +51,16 @@ export const useModalStore = defineStore('modal', {
         this.successPromptConfig.onCloseCallback();
       }
       this.isSuccessPromptVisible = false;
-      // Reset config after hiding (optional, but good practice)
-      this.successPromptConfig = { /* ... defaults ... */ };
+      // Reset config after hiding
+      this.successPromptConfig = {
+        title: '操作成功',
+        message: '您的操作已成功处理。',
+        contactInfo: { name: '陈靖玮', phone: '4000118892', email: 'info-service@icshare.com' },
+        buttonText: '确定',
+        onActionCallback: null,
+        onCloseCallback: null,
+        showButton: true
+      };
     },
   },
   getters: {
