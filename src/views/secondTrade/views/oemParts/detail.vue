@@ -5,12 +5,13 @@
 
 <script setup>
 import { ref, onMounted, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import DetailTemplate from '../components/DetailTemplate.vue';
 import SimilarProductsSection from '../components/SimilarProductsSection.vue';
 import defHttp from '@/utils/http/axios'
 
 const route = useRoute();
+const router = useRouter();
 const props = defineProps({
   IdProp: { type: String, default: null },
 });
@@ -53,7 +54,10 @@ const productPageConfig = ref({
     { label: '交期', field: 'deliveryDuration' },
     { label: '到货时间', field: 'deliveryDate' },
     { label: '备注', field: 'remark' },
-  ]
+  ],
+  successAction: () => {
+    router.push('/secondTrade/oemParts');
+  }
 });
 const fieldList = [
     { key: 'deviceType', label: '设备类型' },

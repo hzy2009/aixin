@@ -382,9 +382,9 @@ const handleFinish = async (data) => {
           phone: '4000118892', 
           email: 'info-service@icshare.com' 
         },
-        buttonText: '返回首页',
+        buttonText: '返回列表',
         showButton: false,
-        onAction: null, // Store默认处理返回首页
+        onAction: props.pageConfig.successAction, // Store默认处理返回首页
       };
       
       modalStore.showSuccessPrompt(successConfig);
