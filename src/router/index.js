@@ -15,6 +15,7 @@ import secondTradeRoutes from '@/views/secondTrade/routes';
 const tongyongcaiji = () => import('@/views/otherPage/tongyongcaiji/index.vue');
 import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore';
+import progressBar from '@/utils/progressBar';
 
 import { message } from 'ant-design-vue';
 const routes = [
@@ -58,6 +59,9 @@ const router = createRouter({
 
 // 全局导航守卫
 router.beforeEach((to, from, next) => {
+  // 开始进度条
+  progressBar.start();
+
   const authStore = useAuthStore();
   const isLogin = authStore.isLogin;
 
@@ -105,6 +109,19 @@ router.beforeEach((to, from, next) => {
     // }
     next();
   }
+});
+
+// 路由完成后的钩子
+router.afterEach((to, from) => {
+  // 完成进度条
+  progressBar.finish();
+});
+
+// 路由错误处理
+router.onError((error) => {
+  // 出错时显示错误状态的进度条
+  progressBar.error();
+  console.error('路由错误:', error);
 });
 
 export default router;
