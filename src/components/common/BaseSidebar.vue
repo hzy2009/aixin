@@ -31,6 +31,49 @@
               <p class="report-item-meta">意愿合作方向：{{ item.desiredCooperationDirection }}</p>
               <p class="report-item-meta">主要研究方向：{{ item.skillDesc }}</p>
             </template>
+            <template v-else-if="variant === 'report'">
+              <!-- 行业报告侧边栏样式 -->
+              <h4 class="report-item-title">{{ item.reportName }}</h4>
+              <p class="report-item-meta">领域：{{ item.reportTypeName }}</p>
+              <p class="report-item-meta">
+                <div class="report-item-description">
+                  <span>摘要：</span>
+                  <p v-html="item.description"></p>
+                </div>
+              </p>
+              <div class="report-item-footer">
+                <span class="report-item-price"><span class="currency-symbol">¥</span> ***</span>
+                <ArrowRightOutlined class="arrow-icon" />
+              </div>
+            </template>
+            <template v-else-if="variant === 'offline'">
+              <!-- 线下活动侧边栏样式 -->
+              <h2 class="report-item-title">{{ item.activityName }}</h2>
+              <p class="report-item-meta">活动内容：{{ item.description }}</p>
+              <div class="report-item-footer report-item-summary">
+                <span>活动时间：{{ item.activityDate }}</span>
+                <ArrowRightOutlined class="arrow-icon" />
+              </div>
+            </template>
+            <template v-else-if="variant === 'public'">
+              <!-- 公共关系/研发攻关侧边栏样式 -->
+              <h2 class="report-item-title">{{ item.code }}</h2>
+              <p class="report-item-meta fontSizeitem">研发攻关类型：{{ item.rdType }}</p>
+              <div class="report-item-footer report-item-summary fontSizeitem">
+                <span>期望完成日期：{{ item.expireDate ? formatDate(item.expireDate) : '' }}</span>
+                <ArrowRightOutlined class="arrow-icon" />
+              </div>
+            </template>
+            <template v-else-if="variant === 'verification'">
+              <!-- 验证检测侧边栏样式 -->
+              <h2 class="report-item-title">{{ item.code }}</h2>
+              <p class="report-item-meta fontSizeitem">产品类别：{{ getSelectDisplayValue(item.productType, 'product_type') }}</p>
+              <p class="report-item-meta fontSizeitem">检测验证类别：{{ getSelectDisplayValue(item.projectType, 'project_type') }}</p>
+              <div class="report-item-footer report-item-summary fontSizeitem">
+                <span>期望完成日期：{{ item.expireDate ? formatDate(item.expireDate) : '' }}</span>
+                <ArrowRightOutlined class="arrow-icon" />
+              </div>
+            </template>
             <template v-else>
               <!-- 默认侧边栏样式 (Domestic、OEM等) -->
               <h2 class="report-item-title">{{ item.code }}</h2>
@@ -52,7 +95,7 @@
 import { computed, watch } from 'vue';
 import { ArrowRightOutlined } from '@ant-design/icons-vue';
 import { useUserDemandList } from '@/components/template/hooks/useUserDemandList.js';
-import { formatDate } from '@/utils/index.js';
+import { formatDate, selectOptions } from '@/utils/index.js';
 
 const props = defineProps({
   // 基础配置 - 保持与原组件完全一致
@@ -144,6 +187,13 @@ const handleItemClick = (item) => {
   emit('reportClick'); // 保持原有事件名
   emit('itemClick', item); // 新增通用事件名
 };
+
+// 获取选择项显示值 - 用于verification变体
+const getSelectDisplayValue = (value, dictKey) => {
+  const optionsList = selectOptions(dictKey);
+  const option = optionsList.find(opt => opt.value === value);
+  return option ? option.label : (value || '-');
+};
 </script>
 
 <style scoped lang="less">
@@ -167,11 +217,11 @@ const handleItemClick = (item) => {
   display: block;
   color: inherit;
   text-decoration: none;
-  background-color: @background-color-base; // Each item has a white background
+  background-color: #fff;
   padding: 17px 20px 27px;
-  margin-bottom: @spacing-lg; // Space between items
-  border-radius: @border-radius-sm; // Slight rounding for each item
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  margin-bottom: 24px;
+  border-radius: 2px;
+  transition: box-shadow .3s ease, border-color .3s ease;
 
   &:last-child {
     margin-bottom: 0;
@@ -198,20 +248,17 @@ const handleItemClick = (item) => {
 }
 
 .report-item-title {
-  font-family: PingFang SC;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 22px;
-  letter-spacing: 0%;
-  text-transform: uppercase;
-
-  color: #272A30;
-  margin-bottom: 10px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 4px;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 2.4em;
   
   // 人才侧边栏特殊样式
   img {
@@ -244,33 +291,28 @@ const handleItemClick = (item) => {
 }
 
 .report-item-meta {
-  margin-bottom: 10px;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  
-  // 人才侧边栏的meta样式
-  font-family: PingFang SC;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 22px;
-  letter-spacing: 0%;
-  text-align: justify;
-  color: #656C74;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .report-item-summary {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 2.4em;
   // min-height: calc(1.2em * 2);
 }
 
@@ -307,5 +349,53 @@ const handleItemClick = (item) => {
   padding: @spacing-xl;
   border: 1px solid @border-color-light;
   border-radius: @border-radius-sm;
+}
+
+// 行业报告特殊样式
+.report-item-description {
+  font-family: PingFang SC;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: 0%;
+  text-align: justify;
+  color: #656C74;
+  height: 66px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  
+  span {
+    display: inline;
+  }
+  
+  p {
+    display: inline;
+  }
+  
+  :deep(p) {
+    display: inline;
+  }
+}
+
+.report-item-price {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+  color: @primary-color;
+  
+  .currency-symbol {
+    font-family: PingFang SC;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 12px;
+    letter-spacing: 0%;
+    text-transform: uppercase;
+  }
 }
 </style>

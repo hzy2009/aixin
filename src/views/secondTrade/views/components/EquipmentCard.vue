@@ -164,7 +164,7 @@ const getImgUrl = (url) => {
   font-weight: 400;
   font-size: 18px;
   line-height: 18px;
-
+  max-width: 248px;
   color: #000000; // Very dark gray, almost black
   margin-bottom: 20px;
   // Ellipsis for exactly 2 lines
@@ -196,6 +196,7 @@ const getImgUrl = (url) => {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 248px;
   }
 }
 

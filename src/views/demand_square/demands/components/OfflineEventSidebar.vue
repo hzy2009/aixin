@@ -1,30 +1,20 @@
 <template>
-  <div class="recommended-reports-list">
-    <div v-if="isLoading || !props.code" class="loading-placeholder">
-      <a-skeleton active :paragraph="{ rows: 4 }" v-for="i in skeletonCount" :key="`ske-${i}`" class="skeleton-item" />
-    </div>
-    <div v-else-if="tableData.length > 0" class="reports-list-items">
-      <router-link v-for="item in tableData.slice(0, props.count)" :key="item.id" @click="handleReportClick"
-        :to="`/demands/OfflineEventDetailPage/${item.id}`" class="report-item-link">
-        <div class="report-item-content">
-          <h2 class="report-item-title">{{ item.activityName }}</h2>
-          <p class="report-item-meta">活动内容：{{ item.description }}</p>
-          <div class="report-item-footer report-item-summary">
-            <span>活动时间：{{ item.activityDate }}</span>
-            <ArrowRightOutlined class="arrow-icon" />
-          </div>
-        </div>
-      </router-link>
-    </div>
-    <a-empty v-else description="暂无相关报告" class="empty-state" />
-  </div>
+  <BaseSidebar
+    :current-report-id="props.currentReportId"
+    :category="props.category"
+    :count="props.count"
+    :code="props.code"
+    variant="offline"
+    api-url="/apm/apmOfflineActivity/list/front"
+    route-prefix="/demands/OfflineEventDetailPage"
+    empty-description="暂无相关活动"
+    @report-click="handleReportClick"
+    @item-click="handleItemClick"
+  />
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed } from 'vue';
-import { Skeleton as ASkeleton, Empty as AEmpty } from 'ant-design-vue';
-import { ArrowRightOutlined } from '@ant-design/icons-vue';
-import { useUserDemandList } from '@/components/template/hooks/useUserDemandList.js'; // Adjust path
+import BaseSidebar from '@/components/common/BaseSidebar.vue';
 
 const props = defineProps({
   currentReportId: { type: [String, Number], default: null },
@@ -34,154 +24,17 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['reportClick']);
-const handleReportClick = () => emit('reportClick');
 
-const skeletonCount = computed(() => props.count); // For skeleton loader
+const handleReportClick = () => {
+  emit('reportClick');
+};
 
-const {
-  isLoading,
-  tableData,
-  loadTableData
-} = useUserDemandList({
-  url: {
-    list: '/apm/apmOfflineActivity/list/front',
-  },
-  otherParams: {
-    code: `!${props.code}`
-  },
-})
-
-watch(() => props.code, () => {
-  if (!props.code) return
-  loadTableData(
-    {
-      code: `!${props.code}`
-    }
-  );
-})
-
+const handleItemClick = (item) => {
+  // 可以添加额外的处理逻辑
+  console.log('Offline event clicked:', item);
+};
 </script>
 
 <style scoped lang="less">
-@import '@/assets/styles/_variables.less';
-
-.recommended-reports-list {
-  width: 282px;
-  // The parent container (.sidebar-column in IndustryReportDetailPage.vue)
-  // should provide the overall background and border for the sidebar area.
-  // This component now only focuses on the list of items.
-}
-
-.reports-list-items {
-  display: flex;
-  flex-direction: column;
-  // gap: @spacing-md; // Gap will be handled by report-item-link's margin or padding
-}
-
-.report-item-link {
-  display: block;
-  color: inherit;
-  text-decoration: none;
-  background-color: @background-color-base; // Each item has a white background
-  padding: @spacing-lg;
-  margin-bottom: @spacing-lg; // Space between items
-  border-radius: @border-radius-sm; // Slight rounding for each item
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-
-  &:hover {
-    border-color: darken(@border-color-light, 5%);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-
-    .report-item-title {
-      color: @primary-color;
-    }
-
-    .arrow-icon {
-      color: @primary-color;
-      transform: translateX(-4px);
-    }
-  }
-}
-
-.report-item-content {
-  // Inner div for content if needed, or apply styles directly to link
-  // No specific styles needed here if link itself handles padding and layout
-}
-
-.report-item-title {
-  font-size: 16px;
-  font-weight: 500;
-  color: @text-color-base;
-  margin-bottom: @spacing-xs;
-  line-height: 1.5;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-height: calc(1.2em * 2);
-}
-
-.report-item-meta {
-  font-size: 13px;
-  color: @text-color-secondary;
-  line-height: 1.6;
-  margin-bottom: @spacing-xs;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.report-item-summary {
-  font-size: 13px;
-  color: @text-color-secondary;
-  line-height: 1.6;
-  margin-bottom: @spacing-sm;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-height: calc(1.2em * 2);
-}
-
-.report-item-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: @spacing-xs;
-}
-
-.arrow-icon {
-  font-size: 16px;
-  color: #BFBFBF;
-  transition: color 0.2s ease, transform 0.2s ease;
-}
-
-.loading-placeholder {
-  .skeleton-item {
-    background-color: @background-color-base;
-    padding: @spacing-lg;
-    margin-bottom: @spacing-lg;
-    border: 1px solid @border-color-light;
-    border-radius: @border-radius-sm;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-}
-
-.empty-state {
-  background-color: @background-color-base;
-  padding: @spacing-xl;
-  border: 1px solid @border-color-light;
-  border-radius: @border-radius-sm;
-}
+// 样式已统一到 BaseSidebar 组件中
 </style>
