@@ -290,8 +290,8 @@ const gridConfigs = {
       { title: '操作', slots: { default: 'buttons' }, width: 180, columnType: 'transaction' }, // 交易详情列
     ],
     buttons: [
-      { key: 'confirmSale', label: '确认出售', type: 'primary', danger: true, getDisabledState: (row) => !isRowEditable(row) },
-      { key: 'cancelSale', label: '取消出售', type: 'default', danger: true, getDisabledState: (row) => !isRowEditable(row) },
+      { key: 'confirmSale', label: '确认出售', type: 'default', danger: true, getDisabledState: (row) => !isRowEditable(row) },
+      { key: 'cancelSale', label: '取消交易', type: 'default', danger: true, getDisabledState: (row) => !isRowEditable(row) },
     ],
   },
   PUBLICATION_NEGOTIABLE: {
@@ -326,9 +326,9 @@ const gridConfigs = {
       { title: '操作', slots: { default: 'buttons' }, width: 300, columnType: 'transaction' }, // 交易详情列
     ],
     buttons: [
-      { key: 'confirmSale', label: '价格通知买家', type: 'primary', danger: true, getDisabledState: (row) => !isRowEditable(row) },
+      { key: 'confirmSale', label: '价格通知买家', type: 'default', danger: true, getDisabledState: (row) => !isRowEditable(row) },
       { key: 'deal', label: '不还价直接成交', type: 'default', danger: true, getDisabledState: (row) => !isRowEditable(row) },
-      { key: 'cancelSale', label: '取消出售', type: 'default', danger: true, getDisabledState: (row) => !isRowEditable(row) },
+      { key: 'cancelSale', label: '取消交易', type: 'default', danger: true, getDisabledState: (row) => !isRowEditable(row) },
     ],
   },
   PUBLICATION_PRICE_ON_REQUEST: {
@@ -351,8 +351,8 @@ const gridConfigs = {
       { title: '操作', slots: { default: 'buttons' }, width: 180, columnType: 'transaction' }, // 交易详情列
     ],
     buttons: [
-      { key: 'confirmSale', label: '确认出售', type: 'primary', danger: true, getDisabledState: (row) => !isRowEditable(row) },
-      { key: 'cancelSale', label: '取消出售', type: 'default', danger: true, getDisabledState: (row) => !isRowEditable(row) },
+      { key: 'confirmSale', label: '确认出售', type: 'default', danger: true, getDisabledState: (row) => !isRowEditable(row) },
+      { key: 'cancelSale', label: '取消交易', type: 'default', danger: true, getDisabledState: (row) => !isRowEditable(row) },
     ],
   },
   // Config for "交易详情" when transactionType is 'bidding'
@@ -398,7 +398,7 @@ const gridConfigs = {
       { title: '操作', slots: { default: 'buttons' }, width: 220, columnType: 'transaction' }, // 交易详情列
     ],
     buttons: [
-      { key: 'confirmBuy', label: '确认交易', type: 'primary', danger: true, getDisabledState: (row) => !isRowEditable(row) },
+      { key: 'confirmBuy', label: '确认交易', type: 'default', danger: true, getDisabledState: (row) => !isRowEditable(row) },
       { key: 'cancelBuy', label: '取消交易', type: 'default', danger: true, getDisabledState: (row) => !isRowEditable(row) },
     ],
   },
@@ -449,7 +449,7 @@ const gridConfigs = {
       { title: '操作', slots: { default: 'buttons' }, width: 160, columnType: 'transaction' }, // 交易详情列
     ],
     buttons: [
-      { key: 'confirmBuy', label: '确认交易', type: 'primary', danger: true, getDisabledState: (row) => !isRowEditable(row) },
+      { key: 'confirmBuy', label: '确认交易', type: 'default', danger: true, getDisabledState: (row) => !isRowEditable(row) },
       { key: 'cancelBuy', label: '取消交易', type: 'default', danger: true, getDisabledState: (row) => !isRowEditable(row) },
     ],
   },
@@ -479,7 +479,7 @@ const gridConfigs = {
       { title: '交易', slots: { default: 'buttons' }, width: 160, columnType: 'transaction' }, // 交易详情列
     ],
     buttons: [
-      { key: 'confirmBuy', label: '确定交易', type: 'primary', danger: true, getDisabledState: (row) => !isRowEditable(row) },
+      { key: 'confirmBuy', label: '确定交易', type: 'default', danger: true, getDisabledState: (row) => !isRowEditable(row) },
       { key: 'cancelBuy', label: '取消交易', type: 'default', danger: true, getDisabledState: (row) => !isRowEditable(row) },
     ],
   }
