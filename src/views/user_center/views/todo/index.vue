@@ -96,6 +96,9 @@ const tableColumns2 = [
       if (row.purchaseMethod == 'PRICE_ON_REQUEST') {
         return '**,***,**'
       }
+      if (row.purchaseMethod == 'AUCTION') {
+        return `${cellValue}起拍`
+      }
       return cellValue
     }
    },
