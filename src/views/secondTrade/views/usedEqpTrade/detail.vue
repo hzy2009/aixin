@@ -52,7 +52,10 @@ const productPageConfig = ref({
     { label: '交期', field: 'deliveryDuration' },
     { label: '到货时间', field: 'deliveryDate' },
     { label: '备注', field: 'remark' },
-  ]
+  ],
+  successAction: () => {
+    router.push('/secondTrade/usedEqpTrade');
+  }
 });
 const isLoading = ref(false);
 const internalDemandId = ref(props.IdProp);
