@@ -48,12 +48,12 @@
 
         <!-- 含税总价显示插槽 -->
         <template #priceIncludingTaxTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'priceExcludingTax', 'confirmedQuantity', true) }}</span>
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'confirmedQuantity', true) }}</span>
         </template>
 
         <!-- 不含税总价显示插槽 -->
         <template #priceExcludingTaxTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'priceExcludingTax', 'confirmedQuantity') }}</span>
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'confirmedQuantity') }}</span>
         </template>
 
         <!-- AUCTION含税总价显示插槽 (使用price字段) -->
@@ -66,19 +66,19 @@
           <span>{{ calculateTotalPrice(row, 'price', 'confirmedQuantity') }}</span>
         </template>
 
-        <!-- JOIN_FIXED_PRICE总价显示插槽 (priceExcludingTax * confirmedQuantity) -->
+        <!-- JOIN_FIXED_PRICE总价显示插槽 (priceIncludingTax * confirmedQuantity) -->
         <template #joinFixedPriceTotalPrice="{ row }">
-          <span>{{ calculateTotalPrice(row, 'priceExcludingTax', 'confirmedQuantity') }}</span>
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'confirmedQuantity') }}</span>
         </template>
 
-        <!-- JOIN_FIXED_PRICE成交总价显示插槽 (priceExcludingTax * quantity) -->
+        <!-- JOIN_FIXED_PRICE成交总价显示插槽 (priceIncludingTax * quantity) -->
         <template #joinFixedPriceNegotiationTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'priceExcludingTax', 'quantity') }}</span>
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'quantity') }}</span>
         </template>
 
-        <!-- JOIN_NEGOTIABLE成交总价显示插槽 (priceExcludingTax * confirmedQuantity) -->
+        <!-- JOIN_NEGOTIABLE成交总价显示插槽 (priceIncludingTax * confirmedQuantity) -->
         <template #joinNegotiableTotalPrice="{ row }">
-          <span>{{ calculateTotalPrice(row, 'priceExcludingTax', 'confirmedQuantity') }}</span>
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'confirmedQuantity') }}</span>
         </template>
 
         <!-- JOIN_AUCTION我的竞价总价显示插槽 (price * quantity) -->
@@ -93,23 +93,23 @@
 
         <!-- JOIN系列含税总价插槽 -->
         <template #joinPriceIncludingTaxTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'priceExcludingTax', 'quantity', true) }}</span>
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'quantity', true) }}</span>
         </template>
 
         <!-- JOIN系列不含税总价插槽 -->
         <template #joinPriceExcludingTaxTotalFIXED="{ row }">
-          <span>{{ calculateTotalPrice(row, 'priceExcludingTax', 'quantity') }}</span>
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'quantity') }}</span>
         </template>
 
         <!-- JOIN系列不含税总价插槽 -->
         <template #joinPriceExcludingTaxTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'priceExcludingTax', 'dealedQuantity') }}</span>
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'dealedQuantity') }}</span>
         </template>
         
 
         <!-- JOIN_NEGOTIABLE含税总价插槽 -->
         <template #joinNegotiablePriceIncludingTaxTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'priceExcludingTax', 'dealedQuantity', true) }}</span>
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'dealedQuantity', true) }}</span>
         </template>
 
         <!-- JOIN_AUCTION含税总价插槽 (使用price字段) -->
@@ -224,7 +224,7 @@ watch(activeTabKey, () => {
  */
 const formatCurrency = ({ cellValue, column  }) => {
   if (column?.field && column.field === 'fixedPrice') {
-    return `¥${props.product.priceExcludingTax.toLocaleString('zh-CN', { 
+    return `¥${props.product.priceIncludingTax.toLocaleString('zh-CN', { 
     minimumFractionDigits: 2, 
     maximumFractionDigits: 2 
   })}`;
@@ -294,7 +294,7 @@ const calculateTotalPrice = (row, priceCode, quantityCode, isIncludingTax) => {
     
     let total = new Decimal(price).mul(quantity);
     if (isIncludingTax) {
-      total = total.mul(1 + props.product.tax / 100);
+      total = total.div(1 + props.product.tax / 100);
     }
     return `¥${total.toFixed(2)}`;
   } catch (error) {
@@ -412,11 +412,11 @@ const gridConfigs = {
         columnType: 'transaction' 
       },
       { title: '操作', fiexd: 'right', slots: { default: 'buttons' }, width: 160, columnType: 'transaction' }, 
-      { field: 'priceExcludingTax', title: '成交单价(不含税)', width: 130, columnType: 'negotiation' }, 
+      { field: 'priceIncludingTax', title: '成交单价(含税)', width: 130, columnType: 'negotiation' }, 
       { field: 'approveTime', title: '成交时间', width: 98, columnType: 'negotiation', formatter: ({ cellValue}) => formatDate(cellValue) }, 
-      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', formatter: ({ row }) => calculateTotalPrice(row, 'priceExcludingTax', 'quantity', true), width: 124 }, 
+      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', formatter: ({ row }) => calculateTotalPrice(row, 'priceIncludingTax', 'quantity', true), width: 124 }, 
       { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
-      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', width: 130, formatter: ({ row }) => calculateTotalPrice(row, 'priceExcludingTax', 'quantity') }, // 议价历史列
+      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', width: 130, formatter: ({ row }) => calculateTotalPrice(row, 'priceIncludingTax', 'quantity') }, // 议价历史列
       { field: 'remark', title: '备注', columnType: 'both', width: 160 }, // 议价历史列
     ],
     buttons: [
@@ -436,7 +436,7 @@ const gridConfigs = {
       { field: 'fixedPrice', title: '卖方初始价格', formatter: formatCurrency, width: 100 }, 
       { field: 'price', title: '买方出价', formatter: formatCurrency, width: 100  }, // 交易详情和议价历史共用列 (议价历史时显示为'议价金额')
       { 
-        field: 'priceExcludingTax', 
+        field: 'priceIncludingTax', 
         title: '卖方还价',
         slots: { default: 'priceEdit' },
          width: 120,
@@ -450,7 +450,7 @@ const gridConfigs = {
         columnType: 'transaction' 
       },
       { title: '操作', slots: { default: 'buttons' }, width: 300, columnType: 'transaction' }, 
-      { field: 'priceExcludingTax', title: '成交单价(不含税)', width: 130, columnType: 'negotiation' }, 
+      { field: 'priceIncludingTax', title: '成交单价(不含税)', width: 130, columnType: 'negotiation' }, 
       { field: 'approveTime', title: '成交时间', width: 98, columnType: 'negotiation', formatter: ({ cellValue}) => formatDate(cellValue) }, 
       { field: 'confirmedQuantity', title: '成交数量', width: 120, columnType: 'negotiation' },
       { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'priceIncludingTaxTotal' }, width: 124 }, 
@@ -515,7 +515,7 @@ const gridConfigs = {
         width: 110, 
         columnType: 'transaction' 
       },
-      { field: 'priceExcludingTax', title: '成交单价(不含税)', width: 130, columnType: 'negotiation' }, 
+      { field: 'priceIncludingTax', title: '成交单价(含税)', width: 130, columnType: 'negotiation' }, 
       { field: 'approveTime', title: '成交时间', width: 98, columnType: 'negotiation', formatter: ({ cellValue}) => formatDate(cellValue) }, 
       { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'auctionPriceIncludingTaxTotal' }, width: 124 }, 
       { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
@@ -543,7 +543,7 @@ const gridConfigs = {
         columnType: 'transaction' 
       },
       { title: '操作', fiexd: 'right', slots: { default: 'buttons' }, width: 160, columnType: 'transaction' }, 
-      { field: 'priceExcludingTax', title: '成交单价(不含税)', width: 130, columnType: 'negotiation' }, 
+      { field: 'priceIncludingTax', title: '成交单价(不含税)', width: 130, columnType: 'negotiation' }, 
       { field: 'approveTime', title: '成交时间', width: 98, columnType: 'negotiation', formatter: ({ cellValue}) => formatDate(cellValue) }, 
       { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'joinPriceIncludingTaxTotal' }, width: 124 }, 
       { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
@@ -566,7 +566,7 @@ const gridConfigs = {
       { field: 'purchaseMethod', title: '价格类型', width: 124, formatter: formatPurchaseMethod }, // 交易详情和议价历史共用列
       { field: 'fixedPrice', title: '卖方初始价格', formatter: formatCurrency, width: 100 }, 
       { field: 'price', title: '买方出价', formatter: formatCurrency, width: 100  }, // 交易详情和议价历史共用列 (议价历史时显示为'议价金额')
-      { field: 'priceExcludingTax', title: '卖方还价', formatter: formatCurrency, width: 90}, 
+      { field: 'priceIncludingTax', title: '卖方还价', formatter: formatCurrency, width: 90}, 
       { 
         field: 'dealedQuantity', 
         title: '交易数量',
@@ -575,7 +575,7 @@ const gridConfigs = {
         columnType: 'transaction' 
       },
       { title: '操作', slots: { default: 'buttons' }, width: 210, columnType: 'transaction' }, 
-      { field: 'priceExcludingTax', title: '成交单价(不含税)', width: 130, columnType: 'negotiation' }, 
+      { field: 'priceIncludingTax', title: '成交单价(不含税)', width: 130, columnType: 'negotiation' }, 
       { field: 'approveTime', title: '成交时间', width: 98, columnType: 'negotiation', formatter: ({ cellValue}) => formatDate(cellValue) }, 
       { field: 'confirmedQuantity', title: '成交数量', width: 120, columnType: 'negotiation' },
       { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'joinNegotiablePriceIncludingTaxTotal' }, width: 124 }, 
@@ -644,7 +644,7 @@ const gridConfigs = {
         columnType: 'transaction' 
       },
       { title: '操作', fiexd: 'right', slots: { default: 'buttons' }, width: 160, columnType: 'transaction' }, 
-      { field: 'priceExcludingTax', title: '成交单价(不含税)', width: 130, columnType: 'negotiation' }, 
+      { field: 'priceIncludingTax', title: '成交单价(不含税)', width: 130, columnType: 'negotiation' }, 
       { field: 'approveTime', title: '成交时间', width: 98, columnType: 'negotiation', formatter: ({ cellValue}) => formatDate(cellValue) }, 
       { field: 'confirmedQuantity', title: '成交数量', columnType: 'negotiation', width: 120 }, // 议价历史列
       { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'joinAuctionPriceIncludingTaxTotal' }, width: 124 }, 
