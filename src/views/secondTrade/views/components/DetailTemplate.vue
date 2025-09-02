@@ -393,7 +393,6 @@ const handleFinish = async (data) => {
           },
           {
             text: '返回列表',
-            type: 'primary',
             onClick: () => {
               props.pageConfig.successAction?.();
             }
