@@ -48,22 +48,22 @@
 
         <!-- 含税总价显示插槽 -->
         <template #priceIncludingTaxTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'confirmedQuantity', true) }}</span>
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'confirmedQuantity') }}</span>
         </template>
 
         <!-- 不含税总价显示插槽 -->
         <template #priceExcludingTaxTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'confirmedQuantity') }}</span>
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'confirmedQuantity', true) }}</span>
         </template>
 
         <!-- AUCTION含税总价显示插槽 (使用price字段) -->
         <template #auctionPriceIncludingTaxTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'price', 'confirmedQuantity', true) }}</span>
+          <span>{{ calculateTotalPrice(row, 'price', 'confirmedQuantity') }}</span>
         </template>
 
         <!-- AUCTION不含税总价显示插槽 (使用price字段) -->
         <template #auctionPriceExcludingTaxTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'price', 'confirmedQuantity') }}</span>
+          <span>{{ calculateTotalPrice(row, 'price', 'confirmedQuantity', true) }}</span>
         </template>
 
         <!-- JOIN_FIXED_PRICE总价显示插槽 (priceIncludingTax * confirmedQuantity) -->
@@ -93,33 +93,33 @@
 
         <!-- JOIN系列含税总价插槽 -->
         <template #joinPriceIncludingTaxTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'quantity', true) }}</span>
-        </template>
-
-        <!-- JOIN系列不含税总价插槽 -->
-        <template #joinPriceExcludingTaxTotalFIXED="{ row }">
           <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'quantity') }}</span>
         </template>
 
         <!-- JOIN系列不含税总价插槽 -->
+        <template #joinPriceExcludingTaxTotalFIXED="{ row }">
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'quantity', true) }}</span>
+        </template>
+
+        <!-- JOIN系列不含税总价插槽 -->
         <template #joinPriceExcludingTaxTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'dealedQuantity') }}</span>
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'dealedQuantity', true) }}</span>
         </template>
         
 
         <!-- JOIN_NEGOTIABLE含税总价插槽 -->
         <template #joinNegotiablePriceIncludingTaxTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'dealedQuantity', true) }}</span>
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'dealedQuantity') }}</span>
         </template>
 
         <!-- JOIN_AUCTION含税总价插槽 (使用price字段) -->
         <template #joinAuctionPriceIncludingTaxTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'price', 'confirmedQuantity', true) }}</span>
+          <span>{{ calculateTotalPrice(row, 'price', 'confirmedQuantity') }}</span>
         </template>
 
         <!-- JOIN_AUCTION不含税总价插槽 (使用price字段) -->
         <template #joinAuctionPriceExcludingTaxTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'price', 'confirmedQuantity') }}</span>
+          <span>{{ calculateTotalPrice(row, 'price', 'confirmedQuantity', true) }}</span>
         </template>
       </VxeGridWrapper>
     </div>
@@ -414,9 +414,9 @@ const gridConfigs = {
       { title: '操作', fiexd: 'right', slots: { default: 'buttons' }, width: 160, columnType: 'transaction' }, 
       { field: 'priceIncludingTax', title: '成交单价(含税)', width: 130, columnType: 'negotiation' }, 
       { field: 'approveTime', title: '成交时间', width: 98, columnType: 'negotiation', formatter: ({ cellValue}) => formatDate(cellValue) }, 
-      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', formatter: ({ row }) => calculateTotalPrice(row, 'priceIncludingTax', 'quantity', true), width: 124 }, 
+      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', formatter: ({ row }) => calculateTotalPrice(row, 'priceIncludingTax', 'quantity'), width: 124 }, 
       { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
-      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', width: 130, formatter: ({ row }) => calculateTotalPrice(row, 'priceIncludingTax', 'quantity') }, // 议价历史列
+      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', width: 130, formatter: ({ row }) => calculateTotalPrice(row, 'priceIncludingTax', 'quantity', true) }, // 议价历史列
       { field: 'remark', title: '备注', columnType: 'both', width: 160 }, // 议价历史列
     ],
     buttons: [
