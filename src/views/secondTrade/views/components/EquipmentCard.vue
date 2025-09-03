@@ -61,7 +61,7 @@ const imageSrc = ref(props.item.imageUrl || defaultPlaceholder);
 
 const formattedPrice = computed(() => {
   if (props.item.purchaseMethod === 'PRICE_ON_REQUEST') return '****';
-  return props.item.priceExcludingTax || '面议';
+  return props.item.priceIncludingTax || '面议';
 });
 const purchaseMethodtext = computed(() => {
   const purchaseMethodMap = selectOptions('purchase_method').reduce((acc, { value: key, label }) => ({ ...acc, [key]: label }), {});
