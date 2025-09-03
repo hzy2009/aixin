@@ -257,6 +257,7 @@ const handlePurchase = async () => {
           min: 1, 
           max: props.product.quantity, 
           field: 'quantity', 
+          label: '购买数量',
           placeholder: '请输入数量', 
           defaultValue: purchaseQuantity.value, 
           type: 'number', 
@@ -264,6 +265,7 @@ const handlePurchase = async () => {
         },
         { 
           field: 'remark', 
+          label: '备注信息',
           placeholder: '请填写您的优势或者需要咨询的问题', 
           type: 'textarea',
         },
@@ -271,6 +273,7 @@ const handlePurchase = async () => {
       'NEGOTIABLE': [
         { 
           field: 'price', 
+          label: '报价',
           placeholder: '请输入价格', 
           type: 'number',
           rules: [{ required: true, message: '请输入价格' }]
@@ -279,6 +282,7 @@ const handlePurchase = async () => {
           min: 1, 
           max: props.product.quantity, 
           field: 'quantity', 
+          label: '购买数量',
           placeholder: '请输入数量', 
           defaultValue: purchaseQuantity.value, 
           type: 'number', 
@@ -286,6 +290,7 @@ const handlePurchase = async () => {
         },
         { 
           field: 'remark', 
+          label: '备注信息',
           placeholder: '请填写您的优势或者需要咨询的问题', 
           type: 'textarea',
         },
@@ -295,6 +300,7 @@ const handlePurchase = async () => {
           min: 1, 
           max: props.product.quantity, 
           field: 'quantity', 
+          label: '需求数量',
           placeholder: '请输入数量', 
           defaultValue: purchaseQuantity.value, 
           type: 'number', 
@@ -302,6 +308,7 @@ const handlePurchase = async () => {
         },
         { 
           field: 'remark', 
+          label: '备注信息',
           placeholder: '请填写您的优势或者需要咨询的问题', 
           type: 'textarea',
         },
@@ -309,6 +316,7 @@ const handlePurchase = async () => {
       'AUCTION': [
         { 
           field: 'price', 
+          label: '竞价',
           placeholder: '请输入竞价', 
           type: 'number',
           rules: [{ required: true, message: '请输入竞价' }]
@@ -317,6 +325,7 @@ const handlePurchase = async () => {
           min: 1, 
           max: props.product.quantity, 
           field: 'quantity', 
+          label: '竞拍数量',
           placeholder: '请输入数量', 
           defaultValue: purchaseQuantity.value, 
           type: 'number', 
@@ -324,6 +333,7 @@ const handlePurchase = async () => {
         },
         { 
           field: 'remark', 
+          label: '备注信息',
           placeholder: '请填写您的优势或者需要咨询的问题', 
           type: 'textarea',
         },

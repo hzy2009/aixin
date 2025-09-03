@@ -6,11 +6,14 @@
 		:footer="null"
 		centered
 		:title="props.title"
-		width="360px"
+		width="400px"
 		@cancel="handleClose"
 	>
 	   	<div class="prompt-content">
 				<a-form ref="formRef" :model="formModel" 
+					layout="horizontal"
+					:label-col="{ span: 6 }"
+					:wrapper-col="{ span: 18 }"
 					@finish="onFinish">
 					<!-- 默认输入框 -->
 					<!-- <a-form-item v-if="props.showDefaultFields && !props.customFields" name="email" :rules="rulePresets.email">
@@ -24,6 +27,7 @@
 						v-for="field in displayFields" 
 						:key="field.field" 
 						:name="field.field" 
+						:label="field.label"
 						:rules="field.rules || []"
 					>
 						<a-input 
@@ -124,12 +128,14 @@
 				{
 					field: 'email',
 					type: 'input',
+					label: '邮箱',
 					placeholder: '请输入邮箱',
 					rules: rulePresets.email
 				},
 				{
 					field: 'phone',
 					type: 'input',
+					label: '电话号码',
 					placeholder: '请输入电话号码',
 					rules: rulePresets.phone
 				}
@@ -170,8 +176,7 @@
 	.prompt-content{
 		padding:10px 0 0;
 		position: relative;
-		text-align: center;
-}
+	}
 .action-button{
 		color: #fff;
 		background-color: @primary-color;
@@ -189,6 +194,27 @@
 	}
 	:deep(.ant-modal-content) {
 		padding: 30px 34px;
+	}
+	
+	:deep(.ant-form-item) {
+		margin-bottom: 16px;
+		
+		.ant-form-item-label {
+			text-align: right;
+			padding-right: 8px;
+			
+			> label {
+				color: #333;
+				font-weight: normal;
+				&::after {
+					content: '';
+				}
+			}
+		}
+		
+		.ant-form-item-control-input {
+			min-height: 40px;
+		}
 	}
 }
 </style>
