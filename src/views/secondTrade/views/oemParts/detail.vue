@@ -24,17 +24,16 @@ const productPageConfig = ref({
   mainImage: { field: 'imageUrl' },
   tags: [
     { field: 'productStatus' }, // 第一个标签来自 data.condition.label
-    { field: 'productTypeName' },      // 第二个标签来自 data.vendor.name
+    { field: 'stockStatus' },      // 第二个标签来自 data.vendor.name
     { field: 'productSource'}
   ],  
-
   basicInfo: [
     { label: '零部件料号', field: 'partNumber' },
     { label: '零部件型号', field: 'productModel' },
     { label: '品牌/制造商', field: 'originalManufacturer' },
     {
-      label: '产品状态',
-      field: 'productStatus',
+      label: '品类',
+      field: 'productTypeName',
       highlight: true,
     },
   ],
