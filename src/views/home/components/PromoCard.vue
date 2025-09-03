@@ -46,8 +46,12 @@
 
 <script setup>
 import { Button as AButton, message } from 'ant-design-vue';
+import defHttp from '@/utils/http/axios'; // Your Axios instance
 import SectionHeader from '@/components/common/SectionHeader.vue'; // Assuming you use this
-
+import { useAuthStore } from '@/store/authStore';
+import { useModalStore } from '@/store/modalStore'; 
+const modalStore = useModalStore();
+const authStore = useAuthStore();
 // TODO: Replace with actual image paths for partner logos if they are separate images
 // import aianLogo from '@/assets/images/home/aian_logo.png';
 // import jdIndustrialLogo from '@/assets/images/home/jd_industrial_logo.png';
@@ -57,15 +61,33 @@ const handlePurchaseClick = (partnerKey) => {
   // TODO: Implement actual navigation or action for purchase
   // message.info(`即将跳转到 ${partnerKey === 'aian' ? '爱安特' : '京东工业'} 采购页面... (功能开发中)`);
   // message.info(`业务即将上线，敬请期待`);
-  let url = ''
-  const urlMap = {
-    'aian': 'https://www.ant-fa.com',
-    'jd': 'https://b.jd.com',
-    'guoptics': 'https://www.gu-optics.com/'
-  }
-  url = urlMap[partnerKey]
-  window.open(url, '_blank');
+  // let url = ''
+  // const urlMap = {
+  //   'aian': 'https://www.ant-fa.com',
+  //   'jd': 'https://b.jd.com',
+  //   'guoptics': 'https://www.gu-optics.com/'
+  // }
+  // url = urlMap[partnerKey]
+  // window.open(url, '_blank');
   // Example: window.open('https://partner-url.com', '_blank');
+    if (authStore.isLogin) {
+    let url = ''
+    const urlMap = {
+      'aian': '/apm/jicai/redirectToAtEdiJson',
+      'jd': '/apm/jicai/redirectToJdJson',
+      'guoptics': '/apm/jicai/redirectToLianHeGuangKeiJson'
+    }
+    url = urlMap[partnerKey]
+    defHttp.get({ url }).then((res) => {
+      if(res.success){
+        window.open(res.result, '_blank');
+      } else {
+        message.error(res.message);
+      }
+    });
+  } else {
+    modalStore.showLogin();
+  }
 };
 </script>
 
