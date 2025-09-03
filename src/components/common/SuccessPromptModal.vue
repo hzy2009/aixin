@@ -7,7 +7,6 @@
     wrap-class-name="success-prompt-modal-wrapper"
     centered
     width="448px"
-    v-draggable
     @cancel="handleClose"
   >
     <div class="success-prompt-content">

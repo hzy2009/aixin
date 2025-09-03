@@ -8,7 +8,6 @@
 		:title="props.title"
 		width="400px"
 		wrap-class-name="draggable-modal-wrapper"
-		v-draggable
 		@cancel="handleClose"
 	>
 	   	<div class="prompt-content">

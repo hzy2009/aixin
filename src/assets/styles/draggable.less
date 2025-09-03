@@ -2,18 +2,17 @@
 // 任何使用 v-draggable 指令的模态框都会应用这些样式
 
 // 通用拖拽样式，适用于所有模态框
-.ant-modal-wrap[data-draggable] {
+.ant-modal-wrap {
   .ant-modal {
-    padding-bottom: 0;
     transition: none !important; // 禁用拖拽时的过渡动画，提升拖拽体验
   }
   
-  .ant-modal-header {
-    cursor: grab;
+  .ant-modal-header[data-draggable-init] {
+    cursor: grab !important;
     user-select: none; // 禁止选择标题栏文本
     
     &:active {
-      cursor: grabbing;
+      cursor: grabbing !important;
     }
     
     .ant-modal-title {
@@ -37,6 +36,15 @@
     
     &:active {
       cursor: grabbing;
+    }
+    
+    .ant-modal-title {
+      user-select: none;
+      pointer-events: none;
+    }
+    
+    .ant-modal-close {
+      pointer-events: auto;
     }
   }
 }

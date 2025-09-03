@@ -125,7 +125,7 @@
 		</a-spin>
 	</div>
 	<!-- Image Preview Modal -->
-	<a-modal :open="previewVisible" :title="previewTitle" :footer="null" v-draggable @cancel="handlePreviewCancel">
+	<a-modal :open="previewVisible" :title="previewTitle" :footer="null" @cancel="handlePreviewCancel">
 		<img alt="example" style="width: 100%" :src="previewImage" />
 	</a-modal>
 </template>

@@ -4,7 +4,7 @@ import router from './router';
 import pinia from './store';
 
 import Antd from 'ant-design-vue';
-import draggable from './utils/directives/draggable.js';
+import { initModalDrag } from './utils/modalDrag.js';
 
 // Import global LESS styles
 import './assets/styles/index.less';
@@ -27,13 +27,13 @@ app.use(router);
 
 app.use(Antd);
 
-// 注册全局拖拽指令
-app.directive('draggable', draggable);
-
 // 全局配置message
 
 app.use(VxeUIAll)
 app.use(VxeUITable)
 // app.use(head); // If using @vueuse/head
+
+// 初始化全局模态框拖拽功能
+initModalDrag();
 
 app.mount('#app');
