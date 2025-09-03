@@ -22,7 +22,7 @@
             v-model:value="row[column.field]"
             :min="1"
             :max="getMaxQuantity(row)"
-            :placeholder="`最大可输入${getMaxQuantity(row)}`"
+            :placeholder="`最大值${getMaxQuantity(row)}`"
             size="small"
             style="width: 100%; height: 30px;"
             @change="(value) => handleQuantityChange(value, row, column.field)"
@@ -41,9 +41,85 @@
             placeholder="请输入价格"
             size="small"
             style="width: 100%; height: 30px;"
-            @change="(value) => row[column.field] = value"
+            @change="(value) => handlePriceChange(value, row, column.field)"
           />
           <span v-else>{{ formatCurrency({ cellValue: row[column.field], column }) }}</span>
+        </template>
+
+        <!-- 含税总价显示插槽 -->
+        <template #priceIncludingTaxTotal="{ row }">
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'confirmedQuantity') }}</span>
+        </template>
+
+        <!-- 不含税总价显示插槽 -->
+        <template #priceExcludingTaxTotal="{ row }">
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'confirmedQuantity', true) }}</span>
+        </template>
+
+        <!-- AUCTION含税总价显示插槽 (使用price字段) -->
+        <template #auctionPriceIncludingTaxTotal="{ row }">
+          <span>{{ calculateTotalPrice(row, 'price', 'confirmedQuantity') }}</span>
+        </template>
+
+        <!-- AUCTION不含税总价显示插槽 (使用price字段) -->
+        <template #auctionPriceExcludingTaxTotal="{ row }">
+          <span>{{ calculateTotalPrice(row, 'price', 'confirmedQuantity', true) }}</span>
+        </template>
+
+        <!-- JOIN_FIXED_PRICE总价显示插槽 (priceIncludingTax * confirmedQuantity) -->
+        <template #joinFixedPriceTotalPrice="{ row }">
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'confirmedQuantity') }}</span>
+        </template>
+
+        <!-- JOIN_FIXED_PRICE成交总价显示插槽 (priceIncludingTax * quantity) -->
+        <template #joinFixedPriceNegotiationTotal="{ row }">
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'quantity') }}</span>
+        </template>
+
+        <!-- JOIN_NEGOTIABLE成交总价显示插槽 (priceIncludingTax * confirmedQuantity) -->
+        <template #joinNegotiableTotalPrice="{ row }">
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'confirmedQuantity') }}</span>
+        </template>
+
+        <!-- JOIN_AUCTION我的竞价总价显示插槽 (price * quantity) -->
+        <template #joinAuctionMyBidTotal="{ row }">
+          <span>{{ calculateTotalPrice(row, 'price', 'quantity') }}</span>
+        </template>
+
+        <!-- JOIN_AUCTION成交总价显示插槽 (price * confirmedQuantity) -->
+        <template #joinAuctionDealTotal="{ row }">
+          <span>{{ calculateTotalPrice(row, 'price', 'confirmedQuantity') }}</span>
+        </template>
+
+        <!-- JOIN系列含税总价插槽 -->
+        <template #joinPriceIncludingTaxTotal="{ row }">
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'quantity') }}</span>
+        </template>
+
+        <!-- JOIN系列不含税总价插槽 -->
+        <template #joinPriceExcludingTaxTotalFIXED="{ row }">
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'quantity', true) }}</span>
+        </template>
+
+        <!-- JOIN系列不含税总价插槽 -->
+        <template #joinPriceExcludingTaxTotal="{ row }">
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'dealedQuantity', true) }}</span>
+        </template>
+        
+
+        <!-- JOIN_NEGOTIABLE含税总价插槽 -->
+        <template #joinNegotiablePriceIncludingTaxTotal="{ row }">
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'dealedQuantity') }}</span>
+        </template>
+
+        <!-- JOIN_AUCTION含税总价插槽 (使用price字段) -->
+        <template #joinAuctionPriceIncludingTaxTotal="{ row }">
+          <span>{{ calculateTotalPrice(row, 'price', 'confirmedQuantity') }}</span>
+        </template>
+
+        <!-- JOIN_AUCTION不含税总价插槽 (使用price字段) -->
+        <template #joinAuctionPriceExcludingTaxTotal="{ row }">
+          <span>{{ calculateTotalPrice(row, 'price', 'confirmedQuantity', true) }}</span>
         </template>
       </VxeGridWrapper>
     </div>
@@ -70,7 +146,7 @@ import { useRouter } from 'vue-router';
 import { Tabs as ATabs, TabPane as ATabPane, Button as AButton, InputNumber as AInputNumber, message } from 'ant-design-vue';
 import VxeGridWrapper from './VxeGridWrapper.vue';
 import { Decimal } from 'decimal.js';
-import {maskMiddle} from '@/utils/index';
+import {maskMiddle, selectOptions, formatDate} from '@/utils/index';
 
 const props = defineProps({
   product: {
@@ -148,7 +224,7 @@ watch(activeTabKey, () => {
  */
 const formatCurrency = ({ cellValue, column  }) => {
   if (column?.field && column.field === 'fixedPrice') {
-    return `¥${props.product.priceExcludingTax.toLocaleString('zh-CN', { 
+    return `¥${props.product.priceIncludingTax.toLocaleString('zh-CN', { 
     minimumFractionDigits: 2, 
     maximumFractionDigits: 2 
   })}`;
@@ -171,6 +247,31 @@ const postedBy = () => {
   if (props.product.postedBy) {
     return maskMiddle(props.product.postedBy);
   }
+  return '-';
+}
+
+/**
+ * 格式化采购方式
+ * @returns {string} 格式化后的采购方式
+ */
+const formatPurchaseMethod = () => {
+  let txt = '';
+   if (props.product.purchaseMethod) {
+    selectOptions('purchase_method').forEach((item) => {
+      if (item.value == props.product.purchaseMethod) {
+        txt = item.label;
+      }
+    })
+  }
+  return txt;
+}
+
+const formatTax = () => {
+  let txt = '';
+  if (props.product.tax) {
+    txt = `${props.product.tax}%`;
+  }
+  return txt;
 }
 
 /**
@@ -178,22 +279,23 @@ const postedBy = () => {
  * @param {Object} row - 行数据
  * @returns {string} 格式化后的总价
  */
-const calculateTotalPrice = (row, priceCode, quantityCode) => {
+const calculateTotalPrice = (row, priceCode, quantityCode, isIncludingTax) => {
   try {
     if (!row) {
       return '-';
     }
-    
-    // 根据不同场景使用不同的价格和数量字段
-    // const price = Number(row.price || row.priceExcludingTax || 0);
-    // const quantity = Number(row.quantity || row.confirmedQuantity || 0);
+  
     const price = Number(row[priceCode] || 0);
     const quantity = Number(row[quantityCode] || 0);
+    
     if (isNaN(price) || isNaN(quantity) || price === 0 || quantity === 0) {
       return '-';
     }
     
-    const total = new Decimal(price).mul(quantity);
+    let total = new Decimal(price).mul(quantity);
+    if (isIncludingTax) {
+      total = total.div(1 + props.product.tax / 100);
+    }
     return `¥${total.toFixed(2)}`;
   } catch (error) {
     console.error('计算总价时发生错误:', error, row);
@@ -260,34 +362,62 @@ const handleQuantityChange = (value, row, field) => {
     }
     
     row[field] = value;
+    
   } catch (error) {
     console.error('处理数量变化时发生错误:', error);
     message.error('数量更新失败');
   }
 };
 
+/**
+ * 处理价格变化
+ * @param {number} value - 新价格值
+ * @param {Object} row - 行数据
+ * @param {string} field - 字段名
+ */
+const handlePriceChange = (value, row, field) => {
+  try {
+    if (value < 0.01) {
+      message.warn('价格必须大于0.01');
+      row[field] = 0.01;
+      return;
+    }
+    
+    row[field] = value;
+  } catch (error) {
+    console.error('处理价格变化时发生错误:', error);
+    message.error('价格更新失败');
+  }
+};
+
+
 // --- Grid Configurations ---
 const gridConfigs = {
   PUBLICATION_FIXED_PRICE: {
     columns: [
       { type: 'seq', title: '序号', width: 46 },
-      { field: 'refUserName', title: '意向买方', width: 100}, // 交易详情列
-      { field: 'fixedPrice', title: '固定价', formatter: formatCurrency, width: 120 }, // 交易详情列
-      { field: 'quantity', title: '购买数量', width: 80}, // 交易详情列
-      { field: 'totalPrice', title: '总价', formatter: ({ row }) => calculateTotalPrice(row, 'priceExcludingTax', 'quantity'), width: 120 }, // 交易详情列
-      { field: 'createTime', title: '购买时间', width: 160, columnType: 'both' }, // 交易详情和议价历史共用列
-     
-      { field: 'confirmedQuantity', title: '成交数量', columnType: 'negotiation', width: 80 }, // 议价历史列
-      { field: 'priceExcludingTaxTotal', title: '成交总价', columnType: 'negotiation', width: 80, formatter: ({ row }) => calculateTotalPrice(row, 'priceExcludingTax', 'confirmedQuantity') }, // 议价历史列
-      { field: 'approveTime', title: '成交时间', columnType: 'negotiation', width: 160 }, // 议价历史列
-      { field: 'remark', title: '备注' }, // 议价历史列
-       { 
+      { field: 'code', title: '爱芯享交易单号', width: 150}, 
+      { field: 'refUserName', title: '买方', width: 74}, 
+      { field: 'productquantity', title: '库存数量', width: 76, formatter: () => props.product.quantity }, 
+      { field: 'quantity', title: '本次交易数量', width: 98}, 
+      { field: 'createTime', title: '发起交易时间', width: 98, columnType: 'transaction', formatter: ({ cellValue}) => formatDate(cellValue) }, // 交易详情和议价历史共用列
+      { field: 'purchaseMethod', title: '价格类型', width: 124, formatter: formatPurchaseMethod }, // 交易详情和议价历史共用列
+      { field: 'fixedPrice', title: '卖方初始价格', formatter: formatCurrency, width: 100 }, 
+      { 
         field: 'confirmedQuantity', 
-        title: '出售数量',
+        title: '交易数量',
         slots: { default: 'quantityEdit' },
-        columnType: 'transaction' // 交易详情列
+        fiexd: 'right',
+        width: 110, 
+        columnType: 'transaction' 
       },
-      { title: '操作', slots: { default: 'buttons' }, width: 180, columnType: 'transaction' }, // 交易详情列
+      { title: '操作', fiexd: 'right', slots: { default: 'buttons' }, width: 160, columnType: 'transaction' }, 
+      { field: 'priceIncludingTax', title: '成交单价(含税)', width: 130, columnType: 'negotiation' }, 
+      { field: 'approveTime', title: '成交时间', width: 98, columnType: 'negotiation', formatter: ({ cellValue}) => formatDate(cellValue) }, 
+      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', formatter: ({ row }) => calculateTotalPrice(row, 'priceIncludingTax', 'quantity'), width: 124 }, 
+      { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
+      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', width: 130, formatter: ({ row }) => calculateTotalPrice(row, 'priceIncludingTax', 'quantity', true) }, // 议价历史列
+      { field: 'remark', title: '备注', columnType: 'both', width: 160 }, // 议价历史列
     ],
     buttons: [
       { key: 'confirmSale', label: '确认出售', type: 'default', danger: true, getDisabledState: (row) => !isRowEditable(row) },
@@ -297,33 +427,36 @@ const gridConfigs = {
   PUBLICATION_NEGOTIABLE: {
     columns: [
       { type: 'seq', title: '序号', width: 46 },
-      { field: 'refUserName', title: '意向买方', width: 100 }, 
-      { field: 'fixedPrice', title: '固定价', formatter: formatCurrency, width: 120 }, 
-      { field: 'price', title: '买方议价', formatter: formatCurrency, width: 120  }, // 交易详情和议价历史共用列 (议价历史时显示为'议价金额')
-      { field: 'quantity', title: '购买数量', width: 80  }, // 交易详情和议价历史共用列 (议价历史时显示为'议价数量')
-      { field: 'createTime', title: '议价时间'}, 
+      { field: 'code', title: '爱芯享交易单号', width: 150}, 
+      { field: 'refUserName', title: '买方', width: 74}, 
+      { field: 'productquantity', title: '库存数量', width: 76, formatter: () => props.product.quantity }, 
+      { field: 'quantity', title: '本次交易数量', width: 98}, 
+      { field: 'createTime', title: '发起交易时间', width: 98, columnType: 'transaction', formatter: ({ cellValue}) => formatDate(cellValue) }, // 交易详情和议价历史共用列
+      { field: 'purchaseMethod', title: '价格类型', width: 124, formatter: formatPurchaseMethod }, // 交易详情和议价历史共用列
+      { field: 'fixedPrice', title: '卖方初始价格', formatter: formatCurrency, width: 100 }, 
+      { field: 'price', title: '买方出价', formatter: formatCurrency, width: 100  }, // 交易详情和议价历史共用列 (议价历史时显示为'议价金额')
+      { 
+        field: 'priceIncludingTax', 
+        title: '卖方还价',
+        slots: { default: 'priceEdit' },
+         width: 120,
+        columnType: 'transaction'
+      },
       { 
         field: 'confirmedQuantity', 
         title: '交易数量',
         slots: { default: 'quantityEdit'},
-         width: 120,
-        columnType: 'transaction' // 交易详情列
+         width: 100,
+        columnType: 'transaction' 
       },
-      { 
-        field: 'priceExcludingTax', 
-        title: '我的还价',
-        slots: { default: 'priceEdit' },
-        columnType: 'transaction' // 交易详情列
-      },
-      { 
-        field: 'priceExcludingTax', 
-        title: '我的还价',
-        columnType: 'negotiation' // 交易详情列
-      },
-      { field: 'approveTime', title: '成交时间', columnType: 'negotiation' }, 
+      { title: '操作', slots: { default: 'buttons' }, width: 300, columnType: 'transaction' }, 
+      { field: 'priceIncludingTax', title: '成交单价(不含税)', width: 130, columnType: 'negotiation' }, 
+      { field: 'approveTime', title: '成交时间', width: 98, columnType: 'negotiation', formatter: ({ cellValue}) => formatDate(cellValue) }, 
       { field: 'confirmedQuantity', title: '成交数量', width: 120, columnType: 'negotiation' },
-      { field: 'totalPrice', title: '成交总价', formatter: ({ row }) => calculateTotalPrice(row, 'priceExcludingTax', 'confirmedQuantity'), width: 120, columnType: 'negotiation' }, // 议价历史列
-      { title: '操作', slots: { default: 'buttons' }, width: 300, columnType: 'transaction' }, // 交易详情列
+      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'priceIncludingTaxTotal' }, width: 124 }, 
+      { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
+      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'priceExcludingTaxTotal' }, width: 130 }, // 议价历史列
+      { field: 'remark', title: '备注', columnType: 'both', width: 160 }, // 议价历史列
     ],
     buttons: [
       { key: 'confirmSale', label: '价格通知买家', type: 'default', danger: true, getDisabledState: (row) => !isRowEditable(row) },
@@ -334,21 +467,27 @@ const gridConfigs = {
   PUBLICATION_PRICE_ON_REQUEST: {
      columns: [
       { type: 'seq', title: '序号', width: 46 },
-      { field: 'refUserName', title: '意向买方', width: 120 },
-      { field: 'priceExcludingTax', title: '卖方售价', formatter: () => '*,***,**', width: 80 }, // 交易详情列
-      { field: 'quantity', title: '购买数量', width: 80, columnType: 'both' }, // 交易详情和议价历史共用列 (议价历史时显示为'议价数量')
-      { field: 'createTime', title: '购买时间', width: 160 }, // 交易详情列
-      { field: 'confirmedQuantity', title: '成交数量', width: 120, columnType: 'negotiation' },
-      { field: 'approveTime', title: '成交时间', columnType: 'negotiation' }, 
-      { field: 'remark', title: '备注', columnType: 'both' }, // 交易详情和议价历史共用列
+      { field: 'code', title: '爱芯享交易单号', width: 150}, 
+      { field: 'refUserName', title: '买方', width: 74}, 
+      { field: 'productquantity', title: '库存数量', width: 76, formatter: () => props.product.quantity }, 
+      { field: 'quantity', title: '本次交易数量', width: 98}, 
+      { field: 'createTime', title: '发起交易时间', width: 98, columnType: 'transaction', formatter: ({ cellValue}) => formatDate(cellValue) }, // 交易详情和议价历史共用列
+      { field: 'purchaseMethod', title: '价格类型', width: 124, formatter: formatPurchaseMethod }, // 交易详情和议价历史共用列
+      { field: 'fixedPrice', title: '卖方初始价格', formatter: () => '*,***,**', width: 100 }, 
       { 
         field: 'confirmedQuantity', 
-        title: '出售数量',
+        title: '交易数量',
         slots: { default: 'quantityEdit' },
-        width: 120,
-        columnType: 'transaction' // 交易详情列
+        fiexd: 'right',
+        width: 110, 
+        columnType: 'transaction' 
       },
-      { title: '操作', slots: { default: 'buttons' }, width: 180, columnType: 'transaction' }, // 交易详情列
+      { title: '操作', fiexd: 'right', slots: { default: 'buttons' }, width: 160, columnType: 'transaction' }, 
+      { field: 'approveTime', title: '成交时间', width: 98, columnType: 'negotiation', formatter: ({ cellValue}) => formatDate(cellValue) }, 
+      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', formatter: () => '*,***,**', width: 124 }, 
+      { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
+      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', width: 130, formatter: () => '*,***,**' }, // 议价历史列
+      { field: 'remark', title: '备注', columnType: 'both', width: 160 }, 
     ],
     buttons: [
       { key: 'confirmSale', label: '确认出售', type: 'default', danger: true, getDisabledState: (row) => !isRowEditable(row) },
@@ -359,43 +498,57 @@ const gridConfigs = {
   PUBLICATION_AUCTION: {
     columns: [
       { type: 'seq', title: '序号', width: 46 },
-      { field: 'refUserName', title: '意向买方', columnType: 'both', width: 120 }, // 交易详情和议价历史共用列 (议价历史时显示为'对方')
-      { field: 'price', title: '买方出价', formatter: formatCurrency, columnType: 'both', width: 80 }, // 交易详情和议价历史共用列 (议价历史时显示为'议价金额')
-      { field: 'quantity', title: '购买数量', columnType: 'both', width: 80 }, // 交易详情和议价历史共用列 (议价历史时显示为'议价数量')
-      { field: 'createTime', title: '出价时间', width: 160 }, // 交易详情列
-      { field: 'expireDate', title: '竞拍截止时间', width: 160 }, // 交易详情列
-      { field: 'priceExcludingTax', title: '成交价格', columnType: 'negotiation', width: 100 }, 
-      { field: 'confirmedQuantity', title: '成交数量', width: 120, columnType: 'negotiation', width: 100 },
-      { field: 'approveTime', title: '成交时间', columnType: 'negotiation', width: 160 }, 
-      { field: 'remark', title: '备注', columnType: 'both' }, // 交易详情和议价历史共用列
-      { field: 'isWinner', title: '选定买方', slots: { default: 'switch' }, width: 120, columnType: 'transaction' }, // 交易详情列
+      { field: 'refUserName', title: '买方', width: 74}, 
+      { field: 'productquantity', title: '库存数量', width: 76, formatter: () => props.product.quantity }, 
+      { field: 'quantity', title: '本次交易数量', width: 98}, 
+      { field: 'createTime', title: '发起交易时间', width: 98, columnType: 'transaction', formatter: ({ cellValue}) => formatDate(cellValue) }, // 交易详情和议价历史共用列
+      { field: 'expireDate', title: '竞拍截止时间', width: 98, columnType: 'transaction', formatter: ({ cellValue}) => formatDate(cellValue) }, // 交易详情和议价历史共用列
+      { field: 'purchaseMethod', title: '价格类型', width: 124, formatter: formatPurchaseMethod }, // 交易详情和议价历史共用列
+      { field: 'fixedPrice', title: '卖方初始价格', formatter: formatCurrency, width: 100 }, 
+      { field: 'price', title: '买方出价', formatter: formatCurrency, width: 100 }, 
+      { field: 'isWinner', title: '选定买方', slots: { default: 'switch' }, width: 120, columnType: 'transaction' }, 
       { 
         field: 'confirmedQuantity', 
-        title: '卖出数量',
+        title: '交易数量',
         slots: { default: 'quantityEdit' },
-        columnType: 'transaction' // 交易详情列
+        fiexd: 'right',
+        width: 110, 
+        columnType: 'transaction' 
       },
+      { field: 'priceIncludingTax', title: '成交单价(含税)', width: 130, columnType: 'negotiation' }, 
+      { field: 'approveTime', title: '成交时间', width: 98, columnType: 'negotiation', formatter: ({ cellValue}) => formatDate(cellValue) }, 
+      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'auctionPriceIncludingTaxTotal' }, width: 124 }, 
+      { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
+      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'auctionPriceExcludingTaxTotal' }, width: 130 }, // 议价历史列
+      { field: 'remark', title: '备注', columnType: 'both', width: 160 }, // 议价历史列
     ],
     buttons: [],
   },
   JOIN_FIXED_PRICE: {
     columns: [
       { type: 'seq', title: '序号', width: 46 },
-      { field: 'postedBy', title: '卖方', columnType: 'both', width: 80, formatter: postedBy }, 
-      { field: 'fixedPrice', title: '固定价', formatter: formatCurrency, width: 100}, // 交易详情列
-      { field: 'confirmedQuantity', title: '可出售数量', width: 100 }, // 交易详情列
-      { field: 'totalPrice', title: '总价', formatter: ({ row }) => calculateTotalPrice(row, 'priceExcludingTax', 'confirmedQuantity'), columnType: 'transaction' }, // 交易详情列
-      { field: 'createTime', title: '购买时间' }, // 交易详情列
-      { field: 'totalPrice', title: '成交总价', formatter: ({ row }) => calculateTotalPrice(row, 'priceExcludingTax', 'quantity'), columnType: 'negotiation' }, // 议价历史列
-      { field: 'approveTime', title: '成交时间', columnType: 'negotiation', width: 160 }, 
-      { field: 'remark', title: '备注', columnType: 'both' }, // 交易详情和议价历史共用列
+      { field: 'code', title: '爱芯享交易单号', width: 150}, 
+      { field: 'postedBy', title: '卖方', width: 74, formatter: postedBy }, 
+      { field: 'productquantity', title: '库存数量', width: 76, formatter: () => props.product.quantity }, 
+      { field: 'confirmedQuantity', title: '本次交易数量', width: 98}, 
+      { field: 'createTime', title: '发起交易时间', width: 98, columnType: 'transaction', formatter: ({ cellValue}) => formatDate(cellValue) }, // 交易详情和议价历史共用列
+      { field: 'purchaseMethod', title: '价格类型', width: 124, formatter: formatPurchaseMethod }, // 交易详情和议价历史共用列
+      { field: 'fixedPrice', title: '卖方初始价格', formatter: formatCurrency, width: 100 }, 
       { 
         field: 'quantity', 
-        title: '购买数量',
+        title: '交易数量',
         slots: { default: 'quantityEdit' },
-        columnType: 'transaction' // 交易详情列
+        fiexd: 'right',
+        width: 110, 
+        columnType: 'transaction' 
       },
-      { title: '操作', slots: { default: 'buttons' }, width: 220, columnType: 'transaction' }, // 交易详情列
+      { title: '操作', fiexd: 'right', slots: { default: 'buttons' }, width: 160, columnType: 'transaction' }, 
+      { field: 'priceIncludingTax', title: '成交单价(不含税)', width: 130, columnType: 'negotiation' }, 
+      { field: 'approveTime', title: '成交时间', width: 98, columnType: 'negotiation', formatter: ({ cellValue}) => formatDate(cellValue) }, 
+      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'joinPriceIncludingTaxTotal' }, width: 124 }, 
+      { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
+      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'joinPriceExcludingTaxTotalFIXED' }, width: 130 }, // 议价历史列
+      { field: 'remark', title: '备注', columnType: 'both', width: 160 }, // 议价历史列
     ],
     buttons: [
       { key: 'confirmBuy', label: '确认交易', type: 'default', danger: true, getDisabledState: (row) => !isRowEditable(row) },
@@ -405,22 +558,30 @@ const gridConfigs = {
   JOIN_NEGOTIABLE: {
     columns: [
       { type: 'seq', title: '序号', width: 46 },
-      { field: 'postedBy', title: '卖方', columnType: 'both', width: 80, formatter: postedBy }, 
-      { field: 'price', title: '我的议价', formatter: formatCurrency, width: 90, columnType: 'both' }, // 交易详情和议价历史共用列 (议价历史时显示为'议价金额')
-      { field: 'quantity', title: '购买数量', width: 80, columnType: 'both' }, // 交易详情和议价历史共用列 (议价历史时显示为'议价数量')
-      { field: 'createTime', title: '议价时间', columnType: 'both' }, // 交易详情和议价历史共用列
-      { field: 'priceExcludingTax', title: '卖方议价', formatter: formatCurrency, width: 90}, // 交易详情列
-      { field: 'totalPrice', title: '成交总价', formatter: ({ row }) => calculateTotalPrice(row, 'priceExcludingTax', 'confirmedQuantity'), columnType: 'negotiation' }, // 议价历史列
-      { field: 'confirmedQuantity', title: '成交数量', width: 72 }, // 交易详情列
+      { field: 'code', title: '爱芯享交易单号', width: 150}, 
+      { field: 'postedBy', title: '卖方', width: 74, formatter: postedBy }, 
+      { field: 'productquantity', title: '库存数量', width: 76, formatter: () => props.product.quantity }, 
+      { field: 'quantity', title: '本次交易数量', width: 98}, 
+      { field: 'createTime', title: '发起交易时间', width: 98, columnType: 'transaction', formatter: ({ cellValue}) => formatDate(cellValue) }, // 交易详情和议价历史共用列
+      { field: 'purchaseMethod', title: '价格类型', width: 124, formatter: formatPurchaseMethod }, // 交易详情和议价历史共用列
+      { field: 'fixedPrice', title: '卖方初始价格', formatter: formatCurrency, width: 100 }, 
+      { field: 'price', title: '买方出价', formatter: formatCurrency, width: 100  }, // 交易详情和议价历史共用列 (议价历史时显示为'议价金额')
+      { field: 'priceIncludingTax', title: '卖方还价', formatter: formatCurrency, width: 90}, 
       { 
         field: 'dealedQuantity', 
         title: '交易数量',
-        slots: { default: 'quantityEdit' },
-        columnType: 'transaction' // 交易详情列
+        slots: { default: 'quantityEdit'},
+         width: 100,
+        columnType: 'transaction' 
       },
-      { field: 'fixedPrice', title: '固定价', formatter: formatCurrency, columnType: 'transaction' }, // 交易详情列
-      { field: 'remark', title: '备注', width: 90, columnType: 'both' }, // 交易详情和议价历史共用列
-      { title: '操作', slots: { default: 'buttons' }, width: 210, columnType: 'transaction' }, // 交易详情列
+      { title: '操作', slots: { default: 'buttons' }, width: 210, columnType: 'transaction' }, 
+      { field: 'priceIncludingTax', title: '成交单价(不含税)', width: 130, columnType: 'negotiation' }, 
+      { field: 'approveTime', title: '成交时间', width: 98, columnType: 'negotiation', formatter: ({ cellValue}) => formatDate(cellValue) }, 
+      { field: 'confirmedQuantity', title: '成交数量', width: 120, columnType: 'negotiation' },
+      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'joinNegotiablePriceIncludingTaxTotal' }, width: 124 }, 
+      { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
+      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'joinPriceExcludingTaxTotal' }, width: 130 }, // 议价历史列
+      { field: 'remark', title: '备注', columnType: 'both', width: 160 }, // 议价历史列
     ],
     buttons: [
       { key: 'confirmBuy', label: '接受还价确认交易', type: 'primary', danger: true, getDisabledState: (row) => !isRowEditable(row) },
@@ -430,23 +591,28 @@ const gridConfigs = {
   JOIN_PRICE_ON_REQUEST: {
     columns: [
       { type: 'seq', title: '序号', width: 46 },
-      { field: 'postedBy', title: '卖方', columnType: 'both', width: 80, formatter: postedBy }, 
-      { field: 'priceExcludingTax', title: '卖方售价', formatter: () => '*,***,**', width: 80 }, // 交易详情列
-      { field: 'confirmedQuantity', title: '可出售数量', width: 90 }, // 交易详情列
-      { field: 'productquantity', title: '库存数量', width: 90, formatter: () => props.product.quantity }, // 交易详情列
-      // { field: 'totalPrice', title: '总价', formatter: () => '*,***,**', width: 80 }, // 交易详情列
-      { field: 'createTime', title: '交易时间', width: 160}, // 交易详情列
-      { field: 'quantity', title: '交易数量', columnType: 'negotiation', width: 80 }, // 议价历史列
-      { field: 'approveTime', title: '成交时间', columnType: 'negotiation', width: 160 }, // 议价历史列
-      { field: 'remark', title: '备注', columnType: 'both' }, // 交易详情和议价历史共用列
+      { field: 'code', title: '爱芯享交易单号', width: 150}, 
+      { field: 'postedBy', title: '卖方', width: 74, formatter: postedBy }, 
+      { field: 'productquantity', title: '库存数量', width: 76, formatter: () => props.product.quantity }, 
+      { field: 'confirmedQuantity', title: '本次交易数量', width: 98}, 
+      { field: 'createTime', title: '发起交易时间', width: 98, columnType: 'transaction', formatter: ({ cellValue}) => formatDate(cellValue) }, // 交易详情和议价历史共用列
+      { field: 'purchaseMethod', title: '价格类型', width: 124, formatter: formatPurchaseMethod }, // 交易详情和议价历史共用列
+      { field: 'fixedPrice', title: '卖方初始价格', formatter: () => '*,***,**', width: 100 }, 
       { 
         field: 'quantity', 
         title: '交易数量',
         slots: { default: 'quantityEdit' },
-        width: 120,
-        columnType: 'transaction' // 交易详情列
+        fiexd: 'right',
+        width: 110, 
+        columnType: 'transaction' 
       },
-      { title: '操作', slots: { default: 'buttons' }, width: 160, columnType: 'transaction' }, // 交易详情列
+      { title: '操作', fiexd: 'right', slots: { default: 'buttons' }, width: 160, columnType: 'transaction' }, 
+      { field: 'confirmedQuantity', title: '成交数量', width: 120, columnType: 'negotiation' },
+      { field: 'approveTime', title: '成交时间', columnType: 'negotiation' }, 
+      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', formatter: () => '*,***,**', width: 124 }, 
+      { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
+      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', width: 130, formatter: () => '*,***,**' }, // 议价历史列
+      { field: 'remark', title: '备注', columnType: 'both', width: 160 }, 
     ],
     buttons: [
       { key: 'confirmBuy', label: '确认交易', type: 'default', danger: true, getDisabledState: (row) => !isRowEditable(row) },
@@ -456,27 +622,35 @@ const gridConfigs = {
   JOIN_AUCTION: {
     columns: [
       { type: 'seq', title: '序号', width: 46 },
-      { field: 'postedBy', title: '卖方', columnType: 'both', width: 80, formatter: postedBy }, 
-      { field: 'price', title: '我的竞价', formatter: formatCurrency, columnType: 'both' }, // 交易详情和议价历史共用列 (议价历史时显示为'议价金额')
-      { field: 'quantity', title: '购买数量', width: 80, columnType: 'both' }, // 交易详情和议价历史共用列 (议价历史时显示为'议价数量')
-      { field: 'totalPrice', title: '我的竞价总价', formatter: ({ row }) => calculateTotalPrice(row, 'price',  'quantity'), columnType: 'transaction' }, // 交易详情列
-      { field: 'createTime', title: '竞价时间' }, // 交易详情列
-      { field: 'expireDate', title: '竞拍截止时间' }, // 交易详情列
-      { field: 'bidStatus', title: '竞拍状态', width: 80, formatter: ({row}) => {
+      { field: 'code', title: '爱芯享交易单号', width: 250}, 
+      { field: 'postedBy', title: '卖方', width: 74, formatter: postedBy }, 
+      { field: 'productquantity', title: '库存数量', width: 76, formatter: () => props.product.quantity }, 
+      { field: 'confirmedQuantity', title: '本次交易数量', width: 98}, 
+      { field: 'createTime', title: '发起交易时间', width: 98, columnType: 'transaction', formatter: ({ cellValue}) => formatDate(cellValue) }, // 交易详情和议价历史共用列
+      { field: 'expireDate', title: '竞拍截止时间', width: 98, columnType: 'transaction', formatter: ({ cellValue}) => formatDate(cellValue) }, // 交易详情和议价历史共用列
+      { field: 'purchaseMethod', title: '价格类型', width: 124, formatter: formatPurchaseMethod }, // 交易详情和议价历史共用列
+      { field: 'fixedPrice', title: '卖方初始价格', formatter: formatCurrency, width: 100 }, 
+      { field: 'price', title: '买方出价', formatter: formatCurrency, width: 100 }, 
+      { field: 'bidStatus', title: '交易结果', width: 90, formatter: ({row}) => {
         if (!row.statusCode) return ''
-        return row.statusCode == 'success' ? '竞拍成功' : '竞拍失败'
-      }, columnType: 'transaction' }, // 交易详情列
-      { field: 'totalPrice', title: '成交总价', formatter: ({ row }) => calculateTotalPrice(row, 'price',  'confirmedQuantity'), columnType: 'negotiation' }, // 交易详情列
-      { field: 'confirmedQuantity', title: '成交数量', columnType: 'negotiation', width: 80 }, // 议价历史列
-      { field: 'remark', title: '备注', columnType: 'both' }, // 交易详情和议价历史共用列
-      { field: 'confirmedQuantity', title: '可卖数量', columnType: 'transaction' }, // 交易详情列
-       { 
+        return row.statusCode == 'success' ? '交易达成' : '交易未达成'
+      }, columnType: 'negotiation' }, 
+      { 
         field: 'dealedQuantity', 
         title: '交易数量',
         slots: { default: 'quantityEdit' },
-        columnType: 'transaction' // 交易详情列
+        fiexd: 'right',
+        width: 110, 
+        columnType: 'transaction' 
       },
-      { title: '交易', slots: { default: 'buttons' }, width: 160, columnType: 'transaction' }, // 交易详情列
+      { title: '操作', fiexd: 'right', slots: { default: 'buttons' }, width: 160, columnType: 'transaction' }, 
+      { field: 'priceIncludingTax', title: '成交单价(不含税)', width: 130, columnType: 'negotiation' }, 
+      { field: 'approveTime', title: '成交时间', width: 98, columnType: 'negotiation', formatter: ({ cellValue}) => formatDate(cellValue) }, 
+      { field: 'confirmedQuantity', title: '成交数量', columnType: 'negotiation', width: 120 }, // 议价历史列
+      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'joinAuctionPriceIncludingTaxTotal' }, width: 124 }, 
+      { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
+      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'joinAuctionPriceExcludingTaxTotal' }, width: 130 }, // 议价历史列
+      { field: 'remark', title: '备注', columnType: 'both', width: 160 }, // 议价历史列
     ],
     buttons: [
       { key: 'confirmBuy', label: '确定交易', type: 'default', danger: true, getDisabledState: (row) => !isRowEditable(row) },

@@ -18,7 +18,7 @@ import { ref, reactive, computed } from 'vue'; // onMounted removed as hook hand
 import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
-import { selectOptions } from '@/utils/index';
+import { selectOptions, maskMiddle, formatDate } from '@/utils/index';
 import { message as AntMessage } from 'ant-design-vue';
 import { useAuthStore } from '@/store/authStore'; // 用于获取用户信息
 const router = useRouter();
@@ -64,6 +64,13 @@ const filterConfigForPage = reactive([
 
 const activeKey = ref('1');
 
+const postedBy = ({cellValue}) => {
+  if (cellValue) {
+    return maskMiddle(cellValue);
+  }
+  return '-';
+}
+
 const tableColumns1 = [
   {type: 'seq', title: '序号', width: 74, align: 'center'},
   { title: '单号', field: 'code', align: 'center', width: 180 },
@@ -74,9 +81,9 @@ const tableColumns1 = [
 ]
 const tableColumns2 = [
   {type: 'seq', title: '序号', width: 74, align: 'center'},
-  { title: '产品编号', field: 'code', align: 'center' },
-  { title: '设备号/零部件料号', field: 'partNumber', align: 'center' },
-  // { title: '业务类型', field: 'purchaseMethod', align: 'center', width: 180 },
+  { title: '爱芯享交易单号', field: 'code', align: 'center' },
+  { title: '零部件料号/设备号', field: 'partNumber', align: 'center' },
+  { field: 'postedBy', title: '卖方', width: 74, formatter: postedBy }, 
   { title: '价格类型', field: 'purchaseMethod', align: 'center', width: 180,
     formatter: ({cellValue}) => {
       const purchaseMethodMap = selectOptions('purchase_method').reduce((acc, { value: key, label }) => ({ ...acc, [key]: label }), {});
@@ -84,15 +91,28 @@ const tableColumns2 = [
       return text;
     }
   },
-  { title: '标价', field: 'priceExcludingTax', align: 'center', width: 180,
+  { title: '售价', field: 'priceExcludingTax', align: 'center', width: 180,
     formatter: ({cellValue, row}) => {
       if (row.purchaseMethod == 'PRICE_ON_REQUEST') {
         return '**,***,**'
       }
+      if (row.purchaseMethod == 'AUCTION') {
+        return `${cellValue}起拍`
+      }
       return cellValue
     }
    },
-  { title: '出售数量', field: 'quantity', align: 'center', width: 180 },
+  { title: '库存数量', field: 'quantity', align: 'center', width: 180 },
+  { field: 'refUserName', title: '买方', width: 74, formatter: postedBy }, 
+  { field: 'price', title: '买方出价', width: 80,  formatter: ({cellValue, row}) => {
+      if (row.purchaseMethod == 'PRICE_ON_REQUEST') {
+        return '**,***,**'
+      }
+      return cellValue
+    }}, 
+  { field: 'confirmedQuantity', title: '本次交易数量', width: 98}, 
+  { field: 'createTime', title: '发起交易时间', width: 98, formatter: ({ cellValue}) => formatDate(cellValue) }, // 交易详情和议价历史共用列
+  { field: 'expireDate', title: '竞拍截止时间', width: 98, formatter: ({ cellValue}) => formatDate(cellValue) }, // 交易详情和议价历史共用列
   { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
 ]
 const tableConfig = {

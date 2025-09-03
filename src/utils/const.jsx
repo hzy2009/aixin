@@ -220,14 +220,22 @@ export const OEMPARTS_COLUMNS = [
     { type: 'checkbox', width: 40 },
     { title: '序号', type: 'seq', width: 50, align: 'center' },
     { title: '零部件料号', field: 'partNumber', align: 'center', width: 100 },
-    { title: '零部件名称', field: 'productName', align: 'center' },
-    { title: '零部件品类', field: 'productTypeName', align: 'center' },
-    { title: '规格描述', field: 'specification', align: 'center' },
-    { title: '适用设备型号', field: 'compatibleModels', align: 'center', width: 100 },
+    { title: '零部件名称', field: 'productName', align: 'center', width: 100 },
+    { title: '零部件品类', field: 'productTypeName', align: 'center', width: 100 },
+    { title: '零部件型号', field: 'compatibleModels', align: 'center', width: 100 },
+    { title: '规格描述', field: 'specification', align: 'center', width: 100 },
     { title: '品牌/制造商', field: 'originalManufacturer', align: 'center', width: 100 },
     { title: '交期', field: 'deliveryDuration', align: 'center', width: 60 },
+    { title: '库存数量', field: 'quantity', align: 'center', width: 80 },
+    { title: '售价', field: 'priceIncludingTax', align: 'center', width: 80 },
+    {
+        title: '价格类型', field: 'purchaseMethod', align: 'center', width: 120,
+        formatter: ({ cellValue }) => {
+            const option = selectOptions('purchase_method').find(item => item.value == cellValue);
+            return option ? option.label : '';
+        }
+    },
     { title: '零部件状态', field: 'productStatus', align: 'center', width: 90 },
-    { title: '可售数量', field: 'quantity', align: 'center', width: 80 },
     { title: '发布时间', field: 'createTime', align: 'center', width: 142 },
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 90 },
 ]
@@ -264,11 +272,19 @@ export const USEDEQPTRADE_COLUMNS = [
     { title: '设备名称', field: 'productName', align: 'center', width: 100 },
     { title: '设备型号', field: 'compatibleModels', align: 'center', width: 100 },
     { title: '规格描述', field: 'specification', align: 'center', width: 100 },
-    { title: '品牌厂商', field: 'originalManufacturer', align: 'center' },
+    { title: '品牌/制造商', field: 'originalManufacturer', align: 'center' },
+    { title: '库存数量', field: 'quantity', align: 'center', width: 80 },
+    { title: '售价', field: 'priceIncludingTax', align: 'center', width: 80 },
+    {
+        title: '价格类型', field: 'purchaseMethod', align: 'center', width: 120,
+        formatter: ({ cellValue }) => {
+            const option = selectOptions('purchase_method').find(item => item.value == cellValue);
+            return option ? option.label : '';
+        }
+    },
     { title: '出厂日期', field: 'productionDate', align: 'center', width: 120, fieldType: 'date' },
     { title: '工艺段', field: 'processSection', align: 'center', width: 120 },
     { title: '设备状态', field: 'productStatus', align: 'center', width: 120 },
-    { title: '数量', field: 'quantity', align: 'center', width: 120 },
-    { title: '需求发布者', field: 'postedBy', align: 'center', width: 120, formatter: ({ cellValue }) => maskMiddle(cellValue) },
+    { title: '发布时间', field: 'createTime', align: 'center', width: 142 },
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 90 },
 ]

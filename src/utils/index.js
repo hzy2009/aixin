@@ -28,6 +28,12 @@ export function selectOptions  (dictKey) {
 	return auth.sysAllDictItems[dictKey].map(({ label, value }) => ({ label, value })) || [];
 };
 
+/**
+ * 格式化日期
+ * @param {String|Date} date -  Date 字符串或 Date 对象
+ * @param {String} [format] -  日期格式化字符串，例如 'YYYY-MM-DD HH:mm:ss'
+ * @returns {String} -  格式化后的日期字符串
+ */
 export function formatDate (date, format) {
   return dayjs(date).format(format || 'YYYY-MM-DD');
 }
