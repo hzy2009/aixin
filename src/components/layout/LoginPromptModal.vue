@@ -8,6 +8,7 @@
     wrap-class-name="login-prompt-modal-wrapper"
     centered
     width="420px"
+    v-draggable
     @cancel="handleCancel"
   >
     <div class="login-prompt-content">

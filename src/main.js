@@ -4,6 +4,7 @@ import router from './router';
 import pinia from './store';
 
 import Antd from 'ant-design-vue';
+import draggable from './utils/directives/draggable.js';
 
 // Import global LESS styles
 import './assets/styles/index.less';
@@ -25,6 +26,9 @@ app.use(pinia);
 app.use(router);
 
 app.use(Antd);
+
+// 注册全局拖拽指令
+app.directive('draggable', draggable);
 
 // 全局配置message
 

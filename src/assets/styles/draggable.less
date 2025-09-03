@@ -1,0 +1,42 @@
+// 全局拖拽指令样式
+// 任何使用 v-draggable 指令的模态框都会应用这些样式
+
+// 通用拖拽样式，适用于所有模态框
+.ant-modal-wrap[data-draggable] {
+  .ant-modal {
+    padding-bottom: 0;
+    transition: none !important; // 禁用拖拽时的过渡动画，提升拖拽体验
+  }
+  
+  .ant-modal-header {
+    cursor: grab;
+    user-select: none; // 禁止选择标题栏文本
+    
+    &:active {
+      cursor: grabbing;
+    }
+    
+    .ant-modal-title {
+      user-select: none;
+      pointer-events: none; // 确保标题文本不会干扰拖拽
+    }
+    
+    .ant-modal-close {
+      pointer-events: auto; // 确保关闭按钮可以正常点击
+    }
+  }
+}
+
+// 针对不同的模态框包装器类名的特定样式
+.draggable-modal-wrapper,
+.success-prompt-modal-wrapper,
+.login-prompt-modal-wrapper {
+  .ant-modal-header {
+    cursor: grab;
+    user-select: none;
+    
+    &:active {
+      cursor: grabbing;
+    }
+  }
+}
