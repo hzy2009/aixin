@@ -473,7 +473,7 @@ const gridConfigs = {
       { field: 'quantity', title: '本次交易数量', width: 98}, 
       { field: 'createTime', title: '发起交易时间', width: 98, columnType: 'transaction', formatter: ({ cellValue}) => formatDate(cellValue) }, // 交易详情和议价历史共用列
       { field: 'purchaseMethod', title: '价格类型', width: 124, formatter: formatPurchaseMethod }, // 交易详情和议价历史共用列
-      { field: 'fixedPrice', title: '卖方初始价格', formatter: () => '*,***,**', width: 100 }, 
+      { field: 'fixedPrice', title: '卖方初始价格', formatter: () => '***', width: 100 }, 
       { 
         field: 'confirmedQuantity', 
         title: '交易数量',
@@ -484,9 +484,9 @@ const gridConfigs = {
       },
       { title: '操作', fiexd: 'right', slots: { default: 'buttons' }, width: 160, columnType: 'transaction' }, 
       { field: 'approveTime', title: '成交时间', width: 98, columnType: 'negotiation', formatter: ({ cellValue}) => formatDate(cellValue) }, 
-      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', formatter: () => '*,***,**', width: 124 }, 
+      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', formatter: () => '***', width: 124 }, 
       { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
-      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', width: 130, formatter: () => '*,***,**' }, // 议价历史列
+      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', width: 130, formatter: () => '***' }, // 议价历史列
       { field: 'remark', title: '备注', columnType: 'both', width: 160 }, 
     ],
     buttons: [
@@ -597,7 +597,7 @@ const gridConfigs = {
       { field: 'confirmedQuantity', title: '本次交易数量', width: 98}, 
       { field: 'createTime', title: '发起交易时间', width: 98, columnType: 'transaction', formatter: ({ cellValue}) => formatDate(cellValue) }, // 交易详情和议价历史共用列
       { field: 'purchaseMethod', title: '价格类型', width: 124, formatter: formatPurchaseMethod }, // 交易详情和议价历史共用列
-      { field: 'fixedPrice', title: '卖方初始价格', formatter: () => '*,***,**', width: 100 }, 
+      { field: 'fixedPrice', title: '卖方初始价格', formatter: () => '***', width: 100 }, 
       { 
         field: 'quantity', 
         title: '交易数量',
@@ -609,9 +609,9 @@ const gridConfigs = {
       { title: '操作', fiexd: 'right', slots: { default: 'buttons' }, width: 160, columnType: 'transaction' }, 
       { field: 'confirmedQuantity', title: '成交数量', width: 120, columnType: 'negotiation' },
       { field: 'approveTime', title: '成交时间', columnType: 'negotiation' }, 
-      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', formatter: () => '*,***,**', width: 124 }, 
+      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', formatter: () => '***', width: 124 }, 
       { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
-      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', width: 130, formatter: () => '*,***,**' }, // 议价历史列
+      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', width: 130, formatter: () => '***' }, // 议价历史列
       { field: 'remark', title: '备注', columnType: 'both', width: 160 }, 
     ],
     buttons: [

@@ -94,7 +94,7 @@ const tableColumns2 = [
   { title: '售价', field: 'priceExcludingTax', align: 'center', width: 180,
     formatter: ({cellValue, row}) => {
       if (row.purchaseMethod == 'PRICE_ON_REQUEST') {
-        return '**,***,**'
+        return '****'
       }
       if (row.purchaseMethod == 'AUCTION') {
         return `${cellValue}起拍`
@@ -106,7 +106,7 @@ const tableColumns2 = [
   { field: 'refUserName', title: '买方', width: 74, formatter: postedBy }, 
   { field: 'price', title: '买方出价', width: 80,  formatter: ({cellValue, row}) => {
       if (row.purchaseMethod == 'PRICE_ON_REQUEST') {
-        return '**,***,**'
+        return '****'
       }
       return cellValue
     }}, 

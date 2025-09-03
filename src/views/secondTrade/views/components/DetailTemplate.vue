@@ -26,7 +26,7 @@
               <span class="price-label">{{ priceInfo.label }}</span>
             </div>
             <div class="price-value-wrapper">
-              <span class="price-amount">{{props.product.purchaseMethod == 'PRICE_ON_REQUEST' ? '**,***,***' : priceInfo.price }}</span>
+              <span class="price-amount">{{props.product.purchaseMethod == 'PRICE_ON_REQUEST' ? '***' : priceInfo.price }}</span>
               <!-- <span class="price-unit">{{ priceInfo.unit }}</span> -->
               <span class="price-unit">元
                 <span v-if="props.product.purchaseMethod == 'AUCTION'">起拍</span>
@@ -227,7 +227,7 @@ const priceInfo = computed(() => {
     price: extractData({
       field: 'priceExcludingTax',
       formatter: (value) => {
-        if (props.product.purchaseMethod === 'PRICE_ON_REQUEST') return '**,***,***'
+        if (props.product.purchaseMethod === 'PRICE_ON_REQUEST') return '***'
         return value ? Number(value).toLocaleString() : '0.00'
       }
     }),

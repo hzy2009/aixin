@@ -66,7 +66,7 @@ const gridConfigs = {
      columns: [
       { type: 'seq', title: '序号', width: 46 },
       { field: 'refUserName', title: '意向买方', width: 120 },
-      { field: 'priceExcludingTax', title: '卖方售价', formatter: () => '*,***,**', width: 80 }, // 交易详情列
+      { field: 'priceExcludingTax', title: '卖方售价', formatter: () => '***', width: 80 }, // 交易详情列
       { field: 'quantity', title: '购买数量', width: 80, columnType: 'both' }, // 交易详情和议价历史共用列 (议价历史时显示为'议价数量')
       { field: 'createTime', title: '购买时间', width: 160 }, // 交易详情列
       { field: 'confirmedQuantity', title: '成交数量', width: 120, columnType: 'negotiation' },
@@ -162,10 +162,10 @@ const gridConfigs = {
     columns: [
       { type: 'seq', title: '序号', width: 46 },
       { field: 'postedBy', title: '卖方', columnType: 'both', width: 80, formatter: postedBy }, 
-      { field: 'priceExcludingTax', title: '卖方售价', formatter: () => '*,***,**', width: 80 }, // 交易详情列
+      { field: 'priceExcludingTax', title: '卖方售价', formatter: () => '***', width: 80 }, // 交易详情列
       { field: 'confirmedQuantity', title: '可出售数量', width: 90 }, // 交易详情列
       { field: 'productquantity', title: '库存数量', width: 90, formatter: () => props.product.quantity }, // 交易详情列
-      // { field: 'totalPrice', title: '总价', formatter: () => '*,***,**', width: 80 }, // 交易详情列
+      // { field: 'totalPrice', title: '总价', formatter: () => '***', width: 80 }, // 交易详情列
       { field: 'createTime', title: '交易时间', width: 160}, // 交易详情列
       { field: 'quantity', title: '交易数量', columnType: 'negotiation', width: 80 }, // 议价历史列
       { field: 'approveTime', title: '成交时间', columnType: 'negotiation', width: 160 }, // 议价历史列
