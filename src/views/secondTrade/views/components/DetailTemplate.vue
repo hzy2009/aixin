@@ -86,7 +86,7 @@
       </div>
     </div>
 
-    <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" title="填写信息购买" actionText="联系平台购买" :customFields="customFields"></PhoneAndEmailModal>
+    <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" title="填写信息购买" :actionText="actionText" :customFields="customFields"></PhoneAndEmailModal>
   </div>
 </template>
 
@@ -119,7 +119,13 @@ const props = defineProps({
 const purchaseQuantity = ref(1);
 const isSubmitting = ref(false); // 用于按钮加载状态
 const actionText = computed(() => {
-   const purchaseMethodMap = selectOptions('purchase_method');
+   const purchaseMethodMap = {
+      FIXED_PRICE: '立即购买',
+      AUCTION: '参与竞拍',
+      NEGOTIABLE: '立即议价',
+      PRICE_ON_REQUEST: '立即询价',
+
+   }
    return purchaseMethodMap[props.product.purchaseMethod] || '立即购买';
 });
 const customFields = ref([]);
