@@ -81,20 +81,20 @@ const tableColumns1 = [
 ]
 const tableColumns2 = [
   {type: 'seq', title: '序号', width: 74, align: 'center'},
-  { title: '爱芯享交易单号', field: 'code', align: 'center' },
-  { title: '零部件料号/设备号', field: 'partNumber', align: 'center' },
-  { field: 'postedBy', title: '卖方', width: 74, formatter: postedBy }, 
-  { title: '价格类型', field: 'purchaseMethod', align: 'center', width: 180,
+  { title: '爱芯享交易单号', field: 'code', align: 'center', width: 200 },
+  { title: '零部件料号/设备号', field: 'partNumber', align: 'center', width: 140 },
+  { field: 'postedBy', title: '卖方', width: 54, align: 'center', formatter: postedBy }, 
+  { title: '价格类型', field: 'purchaseMethod', align: 'center', width: 80,
     formatter: ({cellValue}) => {
       const purchaseMethodMap = selectOptions('purchase_method').reduce((acc, { value: key, label }) => ({ ...acc, [key]: label }), {});
       const text = purchaseMethodMap[cellValue] || '固定价，不可议价';
       return text;
     }
   },
-  { title: '售价', field: 'priceExcludingTax', align: 'center', width: 180,
+  { title: '售价', field: 'priceExcludingTax', align: 'center', width: 100,
     formatter: ({cellValue, row}) => {
       if (row.purchaseMethod == 'PRICE_ON_REQUEST') {
-        return '****'
+        return '***'
       }
       if (row.purchaseMethod == 'AUCTION') {
         return `${cellValue}起拍`
@@ -102,8 +102,8 @@ const tableColumns2 = [
       return cellValue
     }
    },
-  { title: '库存数量', field: 'quantity', align: 'center', width: 180 },
-  { field: 'refUserName', title: '买方', width: 74, formatter: postedBy }, 
+  { title: '库存数量', field: 'quantity', align: 'center', width: 100 },
+  { field: 'refUserName', title: '买方', width: 54, formatter: postedBy }, 
   { field: 'price', title: '买方出价', width: 80,  formatter: ({cellValue, row}) => {
       if (row.purchaseMethod == 'PRICE_ON_REQUEST') {
         return '****'
@@ -111,9 +111,9 @@ const tableColumns2 = [
       return cellValue
     }}, 
   { field: 'confirmedQuantity', title: '本次交易数量', width: 98}, 
-  { field: 'createTime', title: '发起交易时间', width: 98, formatter: ({ cellValue}) => formatDate(cellValue) }, // 交易详情和议价历史共用列
-  { field: 'expireDate', title: '竞拍截止时间', width: 98, formatter: ({ cellValue}) => formatDate(cellValue) }, // 交易详情和议价历史共用列
-  { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions' },
+  { field: 'createTime', title: '发起交易时间', width: 150, align: 'center' }, // 交易详情和议价历史共用列
+  { field: 'expireDate', title: '竞拍截止时间', width: 150, align: 'center' }, // 交易详情和议价历史共用列
+  { title: '操作', width: '86px', align: 'center', fixed: 'right', key: 'actions' },
 ]
 const tableConfig = {
   '原厂件寻源': {
