@@ -34,7 +34,7 @@ const productPageConfig = ref({
     {
       label: '品类',
       field: 'productTypeName',
-      highlight: true,
+      // highlight: true,
     },
   ],
 

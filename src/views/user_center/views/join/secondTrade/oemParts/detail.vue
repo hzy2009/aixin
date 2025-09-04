@@ -1,6 +1,6 @@
 <template>
     <DetailTemplate :product="productData" :page-config="productPageConfig" />
-    <TransactionHistoryPage :transactionType="'JOIN'" :product="productData" @confirmSell="confirmSell" @buttonClick="handleButtonClick" @goBack="goBack"/>
+    <TransactionHistoryPage :transactionType="'JOIN'" :product="productData"  @buttonClick="handleButtonClick" @goBack="goBack"/>
 </template>
 
 <script setup>
@@ -33,9 +33,9 @@ const productPageConfig = ref({
     { label: '零部件型号', field: 'productModel' },
     { label: '品牌/制造商', field: 'originalManufacturer' },
     {
-      label: '产品状态',
-      field: 'productStatus',
-      highlight: true,
+      label: '品类',
+      field: 'productTypeName',
+      // highlight: true,
     },
   ],
 

@@ -413,10 +413,10 @@ const gridConfigs = {
       }, columnType: 'negotiation' }, // 交易历史
       { field: 'refUserName', title: '买方', width: 74, columnType: 'negotiation'},  // 交易历史
       { field: 'refUserName', title: '意向买方', width: 74, columnType: 'transaction'}, 
-      { field: 'createTime', title: '意向买方请购时间', width: 98, columnType: 'transaction' }, // 交易详情
-      { field: 'purchaseMethod', title: '价格类型', width: 124, formatter: formatPurchaseMethod },
+      { field: 'createTime', title: '意向买方请购时间', width:150, columnType: 'transaction' }, // 交易详情
+      { field: 'purchaseMethod', title: '价格类型', width: 80, formatter: formatPurchaseMethod },
 
-      { field: 'fixedPrice', title: '卖方售价', formatter: formatCurrency, width: 100, columnType: 'transaction'}, 
+      { field: 'fixedPrice', title: '卖方售价', formatter: formatCurrency, width: 90, columnType: 'transaction'}, 
       { field: 'productquantity', title: '库存数量', width: 76, formatter: () => props.product.quantity, columnType: 'transaction' }, 
       { field: 'quantity', title: '意向买方请购数量', width: 98}, 
       { 
@@ -431,7 +431,7 @@ const gridConfigs = {
       { field: 'fixedPrice', title: '标价', formatter: formatCurrency, width: 100, columnType: 'negotiation' }, // 交易历史
       { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation' },  // 交易历史
       { field: 'dealQuantity', title: '成交数量', width: 98, columnType: 'negotiation' }, // 交易历史
-      { field: 'approveTime', title: '成交时间', width: 98, columnType: 'negotiation' }, // 交易历史
+      { field: 'approveTime', title: '成交时间', width: 150, columnType: 'negotiation' }, // 交易历史
       { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', width: 130, formatter: ({ row }) => calculateTotalPrice(row, 'priceIncludingTax', 'quantity', true), columnType: 'transaction' },
       { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', slots: { default: 'negotiationDealTotalWithoutTax' }, width: 130, columnType: 'negotiation' }, // 成交总价(不含税)
       { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
@@ -454,8 +454,8 @@ const gridConfigs = {
       }, columnType: 'negotiation' }, // 交易历史 
       { field: 'refUserName', title: '买方', width: 74, columnType: 'negotiation'},  // 交易历史
       { field: 'refUserName', title: '议价方', width: 74, columnType: 'transaction'}, 
-      { field: 'createTime', title: '意向买方议价时间', width: 98, columnType: 'transaction' }, // 交易详情和交易历史共用列
-      { field: 'purchaseMethod', title: '价格类型', width: 124, formatter: formatPurchaseMethod }, // 交易详情和交易历史共用列
+      { field: 'createTime', title: '意向买方议价时间', width: 150, columnType: 'transaction' }, // 交易详情和交易历史共用列
+      { field: 'purchaseMethod', title: '价格类型', width: 90, formatter: formatPurchaseMethod }, // 交易详情和交易历史共用列
       { field: 'productquantity', title: '库存数量', width: 76, formatter: () => props.product.quantity, columnType: 'transaction' }, 
       { field: 'quantity', title: '意向买方议价数量', width: 120, columnType: 'transaction'}, 
       { field: 'fixedPrice', title: '标价', formatter: formatCurrency, width: 100, columnType: 'transaction'}, 
@@ -478,7 +478,7 @@ const gridConfigs = {
       { field: 'fixedPrice', title: '标价', formatter: formatCurrency, width: 100, columnType: 'negotiation' }, // 交易历史
       { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation' },  // 交易历史
       { field: 'dealQuantity', title: '成交数量', width: 98, columnType: 'negotiation' }, // 交易历史
-      { field: 'approveTime', title: '成交时间', width: 98, columnType: 'negotiation' }, // 交易历史
+      { field: 'approveTime', title: '成交时间', width: 150, columnType: 'negotiation' }, // 交易历史
       { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'priceExcludingTaxTotal' }, width: 130, columnType: 'transaction' }, // 交易历史列
       { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', slots: { default: 'negotiationDealTotalWithoutTax' }, width: 130, columnType: 'negotiation' }, // 成交总价(不含税)
       { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
@@ -501,8 +501,8 @@ const gridConfigs = {
         return row.statusCode == 'success' ? '交易达成' : '交易未达成'
       }, columnType: 'negotiation' }, // 交易历史
       { field: 'refUserName', title: '询价方', width: 74}, 
-      { field: 'createTime', title: '意向买方询价时间', width: 98,columnType: 'transaction'  }, // 交易详情和交易历史共用列
-      { field: 'purchaseMethod', title: '价格类型', width: 124, formatter: formatPurchaseMethod }, // 交易详情和交易历史共用列
+      { field: 'createTime', title: '意向买方询价时间', width: 150,columnType: 'transaction'  }, // 交易详情和交易历史共用列
+      { field: 'purchaseMethod', title: '价格类型', width: 90, formatter: formatPurchaseMethod }, // 交易详情和交易历史共用列
       { field: 'productquantity', title: '库存数量', width: 76, formatter: () => props.product.quantity,columnType: 'transaction' }, 
       { field: 'quantity', title: '意向买方请购数量', width: 98,columnType: 'transaction'}, 
       // { field: 'fixedPrice', title: '卖方初始价格', formatter: () => '***', width: 100 }, 
@@ -525,7 +525,7 @@ const gridConfigs = {
       { field: 'fixedPrice', title: '标价', formatter: () => '***', width: 100, columnType: 'negotiation' }, // 交易历史
       { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation' },  // 交易历史
       { field: 'dealQuantity', title: '成交数量', width: 98, columnType: 'negotiation' }, // 交易历史
-      { field: 'approveTime', title: '成交时间', width: 98, columnType: 'negotiation' }, // 交易历史
+      { field: 'approveTime', title: '成交时间', width: 150, columnType: 'negotiation' }, // 交易历史
       { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'priceExcludingTaxTotal' }, width: 130, columnType: 'transaction' }, // 交易历史列
       { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', slots: { default: 'negotiationDealTotalWithoutTax' }, width: 130, columnType: 'negotiation' }, // 成交总价(不含税)
       { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
@@ -549,8 +549,8 @@ const gridConfigs = {
       }, columnType: 'negotiation' }, // 交易历史
       { field: 'refUserName', title: '竞拍方', width: 74}, 
       { field: 'expireDate', title: '竞拍截止时间', width: 98, columnType: 'transaction' }, // 交易详情和交易历史共用列
-      { field: 'createTime', title: '竞拍方竞拍时间', width: 98, columnType: 'transaction' }, // 交易详情和交易历史共用列
-      { field: 'purchaseMethod', title: '价格类型', width: 124, formatter: formatPurchaseMethod }, // 交易详情和交易历史共用列
+      { field: 'createTime', title: '竞拍方竞拍时间', width: 150, columnType: 'transaction' }, // 交易详情和交易历史共用列
+      { field: 'purchaseMethod', title: '价格类型', width: 90, formatter: formatPurchaseMethod }, // 交易详情和交易历史共用列
       { field: 'productquantity', title: '库存数量', width: 76, formatter: () => props.product.quantity, columnType: 'transaction' }, 
       { field: 'quantity', title: '竞拍方竞拍数量', width: 98, columnType: 'transaction'}, 
       { field: 'fixedPrice', title: '起拍价', formatter: formatCurrency, width: 100, columnType: 'transaction' }, 
@@ -567,7 +567,7 @@ const gridConfigs = {
       { field: 'fixedPrice', title: '标价', formatter: formatCurrency, width: 100, columnType: 'negotiation' }, // 交易历史
       { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation' },  // 交易历史
       { field: 'dealQuantity', title: '成交数量', width: 98, columnType: 'negotiation' }, // 交易历史
-      { field: 'approveTime', title: '成交时间', width: 98, columnType: 'negotiation' }, // 交易历史
+      { field: 'approveTime', title: '成交时间', width: 150, columnType: 'negotiation' }, // 交易历史
       { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'auctionPriceExcludingTaxTotal' }, width: 130, columnType: 'transaction' }, // 交易历史列
       { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', slots: { default: 'negotiationDealTotalWithoutTax' }, width: 130, columnType: 'negotiation' }, // 成交总价(不含税)
       { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
@@ -585,12 +585,12 @@ const gridConfigs = {
         if (!row.statusCode) return ''
         return row.statusCode == 'success' ? '交易达成' : '交易未达成'
       }, columnType: 'negotiation' }, // 交易历史
-      { field: 'postedBy', title: '卖方', width: 74, formatter: postedBy }, 
-      { field: 'createTime', title: '意向买方请购时间', width: 98, columnType: 'transaction' }, // 交易详情和交易历史共用列
-      { field: 'purchaseMethod', title: '价格类型', width: 124, formatter: formatPurchaseMethod }, // 交易详情和交易历史共用列
-      { field: 'fixedPrice', title: '卖方售价', formatter: formatCurrency, width: 100, columnType: 'transaction' }, 
+      { field: 'postedBy', title: '卖方', width: 54, formatter: postedBy }, 
+      { field: 'createTime', title: '意向买方请购时间', width: 150, columnType: 'transaction' }, // 交易详情和交易历史共用列
+      { field: 'purchaseMethod', title: '价格类型', width: 80, formatter: formatPurchaseMethod }, // 交易详情和交易历史共用列
+      { field: 'fixedPrice', title: '卖方售价', formatter: formatCurrency, width: 90, columnType: 'transaction' }, 
       { field: 'productquantity', title: '库存数量', width: 76, formatter: () => props.product.quantity, columnType: 'transaction' }, 
-      { field: 'confirmedQuantity', title: '卖方可出售数量', width: 98, columnType: 'transaction'}, 
+      { field: 'confirmedQuantity', title: '卖方可出售数量', width: 120, columnType: 'transaction'}, 
       { 
         field: 'quantity', 
         title: '请购数量',
@@ -602,7 +602,7 @@ const gridConfigs = {
       { title: '操作', fiexd: 'right', slots: { default: 'buttons' }, width: 160, columnType: 'transaction' }, 
       { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation' },  // 交易历史
       { field: 'dealQuantity', title: '成交数量', width: 98, columnType: 'negotiation' }, // 交易历史
-      { field: 'approveTime', title: '成交时间', width: 98, columnType: 'negotiation' }, // 交易历史
+      { field: 'approveTime', title: '成交时间', width: 150, columnType: 'negotiation' }, // 交易历史
       { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'joinPriceExcludingTaxTotalFIXED' }, width: 130, columnType: 'transaction' }, // 交易历史列
       { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', slots: { default: 'negotiationDealTotalWithoutTax' }, width: 130, columnType: 'negotiation' }, // 成交总价(不含税)
       { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
@@ -623,9 +623,9 @@ const gridConfigs = {
         if (!row.statusCode) return ''
         return row.statusCode == 'success' ? '交易达成' : '交易未达成'
       }, columnType: 'negotiation' }, // 交易历史
-      { field: 'postedBy', title: '卖方', width: 74, formatter: postedBy }, 
-      { field: 'createTime', title: '议价时间', width: 98, columnType: 'transaction' }, // 交易详情和交易历史共用列
-      { field: 'purchaseMethod', title: '价格类型', width: 124, formatter: formatPurchaseMethod }, // 交易详情和交易历史共用列
+      { field: 'postedBy', title: '卖方', width: 54, formatter: postedBy }, 
+      { field: 'createTime', title: '议价时间', width: 150, columnType: 'transaction' }, // 交易详情和交易历史共用列
+      { field: 'purchaseMethod', title: '价格类型', width: 90, formatter: formatPurchaseMethod }, // 交易详情和交易历史共用列
       { field: 'productquantity', title: '库存数量', width: 76, formatter: () => props.product.quantity, columnType: 'transaction' }, 
       { field: 'quantity', title: '议价数量', width: 98, columnType: 'transaction'}, 
       { field: 'confirmedQuantity', title: '卖方可出售数量', width: 120, columnType: 'transaction' },
@@ -642,7 +642,7 @@ const gridConfigs = {
       { title: '操作', slots: { default: 'buttons' }, width: 210, columnType: 'transaction' }, 
       { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation' },  // 交易历史
       { field: 'dealQuantity', title: '成交数量', width: 98, columnType: 'negotiation' }, // 交易历史
-      { field: 'approveTime', title: '成交时间', width: 98, columnType: 'negotiation' }, // 交易历史
+      { field: 'approveTime', title: '成交时间', width: 150, columnType: 'negotiation' }, // 交易历史
       { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'joinPriceExcludingTaxTotalFIXED' }, width: 130, columnType: 'transaction' }, // 交易历史列
       { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', slots: { default: 'negotiationDealTotalWithoutTax' }, width: 130, columnType: 'negotiation' }, // 成交总价(不含税)
       { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
@@ -659,12 +659,12 @@ const gridConfigs = {
     columns: [
       { type: 'seq', title: '序号', width: 46 },
       { field: 'code', title: '爱芯享交易单号', width: 150}, 
-      { field: 'postedBy', title: '卖方', width: 74, formatter: postedBy }, 
-      { field: 'createTime', title: '询价时间', width: 98, columnType: 'transaction' }, // 交易详情和交易历史共用列
-      { field: 'purchaseMethod', title: '价格类型', width: 124, formatter: formatPurchaseMethod }, // 交易详情和交易历史共用列
+      { field: 'postedBy', title: '卖方', width: 54, formatter: postedBy }, 
+      { field: 'createTime', title: '询价时间', width: 150, columnType: 'transaction' }, // 交易详情和交易历史共用列
+      { field: 'purchaseMethod', title: '价格类型', width: 90, formatter: formatPurchaseMethod }, // 交易详情和交易历史共用列
       { field: 'priceIncludingTax', title: '卖方报价', formatter: formatCurrency, width: 100 }, 
       { field: 'productquantity', title: '库存数量', width: 76, formatter: () => props.product.quantity }, 
-      { field: 'confirmedQuantity', title: '卖方可出售数量', width: 98}, 
+      { field: 'confirmedQuantity', title: '卖方可出售数量', width: 120}, 
       { 
         field: 'quantity', 
         title: '请购数量',
@@ -696,10 +696,10 @@ const gridConfigs = {
         if (!row.statusCode) return ''
         return row.statusCode == 'success' ? '交易达成' : '交易未达成'
       }, columnType: 'negotiation' }, // 交易历史
-      { field: 'postedBy', title: '卖方', width: 74, formatter: postedBy }, 
+      { field: 'postedBy', title: '卖方', width: 54, formatter: postedBy }, 
       { field: 'expireDate', title: '竞拍截止时间', width: 98, columnType: 'transaction' }, // 交易详情和交易历史共用列
-      { field: 'createTime', title: '参与竞拍时间', width: 98, columnType: 'transaction' }, // 交易详情和交易历史共用列
-      { field: 'purchaseMethod', title: '价格类型', width: 124, formatter: formatPurchaseMethod }, // 交易详情和交易历史共用列
+      { field: 'createTime', title: '参与竞拍时间', width:150, columnType: 'transaction' }, // 交易详情和交易历史共用列
+      { field: 'purchaseMethod', title: '价格类型', width: 90, formatter: formatPurchaseMethod }, // 交易详情和交易历史共用列
       { field: 'productquantity', title: '库存数量', width: 76, formatter: () => props.product.quantity, columnType: 'transaction' }, 
       { field: 'confirmedQuantity', title: '竞拍数量', width: 98, columnType: 'transaction'}, 
       { field: 'fixedPrice', title: '起拍价', formatter: formatCurrency, width: 100, columnType: 'transaction' }, 
@@ -720,7 +720,7 @@ const gridConfigs = {
       { field: 'fixedPrice', title: '标价', formatter: formatCurrency, width: 100, columnType: 'negotiation' }, // 交易历史
       { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation' },  // 交易历史
       { field: 'dealQuantity', title: '成交数量', width: 98, columnType: 'negotiation' }, // 交易历史
-      { field: 'approveTime', title: '成交时间', width: 98, columnType: 'negotiation' }, // 交易历史
+      { field: 'approveTime', title: '成交时间', width: 150, columnType: 'negotiation' }, // 交易历史
       { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'joinAuctionPriceExcludingTaxTotal' }, width: 130, columnType: 'transaction' }, // 交易历史列
       { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', slots: { default: 'negotiationDealTotalWithoutTax' }, width: 130, columnType: 'negotiation' }, // 成交总价(不含税)
       { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
