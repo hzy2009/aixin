@@ -293,7 +293,10 @@ defineExpose({
     font-size: 12px;
     min-width: 60px;
     
-    &:hover {
+    &:hover:not(:disabled) {
+      background-color: @primary-color !important;
+      border-color: @primary-color !important;
+      color: white !important;
       transform: translateY(-1px);
     }
     
