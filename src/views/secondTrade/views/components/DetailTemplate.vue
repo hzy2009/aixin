@@ -225,7 +225,7 @@ const priceInfo = computed(() => {
       defaultValue: '固定价，不可议价'
     }),
     price: extractData({
-      field: 'priceExcludingTax',
+      field: 'priceIncludingTax',
       formatter: (value) => {
         if (props.product.purchaseMethod === 'PRICE_ON_REQUEST') return '***'
         return value ? Number(value).toLocaleString() : '0.00'
