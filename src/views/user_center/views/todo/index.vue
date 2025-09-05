@@ -173,14 +173,18 @@ const pageData = reactive({
       // placeholder: ['需求开始', '需求结束'] // Optional: custom placeholder
     },
   ],
-   tableOperations: [
-        // {
-        //     title: '已删除',
-        //     type: 'delete',
-        //     btnType: 'delete',
-        // },
-    ],
-    isUseFilterDelete: true,
+  otherParams: {
+    column: 'createTime',
+    order: 'desc',
+  },
+  tableOperations: [
+      // {
+      //     title: '已删除',
+      //     type: 'delete',
+      //     btnType: 'delete',
+      // },
+  ],
+  isUseFilterDelete: true,
 })
 
 
