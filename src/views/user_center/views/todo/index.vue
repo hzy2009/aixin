@@ -81,7 +81,7 @@ const tableColumns1 = [
 ]
 const tableColumns2 = [
   {type: 'seq', title: '序号', width: 74, align: 'center'},
-  { title: '爱芯享交易单号', field: 'code', align: 'center', width: 200 },
+  // { title: '爱芯享交易单号', field: 'code', align: 'center', width: 200 },
   { title: '零部件料号/设备号', field: 'partNumber', align: 'center', width: 140 },
   { field: 'postedBy', title: '卖方', width: 54, align: 'center', formatter: postedBy }, 
   { title: '价格类型', field: 'purchaseMethod', align: 'center', width: 80,

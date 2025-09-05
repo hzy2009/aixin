@@ -447,14 +447,14 @@ const gridConfigs = {
   PUBLICATION_NEGOTIABLE: {
     columns: [
       { type: 'seq', title: '序号', width: 46 },
-      { field: 'code', title: '爱芯享交易单号', width: 150},
+      { field: 'code', title: '爱芯享交易单号', width: 160},
        { field: 'bidStatus', title: '交易结果', width: 90, formatter: ({row}) => {
         if (!row.statusCode) return ''
         return row.statusCode == 'success' ? '交易达成' : '交易未达成'
       }, columnType: 'negotiation' }, // 交易历史 
       { field: 'refUserName', title: '买方', width: 74, columnType: 'negotiation'},  // 交易历史
       { field: 'refUserName', title: '议价方', width: 74, columnType: 'transaction'}, 
-      { field: 'createTime', title: '意向买方议价时间', width: 150, columnType: 'transaction' }, // 交易详情和交易历史共用列
+      { field: 'createTime', title: '意向买方议价时间', width: 160, columnType: 'transaction' }, // 交易详情和交易历史共用列
       { field: 'purchaseMethod', title: '价格类型', width: 90, formatter: formatPurchaseMethod }, // 交易详情和交易历史共用列
       { field: 'productquantity', title: '库存数量', width: 76, formatter: () => props.product.quantity, columnType: 'transaction' }, 
       { field: 'quantity', title: '意向买方议价数量', width: 120, columnType: 'transaction'}, 
