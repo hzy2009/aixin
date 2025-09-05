@@ -47,12 +47,12 @@
         </template>
 
         <!-- 含税总价显示插槽 -->
-        <template #priceIncludingTaxTotal="{ row }">
+        <template #publicPriceIncludingTaxTotal="{ row }">
           <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'confirmedQuantity') }}</span>
         </template>
 
         <!-- 不含税总价显示插槽 -->
-        <template #priceExcludingTaxTotal="{ row }">
+        <template #publicPriceExcludingTaxTotal="{ row }">
           <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'confirmedQuantity', true) }}</span>
         </template>
 
@@ -66,60 +66,15 @@
           <span>{{ calculateTotalPrice(row, 'price', 'confirmedQuantity', true) }}</span>
         </template>
 
-        <!-- JOIN_FIXED_PRICE总价显示插槽 (priceIncludingTax * confirmedQuantity) -->
-        <template #joinFixedPriceTotalPrice="{ row }">
-          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'confirmedQuantity') }}</span>
-        </template>
-
-        <!-- JOIN_FIXED_PRICE成交总价显示插槽 (priceIncludingTax * quantity) -->
-        <template #joinFixedPriceNegotiationTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'quantity') }}</span>
-        </template>
-
-        <!-- JOIN_NEGOTIABLE成交总价显示插槽 (priceIncludingTax * confirmedQuantity) -->
-        <template #joinNegotiableTotalPrice="{ row }">
-          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'confirmedQuantity') }}</span>
-        </template>
-
-        <!-- JOIN_AUCTION我的竞价总价显示插槽 (price * quantity) -->
-        <template #joinAuctionMyBidTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'price', 'quantity') }}</span>
-        </template>
-
-        <!-- JOIN_AUCTION成交总价显示插槽 (price * confirmedQuantity) -->
-        <template #joinAuctionDealTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'price', 'confirmedQuantity') }}</span>
-        </template>
 
         <!-- JOIN系列含税总价插槽 -->
         <template #joinPriceIncludingTaxTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'quantity') }}</span>
-        </template>
-
-        <!-- JOIN系列不含税总价插槽 -->
-        <template #joinPriceExcludingTaxTotalFIXED="{ row }">
-          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'confirmedQuantity', true) }}</span>
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'confirmedQuantity') }}</span>
         </template>
 
         <!-- JOIN系列不含税总价插槽 -->
         <template #joinPriceExcludingTaxTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'dealedQuantity', true) }}</span>
-        </template>
-        
-
-        <!-- JOIN_NEGOTIABLE含税总价插槽 -->
-        <template #joinNegotiablePriceIncludingTaxTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'dealedQuantity') }}</span>
-        </template>
-
-        <!-- JOIN_AUCTION含税总价插槽 (使用price字段) -->
-        <template #joinAuctionPriceIncludingTaxTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'price', 'confirmedQuantity') }}</span>
-        </template>
-
-        <!-- JOIN_AUCTION不含税总价插槽 (使用price字段) -->
-        <template #joinAuctionPriceExcludingTaxTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'price', 'confirmedQuantity', true) }}</span>
+          <span>{{ calculateTotalPrice(row, 'priceExcludingTax', 'confirmedQuantity', true) }}</span>
         </template>
 
         <!-- 成交总价(含税)插槽 - negotiation列专用 (使用priceDeal * dealQuantity) -->
@@ -432,10 +387,10 @@ const gridConfigs = {
       { field: 'approveTime', title: '成交时间', width: 150, columnType: 'negotiation' }, // 交易历史
       { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation' },  // 交易历史
       { field: 'dealQuantity', title: '成交数量', width: 98, columnType: 'negotiation' }, // 交易历史
-      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', width: 130, formatter: ({ row }) => calculateTotalPrice(row, 'priceIncludingTax', 'quantity', true), columnType: 'transaction' },
+      { field: 'publicPriceExcludingTaxTotal', title: '成交总价(不含税)', width: 130,  slots: { default: 'publicPriceExcludingTaxTotal' }, columnType: 'transaction' },
       { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', slots: { default: 'negotiationDealTotalWithoutTax' }, width: 130, columnType: 'negotiation' }, // 成交总价(不含税)
       { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
-      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', formatter: ({ row }) => calculateTotalPrice(row, 'priceIncludingTax', 'quantity'), width: 124, columnType: 'transaction' }, 
+      { field: 'publicPriceIncludingTaxTotal', title: '成交总价(含税)',  slots: { default: 'publicPriceIncludingTaxTotal' }, width: 124, columnType: 'transaction' }, 
       { field: 'negotiationDealTotalWithTax', title: '成交总价(含税)', slots: { default: 'negotiationDealTotalWithTax' }, width: 124, columnType: 'negotiation' }, // 成交总价(含税)
       { field: 'remark', title: '备注', columnType: 'both', width: 160 }, // 交易历史列
     ],
@@ -479,10 +434,10 @@ const gridConfigs = {
       { field: 'approveTime', title: '成交时间', width: 150, columnType: 'negotiation' }, // 交易历史
       { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation' },  // 交易历史
       { field: 'dealQuantity', title: '成交数量', width: 98, columnType: 'negotiation' }, // 交易历史
-      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'priceExcludingTaxTotal' }, width: 130, columnType: 'transaction' }, // 交易历史列
+      { field: 'publicPriceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'publicPriceExcludingTaxTotal' }, width: 130, columnType: 'transaction' }, // 交易历史列
       { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', slots: { default: 'negotiationDealTotalWithoutTax' }, width: 130, columnType: 'negotiation' }, // 成交总价(不含税)
       { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
-      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'priceIncludingTaxTotal' }, width: 124, columnType: 'transaction' }, 
+      { field: 'publicPriceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'publicPriceIncludingTaxTotal' }, width: 124, columnType: 'transaction' }, 
       { field: 'negotiationDealTotalWithTax', title: '成交总价(含税)', slots: { default: 'negotiationDealTotalWithTax' }, width: 124, columnType: 'negotiation' }, // 成交总价(含税)
       { field: 'remark', title: '备注', columnType: 'both', width: 160 }, // 交易历史列
     ],
@@ -525,10 +480,10 @@ const gridConfigs = {
       { field: 'approveTime', title: '成交时间', width: 150, columnType: 'negotiation' }, // 交易历史
       { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation' },  // 交易历史
       { field: 'dealQuantity', title: '成交数量', width: 98, columnType: 'negotiation' }, // 交易历史
-      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'priceExcludingTaxTotal' }, width: 130, columnType: 'transaction' }, // 交易历史列
+      { field: 'publicPriceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'publicPriceExcludingTaxTotal' }, width: 130, columnType: 'transaction' }, // 交易历史列
       { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', slots: { default: 'negotiationDealTotalWithoutTax' }, width: 130, columnType: 'negotiation' }, // 成交总价(不含税)
       { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
-      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'priceIncludingTaxTotal' }, width: 124, columnType: 'transaction' }, 
+      { field: 'publicPriceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'publicPriceIncludingTaxTotal' }, width: 124, columnType: 'transaction' }, 
       { field: 'negotiationDealTotalWithTax', title: '成交总价(含税)', slots: { default: 'negotiationDealTotalWithTax' }, width: 124, columnType: 'negotiation' }, // 成交总价(含税)
       { field: 'remark', title: '备注', columnType: 'both', width: 160 }, 
     ],
@@ -568,10 +523,10 @@ const gridConfigs = {
       { field: 'approveTime', title: '成交时间', width: 150, columnType: 'negotiation' }, // 交易历史
       { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation' },  // 交易历史
       { field: 'dealQuantity', title: '成交数量', width: 98, columnType: 'negotiation' }, // 交易历史
-      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'auctionPriceExcludingTaxTotal' }, width: 130, columnType: 'transaction' }, // 交易历史列
+      { field: 'publicPriceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'auctionPriceExcludingTaxTotal' }, width: 130, columnType: 'transaction' }, // 交易历史列
       { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', slots: { default: 'negotiationDealTotalWithoutTax' }, width: 130, columnType: 'negotiation' }, // 成交总价(不含税)
       { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
-      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'auctionPriceIncludingTaxTotal' }, width: 124, columnType: 'transaction' }, 
+      { field: 'publicPriceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'auctionPriceIncludingTaxTotal' }, width: 124, columnType: 'transaction' }, 
       { field: 'negotiationDealTotalWithTax', title: '成交总价(含税)', slots: { default: 'negotiationDealTotalWithTax' }, width: 124, columnType: 'negotiation' }, // 成交总价(含税)
       { field: 'remark', title: '备注', columnType: 'both', width: 160 }, // 交易历史列
     ],
@@ -604,10 +559,10 @@ const gridConfigs = {
       { field: 'approveTime', title: '成交时间', width: 150, columnType: 'negotiation' }, // 交易历史
       { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation' },  // 交易历史
       { field: 'dealQuantity', title: '成交数量', width: 98, columnType: 'negotiation' }, // 交易历史
-      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'joinPriceExcludingTaxTotalFIXED' }, width: 130, columnType: 'transaction' }, // 交易历史列
+      { field: 'publicPriceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'joinPriceExcludingTaxTotal' }, width: 130, columnType: 'transaction' }, // 交易历史列
       { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', slots: { default: 'negotiationDealTotalWithoutTax' }, width: 130, columnType: 'negotiation' }, // 成交总价(不含税)
       { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
-      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'joinPriceIncludingTaxTotal' }, width: 124, columnType: 'transaction' }, 
+      { field: 'publicPriceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'joinPriceIncludingTaxTotal' }, width: 124, columnType: 'transaction' }, 
       { field: 'negotiationDealTotalWithTax', title: '成交总价(含税)', slots: { default: 'negotiationDealTotalWithTax' }, width: 124, columnType: 'negotiation' }, // 成交总价(含税)
       { field: 'remark', title: '备注', columnType: 'both', width: 160 }, // 交易历史列
     ],
@@ -638,10 +593,10 @@ const gridConfigs = {
       { field: 'approveTime', title: '成交时间', width: 150, columnType: 'negotiation' }, // 交易历史
       { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation' },  // 交易历史
       { field: 'dealQuantity', title: '成交数量', width: 98, columnType: 'negotiation' }, // 交易历史
-      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'joinPriceExcludingTaxTotalFIXED' }, width: 130, columnType: 'transaction' }, // 交易历史列
+      { field: 'publicPriceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'joinPriceExcludingTaxTotal' }, width: 130, columnType: 'transaction' }, // 交易历史列
       { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', slots: { default: 'negotiationDealTotalWithoutTax' }, width: 130, columnType: 'negotiation' }, // 成交总价(不含税)
       { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
-      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'joinNegotiablePriceIncludingTaxTotal' }, width: 124, columnType: 'transaction' }, 
+      { field: 'publicPriceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'joinPriceIncludingTaxTotal' }, width: 124, columnType: 'transaction' }, 
       { field: 'negotiationDealTotalWithTax', title: '成交总价(含税)', slots: { default: 'negotiationDealTotalWithTax' }, width: 124, columnType: 'negotiation' }, // 成交总价(含税)
       { field: 'remark', title: '备注', columnType: 'both', width: 160 }, // 交易历史列
     ],
@@ -669,10 +624,10 @@ const gridConfigs = {
       { title: '操作', fiexd: 'right', slots: { default: 'buttons' }, width: 160, columnType: 'transaction' }, 
       { field: 'dealQuantity', title: '成交数量', width: 120, columnType: 'negotiation' },
       { field: 'approveTime', title: '成交时间', columnType: 'negotiation', width: 150 }, 
-      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', formatter: () => '***', width: 124, columnType: 'transaction' }, 
+      { field: 'publicPriceIncludingTaxTotal', title: '成交总价(含税)', formatter: () => '***', width: 124, columnType: 'transaction' }, 
       { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', formatter: () => '***', width: 130, columnType: 'negotiation' }, // 成交总价(不含税) - 隐藏实际价格
       { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
-      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', width: 130, formatter: () => '***', columnType: 'transaction' }, // 交易历史列
+      { field: 'publicPriceExcludingTaxTotal', title: '成交总价(不含税)', width: 130, formatter: () => '***', columnType: 'transaction' }, // 交易历史列
       { field: 'negotiationDealTotalWithTax', title: '成交总价(含税)', formatter: () => '***', width: 124, columnType: 'negotiation' }, // 成交总价(含税) - 隐藏实际价格
       { field: 'remark', title: '备注', columnType: 'both', width: 160 }, 
     ],
@@ -702,10 +657,10 @@ const gridConfigs = {
       { field: 'approveTime', title: '成交时间', width: 150, columnType: 'negotiation' }, // 交易历史
       { field: 'priceDeal', title: '成交单价(含税)', width: 110, columnType: 'negotiation' },  // 交易历史
       { field: 'dealQuantity', title: '成交数量', width: 74, columnType: 'negotiation' }, // 交易历史
-      { field: 'priceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'joinAuctionPriceExcludingTaxTotal' }, width: 130, columnType: 'transaction' }, // 交易历史列
+      { field: 'publicPriceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'joinPriceExcludingTaxTotal' }, width: 130, columnType: 'transaction' }, // 交易历史列
       { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', slots: { default: 'negotiationDealTotalWithoutTax' }, width: 130, columnType: 'negotiation' }, // 成交总价(不含税)
       { field: 'tax', title: '税率%', formatter: formatTax, width: 70 }, 
-      { field: 'priceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'joinAuctionPriceIncludingTaxTotal' }, width: 124, columnType: 'transaction' }, 
+      { field: 'publicPriceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'joinPriceIncludingTaxTotal' }, width: 124, columnType: 'transaction' }, 
       { field: 'negotiationDealTotalWithTax', title: '成交总价(含税)', slots: { default: 'negotiationDealTotalWithTax' }, width: 124, columnType: 'negotiation' }, // 成交总价(含税)
       { field: 'remark', title: '备注', columnType: 'both', width: 160 }, // 交易历史列
     ],
