@@ -3,7 +3,7 @@
     <a-tabs v-model:activeKey="activeTabKey" class="page-tabs">
       <!-- "交易详情" tab is conditionally rendered based on context -->
       <a-tab-pane v-if="context === 'editPage'" key="transactionType" tab="交易详情"></a-tab-pane>
-      <a-tab-pane key="negotiation" :tab="props.product?.purchaseMethod == 'NEGOTIABLE' ? '议价历史' : '交易历史'"></a-tab-pane>
+      <a-tab-pane key="negotiation" tab="交易历史"></a-tab-pane>
     </a-tabs>
 
     <div class="grid-container">
