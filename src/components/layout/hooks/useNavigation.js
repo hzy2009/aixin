@@ -52,7 +52,7 @@ export function useNavigation() {
     },
     { 
       key: 'secondTrade', 
-      label: '二手设备', 
+      label: '二手交易', 
       path: '/secondTrade/oemParts', 
       matchPaths: [
         '/secondTrade/oemParts',
