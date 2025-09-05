@@ -122,7 +122,7 @@ const handleAction = async ({ url, data }) => {
   }
 };
 const confirmBuy = (selectedRow) => {
-  selectedRow.quantity = selectedRow.dealedQuantity || selectedRow.quantity
+  selectedRow.quantity = selectedRow.confirmedQuantity || selectedRow.quantity
   handleAction({url: '/apm/apmDeviceOrigin/buy/deal', data: selectedRow})
 }
 
