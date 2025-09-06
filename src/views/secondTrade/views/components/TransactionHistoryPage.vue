@@ -371,10 +371,10 @@ const gridConfigs = {
       { field: 'refUserName', title: '买方', width: 74, columnType: 'negotiation', formatter: ({cellValue}) => maskMiddle(cellValue)},  // 交易历史
       { field: 'quantity', title: '本次交易数量', width: 100, columnType: 'negotiation' },
       { field: 'productquantity', title: '库存数量', width: 76, formatter: () => props.product.quantity, columnType: 'transaction' }, 
-      { field: 'fixedPrice', title: '售价(含税单价)', formatter: formatCurrency, width: 90, columnType: 'transaction'}, 
+      { field: 'fixedPrice', title: '售价(含税单价)', formatter: formatCurrency, width: 120, columnType: 'transaction'}, 
       { field: 'refUserName', title: '意向买方', width: 74, columnType: 'transaction', formatter: ({cellValue}) => maskMiddle(cellValue)}, 
       { field: 'createTime', title: '意向买方购买时间', width:150, columnType: 'transaction' }, // 交易详情
-      { field: 'quantity', title: '意向买方购买数量', width: 98}, 
+      { field: 'quantity', title: '意向买方购买数量', width: 128}, 
       { 
         field: 'confirmedQuantity', 
         title: '可出售数量',
@@ -413,14 +413,14 @@ const gridConfigs = {
       { field: 'quantity', title: '本次交易数量', width: 100, columnType: 'negotiation' },
       { field: 'refUserName', title: '议价方', width: 74, columnType: 'transaction', formatter: ({cellValue}) => maskMiddle(cellValue)}, 
       { field: 'createTime', title: '议价时间', width: 160, columnType: 'transaction' }, // 交易详情和交易历史共用列
-      { field: 'quantity', title: '议价数量', width: 120, columnType: 'transaction'}, 
-      { field: 'fixedPrice', title: '标价', formatter: formatCurrency, width: 100, columnType: 'transaction'}, 
-      { field: 'price', title: '议价方议价（含税单价）', formatter: formatCurrency, width: 100, columnType: 'transaction'}, // 交易详情和交易历史共用列 (交易历史时显示为'议价金额')
+      { field: 'quantity', title: '议价数量', width: 90, columnType: 'transaction'}, 
+      { field: 'fixedPrice', title: '标价', formatter: formatCurrency, width: 80, columnType: 'transaction'}, 
+      { field: 'price', title: '议价方议价（含税单价）', formatter: formatCurrency, width:170, columnType: 'transaction'}, // 交易详情和交易历史共用列 (交易历史时显示为'议价金额')
       { 
         field: 'priceIncludingTax', 
         title: '还价（含税单价）',
         slots: { default: 'priceEdit' },
-         width: 120,
+         width: 140,
         columnType: 'transaction'
       },
       { 
@@ -509,9 +509,9 @@ const gridConfigs = {
       { field: 'expireDate', title: '竞拍截止时间', width: 98, columnType: 'transaction' }, // 交易详情和交易历史共用列
       { field: 'createTime', title: '竞拍方竞拍时间', width: 150, columnType: 'transaction' }, // 交易详情和交易历史共用列
       { field: 'refUserName', title: '竞拍方', width: 74, formatter: ({cellValue}) => maskMiddle(cellValue)}, 
-      { field: 'quantity', title: '竞拍方竞拍数量', width: 98, columnType: 'transaction'}, 
-      { field: 'fixedPrice', title: '起拍价（含税单价）', formatter: formatCurrency, width: 100, columnType: 'transaction' }, 
-      { field: 'price', title: '竞拍方竞拍价（含税单价）', formatter: formatCurrency, width: 120, columnType: 'transaction' }, 
+      { field: 'quantity', title: '竞拍方竞拍数量', width: 110, columnType: 'transaction'}, 
+      { field: 'fixedPrice', title: '起拍价（含税单价）', formatter: formatCurrency, width: 140, columnType: 'transaction' }, 
+      { field: 'price', title: '竞拍方竞拍价（含税单价）', formatter: formatCurrency, width: 180, columnType: 'transaction' }, 
       { field: 'isWinner', title: '选定买方', slots: { default: 'switch' }, width: 120, columnType: 'transaction' }, 
       { 
         field: 'confirmedQuantity', 
