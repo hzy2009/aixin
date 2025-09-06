@@ -27,17 +27,6 @@ const userCenterRoutes = [
         meta: { title: '原厂件库存处理详情', breadcrumb: ['原厂件库存处理详情'], roles: ['apm-vip', 'apm-vip-inspection', 'apm-register']  } // Appends to base
       },
       {
-        path: 'oemParts/create',
-        component: oemPartsEditPage,
-        meta: { title: '发布原厂件', breadcrumb: ['原厂件库存处理', '发布原厂件'] }
-      },
-      {
-        path: 'oemParts/edit/:id',
-        component: oemPartsEditPage,
-        props: route => ({ IdProp: route.params.id}),
-        meta: { title: '编辑原厂件', breadcrumb: ['原厂件库存处理', '编辑原厂件'] }
-      },
-      {
         path: 'standard', 
         component: standard, 
         meta: { title: '标准件库存处理', breadcrumb: ['标准件库存处理'] }
@@ -58,16 +47,6 @@ const userCenterRoutes = [
         props: route => ({ IdProp: route.params.id}),
         meta: { title: '二手设备交易详情', breadcrumb: ['二手设备交易详情'], roles: ['apm-vip', 'apm-vip-inspection', 'apm-register']  } // Appends to base
       },
-      {
-        path: 'usedEqpTrade/create',
-        component: () => import('./views/usedEqpTrade/edit.vue'),
-        meta: { title: '发布二手设备', breadcrumb: ['二手设备交易', '发布二手设备'] }
-      },
-      {
-        path: 'usedEqpTrade/edit/:id',
-        component: () => import('./views/usedEqpTrade/edit.vue'),
-        meta: { title: '编辑二手设备', breadcrumb: ['二手设备交易', '编辑二手设备'] }
-      }
     ]
   },
   
