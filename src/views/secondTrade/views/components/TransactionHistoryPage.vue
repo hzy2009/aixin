@@ -473,6 +473,7 @@ const gridConfigs = {
         field: 'confirmedQuantity', 
         title: '可出售数量',
         fiexd: 'right',
+        slots: { default: 'quantityEdit'},
         width: 110, 
         columnType: 'transaction' 
       },
