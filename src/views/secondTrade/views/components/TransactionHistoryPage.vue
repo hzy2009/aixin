@@ -38,7 +38,7 @@
             :min="0.01"
             :step="0.01"
             :precision="2"
-            placeholder="请输入价格"
+            :placeholder="props.product.purchaseMethod === 'NEGOTIABLE' ? '仅可还价一次' : '请输入价格' "
             size="small"
             style="width: 100%; height: 30px;"
             @change="(value) => handlePriceChange(value, row, column.field)"

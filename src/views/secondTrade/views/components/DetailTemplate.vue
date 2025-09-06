@@ -279,8 +279,8 @@ const handlePurchase = async () => {
       'NEGOTIABLE': [
         { 
           field: 'price', 
-          label: '报价',
-          placeholder: '请输入价格', 
+          label: '议价',
+          placeholder: '请输入期望价格，只有一次议价机会', 
           type: 'number',
           rules: [{ required: true, message: '请输入价格' }]
         },
@@ -323,7 +323,7 @@ const handlePurchase = async () => {
         { 
           field: 'price', 
           label: '竞价',
-          placeholder: '请输入竞价', 
+          placeholder: '请输入竞价价格，仅可竞拍一次', 
           type: 'number',
           rules: [{ required: true, message: '请输入竞价' }]
         },
