@@ -30,7 +30,7 @@
               <!-- <span class="price-unit">{{ priceInfo.unit }}</span> -->
               <span class="price-unit">元
                 <span v-if="props.product.purchaseMethod == 'AUCTION'">起拍</span>
-                <span class="expiredDateText" v-if="!['AUCTION', 'PRICE_ON_REQUEST'].includes(props.product.purchaseMethod)">{{ props.product.priceExcludingTax ? `(${props.product.priceExcludingTax})` : ''}}</span>
+                <span class="expiredDateText" v-if="!['AUCTION', 'PRICE_ON_REQUEST'].includes(props.product.purchaseMethod)">(含税单价)</span>
               </span>
               <span v-if="props.product.purchaseMethod == 'AUCTION'" class="expiredDateText">竞拍截止日期: {{ props.product.expireDate }}</span>
             </div>
@@ -529,7 +529,7 @@ const handleTaxPrice = (data) => {
       .info-label {
         color: #000000;
         display: inline-block;
-        min-width: 80px;
+        min-width: 90px;
       }
       .info-value {
         color: #000000;
