@@ -74,7 +74,7 @@
 
         <!-- JOIN系列不含税总价插槽 -->
         <template #joinPriceExcludingTaxTotal="{ row }">
-          <span>{{ calculateTotalPrice(row, 'priceExcludingTax', 'confirmedQuantity', true) }}</span>
+          <span>{{ calculateTotalPrice(row, 'priceIncludingTax', 'confirmedQuantity', true) }}</span>
         </template>
 
         <!-- 成交总价(含税)插槽 - negotiation列专用 (使用priceDeal * dealQuantity) -->
