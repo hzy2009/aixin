@@ -164,6 +164,7 @@ const getImgUrl = (url) => {
   font-weight: 400;
   font-size: 18px;
   line-height: 18px;
+  min-height: 2em;
   max-width: 248px;
   color: #000000; // Very dark gray, almost black
   margin-bottom: 20px;
