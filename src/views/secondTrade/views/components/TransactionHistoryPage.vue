@@ -651,7 +651,7 @@ const gridConfigs = {
       { field: 'productquantity', title: '卖方库存数量', width: 100, formatter: () => props.product.quantity, columnType: 'transaction' }, 
       { field: 'expireDate', title: '竞拍截止时间', width: 98, columnType: 'transaction' }, // 交易详情和交易历史共用列
       { field: 'createTime', title: '参与竞拍时间', width:150, columnType: 'transaction' }, // 交易详情和交易历史共用列
-      { field: 'confirmedQuantity', title: '竞拍数量', width: 74, columnType: 'transaction'}, 
+      { field: 'quantity', title: '竞拍数量', width: 74, columnType: 'transaction'}, 
       { field: 'fixedPrice', title: '起拍价（含税单价）', formatter: formatCurrency, width: 140, columnType: 'transaction' }, 
       { field: 'price', title: '竞拍价（含税单价）', formatter: formatCurrency, width: 140, columnType: 'transaction' }, 
       { title: '操作', fiexd: 'right', slots: { default: 'buttons' }, width: 160, columnType: 'transaction' }, 
