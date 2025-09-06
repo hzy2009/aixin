@@ -55,6 +55,9 @@ const productPageConfig = ref({
   ],
   successAction: () => {
     router.push('/secondTrade/usedEqpTrade');
+  },
+  viewDetailAction: (productId) => {
+    router.push(`/user/join/usedEqpTrade/detail/${productId}`);
   }
 });
 const isLoading = ref(false);

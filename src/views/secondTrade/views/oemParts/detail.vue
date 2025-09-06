@@ -57,6 +57,9 @@ const productPageConfig = ref({
   ],
   successAction: () => {
     router.push('/secondTrade/oemParts');
+  },
+  viewDetailAction: (productId) => {
+    router.push(`/user/join/oemParts/detail/${productId}`);
   }
 });
 const fieldList = [

@@ -406,6 +406,9 @@ const handleFinish = async (data) => {
           {
             text: '查看详情',
             type: 'primary',
+            action: () => {
+              props.pageConfig.viewDetailAction?.(productId);
+            }
           },
           {
             text: '返回列表',
