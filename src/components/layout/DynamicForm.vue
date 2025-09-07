@@ -4,21 +4,20 @@
     <a-row :gutter="[16, 0]">
       <template v-for="field in formConfig" :key="field.field">
         <a-col :span="field.span || defaultSpan" v-if="!field.hidden">
-          <!-- 关键修改点：将 allRules(field.rules) 修改为 allRules(field)，以便函数能获取到 fieldType -->
           <a-form-item :label="field.label" :name="field.field" :rules="allRules(field)" class="form-item-custom"
             :class="{ 'form-item-full-width-input': field.fieldType === 'textarea' || field.fullWidthInput, 'phoneOrEmail': field.fieldType === 'phone' || field.fieldType === 'email' }">
             <div class="field-with-tips">
               <a-input v-if="field.fieldType === 'input'" v-model:value="internalFormModel[field.field]"
-                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear
+                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="isFieldDisabled(field)" allow-clear
                 @change="(...args) => handleEvent('change', field, ...args)"
                 @blur="(...args) => handleEvent('blur', field, ...args)" />
               <a-input-password v-else-if="field.fieldType === 'password'" v-model:value="internalFormModel[field.field]"
-                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear
+                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="isFieldDisabled(field)" allow-clear
                 @change="(...args) => handleEvent('change', field, ...args)"
                 @blur="(...args) => handleEvent('blur', field, ...args)" />
 
               <a-input-number v-else-if="field.fieldType === 'number'" v-model:value="internalFormModel[field.field]"
-                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" style="width: 100%;"
+                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="isFieldDisabled(field)" style="width: 100%;"
                 :min="field.min" :max="field.max"
                 @change="(...args) => handleEvent('change', field, ...args)"
                 @blur="(...args) => handleEvent('blur', field, ...args)" />
@@ -27,7 +26,7 @@
                 :placeholder="field.placeholder || `请选择${field.label}`"
                 :options="field.options || selectOptions(field.dictKey)" :mode="field.selectMode"
                 :filter-option="field.remoteSearch ? false : filterOption" :loading="field.loading"
-                :disabled="field.disabled"
+                :disabled="isFieldDisabled(field)"
                 @change="(...args) => handleEvent('change', field, ...args)"
                 @blur="(...args) => handleEvent('blur', field, ...args)"
                 @focus="(...args) => handleEvent('focus', field, ...args)"
@@ -35,7 +34,7 @@
                 allow-clear />
 
               <a-radio-group v-else-if="field.fieldType === 'radio'" v-model:value="internalFormModel[field.field]"
-                :options="field.options" :disabled="field.disabled"
+                :options="field.options" :disabled="isFieldDisabled(field)"
                 @change="(...args) => handleEvent('change', field, ...args)" />
 
               <a-date-picker v-else-if="field.fieldType === 'date'" v-model:value="internalFormModel[field.field]"
@@ -43,15 +42,15 @@
                 :disabled-date="field.disabledDate || function(e) {return disabledDate(e, field)}"
                 :value-format="field.valueFormat || 'YYYY-MM-DD HH:mm:ss'" :show-time="field.showTime"
                 @change="(...args) => handleEvent('change', field, ...args)"
-                style="width: 100%;" :disabled="field.disabled" />
+                style="width: 100%;" :disabled="isFieldDisabled(field)" />
 
               <a-range-picker v-else-if="field.fieldType === 'dateRange'" v-model:value="internalFormModel[field.field]"
                 :value-format="field.valueFormat || 'YYYY-MM-DD'" :show-time="field.showTime" style="width: 100%;"
-                :disabled="field.disabled"
+                :disabled="isFieldDisabled(field)"
                 @change="(...args) => handleEvent('change', field, ...args)" />
 
               <a-textarea v-else-if="field.fieldType === 'textarea'" v-model:value="internalFormModel[field.field]"
-                :placeholder="field.placeholder || `请输入${field.label}`" :rows="field.rows || 4" :disabled="field.disabled"
+                :placeholder="field.placeholder || `请输入${field.label}`" :rows="field.rows || 4" :disabled="isFieldDisabled(field)"
                 allow-clear :maxlength="field.maxLength" show-count
                 @change="(...args) => handleEvent('change', field, ...args)"
                 @blur="(...args) => handleEvent('blur', field, ...args)" />
@@ -60,7 +59,7 @@
                 :formatter="value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
                 :parser="value => value.replace(/\$\s?|(,*)/g, '')"
                 :precision="field.precision !== undefined ? field.precision : 2" style="width: 100%;"
-                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled"
+                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="isFieldDisabled(field)"
                 :min="field.min !== undefined ? field.min : 0"
                 @change="(...args) => handleEvent('change', field, ...args)"
                 @blur="(...args) => handleEvent('blur', field, ...args)" />
@@ -71,7 +70,7 @@
                   :show-upload-list="field.showUploadList !== undefined ? field.showUploadList : true" :action="uploadUrl"
                   :before-upload="field.beforeUpload || beforeUpload" accept="image/*" :headers="getHeaders()"
                   :data="{ biz: 'temp' }" @change="(info) => handleImageUploadChange(info, field)"
-                  @preview="handleImagePreview" :max-count="field.maxCount || 1" :disabled="field.disabled">
+                  @preview="handleImagePreview" :max-count="field.maxCount || 1" :disabled="isFieldDisabled(field)">
                   <div
                     v-if="(!internalFormModel[field.field] || internalFormModel[field.field].length < (field.maxCount || 1))">
                     <PlusOutlined />
@@ -96,7 +95,7 @@
                   @change="(info) => handleImageUploadChange(info, field)"
                   @preview="handleImagePreview"
                   :max-count="field.maxCount"
-                  :disabled="field.disabled"
+                  :disabled="isFieldDisabled(field)"
                 >
                   <div v-if="!field.maxCount || !internalFormModel[field.field] || internalFormModel[field.field].length < field.maxCount">
                     <PlusOutlined />
@@ -108,7 +107,7 @@
               <div v-else-if="field.fieldType === 'erjisb'">
                 <a-select v-model:value="internalFormModel['productMainTypeCode']" :placeholder="`请选择`"
                   style="width: 48%; margin-right: 4%" :options="selectOptions('product_main_type')"
-                  :disabled="field.disabled" @change="(v, option) => handleSelectProductMainTypeChange(v, field, option)"
+                  :disabled="isFieldDisabled(field)" @change="(v, option) => handleSelectProductMainTypeChange(v, field, option)"
                   allow-clear />
 
                 <a-select v-model:value="internalFormModel['productType']" :placeholder="`请选择`"
@@ -117,11 +116,11 @@
                   @change="(v, option) => handleSelectProductTypeChange(v, field, option)" allow-clear />
               </div>
               <a-input v-else-if="field.fieldType === 'email'" v-model:value="internalFormModel[field.field]"
-                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear
+                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="isFieldDisabled(field)" allow-clear
                 @change="(...args) => handleEvent('change', field, ...args)"
                 @blur="(...args) => handleEvent('blur', field, ...args)" />
               <a-input v-else-if="field.fieldType === 'phone'" v-model:value="internalFormModel[field.field]"
-                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear
+                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="isFieldDisabled(field)" allow-clear
                 @change="(...args) => handleEvent('change', field, ...args)"
                 @blur="(...args) => handleEvent('blur', field, ...args)" />
               <span v-else-if="field.fieldType === 'slot'">
@@ -212,10 +211,16 @@ const handleEvent = (eventName, field, ...args) => {
   }
 };
 
+const isFieldDisabled = (field) => {
+  if (typeof field.disabled === 'function') {
+    return field.disabled({ formModel: internalFormModel });
+  }
+  return !!field.disabled;
+};
 
 const getFileName = (path) => {
   if (path.lastIndexOf('\\') >= 0) {
-    let reg = new RegExp('\\\\', 'g');
+    let reg = new RegExp('\\', 'g');
     path = path.replace(reg, '/');
   }
   return path.substring(path.lastIndexOf('/') + 1);
@@ -589,9 +594,10 @@ defineExpose({ validate, resetFields, clearValidate, getAllData, formModel: inte
         }
       }
       
-      // Ensure the item itself fills the container
       :deep(.ant-upload-list-item) {
-        padding: 0;
+        width: 100%;
+        height: 100%;
+        // By removing `padding: 0`, we restore the default which should fix the overlay.
       }
 
       :deep(.ant-upload-list-item-actions .anticon) {

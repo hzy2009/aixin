@@ -19,25 +19,13 @@ const router = useRouter();
 
 const formConfigs = [
   {
-    label: '零部件料号',
-    field: 'partNumber',
-    fieldType: 'input',
-    span: 24,
-  },
-  {
-    label: '零部件名称',
+    label: '设备名称',
     field: 'productName',
     fieldType: 'input',
     span: 24,
   },
   {
-    label: '零部件来源',
-    field: 'productSource',
-    fieldType: 'input',
-    span: 24,
-  },
-  {
-    label: '零部件型号',
+    label: '设备型号',
     field: 'productModel',
     fieldType: 'input',
     span: 24,
@@ -222,7 +210,7 @@ const formConfigs = [
   },
 ];
 
-const pageTitle = '创建二手零部件交易需求'; // Updated page title
+const pageTitle = '创建二手设备交易需求'; // Updated page title
 
 const pageData = reactive({
   IdProp: props.IdProp,

@@ -64,6 +64,13 @@ const pageData = ref({
   tableColumns,
   actions,
   filterConfigForPage,
+  tableOperations: [
+    {
+      title: '创建需求',
+      clickFn: () => router.push('/user/published/usedEqpTrade/create'),
+      type: 'primary'
+    }
+  ]
   // 可以根据需要启用权限控制
   // requiredRoles: ['apm-vip', 'apm-register'],
 });

@@ -95,7 +95,17 @@ export function useNavigation() {
           //   { key: 'joinStandard', label: '标准件库存处理', fn: () => { handleDevelopingFeature(); }},
           //   { key: 'joinNotStandard', label: '非标准件库存处理', fn: () => { handleDevelopingFeature(); }},
           // ]
-        }
+        },
+        {
+          key: 'publishSecondTrade',
+          label: '发布二手交易',
+          subItems: [
+            { key: 'joinOemParts', label: '原厂件库存处理', path: '/user/published/oemParts/create'},
+            { key: 'joinUsedEqp', label: '二手设备处理', path: '/user/published/usedEqpTrade/create'},
+            { key: 'joinStandard', label: '标准件库存处理', fn: () => { handleDevelopingFeature(); }},
+            { key: 'joinNotStandard', label: '非标准件库存处理', fn: () => { handleDevelopingFeature(); }},
+          ]
+        },
       ]
     },
     { 

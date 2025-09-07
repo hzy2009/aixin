@@ -79,12 +79,6 @@ const formConfigs = [
     span: 24,
   },
   {
-    label: '需求发布者',
-    field: 'postedBy',
-    fieldType: 'input',
-    span: 24,
-  },
-  {
     label: '质保期',
     field: 'guaranteePeriod',
     fieldType: 'input',
@@ -149,6 +143,9 @@ const formConfigs = [
     fieldType: 'select',
     dictKey: 'purchase_method',
     span: 24,
+    onChange: ({ formModel, value }) => {
+      formModel.expireDate = ''
+    }
   },
   {
     label: '竞价截止日期',
@@ -223,7 +220,7 @@ const formConfigs = [
   },
 ];
 
-const pageTitle = '创建二手零部件交易需求'; // Updated page title
+const pageTitle = '创建原厂件库存处理需求'; // Updated page title
 
 const pageData = reactive({
   IdProp: props.IdProp,
