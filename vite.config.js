@@ -37,4 +37,24 @@ export default defineConfig({
     },
     host: '0.0.0.0', // 或者设置为 true
   },
+  build: {
+    rollupOptions: {
+      output: {
+        // manualChunks用于代码分割
+        manualChunks(id) {
+          // 将node_modules中的依赖单独打包
+          if (id.includes('node_modules')) {
+            if (id.includes('vxe-table')) {
+              return 'vxe-table'; // vxe-table打包成一个文件
+            }
+            if (id.includes('ant-design-vue')) {
+              return 'ant-design-vue'; // antdv打包成一个文件
+            }
+            // 其他来自node_modules的依赖打包到vendor chunk
+            return 'vendor';
+          }
+        },
+      },
+    },
+  },
 });
