@@ -9,45 +9,62 @@
             :class="{ 'form-item-full-width-input': field.fieldType === 'textarea' || field.fullWidthInput, 'phoneOrEmail': field.fieldType === 'phone' || field.fieldType === 'email' }">
             <div class="field-with-tips">
               <a-input v-if="field.fieldType === 'input'" v-model:value="internalFormModel[field.field]"
-                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear />
+                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear
+                @change="(...args) => handleEvent('change', field, ...args)"
+                @blur="(...args) => handleEvent('blur', field, ...args)" />
               <a-input-password v-else-if="field.fieldType === 'password'" v-model:value="internalFormModel[field.field]"
-                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear />
+                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear
+                @change="(...args) => handleEvent('change', field, ...args)"
+                @blur="(...args) => handleEvent('blur', field, ...args)" />
 
               <a-input-number v-else-if="field.fieldType === 'number'" v-model:value="internalFormModel[field.field]"
                 :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" style="width: 100%;"
-                :min="field.min" :max="field.max" />
+                :min="field.min" :max="field.max"
+                @change="(...args) => handleEvent('change', field, ...args)"
+                @blur="(...args) => handleEvent('blur', field, ...args)" />
 
               <a-select v-else-if="field.fieldType === 'select'" v-model:value="internalFormModel[field.field]"
                 :placeholder="field.placeholder || `请选择${field.label}`"
                 :options="field.options || selectOptions(field.dictKey)" :mode="field.selectMode"
                 :filter-option="field.remoteSearch ? false : filterOption" :loading="field.loading"
-                :disabled="field.disabled" @change="(v, option) => handleSelectChange(v, field, option)" allow-clear />
+                :disabled="field.disabled"
+                @change="(...args) => handleEvent('change', field, ...args)"
+                @blur="(...args) => handleEvent('blur', field, ...args)"
+                @focus="(...args) => handleEvent('focus', field, ...args)"
+                @search="(...args) => handleEvent('search', field, ...args)"
+                allow-clear />
 
               <a-radio-group v-else-if="field.fieldType === 'radio'" v-model:value="internalFormModel[field.field]"
-                :options="field.options" :disabled="field.disabled" />
+                :options="field.options" :disabled="field.disabled"
+                @change="(...args) => handleEvent('change', field, ...args)" />
 
               <a-date-picker v-else-if="field.fieldType === 'date'" v-model:value="internalFormModel[field.field]"
                 :placeholder="field.placeholder || `请选择${field.label}`"
                 :disabled-date="field.disabledDate || function(e) {return disabledDate(e, field)}"
                 :value-format="field.valueFormat || 'YYYY-MM-DD HH:mm:ss'" :show-time="field.showTime"
-                @change="(v) => handleDateChange(v, field)"
+                @change="(...args) => handleEvent('change', field, ...args)"
                 style="width: 100%;" :disabled="field.disabled" />
 
               <a-range-picker v-else-if="field.fieldType === 'dateRange'" v-model:value="internalFormModel[field.field]"
                 :value-format="field.valueFormat || 'YYYY-MM-DD'" :show-time="field.showTime" style="width: 100%;"
-                :disabled="field.disabled" />
+                :disabled="field.disabled"
+                @change="(...args) => handleEvent('change', field, ...args)" />
 
               <a-textarea v-else-if="field.fieldType === 'textarea'" v-model:value="internalFormModel[field.field]"
                 :placeholder="field.placeholder || `请输入${field.label}`" :rows="field.rows || 4" :disabled="field.disabled"
-                allow-clear :maxlength="field.maxLength" show-count />
+                allow-clear :maxlength="field.maxLength" show-count
+                @change="(...args) => handleEvent('change', field, ...args)"
+                @blur="(...args) => handleEvent('blur', field, ...args)" />
 
               <a-input-number v-else-if="field.fieldType === 'amount'" v-model:value="internalFormModel[field.field]"
                 :formatter="value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
                 :parser="value => value.replace(/\$\s?|(,*)/g, '')"
                 :precision="field.precision !== undefined ? field.precision : 2" style="width: 100%;"
                 :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled"
-                :min="field.min !== undefined ? field.min : 0" />
-              <!-- New Image Upload Field -->
+                :min="field.min !== undefined ? field.min : 0"
+                @change="(...args) => handleEvent('change', field, ...args)"
+                @blur="(...args) => handleEvent('blur', field, ...args)" />
+              <!-- Single Image Upload Field -->
               <div v-else-if="field.fieldType === 'imageUpload'" class="image-upload-container">
                 <a-upload v-model:file-list="internalFormModel[field.field]" :name="field.uploadName || 'file'"
                   list-type="picture-card" class="custom-image-uploader"
@@ -57,6 +74,31 @@
                   @preview="handleImagePreview" :max-count="field.maxCount || 1" :disabled="field.disabled">
                   <div
                     v-if="(!internalFormModel[field.field] || internalFormModel[field.field].length < (field.maxCount || 1))">
+                    <PlusOutlined />
+                    <div style="margin-top: 8px">上传</div>
+                  </div>
+                </a-upload>
+                <div v-if="field.uploadHint" class="upload-hint">{{ field.uploadHint }}</div>
+              </div>
+              <!-- Image Wall Upload Field -->
+              <div v-else-if="field.fieldType === 'imageWall'" class="image-upload-container">
+                <a-upload
+                  v-model:file-list="internalFormModel[field.field]"
+                  :name="field.uploadName || 'file'"
+                  list-type="picture-card"
+                  multiple
+                  class="custom-image-uploader"
+                  :action="uploadUrl"
+                  :before-upload="field.beforeUpload || beforeUpload"
+                  accept="image/*"
+                  :headers="getHeaders()"
+                  :data="{ biz: 'temp' }"
+                  @change="(info) => handleImageUploadChange(info, field)"
+                  @preview="handleImagePreview"
+                  :max-count="field.maxCount"
+                  :disabled="field.disabled"
+                >
+                  <div v-if="!field.maxCount || !internalFormModel[field.field] || internalFormModel[field.field].length < field.maxCount">
                     <PlusOutlined />
                     <div style="margin-top: 8px">上传</div>
                   </div>
@@ -74,10 +116,14 @@
                   :options="internalFormModel['productMainTypeCode'] == 'product_type' ? selectOptions('product_type') : selectOptions('product_type_material')"
                   @change="(v, option) => handleSelectProductTypeChange(v, field, option)" allow-clear />
               </div>
-              <a-input v-else-if="field.fieldType === 'email'" v-model:value="internalFormModel[field.field]" 
-                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear />
-              <a-input v-else-if="field.fieldType === 'phone'" v-model:value="internalFormModel[field.field]" 
-                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear />
+              <a-input v-else-if="field.fieldType === 'email'" v-model:value="internalFormModel[field.field]"
+                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear
+                @change="(...args) => handleEvent('change', field, ...args)"
+                @blur="(...args) => handleEvent('blur', field, ...args)" />
+              <a-input v-else-if="field.fieldType === 'phone'" v-model:value="internalFormModel[field.field]"
+                :placeholder="field.placeholder || `请输入${field.label}`" :disabled="field.disabled" allow-clear
+                @change="(...args) => handleEvent('change', field, ...args)"
+                @blur="(...args) => handleEvent('blur', field, ...args)" />
               <span v-else-if="field.fieldType === 'slot'">
                 <slot :name="field.field" :dataSource="internalFormModel"></slot>
               </span>
@@ -125,10 +171,47 @@ const props = defineProps({
   defaultSpan: { type: Number, default: 12 } // Default to full width for each item in horizontal
 });
 
-const emit = defineEmits(['submit', 'validationFailed', 'fieldChange']);
+const emit = defineEmits(['submit', 'validationFailed', 'fieldChange', 'fieldEvent']);
 
 const formRef = ref(null);
 const internalFormModel = reactive({});
+
+const handleEvent = (eventName, field, ...args) => {
+  const value = args[0];
+
+  // New generic event emit for new `events` prop
+  emit('fieldEvent', {
+    eventName,
+    field: field.field,
+    args,
+    formModel: internalFormModel
+  });
+
+  // New: Support for `events` object
+  if (field.events && typeof field.events[eventName] === 'function') {
+    field.events[eventName](internalFormModel, ...args);
+  }
+
+  // --- Backward Compatibility ---
+  if (eventName === 'change') {
+    const option = field.fieldType === 'select' ? args[1] : undefined;
+
+    // Legacy: `fieldChange` emit
+    emit('fieldChange', { field: field.field, value, formModel: internalFormModel, option });
+
+    // Legacy: `onChange` prop
+    if (typeof field.onChange === 'function') {
+      const payload = { value, field, form: internalFormModel, formModel: internalFormModel, option };
+      field.onChange(payload);
+    }
+
+    // Legacy: hardcoded logic from original handleDateChange
+    if (field.fieldType === 'date' && field.field === 'createTime') {
+      internalFormModel['expireDate'] = '';
+    }
+  }
+};
+
 
 const getFileName = (path) => {
   if (path.lastIndexOf('\\') >= 0) {
@@ -158,6 +241,22 @@ watch(() => props.initialModel, (newModel) => {
           },
         }]
       }
+    } else if (field.fieldType === 'imageWall') {
+      if (modelToAssign[field.field] && typeof modelToAssign[field.field] === 'string') {
+        const urls = modelToAssign[field.field].split(',').filter(url => url);
+        modelToAssign[field.field] = urls.map(url => ({
+          uid: getRandom(10),
+          name: "图片",
+          status: 'done',
+          url: getFileAccessHttpUrl(url),
+          response: {
+            status: 'history',
+            message: url,
+          },
+        }));
+      } else {
+        modelToAssign[field.field] = []; // Initialize as empty array
+      }
     }
   });
   Object.assign(internalFormModel, modelToAssign);
@@ -185,6 +284,11 @@ const onFinish = (values) => {
       } else if ((field.maxCount || 1) === 1 && formDataToSubmit[field.field].length === 0) {
         formDataToSubmit[field.field] = null; // Or empty string, depending on backend
       }
+    } else if (field.fieldType === 'imageWall' && Array.isArray(formDataToSubmit[field.field])) {
+      formDataToSubmit[field.field] = formDataToSubmit[field.field]
+        .filter(file => file.status === 'done' && (file.response || file.url))
+        .map(file => file.response?.message || file.url)
+        .join(',');
     }
   });
   emit('submit', formDataToSubmit);
@@ -194,23 +298,6 @@ const onFinishFailed = (errorInfo) => {
   console.log('Form Submission Failed:', errorInfo);
   emit('validationFailed', errorInfo);
 };
-
-const handleSelectChange = (value, fieldConfig, option) => {
-  // Emit a generic fieldChange event
-  emit('fieldChange', { field: fieldConfig.field, value, option, formModel: internalFormModel });
-  if (fieldConfig.onChange) {
-    fieldConfig.onChange({ value, field: fieldConfig, form: internalFormModel, option });
-  }
-};
-const handleDateChange = (value, fieldConfig) => {
-  emit('fieldChange', { field: fieldConfig.field, value, formModel: internalFormModel });
-  if (fieldConfig.field == 'createTime') {
-    internalFormModel['expireDate'] = '';
-  }
-  if (fieldConfig.onChange) {
-    fieldConfig.onChange({ value, field: fieldConfig, form: internalFormModel });
-  }
-}
 
 // --- Image Upload Specific Logic ---
 const previewVisible = ref(false);
@@ -255,11 +342,20 @@ const handleImageUploadChange = (info, fieldConfig) => {
       }
     } else { // Only show success if response is not an error
       message.success(`${info.file.name} 上传成功`);
+      // For newly uploaded files, the response from the server is what we need.
+      // We need to update the file object in the list to include the server URL in its response.
+      const successIndex = internalFormModel[fieldConfig.field].findIndex((item) => item.uid === info.file.uid);
+      if (successIndex !== -1) {
+        internalFormModel[fieldConfig.field][successIndex].response = info.file.response;
+        internalFormModel[fieldConfig.field][successIndex].url = getFileAccessHttpUrl(info.file.response.message);
+      }
     }
   } else if (info.file.status === 'error') {
     // fieldConfig.loading = false;
     message.error(`${info.file.name} 上传失败.`);
   }
+  // Also trigger the generic event handler
+  handleEvent('change', fieldConfig, info);
 };
 // --- End Image Upload Logic ---
 
@@ -270,7 +366,7 @@ const resetFields = () => {
   // Re-initialize based on props.initialModel to ensure deep reactivity and correct fileList reset
   const modelToAssign = JSON.parse(JSON.stringify(props.initialModel || {}));
   props.formConfig.forEach(field => {
-    if (field.fieldType === 'imageUpload') {
+    if (field.fieldType === 'imageUpload' || field.fieldType === 'imageWall') {
       if (!modelToAssign[field.field] || !Array.isArray(modelToAssign[field.field])) {
         modelToAssign[field.field] = [];
       }
@@ -289,6 +385,11 @@ const getAllData = () => {
       } else {
         paranms[fielditem.field] = null
       }
+    } else if (fielditem.fieldType === 'imageWall' && Array.isArray(paranms[fielditem.field])) {
+        paranms[fielditem.field] = paranms[fielditem.field]
+            .filter(file => file.status === 'done' && (file.response || file.url))
+            .map(file => file.response?.message || file.url) 
+            .join(',');
     }
   });
   return paranms
@@ -321,9 +422,11 @@ const handleSelectProductMainTypeChange = (v, field, option) => {
   internalFormModel['productMainTypeName'] = option?.label
   internalFormModel['productType'] = ''
   internalFormModel['productTypeName'] = ''
+  handleEvent('change', field, v, option);
 }
 const handleSelectProductTypeChange = (v, field, option) => {
   internalFormModel['productTypeName'] = option?.label
+  handleEvent('change', field, v, option);
 }
 
 // --- 核心修改：校验逻辑 ---
@@ -468,24 +571,27 @@ defineExpose({ validate, resetFields, clearValidate, getAllData, formModel: inte
   // Specific for image upload to match design
   .image-upload-container {
     .custom-image-uploader {
-      :deep(.ant-upload.ant-upload-select-picture-card) {
-        width: 120px; // Width of the upload box
-        height: 120px; // Height of the upload box
-        margin: 0; // Remove default margins if any
-        background-color: #FAFAFA; // Light gray background for uploader
-        border: 1px dashed #D9D9D9; // Dashed border
-        border-radius: @border-radius-sm;
+      // Unify size and margin for both the upload button and the uploaded image items
+      :deep(.ant-upload-select-picture-card),
+      :deep(.ant-upload-list-picture-card .ant-upload-list-item-container) { // More specific selector for item
+        width: 120px !important;
+        height: 120px !important;
+        margin: 0 8px 8px 0 !important;
+      }
+
+      // Specific styles for the upload button, if needed
+      :deep(.ant-upload-select-picture-card) {
+        background-color: #FAFAFA;
+        border: 1px dashed #D9D9D9;
 
         &:hover {
           border-color: @primary-color;
         }
       }
-
-      // Style for already uploaded image thumbnail in list
-      :deep(.ant-upload-list-picture-card-container) {
-        width: 120px;
-        height: 120px;
-        margin: 0;
+      
+      // Ensure the item itself fills the container
+      :deep(.ant-upload-list-item) {
+        padding: 0;
       }
 
       :deep(.ant-upload-list-item-actions .anticon) {

@@ -95,10 +95,11 @@ const formConfigs = [
     field: 'priceIncludingTax',
     fieldType: 'number',
     span: 24,
+ 
     onChange: ({ formModel, value }) => {
       const v = Number(value) || 0;
       formModel.priceExcludingTax = (v / (1 + (formModel.tax || 0) / 100)).toFixed(2);
-    },
+    }
   },
   {
     label: '税率%',
@@ -167,7 +168,7 @@ const formConfigs = [
   {
     label: '缩略图链接',
     field: 'imageUrl',
-    fieldType: 'image-upload',
+    fieldType: 'imageWall',
     span: 24,
     uploadUrl: '/apm/sys/file/upload/A',
   },

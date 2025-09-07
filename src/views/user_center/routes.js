@@ -31,10 +31,11 @@ const OfflineEventEditPage = () => import('./views/publications/OfflineEvent/edi
 
 const oemPartsPage = () =>import('./views/publications/secondTrade/oemParts/list.vue'); 
 const oemPartsPageDetail = () => import('./views/publications/secondTrade/oemParts/detail.vue');
+const oemPartsPageEdit = () => import('./views/publications/secondTrade/oemParts/edit.vue');
 
 const usedEqpTrade = () =>import('./views/publications/secondTrade/usedEqpTrade/list.vue'); 
 const usedEqpTradeDetail = () => import('./views/publications/secondTrade/usedEqpTrade/detail.vue');
-
+const usedEqpTradeEdit = () => import('./views/publications/secondTrade/usedEqpTrade/edit.vue');
 
 const joinDomesticSourcing = () => import('./views/join/DomesticSourcing/list.vue'); 
 const joinDomesticSourcingDetailPage = () => import('./views/join/DomesticSourcing/detail.vue'); 
@@ -172,6 +173,11 @@ const userCenterRoutes = [
         meta: { title: '原厂件库存处理详情', roles: ['apm-vip', 'apm-vip-inspection'] }
       },
       {
+        path: 'oemParts/create',
+        component: oemPartsPageEdit,
+        meta: { title: '原厂件库存处理', roles: ['apm-vip', 'apm-vip-inspection'] }
+      },
+      {
         path: 'usedEqpTrade',
         component: usedEqpTrade,
         meta: { title: '二手设备交易', roles: ['apm-vip', 'apm-vip-inspection'] }
@@ -181,6 +187,11 @@ const userCenterRoutes = [
         props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
         component: usedEqpTradeDetail,
         meta: { title: '二手设备交易详情', roles: ['apm-vip', 'apm-vip-inspection'] }
+      },
+      {
+        path: 'usedEqpTrade/create',
+        component: usedEqpTradeEdit,
+        meta: { title: '二手设备交易', roles: ['apm-vip', 'apm-vip-inspection'] }
       }
     ]
   },
