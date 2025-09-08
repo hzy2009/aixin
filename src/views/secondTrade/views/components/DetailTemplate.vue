@@ -40,8 +40,17 @@
             </button>
           </div>
           
-          <div class="main-image-wrapper">
+          <div class="main-image-wrapper" @click="showImageModal">
             <img :src="mainImage" :alt="title" class="main-image" />
+            <div class="zoom-icon" @mouseenter="showZoomHint" @mouseleave="hideZoomHint">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                <line x1="11" y1="8" x2="11" y2="14"></line>
+                <line x1="8" y1="11" x2="14" y2="11"></line>
+              </svg>
+              <div class="zoom-hint" :class="{ visible: isZoomHintVisible }">点击放大</div>
+            </div>
           </div>
         </div>
 
@@ -123,11 +132,26 @@
     </div>
 
     <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" title="填写信息购买" :actionText="actionText" :customFields="customFields"></PhoneAndEmailModal>
+
+    <!-- 图片放大弹窗 -->
+    <Teleport to="body">
+      <div v-if="isImageModalVisible" class="image-modal" @click="closeImageModal">
+        <div class="modal-content" @click.stop>
+          <img :src="mainImage" :alt="title" class="modal-image" />
+          <button class="close-button" @click="closeImageModal">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Tag as ATag, InputNumber as AInputNumber, Button as AButton, message } from 'ant-design-vue';
 import defaultImagePlaceholder from '@/assets/images/fallback/detailFall.jpg'; // 准备一个占位图
 import { safeGet } from '@/utils/index'; // 引入我们自己的工具函数
@@ -156,6 +180,9 @@ const purchaseQuantity = ref(1);
 const isSubmitting = ref(false); // 用于按钮加载状态
 const currentImageIndex = ref(0); // 当前选中的图片索引
 const thumbnailStartIndex = ref(0); // 缩略图起始索引
+const isImageModalVisible = ref(false); // 图片放大弹窗可见性
+const modalElement = ref(null); // 弹窗元素引用
+const isZoomHintVisible = ref(false); // 放大提示文字可见性
 const actionText = computed(() => {
    const purchaseMethodMap = {
       FIXED_PRICE: '立即购买',
@@ -530,6 +557,42 @@ const handleTaxPrice = (data) => {
   }
   return txt ? `（${txt}）` : ''
 };
+
+// 图片放大功能
+const showImageModal = () => {
+  // 禁止页面滚动
+  document.body.style.overflow = 'hidden';
+  isImageModalVisible.value = true;
+};
+
+const closeImageModal = () => {
+  // 恢复页面滚动
+  document.body.style.overflow = '';
+  isImageModalVisible.value = false;
+};
+
+// 组件挂载时创建弹窗元素
+onMounted(() => {
+  modalElement.value = document.createElement('div');
+  modalElement.value.id = 'image-modal-container';
+  document.body.appendChild(modalElement.value);
+});
+
+// 组件卸载时移除弹窗元素
+onUnmounted(() => {
+  if (modalElement.value && modalElement.value.parentNode) {
+    modalElement.value.parentNode.removeChild(modalElement.value);
+  }
+});
+
+// 放大提示文字控制
+const showZoomHint = () => {
+  isZoomHintVisible.value = true;
+};
+
+const hideZoomHint = () => {
+  isZoomHintVisible.value = false;
+};
 </script>
 
 <style scoped lang="less">
@@ -541,6 +604,148 @@ const handleTaxPrice = (data) => {
   .product-detail-wrapper{
     background-color: @background-color-base;
     padding: 20px;
+  }
+}
+
+// 图片放大弹窗样式
+.image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  cursor: pointer;
+  overflow: hidden;
+
+  .modal-content {
+    position: relative;
+    width: 80vw;
+    height: 80vh;
+    max-width: 80vw;
+    max-height: 80vh;
+    cursor: default;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    .modal-image {
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 4px;
+      display: block;
+      flex-shrink: 0;
+      flex-grow: 0;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease;
+      z-index: 10000;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+      }
+
+      svg {
+        color: white;
+      }
+    }
+  }
+}
+
+// 响应式调整
+@media (max-width: 768px) {
+  .image-modal {
+    .modal-content {
+      width: 90vw;
+      height: 70vh;
+      max-width: 90vw;
+      max-height: 70vh;
+      
+      .modal-image {
+        max-width: 100%;
+        max-height: 100%;
+      }
+      
+      .close-button {
+        top: 5px;
+        right: 5px;
+      }
+    }
+  }
+}
+
+// 主图上的放大镜图标
+.main-image-wrapper {
+  position: relative;
+  cursor: pointer;
+
+  .zoom-icon {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+    cursor: pointer;
+
+    svg {
+      color: white;
+    }
+
+    // 右下角提示文字
+    .zoom-hint {
+      position: absolute;
+      bottom: 35px;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 10;
+      white-space: nowrap;
+      pointer-events: none;
+      
+      &.visible {
+        opacity: 1;
+      }
+    }
+  }
+
+  &:hover {
+    .zoom-icon {
+      opacity: 1;
+    }
   }
 }
 
