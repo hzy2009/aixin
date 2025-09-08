@@ -217,13 +217,18 @@
     }
 }
 
-.operations-btn {
-    margin-right: 10px;
-}
-
-.table-operations {
+.table-operations-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 10px 20px;
     background-color: #fff;
+
+    .table-operations-left,
+    .table-operations-right {
+        display: flex;
+        gap: 10px; // Spacing between buttons
+    }
 
     .primary-btn {
         background-color: @primary-color; // Ensure it's the brand red
@@ -241,12 +246,6 @@
         border-color: #EAEAEA;
         border-radius: 4px;
         color: #9AA0A3;
-
-        // &:hover {
-        //     background-color: darken(#fff, 10%);
-        //     border-color: darken(#EAEAEA, 10%);
-        //     color: #fff;
-        // }
     }
 
     .operations-btn {

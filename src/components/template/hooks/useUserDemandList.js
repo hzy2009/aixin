@@ -206,6 +206,31 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     });
   }
 
+  async function handleFileUpload(uploadUrl, file) {
+    if (!uploadUrl || !file) {
+        message.error('上传参数错误');
+        return;
+    }
+    isLoading.value = true;
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+        const res = await defHttp.upload({ url: uploadUrl, data: formData });
+        if (res.success) {
+            message.success(res.message || '上传成功！');
+            loadTableData(); // Refresh the list
+        } else {
+            message.error(res.message || '上传失败。');
+        }
+    } catch (error) {
+        console.error('上传失败:', error);
+        // Error message is already handled by the axios interceptor
+    } finally {
+        isLoading.value = false;
+    }
+  }
+
   onMounted(() => {
     if (userStatCardVisible) loadStats();
     loadTableData();
@@ -231,5 +256,6 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     handleExportXls,
     clearfilters,
     handleDelete,
+    handleFileUpload, // Add this line
   };
 }

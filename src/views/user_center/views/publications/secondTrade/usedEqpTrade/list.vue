@@ -60,6 +60,8 @@ const filterConfigForPage = reactive([
 const pageData = ref({
   url: {
     list: '/apm/apmDeviceSecondhand/list/owner',
+    importExcel: '/apm/apmDeviceSecondhand/importExcel',
+    exportXls: '/apm/apmDeviceSecondhand/exportXls',
   },
   tableColumns,
   actions,
@@ -68,6 +70,26 @@ const pageData = ref({
     {
       title: '创建需求',
       clickFn: () => router.push('/user/published/usedEqpTrade/create'),
+      type: 'primary'
+    },
+    {
+      title: '上传数据',
+      btnType: 'upload',
+      url: '/apm/apmDeviceSecondhand/importExcel',
+      type: 'primary'
+    },
+    {
+      title: '下载数据模版',
+      btnType: 'upload',
+      url: '/apm/apmDeviceSecondhand/downloadTpl',
+      type: 'default'
+    },
+  ],
+  tableOperationsRight: [
+    {
+      title: '导出数据清单',
+      btnType: 'exportXls',
+      url: '/apm/apmDeviceSecondhand/exportXls',
       type: 'primary'
     }
   ]

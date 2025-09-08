@@ -46,18 +46,32 @@
                 <span>个{{ searchTitle }}</span>
             </div>
         </div>
-        <div class="table-operations" v-if="tableOperations && tableOperations.length > 0">
-            <a-button
-                v-for="(Operations, index) in tableOperations"
-                :key="index"
-                @click="operationsClick(Operations)" 
-                :type="Operations.type"
-                :class="{'primary-btn': Operations.type == 'primary', 'delecte-btn': Operations.type == 'delete'}" 
-                class="operations-btn">
-                {{ Operations.title }}
-            </a-button>
+        <div class="table-operations-bar">
+            <div class="table-operations-left" v-if="tableOperations && tableOperations.length > 0">
+                <a-button
+                    v-for="(Operations, index) in tableOperations"
+                    :key="index"
+                    @click="operationsClick(Operations)" 
+                    :type="Operations.type"
+                    :class="{'primary-btn': Operations.type == 'primary', 'delecte-btn': Operations.type == 'delete'}" 
+                    class="operations-btn">
+                    {{ Operations.title }}
+                </a-button>
+            </div>
+            <div class="table-operations-right" v-if="tableOperationsRight && tableOperationsRight.length > 0">
+                <a-button
+                    v-for="(Operations, index) in tableOperationsRight"
+                    :key="index"
+                    @click="operationsClick(Operations)" 
+                    :type="Operations.type"
+                    :class="{'primary-btn': Operations.type == 'primary', 'delecte-btn': Operations.type == 'delete'}" 
+                    class="operations-btn">
+                    {{ Operations.title }}
+                </a-button>
+            </div>
         </div>
         <slot v-if="$slots['tableCustomOperations']" name="tableCustomOperations" :url="url" :dataSource="tableData" :loadTableData="loadTableData"></slot>
+        <input type="file" ref="uploadInputRef" @change="handleFileSelect" accept=".xlsx, .xls" style="display: none" />
         <slot name="content" :dataSource="tableData" :paginationConfig="pagination" :handleTablePaginationChange="handleTablePaginationChange" :loading="isLoading">
             <div class="results-table-section">
                 <!-- VXE-GRID REPLACEMENT -->
@@ -104,7 +118,6 @@ import detailIcon from '@/assets/images/icon-detail.png';
 import delIcon from '@/assets/images/icon-delete.png';
 
 import { usePermissions } from '@/utils/usePermissions';
-import { loading } from 'vxe-pc-ui';
 const { withPermission, hasPermission } = usePermissions();
 
 const authStore = useAuthStore();
@@ -112,6 +125,9 @@ const modalStore = useModalStore();
 const router = useRouter();
 
 const userFilterAccordionRef = ref(null);
+const uploadInputRef = ref(null);
+const currentUploadBtn = ref(null);
+
 const props = defineProps({
     pageData: {
         type: Object,
@@ -122,7 +138,7 @@ const props = defineProps({
 const { 
     url, filterConfigForPage, actions, otherParams,
     statusDictKey, userStatCardVisible, showBanner = false, pageTitle,
-    tableOperations = [], dateRangeConfig = [], searchTitle, listPageisPadding = true,
+    tableOperations = [], tableOperationsRight = [], dateRangeConfig = [], searchTitle, listPageisPadding = true,
     userSearchTitle = true, requiredRoles = [], isUseFilterDelete, initialPageSize, initialFilters
 } = props.pageData;
 
@@ -132,7 +148,7 @@ const tableColumns = computed(() => props.pageData.tableColumns || []);
 const {
     selectOptions, stats, currentFilters, search, isLoading, tableData,searchParams,
     pagination, handleFiltersChange, triggerSearch, handleTablePaginationChange,
-    getStatusTagColor, handleStatClick, handleExportXls, clearfilters,handleDelete, loadTableData
+    getStatusTagColor, handleStatClick, handleExportXls, clearfilters,handleDelete, loadTableData, handleFileUpload
 } = useUserDemandList({
     otherParams, url, statusDictKey, userStatCardVisible, initialPageSize
 });
@@ -246,11 +262,42 @@ const operationsClick = (btn) => {
             });
         } else if (btn.btnType == 'delete') {
             triggerSearch({ deleteFlag: 1 });
+        } else if (btn.btnType === 'upload') {
+            currentUploadBtn.value = btn;
+            uploadInputRef.value?.click();
         } else {
             btn.clickFn();
         }
     } else {
         modalStore.showLogin();
+    }
+};
+
+const handleFileSelect = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const allowedTypes = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+    if (!allowedTypes.includes(file.type)) {
+        message.error('请选择.xls或.xlsx格式的Excel文件。');
+        // Reset the input value to allow selecting the same file again after an error
+        if (uploadInputRef.value) uploadInputRef.value.value = '';
+        return;
+    }
+
+    const uploadUrl = currentUploadBtn.value?.url;
+    if (!uploadUrl) {
+        message.error('上传URL未配置。');
+        // Reset the input value
+        if (uploadInputRef.value) uploadInputRef.value.value = '';
+        return;
+    }
+
+    await handleFileUpload(uploadUrl, file);
+
+    // Reset the input so the user can upload the same file again
+    if (uploadInputRef.value) {
+        uploadInputRef.value.value = '';
     }
 };
 

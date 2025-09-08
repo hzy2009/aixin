@@ -53,6 +53,8 @@ const filterConfigForPage = reactive([
 const pageData = ref({
   url: {
     list: '/apm/apmDeviceOrigin/list/owner',
+    importExcel: '/apm/apmDeviceOrigin/importExcel',
+    exportXls: '/apm/apmDeviceOrigin/exportXls',
   },
   filterConfigForPage,
   tableColumns,
@@ -61,6 +63,26 @@ const pageData = ref({
     {
       title: '创建需求',
       clickFn: () => router.push('/user/published/oemParts/create'),
+      type: 'primary'
+    },
+    {
+      title: '上传数据',
+      btnType: 'upload',
+      url: '/apm/apmDeviceOrigin/importExcel',
+      type: 'primary'
+    },
+    {
+      title: '下载数据模版',
+      btnType: 'upload',
+      url: '/apm/apmDeviceOrigin/downloadTpl',
+      type: 'default'
+    },
+  ],
+  tableOperationsRight: [
+    {
+      title: '导出数据清单',
+      btnType: 'exportXls',
+      url: '/apm/apmDeviceOrigin/exportXls',
       type: 'primary'
     }
   ]
