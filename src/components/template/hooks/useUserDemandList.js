@@ -67,7 +67,12 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     stats.value = await fetchStatsAPI();
   }
 
-  async function loadTableData(propsParans = {}) {
+  async function loadTableData(options = {}) {
+    const { resetPage = false, params: extraParams = {} } = options;
+    if (resetPage) {
+        pagination.current = 1;
+    }
+
     isLoading.value = true;
     try {
       const params = {
@@ -77,7 +82,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
         search: search.value,
         ...statusFilter.value,
         ...otherParams,
-        ...propsParans
+        ...extraParams
       };
       const response = await defHttp.get({url: url.list, params});
       tableData.value = response.result.records || [];
@@ -96,8 +101,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
       currentFilters.value['skillAreaCode'] = `,${currentFilters.value.skillAreaCode_MultiString},`
       delete currentFilters.value.skillAreaCode_MultiString
     }
-    pagination.current = 1; 
-    loadTableData();
+    loadTableData({ resetPage: true });
   };
   const handleStatClick = (statusKey) => {
     const cacaedStatus = currentFilters.value.statusCode;
@@ -106,8 +110,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
     } else {
       currentFilters.value = { ...currentFilters.value,statusCode: statusKey?.value };
     }
-    pagination.current = 1; 
-    loadTableData();
+    loadTableData({ resetPage: true });
   };
 
   const handleSearchTermChange = (newSearchTerm) => {
@@ -115,9 +118,8 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
   };
 
   const triggerSearch = (params = {}) => {
-    pagination.current = 1;
     searchParams.value = params;
-    loadTableData(params);
+    loadTableData({ resetPage: true, params: params });
   };
 
   // This function remains unchanged and works perfectly with the adapter in ListPage.vue
@@ -189,8 +191,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
   const clearfilters = () => {
     currentFilters.value = {};
     search.value = '';
-    pagination.current = 1;
-    loadTableData();
+    loadTableData({ resetPage: true });
   }
   const handleDelete = ({id, statusCode, statusName}) => {
     if (statusCode !== 'submit') {
@@ -219,7 +220,7 @@ export function useUserDemandList({otherParams, initialPageSize = 10, statusMapp
         const res = await defHttp.upload({ url: uploadUrl, data: formData });
         if (res.success) {
             message.success(res.message || '上传成功！');
-            loadTableData(); // Refresh the list
+            loadTableData({ resetPage: true }); // Refresh the list
         } else {
             message.error(res.message || '上传失败。');
         }

@@ -159,6 +159,52 @@ filterConfigForPage && filterConfigForPage.forEach(item => {
     }
 });
 const gridRef = ref();
+
+const renderDeleteAction = (row, action, i) => {
+    const isDisabled = row.statusCode !== 'submit';
+    return (
+        <a-popconfirm 
+            disabled={isDisabled} 
+            title="是否确认删除" 
+            ok-text="是" 
+            cancel-text="否" 
+            onConfirm={() => handleDelete(row)}
+        >
+            <span class="action-item">
+                <span><img src={delIcon} alt="删除" class="action-icon" /></span>
+                <AButton 
+                    type="link" 
+                    class={{ 'action-link': true, 'not-allowed': isDisabled }} 
+                    disabled={isDisabled} 
+                    key={i}
+                >
+                    {action.formatText ? action.formatText(row) : action.text}
+                </AButton>
+            </span>
+        </a-popconfirm>
+    );
+};
+
+const renderDefaultAction = (row, action, i) => {
+    return (
+        <span class="action-item" onClick={() => handleActionClick(row, action)}>
+            <span><img src={detailIcon} alt="详情" class="action-icon" /></span>
+            <AButton type="link" class="action-link" key={i}>
+                {action.formatText ? action.formatText(row) : action.text}
+            </AButton>
+        </span>
+    );
+};
+
+const renderActionCell = ({ row }) => {
+    return actions.map((action, i) => {
+        if (action.type === 'del') {
+            return renderDeleteAction(row, action, i);
+        }
+        return renderDefaultAction(row, action, i);
+    });
+};
+
 // --- VXE-TABLE ADAPTATION ---
 
 const multiDateRangePickerRef = ref();
@@ -166,27 +212,15 @@ const selectedRowKeys = ref([]);
 
 // 1. Adapt columns for vxe-table
 const vxeTableColumns = computed(() => {
-    const columns = [
-        // { type: 'checkbox', width: 50, fixed: 'left' },
-    ];
+    const columns = [];
     tableColumns.value.forEach(col => {
-        const vxeCol = {
-            ...col
-        };
+        const vxeCol = { ...col };
+
         if (col.fieldType === 'select' && col.dictKey) {
-            vxeCol.formatter = ({ cellValue }) => {
-                if (getDictOptions(col.dictKey)) {
-                    return getDictOptions(col.dictKey).find(option => option.value === cellValue)?.label;
-                } else {
-                    return '';
-                }
-            }
+            vxeCol.formatter = ({ cellValue }) => getDictOptions(col.dictKey)?.find(option => option.value === cellValue)?.label || '';
         } else if (col.fieldType === 'date') {
-            vxeCol.formatter = ({ cellValue }) => {
-                return cellValue ? formatDate(cellValue) : '-';
-            }
-        }
-        else if (col.key === 'statusCode') {
+            vxeCol.formatter = ({ cellValue }) => cellValue ? formatDate(cellValue) : '-';
+        } else if (col.key === 'statusCode') {
             vxeCol.slots = {
                 default: ({ row }) => (
                     <ATag color={getStatusTagColor(row.sourcingStatus)} class="status-tag">
@@ -195,31 +229,9 @@ const vxeTableColumns = computed(() => {
                 )
             };
         } else if (col.key === 'actions') {
-            vxeCol.slots = {
-                default: ({ row }) => (
-                    actions.map((action, i) => (
-                        action.type == 'del' ? 
-                        <a-popconfirm disabled={(row.statusCode != 'submit')} title="是否确认删除" ok-text="是" cancel-text="否" onConfirm={()=> {
-                                handleDelete(row)
-                            }} >
-                            <span class="action-item">
-                                <span><img src={ delIcon} alt="" class="action-icon" /></span>
-                                <AButton type="link" class="action-link" class={ {'not-allowed': row.statusCode != 'submit'}} disabled={(row.statusCode != 'submit')} key={i} >
-                                    {action.formatText ? action.formatText(row) : action.text}
-                                </AButton>
-                            </span>
-                         </a-popconfirm>
-                         : 
-                        <span class="action-item" onClick={() => handleActionClick(row, action)}>
-                            <span><img src={ detailIcon } alt="" class="action-icon" /></span>
-                            <AButton type="link"  class="action-link" key={i}>
-                                {action.formatText ? action.formatText(row) : action.text}
-                            </AButton>
-                        </span>
-                    ))
-                )
-            };
+            vxeCol.slots = { default: renderActionCell };
         }
+        
         columns.push(vxeCol);
     });
     return columns;
