@@ -78,7 +78,8 @@ const handleCardClick = () => {
 };
 
 const getImgUrl = (url) => {
-  return url ? getFileAccessHttpUrl(url) : defaultPlaceholder
+  const path = url ? url.split(',')[0] : '';
+  return path ? getFileAccessHttpUrl(path) : defaultPlaceholder
 }
 
 </script>

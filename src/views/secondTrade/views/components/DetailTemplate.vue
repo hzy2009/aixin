@@ -227,17 +227,17 @@ const mockImages = [
 
 // 图片列表处理
 const imageList = computed(() => {
-  const productImageList = extractData({
-    field: 'imageUrlList',
+  const imageUrl = extractData({
+    field: 'imageUrl',
     defaultValue: []
   });
-  
+  const productImageList = imageUrl.length > 0 ? imageUrl.split(',') : [];
   if (Array.isArray(productImageList) && productImageList.length > 0) {
     return productImageList.map(url => getFileAccessHttpUrl(url));
   }
   
   // 如果没有产品图片，使用mock数据
-  return mockImages;
+  return productImageList;
 });
 
 const mainImage = computed(() => {
