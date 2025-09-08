@@ -4,6 +4,42 @@
       <!-- 1. Top Section: Image and Purchase Info -->
       <div class="product-header-section">
         <div class="product-image-gallery">
+          <div class="thumbnail-container" v-if="imageList.length > 1">
+            <button 
+              class="thumbnail-nav-btn prev"
+              :class="{ disabled: thumbnailStartIndex === 0 }"
+              @click="scrollThumbnails('up')"
+              :disabled="thumbnailStartIndex === 0"
+            >
+              <svg width="12" height="8" viewBox="0 0 12 8" fill="currentColor">
+                <path d="M6 0L0 6h3v2h6V6h3L6 0z"/>
+              </svg>
+            </button>
+            
+            <div class="thumbnail-images">
+              <div 
+                v-for="(image, index) in visibleThumbnails" 
+                :key="thumbnailStartIndex + index"
+                class="thumbnail-item"
+                :class="{ active: currentImageIndex === thumbnailStartIndex + index }"
+                @click="selectImage(thumbnailStartIndex + index)"
+              >
+                <img :src="image" :alt="`缩略图 ${thumbnailStartIndex + index + 1}`" />
+              </div>
+            </div>
+            
+            <button 
+              class="thumbnail-nav-btn next"
+              :class="{ disabled: thumbnailStartIndex + 4 >= imageList.length }"
+              @click="scrollThumbnails('down')"
+              :disabled="thumbnailStartIndex + 4 >= imageList.length"
+            >
+              <svg width="12" height="8" viewBox="0 0 12 8" fill="currentColor">
+                <path d="M6 8l6-6H9V0H3v2H0l6 6z"/>
+              </svg>
+            </button>
+          </div>
+          
           <div class="main-image-wrapper">
             <img :src="mainImage" :alt="title" class="main-image" />
           </div>
@@ -118,6 +154,8 @@ const props = defineProps({
 
 const purchaseQuantity = ref(1);
 const isSubmitting = ref(false); // 用于按钮加载状态
+const currentImageIndex = ref(0); // 当前选中的图片索引
+const thumbnailStartIndex = ref(0); // 缩略图起始索引
 const actionText = computed(() => {
    const purchaseMethodMap = {
       FIXED_PRICE: '立即购买',
@@ -173,10 +211,61 @@ const extractData = (config) => {
 };
 const isEdit = computed(() => props.pageConfig.pageState == 'edit');
 const title = computed(() => extractData(props.pageConfig.title));
-const mainImage = computed(() => {
-  const imageUrl = extractData(props.pageConfig.mainImage);
-  return imageUrl ? getFileAccessHttpUrl(imageUrl) : defaultImagePlaceholder
+// Mock数据 - 10条测试图片数据
+const mockImages = [
+  defaultImagePlaceholder,
+  props.product.imageUrl,
+  defaultImagePlaceholder,
+  defaultImagePlaceholder,
+  defaultImagePlaceholder,
+  defaultImagePlaceholder,
+  defaultImagePlaceholder,
+  defaultImagePlaceholder,
+  defaultImagePlaceholder,
+  defaultImagePlaceholder,
+];
+
+// 图片列表处理
+const imageList = computed(() => {
+  const productImageList = extractData({
+    field: 'imageUrlList',
+    defaultValue: []
+  });
+  
+  if (Array.isArray(productImageList) && productImageList.length > 0) {
+    return productImageList.map(url => getFileAccessHttpUrl(url));
+  }
+  
+  // 如果没有产品图片，使用mock数据
+  return mockImages;
 });
+
+const mainImage = computed(() => {
+  if (imageList.value.length > 0) {
+    return imageList.value[currentImageIndex.value];
+    // return imageUrl ? getFileAccessHttpUrl(imageUrl) : defaultImagePlaceholder
+  }
+  return defaultImagePlaceholder;
+});
+
+// 计算可见的缩略图（最多4个）
+const visibleThumbnails = computed(() => {
+  return imageList.value.slice(thumbnailStartIndex.value, thumbnailStartIndex.value + 4);
+});
+
+// 选择图片
+const selectImage = (index) => {
+  currentImageIndex.value = index;
+};
+
+// 缩略图翻页
+const scrollThumbnails = (direction) => {
+  if (direction === 'up' && thumbnailStartIndex.value > 0) {
+    thumbnailStartIndex.value = Math.max(0, thumbnailStartIndex.value - 4);
+  } else if (direction === 'down' && thumbnailStartIndex.value + 4 < imageList.value.length) {
+    thumbnailStartIndex.value = Math.min(imageList.value.length - 4, thumbnailStartIndex.value + 4);
+  }
+};
 const tags = computed(() => {
   if (!Array.isArray(props.pageConfig.tags)) return [];
   
@@ -462,8 +551,90 @@ const handleTaxPrice = (data) => {
 }
 
 .product-image-gallery {
-  width: 400px;
-  flex-shrink: 0;
+  display: flex;
+  gap: 12px;
+  
+  .thumbnail-container {
+    width: 80px;
+    height: 400px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    .thumbnail-nav-btn {
+      width: 80px;
+      height: 24px;
+      background-color: #f5f5f5;
+      border: 1px solid #9AA0A3;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: #666;
+      flex-shrink: 0;
+      
+      &:hover:not(.disabled) {
+        background-color: #e6f7ff;
+        border-color: @primary-color;
+        color: @primary-color;
+      }
+      
+      &.disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+        background-color: #f5f5f5;
+      }
+      
+      svg {
+        width: 12px;
+        height: 8px;
+      }
+      
+      &.prev {
+        margin-bottom: 6px;
+      }
+      
+      &.next {
+        margin-top: 6px;
+      }
+    }
+    
+    .thumbnail-images {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      
+      .thumbnail-item {
+        width: 80px;
+        height: 80px;
+        border: 1px solid #EAEAEA;
+        border-radius: 4px;
+        cursor: pointer;
+        overflow: hidden;
+        transition: border-color 0.3s ease;
+        
+        &.active {
+          border-color: @primary-color;
+        }
+        
+        &:hover {
+          border-color: @primary-color;
+          opacity: 0.8;
+        }
+        
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          background-color: #FAFAFA;
+        }
+      }
+    }
+  }
+  
   .main-image-wrapper {
     width: 400px;
     height: 400px;
@@ -472,6 +643,7 @@ const handleTaxPrice = (data) => {
     display: flex;
     align-items: center;
     justify-content: center;
+    
     img.main-image {
       max-width: 100%;
       max-height: 100%;
