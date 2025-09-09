@@ -58,19 +58,10 @@ const authStore = useAuthStore();
 
 
 const handlePurchaseClick = (partnerKey) => {
-  // TODO: Implement actual navigation or action for purchase
-  // message.info(`即将跳转到 ${partnerKey === 'aian' ? '爱安特' : '京东工业'} 采购页面... (功能开发中)`);
-  // message.info(`业务即将上线，敬请期待`);
-  // let url = ''
-  // const urlMap = {
-  //   'aian': 'https://www.ant-fa.com',
-  //   'jd': 'https://b.jd.com',
-  //   'guoptics': 'https://www.gu-optics.com/'
-  // }
-  // url = urlMap[partnerKey]
-  // window.open(url, '_blank');
-  // Example: window.open('https://partner-url.com', '_blank');
-    if (authStore.isLogin) {
+  if (authStore.isLogin) {
+    if (!['apm-vip', 'apm-vip-inspection', 'apm-register', 'apm-super-vip', 'apm-super-vip-free'].includes(authStore.role)) {
+      return message.error('您没有权限进行此操作');
+    }
     let url = ''
     const urlMap = {
       'aian': '/apm/jicai/redirectToAtEdiJson',

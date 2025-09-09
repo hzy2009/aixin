@@ -261,6 +261,9 @@ export function useNavigation() {
   const handlePurchaseClick = (partnerKey) => {
     const authStore = useAuthStore();
     if (authStore.isLogin) {
+      if (!['apm-vip', 'apm-vip-inspection', 'apm-register', 'apm-super-vip', 'apm-super-vip-free'].includes(authStore.role)) {
+        return message.error('您没有权限进行此操作');
+      }
       let url = ''
       const urlMap = {
         'aian': '/apm/jicai/redirectToAtEdiJson',
