@@ -11,9 +11,7 @@
               @click="scrollThumbnails('up')"
               :disabled="thumbnailStartIndex === 0"
             >
-              <svg width="12" height="8" viewBox="0 0 12 8" fill="currentColor">
-                <path d="M6 0L0 6h3v2h6V6h3L6 0z"/>
-              </svg>
+              <UpOutlined/> 
             </button>
             
             <div class="thumbnail-images">
@@ -34,9 +32,7 @@
               @click="scrollThumbnails('down')"
               :disabled="thumbnailStartIndex + 4 >= imageList.length"
             >
-              <svg width="12" height="8" viewBox="0 0 12 8" fill="currentColor">
-                <path d="M6 8l6-6H9V0H3v2H0l6 6z"/>
-              </svg>
+              <DownOutlined />
             </button>
           </div>
           
@@ -153,6 +149,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Tag as ATag, InputNumber as AInputNumber, Button as AButton, message } from 'ant-design-vue';
+import { DownOutlined, UpOutlined } from '@ant-design/icons-vue';
 import defaultImagePlaceholder from '@/assets/images/fallback/detailFall.jpg'; // 准备一个占位图
 import { safeGet } from '@/utils/index'; // 引入我们自己的工具函数
 import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
@@ -160,6 +157,7 @@ import { selectOptions, getFileAccessHttpUrl } from '@/utils/index';
 import { useModalStore } from '@/store/modalStore'; 
 import defHttp from '@/utils/http/axios'
 import { Decimal } from 'decimal.js';
+
 const modalStore = useModalStore();
 
 
@@ -770,7 +768,7 @@ const hideZoomHint = () => {
     .thumbnail-nav-btn {
       width: 80px;
       height: 24px;
-      background-color: #f5f5f5;
+      background-color: #EAEAEA;
       border: 1px solid #9AA0A3;
       border-radius: 4px;
       display: flex;
@@ -782,7 +780,7 @@ const hideZoomHint = () => {
       flex-shrink: 0;
       
       &:hover:not(.disabled) {
-        background-color: #e6f7ff;
+        background-color: #fff;
         border-color: @primary-color;
         color: @primary-color;
       }
@@ -866,11 +864,11 @@ const hideZoomHint = () => {
     margin-bottom: 10px;
     .custom-tag {
       background-color: transparent;
-      border-color: @primary-color;
+      border-color: EAEAEA;
       color: @primary-color;
       font-size: 12px;
       padding: 2px 8px;
-      border-radius: @border-radius-sm;
+      border-radius: 4px;
     }
   }
 
@@ -890,8 +888,8 @@ const hideZoomHint = () => {
   }
 
   .product-basic-info {
-    padding-bottom: 10px;
-    margin-bottom: 10px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
     border-bottom: 1px solid @border-color-light;
     .info-line {
       font-size: 14px;
@@ -930,7 +928,7 @@ const hideZoomHint = () => {
     .price-value-wrapper {
       display: flex;
       align-items: baseline;
-      margin-top: 12px;
+      margin-top: 10px;
       font-size: 35px;
       line-height: 35px;
       color: #000000;
@@ -952,7 +950,7 @@ const hideZoomHint = () => {
   .quantity-section {
     display: flex;
     align-items: center;
-    margin-bottom: @spacing-md;
+    margin-bottom: 10px;
     .quantity-label {
       font-size: 14px;
       color: @text-color-secondary;
@@ -976,7 +974,7 @@ const hideZoomHint = () => {
   }
 
   .action-buttons {
-    margin-top: auto;
+    // margin-top: auto;
     .purchase-button {
       background-color: @primary-color;
       border-color: @primary-color;

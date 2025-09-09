@@ -93,7 +93,7 @@ const getImgUrl = (url) => {
 .equipment-card-precise {
   background-color: @background-color-base; // White
   border: 1px solid #E5E6EB; // Very light gray border
-  border-radius: 4px; // Gentle rounding
+  border-radius: 8px; // Gentle rounding
   overflow: hidden;
   cursor: pointer;
   display: flex;
@@ -112,7 +112,7 @@ const getImgUrl = (url) => {
 
 .card-image-section {
   width: 100%;
-  border-bottom: 1px solid #fff;
+  border-bottom: 1px solid #EAEAEA;
 
   .equipment-image-asset {
     width: 280px; // Image has padding around it
@@ -136,25 +136,25 @@ const getImgUrl = (url) => {
 }
 
 .card-content-section {
-  padding: 12px 16px 16px; // Top, L/R, Bottom padding
+  padding: 10px 19px 14px; // Top, L/R, Bottom padding
   display: flex;
   flex-direction: column;
   flex-grow: 1; // Allows content to fill remaining space
 }
 
 .card-tags-area {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   display: flex;
   gap: 8px;
 
   .custom-tag-item {
-    padding: 2px 8px;
-    font-size: 12px;
-    line-height: 18px;
-    border-radius: 2px;
+    padding: 4px 8px;
+    font-size: 13px;
+    line-height: 16px;
+    border-radius: 4px;
     color: @primary-color; // Red text
     background-color: transparent; // No background
-    border: 1px solid @primary-color; // Red border
+    border: 1px solid #EAEAEA; // Red border
 
     &.stock { // "现货" might have a different style if needed, but image shows same
       // color: #00B42A;
@@ -165,13 +165,14 @@ const getImgUrl = (url) => {
 
 .card-title-text {
   font-family: PingFang SC;
-  font-weight: 400;
+  font-weight: Bold;
+  letter-spacing: 0%;
   font-size: 18px;
   line-height: 18px;
   min-height: 2em;
   max-width: 248px;
   color: #000000; // Very dark gray, almost black
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   // Ellipsis for exactly 2 lines
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -188,6 +189,7 @@ const getImgUrl = (url) => {
   line-height: 14px;
   letter-spacing: 0%;
   color: #9AA0A3;
+  margin-bottom: 14px;
 }
 
 .card-specs-list {
@@ -195,6 +197,7 @@ const getImgUrl = (url) => {
   color: #000000; // Light gray for specs
   margin-bottom: 12px; // Space before price
   line-height: 1.6;
+  font-weight: Bold;
 
   .spec-line {
     margin: 0; // Remove default p margin
