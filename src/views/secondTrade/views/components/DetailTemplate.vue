@@ -5,15 +5,15 @@
       <div class="product-header-section">
         <div class="product-image-gallery">
           <div class="thumbnail-container" v-if="imageList.length > 1">
-            <button 
+            <button
               class="thumbnail-nav-btn prev"
               :class="{ disabled: thumbnailStartIndex === 0 }"
               @click="scrollThumbnails('up')"
               :disabled="thumbnailStartIndex === 0"
             >
-              <UpOutlined/> 
+              <UpOutlined/>
             </button>
-            
+
             <div class="thumbnail-images">
               <div 
                 v-for="(image, index) in visibleThumbnails" 
@@ -68,7 +68,6 @@
             </div>
             <div class="price-value-wrapper">
               <span class="price-amount">{{props.product.purchaseMethod == 'PRICE_ON_REQUEST' ? '***' : priceInfo.price }}</span>
-              <!-- <span class="price-unit">{{ priceInfo.unit }}</span> -->
               <span class="price-unit">元
                 <span v-if="props.product.purchaseMethod == 'AUCTION'">起拍</span>
                 <span class="expiredDateText" v-if="!['AUCTION', 'PRICE_ON_REQUEST'].includes(props.product.purchaseMethod)">(含税单价)</span>
@@ -106,7 +105,6 @@
               {{ actionText }}
             </a-button>
           </div>
-          <!-- <div v-if="pageConfig.showPostedBy">需求发布者: {{ props.product.postedBy }}</div> -->
         </div>
       </div>
 
@@ -147,19 +145,15 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { Tag as ATag, InputNumber as AInputNumber, Button as AButton, message } from 'ant-design-vue';
+import { ref, computed, toRefs } from 'vue';
+import { Tag as ATag, InputNumber as AInputNumber, Button as AButton } from 'ant-design-vue';
 import { DownOutlined, UpOutlined } from '@ant-design/icons-vue';
-import defaultImagePlaceholder from '@/assets/images/fallback/detailFall.png'; // 准备一个占位图
-import { safeGet } from '@/utils/index'; // 引入我们自己的工具函数
 import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
-import { selectOptions, getFileAccessHttpUrl } from '@/utils/index';
-import { useModalStore } from '@/store/modalStore'; 
-import defHttp from '@/utils/http/axios'
-import { Decimal } from 'decimal.js';
 
-const modalStore = useModalStore();
-
+// 引入组合式函数
+import { useProductData } from './composables/useProductData';
+import { useImageGallery } from './composables/useImageGallery';
+import { useProductPurchase } from './composables/useProductPurchase';
 
 const props = defineProps({
   product: {
@@ -174,423 +168,43 @@ const props = defineProps({
   }
 });
 
-const purchaseQuantity = ref(1);
-const isSubmitting = ref(false); // 用于按钮加载状态
-const currentImageIndex = ref(0); // 当前选中的图片索引
-const thumbnailStartIndex = ref(0); // 缩略图起始索引
-const isImageModalVisible = ref(false); // 图片放大弹窗可见性
-const modalElement = ref(null); // 弹窗元素引用
-const isZoomHintVisible = ref(false); // 放大提示文字可见性
-const actionText = computed(() => {
-   const purchaseMethodMap = {
-      FIXED_PRICE: '立即购买',
-      AUCTION: '参与竞拍',
-      NEGOTIABLE: '立即议价',
-      PRICE_ON_REQUEST: '立即询价',
+// 将 props 转换为响应式引用，以便传递给 composables
+const { product, pageConfig } = toRefs(props);
 
-   }
-   return purchaseMethodMap[props.product.purchaseMethod] || '立即购买';
-});
-const customFields = ref([]);
+// 使用产品数据组合式函数
+const { title, tags, productDetailsHtml, basicInfo, specifications, priceInfo } = useProductData(product, pageConfig);
 
-// --- Computed properties to safely extract product using pageConfig and safeGet ---
+// 使用图片画廊组合式函数
+const {
+  currentImageIndex,
+  thumbnailStartIndex,
+  isImageModalVisible,
+  isZoomHintVisible,
+  imageList,
+  mainImage,
+  visibleThumbnails,
+  selectImage,
+  scrollThumbnails,
+  showImageModal,
+  closeImageModal,
+  showZoomHint,
+  hideZoomHint,
+} = useImageGallery(product);
 
-/**
- * 安全提取产品数据
- * @param {Object} config - 配置对象
- * @param {string} config.field - 字段路径
- * @param {Function} config.formatter - 格式化函数
- * @param {*} config.defaultValue - 默认值
- * @returns {*} 提取的值
- */
-const extractData = (config) => {
-  // 参数验证
-  if (!config || typeof config !== 'object') {
-    return '-';
-  }
-  
-  // 如果没有字段配置，返回默认值
-  if (!config.field) {
-    return config.defaultValue !== undefined ? config.defaultValue : '-';
-  }
-  
-  try {
-    // 使用 safeGet 安全获取值
-    const value = safeGet(props.product, config.field, config.defaultValue);
-    
-    // 值为空时返回默认值
-    if (value === null || value === undefined || value === '') {
-      return config.defaultValue !== undefined ? config.defaultValue : '-';
-    }
-    
-    // 应用格式化函数
-    if (typeof config.formatter === 'function') {
-      return config.formatter(value, props.product);
-    }
-    
-    return value;
-  } catch (error) {
-    console.error('提取数据时发生错误:', error, config);
-    return config.defaultValue !== undefined ? config.defaultValue : '-';
-  }
-};
-const isEdit = computed(() => props.pageConfig.pageState == 'edit');
-const title = computed(() => extractData(props.pageConfig.title));
-// Mock数据 - 10条测试图片数据
-const mockImages = [
-  defaultImagePlaceholder,
-  props.product.imageUrl,
-  defaultImagePlaceholder,
-  defaultImagePlaceholder,
-  defaultImagePlaceholder,
-  defaultImagePlaceholder,
-  defaultImagePlaceholder,
-  defaultImagePlaceholder,
-  defaultImagePlaceholder,
-  defaultImagePlaceholder,
-];
+// 使用产品购买组合式函数
+const {
+  purchaseQuantity,
+  isSubmitting,
+  phoneAndEmailModal,
+  customFields,
+  actionText,
+  isPurchasable,
+  handlePurchase,
+  handleFinish,
+} = useProductPurchase(product, pageConfig, priceInfo);
 
-// 图片列表处理
-const imageList = computed(() => {
-  const imageUrl = extractData({
-    field: 'imageUrl',
-    defaultValue: []
-  });
-  const productImageList = imageUrl.length > 0 ? imageUrl.split(',') : [];
-  if (Array.isArray(productImageList) && productImageList.length > 0) {
-    return productImageList.map(url => getFileAccessHttpUrl(url));
-  }
-  
-  // 如果没有产品图片，使用mock数据
-  return productImageList;
-});
+const isEdit = computed(() => pageConfig.value.pageState == 'edit');
 
-const mainImage = computed(() => {
-  if (imageList.value.length > 0) {
-    return imageList.value[currentImageIndex.value];
-    // return imageUrl ? getFileAccessHttpUrl(imageUrl) : defaultImagePlaceholder
-  }
-  return defaultImagePlaceholder;
-});
-
-// 计算可见的缩略图（最多4个）
-const visibleThumbnails = computed(() => {
-  return imageList.value.slice(thumbnailStartIndex.value, thumbnailStartIndex.value + 4);
-});
-
-// 选择图片
-const selectImage = (index) => {
-  currentImageIndex.value = index;
-};
-
-// 缩略图翻页
-const scrollThumbnails = (direction) => {
-  if (direction === 'up' && thumbnailStartIndex.value > 0) {
-    thumbnailStartIndex.value = Math.max(0, thumbnailStartIndex.value - 4);
-  } else if (direction === 'down' && thumbnailStartIndex.value + 4 < imageList.value.length) {
-    thumbnailStartIndex.value = Math.min(imageList.value.length - 4, thumbnailStartIndex.value + 4);
-  }
-};
-const tags = computed(() => {
-  if (!Array.isArray(props.pageConfig.tags)) return [];
-  
-  return props.pageConfig.tags
-    .map(tagConfig => {
-      const value = extractData(tagConfig);
-      if (value && value !== '-') {
-        return tagConfig.prefix ? `${tagConfig.prefix}${value}` : value;
-      }
-      return null; // Return null for invalid values
-    })
-    .filter(tag => tag !== null); // Filter out the nulls
-});
-const productDetailsHtml = computed(() => extractData({
-  field: 'description',
-}));
-
-const basicInfo = computed(() => {
-  if (!Array.isArray(props.pageConfig.basicInfo)) return [];
-  return props.pageConfig.basicInfo.map(infoConfig => ({
-    label: infoConfig.label,
-    value: extractData(infoConfig),
-    highlight: infoConfig.highlight || false,
-  }))
-  // .filter(info => info.value !== '-'); // 优化：如果值不存在，则不显示该行
-});
-
-const specifications = computed(() => {
-  if (!Array.isArray(props.pageConfig.specifications)) return [];
-  return props.pageConfig.specifications.map(specConfig => ({
-    label: specConfig.label,
-    value: extractData(specConfig),
-  }))
-});
-
-const priceInfo = computed(() => {
-  // const priceConfig = props.pageConfig.priceInfo || {};
-  return {
-    label: extractData({
-      field: 'purchaseMethod',
-      formatter: (value) => {
-        const purchaseMethodMap = selectOptions('purchase_method').reduce((acc, { value: key, label }) => ({ ...acc, [key]: label }), {});
-        const text = purchaseMethodMap[value] || '固定价，不可议价';
-        return text;
-      },
-      defaultValue: '固定价，不可议价'
-    }),
-    price: extractData({
-      field: 'priceIncludingTax',
-      formatter: (value) => {
-        if (props.product.purchaseMethod === 'PRICE_ON_REQUEST') return '***'
-        return value ? Number(value).toLocaleString() : '0.00'
-      }
-    }),
-    // unit: extractData({ field: 'unit' }),  
-    quantity: extractData({ field: 'quantity' }) || 0,
-  };
-});
-
-const isPurchasable = computed(() => priceInfo.value.quantity > 0);
-const phoneAndEmailModal = ref();
-
-/**
- * 处理购买操作
- */
-const handlePurchase = async () => {
-  // 验证商品可购买性
-  if (!isPurchasable.value) {
-    message.warn('该商品库存不足，无法购买');
-    return;
-  }
-  
-  // 验证产品信息
-  if (!props.product || !props.product.purchaseMethod) {
-    message.error('产品信息不完整，无法购买');
-    return;
-  }
-  
-  try {
-    // 根据购买方式配置自定义字段
-    const customFieldsMap = {
-      'FIXED_PRICE': [
-        { 
-          min: 1, 
-          max: props.product.quantity, 
-          field: 'quantity', 
-          label: '购买数量',
-          placeholder: '请输入数量', 
-          defaultValue: purchaseQuantity.value, 
-          type: 'number', 
-          rules: [{ required: true, message: '请输入数量' }] 
-        },
-        { 
-          field: 'remark', 
-          label: '备注信息',
-          placeholder: '请填写您的优势或者需要咨询的问题', 
-          type: 'textarea',
-        },
-      ],
-      'NEGOTIABLE': [
-        { 
-          field: 'price', 
-          label: '议价',
-          placeholder: '请输入期望价格，只有一次议价机会', 
-          type: 'number',
-          rules: [{ required: true, message: '请输入价格' }]
-        },
-        { 
-          min: 1, 
-          max: props.product.quantity, 
-          field: 'quantity', 
-          label: '购买数量',
-          placeholder: '请输入数量', 
-          defaultValue: purchaseQuantity.value, 
-          type: 'number', 
-          rules: [{ required: true, message: '请输入数量' }] 
-        },
-        { 
-          field: 'remark', 
-          label: '备注信息',
-          placeholder: '请填写您的优势或者需要咨询的问题', 
-          type: 'textarea',
-        },
-      ],
-      'PRICE_ON_REQUEST': [
-        { 
-          min: 1, 
-          max: props.product.quantity, 
-          field: 'quantity', 
-          label: '需求数量',
-          placeholder: '请输入数量', 
-          defaultValue: purchaseQuantity.value, 
-          type: 'number', 
-          rules: [{ required: true, message: '请输入数量' }] 
-        },
-        { 
-          field: 'remark', 
-          label: '备注信息',
-          placeholder: '请填写您的优势或者需要咨询的问题', 
-          type: 'textarea',
-        },
-      ],
-      'AUCTION': [
-        { 
-          field: 'price', 
-          label: '竞价',
-          placeholder: '请输入竞价价格，仅可竞拍一次', 
-          type: 'number',
-          rules: [{ required: true, message: '请输入竞价' }]
-        },
-        { 
-          min: 1, 
-          max: props.product.quantity, 
-          field: 'quantity', 
-          label: '竞拍数量',
-          placeholder: '请输入数量', 
-          defaultValue: purchaseQuantity.value, 
-          type: 'number', 
-          rules: [{ required: true, message: '请输入数量' }] 
-        },
-        { 
-          field: 'remark', 
-          label: '备注信息',
-          placeholder: '请填写您的优势或者需要咨询的问题', 
-          type: 'textarea',
-        },
-      ],
-    };
-    
-    // 获取对应购买方式的字段配置
-    const fields = customFieldsMap[props.product.purchaseMethod];
-    if (!fields) {
-      message.error(`不支持的购买方式: ${props.product.purchaseMethod}`);
-      return;
-    }
-    
-    customFields.value = fields;
-    
-    // 打开弹窗
-    if (phoneAndEmailModal.value?.openModal) {
-      phoneAndEmailModal.value.openModal();
-    } else {
-      message.error('弹窗组件未正确加载');
-    }
-  } catch (error) {
-    console.error('处理购买操作时发生错误:', error);
-    message.error('系统错误，请稍后重试');
-  }
-};
-/**
- * 处理购买完成
- * @param {Object} data - 表单数据
- */
-const handleFinish = async (data) => {
-  const productId = props.product?.id;
-  
-  if (!productId) {
-    message.error('产品信息缺失，无法提交');
-    return;
-  }
-  
-  if (!data || typeof data !== 'object') {
-    message.error('请填写完整信息');
-    return;
-  }
-  
-  try {
-    isSubmitting.value = true;
-    let url = `${props.pageConfig.newTodoUrl}/${productId}`;
-    const response = await defHttp.post({
-      url,
-      data
-    });
-    
-    if (response.success) {
-      phoneAndEmailModal.value?.handleClose?.();
-      
-      const successConfig = {
-        title: '一键敲门成功',
-        message: '客服人员将在30分钟内与您联系',
-        contactInfo: { 
-          name: '陈靖玮', 
-          phone: '4000118892', 
-          email: 'info-service@icshare.com' 
-        },
-        buttons: [
-          {
-            text: '查看详情',
-            type: 'primary',
-            action: () => {
-              props.pageConfig.viewDetailAction?.(productId);
-            }
-          },
-          {
-            text: '返回列表',
-            action: () => {
-              props.pageConfig.successAction?.();
-            }
-          }
-        ],
-      };
-      
-      modalStore.showSuccessPrompt(successConfig);
-    } else {
-      message.error(response.message || '提交失败，请稍后重试');
-    }
-  } catch (error) {
-    console.error('提交失败:', error);
-  } finally {
-    isSubmitting.value = false;
-  }
-};
-
-/**
- * 含税单价计算
- * @param {Object} data - 表单数据
- */
-const handleTaxPrice = (data) => {
-  let txt = ''
-  if (data.price && data.tax) {
-    txt = new Decimal(data.price).mul(1 + data.tax / 100);
-  }
-  return txt ? `（${txt}）` : ''
-};
-
-// 图片放大功能
-const showImageModal = () => {
-  // 禁止页面滚动
-  document.body.style.overflow = 'hidden';
-  isImageModalVisible.value = true;
-};
-
-const closeImageModal = () => {
-  // 恢复页面滚动
-  document.body.style.overflow = '';
-  isImageModalVisible.value = false;
-};
-
-// 组件挂载时创建弹窗元素
-onMounted(() => {
-  modalElement.value = document.createElement('div');
-  modalElement.value.id = 'image-modal-container';
-  document.body.appendChild(modalElement.value);
-});
-
-// 组件卸载时移除弹窗元素
-onUnmounted(() => {
-  if (modalElement.value && modalElement.value.parentNode) {
-    modalElement.value.parentNode.removeChild(modalElement.value);
-  }
-});
-
-// 放大提示文字控制
-const showZoomHint = () => {
-  isZoomHintVisible.value = true;
-};
-
-const hideZoomHint = () => {
-  isZoomHintVisible.value = false;
-};
 </script>
 
 <style scoped lang="less">
@@ -679,12 +293,12 @@ const hideZoomHint = () => {
       height: 70vh;
       max-width: 90vw;
       max-height: 70vh;
-      
+
       .modal-image {
         max-width: 100%;
         max-height: 100%;
       }
-      
+
       .close-button {
         top: 5px;
         right: 5px;
@@ -733,7 +347,7 @@ const hideZoomHint = () => {
       z-index: 10;
       white-space: nowrap;
       pointer-events: none;
-      
+
       &.visible {
         opacity: 1;
       }
@@ -756,7 +370,7 @@ const hideZoomHint = () => {
 .product-image-gallery {
   display: flex;
   gap: 12px;
-  
+
   .thumbnail-container {
     width: 80px;
     height: 400px;
@@ -764,7 +378,7 @@ const hideZoomHint = () => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+
     .thumbnail-nav-btn {
       width: 80px;
       height: 24px;
@@ -778,38 +392,38 @@ const hideZoomHint = () => {
       transition: all 0.3s ease;
       color: #666;
       flex-shrink: 0;
-      
+
       &:hover:not(.disabled) {
         background-color: #fff;
         border-color: @primary-color;
         color: @primary-color;
       }
-      
+
       &.disabled {
         opacity: 0.3;
         cursor: not-allowed;
         background-color: #f5f5f5;
       }
-      
+
       svg {
         width: 12px;
         height: 8px;
       }
-      
+
       &.prev {
         margin-bottom: 6px;
       }
-      
+
       &.next {
         margin-top: 6px;
       }
     }
-    
+
     .thumbnail-images {
       display: flex;
       flex-direction: column;
       gap: 6px;
-      
+
       .thumbnail-item {
         width: 80px;
         height: 80px;
@@ -818,16 +432,16 @@ const hideZoomHint = () => {
         cursor: pointer;
         overflow: hidden;
         transition: border-color 0.3s ease;
-        
+
         &.active {
           border-color: @primary-color;
         }
-        
+
         &:hover {
           border-color: @primary-color;
           opacity: 0.8;
         }
-        
+
         img {
           width: 100%;
           height: 100%;
@@ -846,7 +460,7 @@ const hideZoomHint = () => {
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
     img.main-image {
       max-width: 100%;
       max-height: 100%;
@@ -1030,7 +644,6 @@ const hideZoomHint = () => {
     padding: 26px 20px;
     font-size: 14px;
     line-height: 22px;
-    // color: @text-color-secondary;
       color: #272A30;
 
     .rich-text-description {  
