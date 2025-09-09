@@ -16,13 +16,14 @@
       @cell-click="handleCellClick"
     >
       <!-- 自定义开关插槽 -->
-      <template #switch="{ row }">
+      <template #switch="{ row, column }">
         <div class="switch-container">
           <span>否</span>
           <a-switch 
             v-model:checked="row.isWinner"
             checkedValue="1"
             unCheckedValue="0"
+            :disabled="column.disabled"
             @change="(checked) => onSwitchChange(checked, row)" 
           />
           <span>是</span>

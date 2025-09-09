@@ -96,6 +96,7 @@
         type="primary"
         danger
         class="confirm-button"
+        :disabled="!isDeadlinePassed"
         @click="handleConfirmSell"
       >
         确认出售
@@ -136,6 +137,13 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['confirmSell', 'switchChange', 'buttonClick', 'goBack']);
+
+const isDeadlinePassed = computed(() => {
+  if (props.product?.purchaseMethod !== 'AUCTION' || !props.product?.expireDate) {
+    return true;
+  }
+  return new Date(props.product.expireDate) < new Date();
+});
 
 const router = useRouter();
 const gridData = ref([]);
@@ -275,6 +283,11 @@ const calculateTotalPrice = (row, priceCode, quantityCode, isIncludingTax) => {
  */
 const isRowEditable = (row) => {
   if (!row) return false;
+
+  // For AUCTION, editing is only allowed after the deadline.
+  if (props.product?.purchaseMethod === 'AUCTION' && !isDeadlinePassed.value) {
+    return false;
+  }
   
   // 根据交易类型区分禁用状态
   if (props.transactionType === 'PUBLICATION') {
@@ -740,8 +753,18 @@ const currentGridConfig = computed(() => {
   
   if (activeTabKey.value === 'transactionType') {
     // 交易详情：过滤列配置
-    const filteredColumns = filterColumnsByType(baseConfig.columns, 'transaction');
-    
+    let filteredColumns = filterColumnsByType(baseConfig.columns, 'transaction');
+
+    // Dynamically add disabled state for the switch in AUCTION mode
+    if (props.product?.purchaseMethod === 'AUCTION') {
+      filteredColumns = filteredColumns.map(col => {
+        if (col.field === 'isWinner') {
+          return { ...col, disabled: !isDeadlinePassed.value };
+        }
+        return col;
+      });
+    }
+
     return {
       columns: filteredColumns,
       buttons: baseConfig.buttons || []
