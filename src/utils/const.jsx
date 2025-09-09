@@ -219,7 +219,7 @@ export const VERIFICATION_COLUMNS = [
 export const OEMPARTS_COLUMNS = [
     { type: 'checkbox', width: 40 },
     { title: '序号', type: 'seq', width: 50, align: 'center' },
-    { title: '零部件料号', field: 'partNumber', align: 'center', width: 100 },
+    { title: '零部件料号', field: 'partNumber', align: 'center', width: 200 },
     { title: '零部件名称', field: 'productName', align: 'center', width: 100 },
     { title: '零部件品类', field: 'productTypeName', align: 'center', width: 100 },
     { title: '零部件型号', field: 'compatibleModels', align: 'center', width: 100 },
@@ -229,7 +229,7 @@ export const OEMPARTS_COLUMNS = [
     { title: '库存数量', field: 'quantity', align: 'center', width: 80 },
     { title: '售价', field: 'priceIncludingTax', align: 'center', width: 80 },
     {
-        title: '价格类型', field: 'purchaseMethod', align: 'center', width: 120,
+        title: '价格类型', field: 'purchaseMethod', align: 'center', width: 80,
         formatter: ({ cellValue }) => {
             const option = selectOptions('purchase_method').find(item => item.value == cellValue);
             return option ? option.label : '';
@@ -276,7 +276,7 @@ export const USEDEQPTRADE_COLUMNS = [
     { title: '库存数量', field: 'quantity', align: 'center', width: 80 },
     { title: '售价', field: 'priceIncludingTax', align: 'center', width: 80 },
     {
-        title: '价格类型', field: 'purchaseMethod', align: 'center', width: 120,
+        title: '价格类型', field: 'purchaseMethod', align: 'center', width: 80,
         formatter: ({ cellValue }) => {
             const option = selectOptions('purchase_method').find(item => item.value == cellValue);
             return option ? option.label : '';

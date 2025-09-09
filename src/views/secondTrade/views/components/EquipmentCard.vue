@@ -61,7 +61,10 @@ const imageSrc = ref(props.item.imageUrl || defaultPlaceholder);
 
 const formattedPrice = computed(() => {
   if (props.item.purchaseMethod === 'PRICE_ON_REQUEST') return '****';
-  return props.item.priceIncludingTax || '面议';
+  const price = props.item.priceIncludingTax;
+  if (!price || price === '面议') return '面议';
+  // 添加千分位格式化
+  return Number(price).toLocaleString('zh-CN');
 });
 const purchaseMethodtext = computed(() => {
   const purchaseMethodMap = selectOptions('purchase_method').reduce((acc, { value: key, label }) => ({ ...acc, [key]: label }), {});
