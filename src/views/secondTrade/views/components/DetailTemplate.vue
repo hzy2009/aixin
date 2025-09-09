@@ -51,7 +51,7 @@
         </div>
 
         <div class="product-purchase-info">
-          <div v-if="tags.length" class="product-tags">
+          <div v-if="tags.length" class="product-tags" :class="{ 'padding-top-40': !isEdit}">
             <a-tag v-for="tag in tags" :key="tag" class="custom-tag">{{ tag }}</a-tag>
           </div>
           <h1 class="product-title">{{ title }}</h1>
@@ -62,7 +62,7 @@
             </p>
           </div>
 
-          <div class="price-section">
+          <div class="price-section" :class="{ 'padding-bottom-40': !isEdit}">
             <div class="price-header">
               <span class="price-label">{{ priceInfo.label }}</span>
             </div>
@@ -150,7 +150,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Tag as ATag, InputNumber as AInputNumber, Button as AButton, message } from 'ant-design-vue';
 import { DownOutlined, UpOutlined } from '@ant-design/icons-vue';
-import defaultImagePlaceholder from '@/assets/images/fallback/detailFall.jpg'; // 准备一个占位图
+import defaultImagePlaceholder from '@/assets/images/fallback/detailFall.png'; // 准备一个占位图
 import { safeGet } from '@/utils/index'; // 引入我们自己的工具函数
 import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
 import { selectOptions, getFileAccessHttpUrl } from '@/utils/index';
@@ -1076,5 +1076,11 @@ const hideZoomHint = () => {
 }
 .product-similar-section{
   margin-top: 20px;
+}
+.padding-bottom-40{
+  padding-bottom: 40px;
+}
+.padding-top-40{
+  padding-top: 40px;
 }
 </style>

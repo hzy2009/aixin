@@ -33,7 +33,7 @@
 
 <script setup>
 import { computed, ref } from 'vue';
-import defaultPlaceholder from '@/assets/images/fallback/detailFall.jpg'; // 准备一个占位图
+import defaultPlaceholder from '@/assets/images/fallback/detailFall.png'; // 准备一个占位图
 import { selectOptions , getFileAccessHttpUrl} from '@/utils/index';
 
 const props = defineProps({
@@ -60,7 +60,7 @@ const emit = defineEmits(['details']);
 const imageSrc = ref(props.item.imageUrl || defaultPlaceholder);
 
 const formattedPrice = computed(() => {
-  if (props.item.purchaseMethod === 'PRICE_ON_REQUEST') return '****';
+  if (props.item.purchaseMethod === 'PRICE_ON_REQUEST') return '***';
   const price = props.item.priceIncludingTax;
   if (!price || price === '面议') return '面议';
   // 添加千分位格式化
@@ -204,7 +204,7 @@ const getImgUrl = (url) => {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 248px;
+    max-width: 240px;
   }
 }
 

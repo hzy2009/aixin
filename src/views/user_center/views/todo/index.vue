@@ -4,7 +4,7 @@
       <template #tableCustomOperations="{ url, loadTableData }">
         <div class="table-operations" >
           <a-tabs v-model:activeKey="activeKey" @change="(v) => handleTabChange(v, loadTableData)">
-            <a-tab-pane key="1" tab="全部待办"></a-tab-pane>
+            <a-tab-pane key="1" :tab="todoTitle"></a-tab-pane>
             <a-tab-pane key="2" tab="已办理" v-if="!isSecondTrade"></a-tab-pane>
           </a-tabs>
         </div>
@@ -28,7 +28,15 @@ const userInfo = computed(() => authStore.userInfo);
 
 const refListPage = ref();
 const isSecondTrade = ref(false);
-
+const todoTitle = computed(() => {
+  const titleMap = {
+    '原厂件寻源': '原厂件寻源',
+    '线下活动': '线下活动',
+    '原厂件库存处理': '原厂件库存处理',
+    '二手设备处理': '二手设备处理',
+  }
+  return titleMap[currentBusiness.value] + '的待办事项'
+})
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
   { id: 'businessName', label: '业务类型', maxVisibleWithoutMore: 9, dictKey: 'business_type', selectionType: 'single', options: 
@@ -91,7 +99,7 @@ const tableColumns2 = [
       return text;
     }
   },
-  { title: '售价', field: 'priceExcludingTax', align: 'center', width: 100,
+  { title: '售价', field: 'priceIncludingTax', align: 'center', width: 100,
     formatter: ({cellValue, row}) => {
       if (row.purchaseMethod == 'PRICE_ON_REQUEST') {
         return '***'
@@ -106,7 +114,7 @@ const tableColumns2 = [
   { field: 'refUserName', title: '买方', width: 54, formatter: postedBy }, 
   { field: 'price', title: '买方出价', width: 80,  formatter: ({cellValue, row}) => {
       if (row.purchaseMethod == 'PRICE_ON_REQUEST') {
-        return '****'
+        return '***'
       }
       return cellValue
     }}, 

@@ -320,7 +320,7 @@ const handleQuantityChange = (value, row, field) => {
       return;
     }
     
-    if (value < 1) {
+    if (value !== '' && value < 1) {
       message.warn('数量必须大于0');
       row[field] = 1;
       return;
@@ -545,7 +545,7 @@ const gridConfigs = {
         if (!row.statusCode) return ''
         return row.statusCode == 'succeeded' ? '交易达成' : '交易未达成'
       }, columnType: 'negotiation' }, // 交易历史
-      { field: 'productquantity', title: '卖方库存数量', width: 100, formatter: () => props.product.quantity, columnType: 'transaction' }, 
+      // { field: 'productquantity', title: '卖方库存数量', width: 100, formatter: () => props.product.quantity, columnType: 'transaction' }, 
       { field: 'fixedPrice', title: '卖方售价（含税单价）', formatter: formatCurrency, width: 150, columnType: 'transaction' }, 
       { field: 'createTime', title: '购买时间', width: 150, columnType: 'transaction' }, // 交易详情和交易历史共用列
       { 
@@ -583,7 +583,7 @@ const gridConfigs = {
         if (!row.statusCode) return ''
         return row.statusCode == 'succeeded' ? '交易达成' : '交易未达成'
       }, columnType: 'negotiation' }, // 交易历史
-      { field: 'productquantity', title: '卖方库存数量', width: 100, formatter: () => props.product.quantity, columnType: 'transaction' }, 
+      // { field: 'productquantity', title: '卖方库存数量', width: 100, formatter: () => props.product.quantity, columnType: 'transaction' }, 
       { field: 'createTime', title: '议价时间', width: 150, columnType: 'transaction' }, // 交易详情和交易历史共用列
       { field: 'quantity', title: '议价数量', width: 98, columnType: 'transaction'}, 
       { field: 'confirmedQuantity', title: '卖方可出售数量', width: 120, columnType: 'transaction' },
@@ -617,7 +617,7 @@ const gridConfigs = {
         return row.statusCode == 'succeeded' ? '交易达成' : '交易未达成'
       }, columnType: 'negotiation' }, // 交易历史
       { field: 'quantity', title: '本次交易数量', width: 100, columnType: 'negotiation' }, // 交易详情和交易历史共用列
-      { field: 'productquantity', title: '卖方库存数量', width: 100, formatter: () => props.product.quantity, columnType: 'transaction' }, 
+      // { field: 'productquantity', title: '卖方库存数量', width: 100, formatter: () => props.product.quantity, columnType: 'transaction' }, 
       { field: 'priceIncludingTax', title: '卖方报价（含税单价）', formatter: formatCurrency, width: 150, columnType: 'transaction' }, 
       { field: 'createTime', title: '询价时间', width: 150, columnType: 'transaction' }, // 交易详情和交易历史共用列
       {  field: 'quantity',  title: '询价数量',fiexd: 'right',width: 110, columnType: 'transaction' },
@@ -648,7 +648,7 @@ const gridConfigs = {
         if (!row.statusCode) return ''
         return row.statusCode == 'succeeded' ? '交易达成' : '交易未达成'
       }, columnType: 'negotiation' }, // 交易历史
-      { field: 'productquantity', title: '卖方库存数量', width: 100, formatter: () => props.product.quantity, columnType: 'transaction' }, 
+      // { field: 'productquantity', title: '卖方库存数量', width: 100, formatter: () => props.product.quantity, columnType: 'transaction' }, 
       { field: 'expireDate', title: '竞拍截止时间', width: 98, columnType: 'transaction' }, // 交易详情和交易历史共用列
       { field: 'createTime', title: '参与竞拍时间', width:150, columnType: 'transaction' }, // 交易详情和交易历史共用列
       { field: 'quantity', title: '竞拍数量', width: 74, columnType: 'transaction'}, 

@@ -7,10 +7,10 @@
       </div>
       <div class="container section-container">
         <div class="carousel-content-wrapper">
-          <div v-if="relatedDevices && relatedDevices.length > 0" class="horizontal-scroll-container">
-            <div class="scrollable-track">
+          <div v-if="relatedDevices && relatedDevices.length > 0">
+            <div class="paginated-cards-container">
               <EquipmentCard
-                v-for="device in relatedDevices"
+                v-for="device in paginatedDevices"
                 :item="device"
                 :key="device.id"
                 :product="device"
@@ -18,6 +18,16 @@
                 :tagList="tagList"
                 @details="handleDetails"
                 class="scroll-item"
+              />
+            </div>
+            <div class="pagination-container" v-if="relatedDevices.length > pageSize">
+              <a-pagination
+                v-model:current="currentPage"
+                :page-size="pageSize"
+                :total="relatedDevices.length"
+                @change="onPageChange"
+                :show-less-items="true"
+                :hide-on-single-page="true"
               />
             </div>
           </div>
@@ -31,8 +41,8 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { Empty as AEmpty } from 'ant-design-vue';
+import { ref, computed } from 'vue';
+import { Empty as AEmpty, Pagination as APagination } from 'ant-design-vue';
 import EquipmentCard from './EquipmentCard.vue';
 
 const props = defineProps({
@@ -60,6 +70,22 @@ const handleDetails = (item) => {
 const relatedDevices = computed(() => {
   return props.product?.relatedDeviceList || [];
 });
+
+// --- Pagination Logic ---
+const currentPage = ref(1);
+const pageSize = 4;
+
+const paginatedDevices = computed(() => {
+  const start = (currentPage.value - 1) * pageSize;
+  const end = start + pageSize;
+  return relatedDevices.value.slice(start, end);
+});
+
+const onPageChange = (page) => {
+  currentPage.value = page;
+};
+// --- End Pagination Logic ---
+
 </script>
 
 <style scoped lang="less">
@@ -68,32 +94,25 @@ const relatedDevices = computed(() => {
 .similar-products-section {
   padding: @spacing-md 0;
   background-color: #fff;
-//   background-color: #F7F8FA;
 }
 
-
-
-
-
-.horizontal-scroll-container {
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding-bottom: @spacing-md;
-
-  &::-webkit-scrollbar { height: 8px; }
-  &::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
-  &::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
-  &::-webkit-scrollbar-thumb:hover { background: #aaa; }
-}
-
-.scrollable-track {
+.paginated-cards-container {
   display: flex;
-  width: max-content;
-  gap: 20px;
+  gap: 16px; /* Matches the old gap */
+  justify-content: flex-start; /* Align items to the start */
+  flex-wrap: wrap; /* Allow wrapping if needed, though with 4 items it shouldn't */
 }
 
+.pagination-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: @spacing-md;
+}
+.carousel-content-wrapper{
+  padding: 0 8px;
+}
 .scroll-item {
-  // EquipmentCard component
+  // EquipmentCard component - styles remain the same
 }
 
 .loading-placeholder, .empty-placeholder {
