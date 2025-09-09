@@ -196,7 +196,7 @@ const pageData = reactive({
 })
 
 
-function viewDetails({businessName, id, postedBy }) {
+function viewDetails({businessName, id, postedBy, businessId }) {
     // const map = {
     //     '原厂件寻源': '/user/join/OEMPartsSourcing/detail',
     //     '线下活动': '/user/join/OfflineEvent/detail',
@@ -207,27 +207,27 @@ function viewDetails({businessName, id, postedBy }) {
     let path = ''
     switch (currentBusiness.value) {
         case '原厂件寻源':
-            path = '/user/join/OEMPartsSourcing/detail'
+            path = `/user/join/OEMPartsSourcing/detail/${id}`
             break;
         case '线下活动':
-            path = '/user/join/OfflineEvent/detail'
+            path = `/user/join/OfflineEvent/detail/${id}`
             break;
         case '原厂件库存处理':
             if (postedBy == userInfo.value.realname) {
-                path = '/user/published/oemParts/detail'
+                path = `/user/published/oemParts/detail/${businessId}`
             } else {
-                path = '/user/join/oemParts/detail'
+                path = `/user/join/oemParts/detail/${businessId}`
             }
             break;
         case '二手设备处理':
           if (postedBy == userInfo.value.realname) {
-                path = '/user/published/usedEqpTrade/detail'
+                path = `/user/published/usedEqpTrade/detail/${businessId}`
             } else {
-                path = '/user/join/usedEqpTrade/detail'
+                path = `/user/join/usedEqpTrade/detail/${businessId}`
             }
             break;
     }
-    router.push(`${path}/${id}`);
+    router.push(path);
 };
 function createNewSourcing() {
   router.push(`/user/published/DomesticSourcing/create`);
