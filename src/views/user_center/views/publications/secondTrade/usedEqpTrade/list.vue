@@ -1,6 +1,13 @@
 <template>
   <div>
     <listPage :pageData="pageData" ref="refListPage" />
+    <ExcelUploadModal
+      v-model:visible="isUploadModalVisible"
+      title="上传数据"
+      :action="pageData.url.importExcel"
+      :templateUrl="pageData.url.downloadTpl"
+      @success="handleUploadSuccess"
+    />
   </div>
 </template>
 
@@ -8,11 +15,18 @@
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
+import ExcelUploadModal from '@/components/common/ExcelUploadModal.vue'; // 引入弹窗组件
 import { OEMPARTS_COLUMNS } from '@/utils/const.jsx';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 
 const router = useRouter();
 const refListPage = ref();
+const isUploadModalVisible = ref(false); // 控制弹窗显示
+
+// 上传成功后的回调
+const handleUploadSuccess = () => {
+  refListPage.value?.loadTableData();
+};
 
 // 表格列配置 - 使用原厂件列定义
 const tableColumns = reactive([
@@ -62,6 +76,7 @@ const pageData = ref({
     list: '/apm/apmDeviceSecondhand/list/owner',
     importExcel: '/apm/apmDeviceSecondhand/importExcel',
     exportXls: '/apm/apmDeviceSecondhand/exportXls',
+    downloadTpl: '/apm/apmDeviceSecondhand/downloadTpl', // 新增模板下载地址
   },
   tableColumns,
   actions,
@@ -74,15 +89,8 @@ const pageData = ref({
     },
     {
       title: '上传数据',
-      btnType: 'upload',
-      url: '/apm/apmDeviceSecondhand/importExcel',
+      clickFn: () => { isUploadModalVisible.value = true; }, // 修改为打开弹窗
       type: 'primary'
-    },
-    {
-      title: '下载数据模版',
-      btnType: 'upload',
-      url: '/apm/apmDeviceSecondhand/downloadTpl',
-      type: 'default'
     },
   ],
   tableOperationsRight: [

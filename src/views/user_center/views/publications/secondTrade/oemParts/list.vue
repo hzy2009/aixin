@@ -1,6 +1,23 @@
 <template>
   <div>
     <listPage :pageData="pageData" ref="refListPage" />
+    <ExcelUploadModal
+      v-model:visible="isUploadModalVisible"
+      title="上传数据"
+      :action="pageData.url.importExcel"
+      :templateUrl="pageData.url.downloadTpl"
+      @success="handleUploadSuccess"
+    />
+    <FileUploadModal
+      :is-visible="showUploadModal"
+      @close="showUploadModal = false"
+      title="创建国产替代寻源需求"
+      upload-url="/api/your/upload/endpoint"
+      template-url="/templates/demand_template.xlsx"
+      :upload-headers="{ 'Authorization': `Bearer ${token}` }"
+      :requirements="customRequirements"
+      @submit-success="handleSuccess"
+    />
   </div>
 </template>
 
@@ -8,12 +25,20 @@
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
+import ExcelUploadModal from '@/components/common/ExcelUploadModal.vue'; // 引入弹窗组件
+import FileUploadModal from '@/components/common/FileUploadModal.vue'; // 引入弹窗组件
 import { OEMPARTS_COLUMNS } from '@/utils/const.jsx';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 import { selectOptions } from '@/utils/index';
 
 const router = useRouter();
 const refListPage = ref();
+const isUploadModalVisible = ref(false); // 控制弹窗显示
+const showUploadModal = ref(false);
+// 上传成功后的回调
+const handleUploadSuccess = () => {
+  refListPage.value?.loadTableData();
+};
 
 // 表格列配置 - 使用原厂件列定义
 const tableColumns = reactive([
@@ -55,6 +80,7 @@ const pageData = ref({
     list: '/apm/apmDeviceOrigin/list/owner',
     importExcel: '/apm/apmDeviceOrigin/importExcel',
     exportXls: '/apm/apmDeviceOrigin/exportXls',
+    downloadTpl: '/apm/apmDeviceOrigin/downloadTpl', // 新增模板下载地址
   },
   filterConfigForPage,
   tableColumns,
@@ -67,15 +93,8 @@ const pageData = ref({
     },
     {
       title: '上传数据',
-      btnType: 'upload',
-      url: '/apm/apmDeviceOrigin/importExcel',
+      clickFn: () => { showUploadModal.value = true; }, // 修改为打开弹窗
       type: 'primary'
-    },
-    {
-      title: '下载数据模版',
-      btnType: 'upload',
-      url: '/apm/apmDeviceOrigin/downloadTpl',
-      type: 'default'
     },
   ],
   tableOperationsRight: [

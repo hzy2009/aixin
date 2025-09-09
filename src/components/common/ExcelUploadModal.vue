@@ -4,11 +4,15 @@
     :title="title"
     @cancel="handleCancel"
     :footer="null"
+    width="600px"
+    :bodyStyle="{ padding: '24px 40px' }"
   >
     <div class="upload-modal-content">
-      <div class="template-download" v-if="templateUrl">
-        <a :href="templateUrl" download>下载模板文件</a>
+      <div class="upload-header">
+        <span class="upload-title">EXCEL批量上传</span>
+        <a-button type="primary" :href="templateUrl" download v-if="templateUrl">下载模板</a-button>
       </div>
+
       <a-upload-dragger
         v-model:fileList="fileList"
         name="file"
@@ -18,23 +22,27 @@
         :before-upload="beforeUpload"
         @change="handleChange"
         :accept="accept"
+        class="upload-dragger"
       >
         <p class="ant-upload-drag-icon">
-          <inbox-outlined></inbox-outlined>
+          <cloud-upload-outlined />
         </p>
-        <p class="ant-upload-text">点击或将文件拖拽到这里上传</p>
-        <p class="ant-upload-hint">
-          支持单个文件上传，仅限 Excel 格式 (xls, xlsx)。
-        </p>
+        <p class="ant-upload-text">点击或拖拽文件到此区域上传</p>
       </a-upload-dragger>
+
+      <div class="upload-tips">
+        <p class="tips-title">温馨提示：</p>
+        <p>1. 上传文件仅支持.xls或.xlsx格式</p>
+        <p>2. 单次上传数据量建议不超过5000条</p>
+      </div>
     </div>
   </a-modal>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
-import { Modal as AModal, Upload as AUpload, message } from 'ant-design-vue';
-import { InboxOutlined } from '@ant-design/icons-vue';
+import { Modal as AModal, Upload as AUpload, message, Button as AButton } from 'ant-design-vue';
+import { CloudUploadOutlined } from '@ant-design/icons-vue';
 import { useAuthStore } from '@/store/authStore';
 
 const AUploadDragger = AUpload.Dragger;
@@ -46,7 +54,7 @@ const props = defineProps({
   },
   title: {
     type: String,
-    default: '上传文件',
+    default: '上传数据',
   },
   action: {
     type: String,
@@ -85,6 +93,7 @@ const beforeUpload = (file) => {
   if (!isLt10M) {
     message.error('文件大小不能超过 10MB!');
   }
+  // 5000条数据限制的提示在UI上，这里只做文件类型和大小的硬性检查
   return isExcel && isLt10M;
 };
 
@@ -107,14 +116,49 @@ const handleChange = (info) => {
 
 <style scoped lang="less">
 @import '@/assets/styles/_variables.less';
+
 .upload-modal-content {
-  padding: 24px 0;
-}
-.template-download {
-  margin-bottom: 16px;
-  text-align: right;
-  a {
-    color: @primary-color;
+  .upload-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    .upload-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: #333;
+    }
+  }
+
+  .upload-dragger {
+    background-color: #FAFAFA;
+    border: 1px dashed #D9D9D9;
+    border-radius: 4px;
+    padding: 40px 0;
+    
+    .ant-upload-drag-icon {
+      font-size: 48px;
+      color: @primary-color;
+      margin-bottom: 20px;
+    }
+
+    .ant-upload-text {
+      font-size: 16px;
+      color: #666;
+    }
+  }
+
+  .upload-tips {
+    margin-top: 24px;
+    font-size: 14px;
+    color: #999;
+    line-height: 1.8;
+
+    .tips-title {
+      color: #666;
+      font-weight: 500;
+    }
   }
 }
 </style>
