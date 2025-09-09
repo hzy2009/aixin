@@ -196,7 +196,7 @@ const formConfigs = [
     span: 24,
   },
   {
-    label: '是否有产品使用说明书',
+    label: '有产品使用说明书',
     field: 'hasUserManual',
     fieldType: 'select',
     dictKey: 'yn',
