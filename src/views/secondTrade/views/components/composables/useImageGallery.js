@@ -1,12 +1,20 @@
+/**
+ * @file useImageGallery.js
+ * @description 封装二手交易模块中产品详情页的图片画廊逻辑。
+ * 该 composable 负责管理图片列表、当前显示图片、缩略图导航、图片放大模态框的显示与隐藏，
+ * 以及相关的交互状态。
+ */
+
 // src/views/secondTrade/composables/useImageGallery.js
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { getFileAccessHttpUrl } from '@/utils/index';
 import defaultImagePlaceholder from '@/assets/images/fallback/detailFall.png';
 
 /**
- * 处理产品图片画廊逻辑
- * @param {Object} product - 产品数据对象 (ref)
- * @returns {Object} 包含图片画廊相关状态和方法的对象
+ * 处理产品图片画廊逻辑。
+ * 管理图片的显示、切换、缩略图导航以及图片放大功能。
+ * @param {Object} product - 产品数据对象 (ref)，包含 imageUrl 等图片信息。
+ * @returns {Object} 包含图片画廊相关状态和方法的对象，供组件使用。
  */
 export function useImageGallery(product) {
   const currentImageIndex = ref(0); // 当前选中的图片索引

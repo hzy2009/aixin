@@ -1,12 +1,20 @@
+/**
+ * @file useProductData.js
+ * @description 封装二手交易模块中产品详情页的数据提取和格式化逻辑。
+ * 该 composable 负责从原始产品数据中安全地提取和计算各种展示所需的信息，
+ * 如标题、标签、基本信息、规格和价格信息，并进行相应的格式化处理。
+ */
+
 // src/views/secondTrade/composables/useProductData.js
 import { computed } from 'vue';
 import { safeGet, selectOptions, getFileAccessHttpUrl } from '@/utils/index';
 
 /**
- * 安全提取产品数据
- * @param {Object} product - 产品数据对象
- * @param {Object} pageConfig - 页面配置对象
- * @returns {Object} 包含各种计算属性的对象
+ * 封装产品数据提取和计算逻辑。
+ * 提供了一系列计算属性，用于从产品数据和页面配置中安全地提取和格式化展示所需的信息。
+ * @param {Object} product - 产品数据对象 (ref)，包含产品的原始详细信息。
+ * @param {Object} pageConfig - 页面配置对象 (ref)，定义了如何提取和展示产品数据的规则。
+ * @returns {Object} 包含各种计算属性的对象，如 title, tags, basicInfo, specifications, priceInfo 等。
  */
 export function useProductData(product, pageConfig) {
 

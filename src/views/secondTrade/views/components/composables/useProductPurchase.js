@@ -1,3 +1,10 @@
+/**
+ * @file useProductPurchase.js
+ * @description 封装二手交易模块中产品购买相关的逻辑。
+ * 该 composable 负责处理不同购买方式（如固定价格、议价、询价、竞拍）的购买流程，
+ * 包括购买数量管理、表单字段配置、弹窗显示以及购买请求的提交和结果处理。
+ */
+
 // src/views/secondTrade/composables/useProductPurchase.js
 import { ref, computed } from 'vue';
 import { message } from 'ant-design-vue';
@@ -5,11 +12,13 @@ import { useModalStore } from '@/store/modalStore';
 import defHttp from '@/utils/http/axios';
 
 /**
- * 处理产品购买逻辑
- * @param {Object} product - 产品数据对象 (ref)
- * @param {Object} pageConfig - 页面配置对象 (ref)
- * @param {Object} priceInfo - 价格信息 (computed from useProductData)
- * @returns {Object} 包含购买相关状态和方法的对象
+ * 处理产品购买逻辑。
+ * 根据不同的购买方式（固定价格、议价、询价、竞拍）配置相应的购买表单字段，
+ * 并处理购买弹窗的显示、购买请求的提交以及成功后的提示。
+ * @param {Object} product - 产品数据对象 (ref)，包含产品的详细信息和购买方式。
+ * @param {Object} pageConfig - 页面配置对象 (ref)，包含成功后的跳转或操作配置。
+ * @param {Object} priceInfo - 价格信息 (computed from useProductData)，包含可购买数量等。
+ * @returns {Object} 包含购买相关状态和方法的对象，供组件调用。
  */
 export function useProductPurchase(product, pageConfig, priceInfo) {
   const modalStore = useModalStore();

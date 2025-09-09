@@ -114,6 +114,8 @@ import VxeGridWrapper from './VxeGridWrapper.vue';
 import { Decimal } from 'decimal.js';
 import { maskMiddle, selectOptions, formatDate } from '@/utils/index';
 import { useTransactionGrid } from './composables/useTransactionGrid.js';
+import { useTransactionData } from './composables/useTransactionData.js'; // 导入新的组合式函数
+import { useTransactionEditing } from './composables/useTransactionEditing.js'; // 导入新的组合式函数
 
 const props = defineProps({
   product: {
@@ -140,7 +142,6 @@ const props = defineProps({
 const emit = defineEmits(['confirmSell', 'switchChange', 'buttonClick', 'goBack']);
 
 const router = useRouter();
-const gridData = ref([]);
 
 // Set initial active tab based on context
 const activeTabKey = ref(props.context === 'fullView' ? 'negotiation' : 'transactionType');
@@ -175,49 +176,11 @@ const isRowEditable = (row) => {
   }
 };
 
-// --- Grid Configuration ---
-// All complex grid logic is now handled by the composable
+// --- 使用组合式函数 ---
+const { gridData, getGridData, getSelectedRow, refreshData, clearSelection } = useTransactionData(props, activeTabKey);
+const { getMaxQuantity, handleQuantityChange, handlePriceChange, validateSelectedRow } = useTransactionEditing(props, isRowEditable);
 const { currentGridConfig } = useTransactionGrid(props, activeTabKey, isDeadlinePassed, isRowEditable);
 
-
-// --- Data Handling ---
-/**
- * 根据当前标签页获取数据字段名
- * @returns {string} 数据字段名
- */
-const getDataFieldName = () => {
-  return activeTabKey.value === 'transactionType' ? 'submitItemList' : 'dealItemList';
-};
-
-/**
- * 更新表格数据
- * @param {Object} productData - 产品数据
- */
-const updateGridData = (productData) => {
-  if (!productData) {
-    gridData.value = [];
-    return;
-  }
-  
-  try {
-    const fieldName = getDataFieldName();
-    const dataArray = productData[fieldName] || [];
-    
-    // 深拷贝数据以避免直接修改props
-    gridData.value = JSON.parse(JSON.stringify(dataArray));
-  } catch (error) {
-    console.error('更新表格数据时发生错误:', error);
-    gridData.value = [];
-  }
-};
-
-// Watch for prop changes to update internal data state
-watch(() => props.product, updateGridData, { immediate: true, deep: true });
-
-// Watch for tab changes to reload data
-watch(activeTabKey, () => {
-  updateGridData(props.product);
-});
 
 // --- Template Helpers ---
 
@@ -279,77 +242,8 @@ const calculateTotalPrice = (row, priceCode, quantityCode, isIncludingTax) => {
   }
 };
 
-/**
- * 获取最大可输入数量
- * @param {Object} row - 行数据
- * @returns {number} 最大数量
- */
-const getMaxQuantity = (row) => {
-  if (!row) return 0;
-  
-  if (props.transactionType === 'PUBLICATION') {
-    // 出售场景：最大数量为可出售数量
-    return Number(row.quantity || 0);
-  } else {
-    // 购买场景：最大数量为卖方可出售数量
-    return Number(row.confirmedQuantity || 0);
-  }
-};
-
 
 // --- Event Handlers ---
-
-/**
- * 处理数量变化
- * @param {number} value - 新数量值
- * @param {Object} row - 行数据
- * @param {string} field - 字段名
- */
-const handleQuantityChange = (value, row, field) => {
-  try {
-    const maxQuantity = getMaxQuantity(row);
-    
-    // 验证数量范围
-    if (value > maxQuantity) {
-      message.warn(`数量不能超过${maxQuantity}`);
-      row[field] = maxQuantity;
-      return;
-    }
-    
-    if (value !== '' && value < 1) {
-      message.warn('数量必须大于0');
-      row[field] = 1;
-      return;
-    }
-    
-    row[field] = value;
-    
-  } catch (error) {
-    console.error('处理数量变化时发生错误:', error);
-    message.error('数量更新失败');
-  }
-};
-
-/**
- * 处理价格变化
- * @param {number} value - 新价格值
- * @param {Object} row - 行数据
- * @param {string} field - 字段名
- */
-const handlePriceChange = (value, row, field) => {
-  try {
-    if (value < 0.01) {
-      message.warn('价格必须大于0.01');
-      row[field] = 0.01;
-      return;
-    }
-    
-    row[field] = value;
-  } catch (error) {
-    console.error('处理价格变化时发生错误:', error);
-    message.error('价格更新失败');
-  }
-};
 
 /**
  * 处理开关状态改变（单选逻辑）
@@ -370,36 +264,6 @@ const handleSwitchChange = ({ checked, row }) => {
     console.error('处理开关状态改变时发生错误:', error);
     message.error('操作失败，请稍后重试');
   }
-};
-
-/**
- * 验证选中的数据
- * @param {Object} selectedRow - 选中的行数据
- * @returns {boolean} 验证是否通过
- */
-const validateSelectedRow = (selectedRow) => {
-  if (!selectedRow || selectedRow.length == 0) {
-    message.warn('请选择买方');
-    return false;
-  }
-  let flag = true
-  for (let i = 0; i < selectedRow.length; i++) {
-  // 验证出售数量
-    if (!selectedRow[i].confirmedQuantity || selectedRow[i].confirmedQuantity <= 0) {
-      message.warn('请输入有效的卖出数量');
-      flag = false
-      return false;
-    }
-    
-    // 验证数量不能超过可用数量
-    if (selectedRow[i].confirmedQuantity > selectedRow[i].quantity) {
-      message.warn(`卖出数量不能超过可用数量（${selectedRow[i].quantity}）`);
-      flag = false
-      return false;
-    }
-  }
-
-  return flag;
 };
 
 /**
@@ -463,33 +327,10 @@ watch(() => props.context, (newContext) => {
 
 // 暴露组件方法供父组件使用
 defineExpose({
-  /**
-   * 获取当前表格数据
-   * @returns {Array} 表格数据数组
-   */
-  getGridData: () => gridData.value,
-  
-  /**
-   * 获取选中的行
-   * @returns {Object|null} 选中的行数据
-   */
-  getSelectedRow: () => gridData.value.find(item => item.isWinner) || null,
-  
-  /**
-   * 刷新表格数据
-   */
-  refreshData: () => updateGridData(props.product),
-  
-  /**
-   * 清除所有选中状态
-   */
-  clearSelection: () => {
-    gridData.value.forEach(item => {
-      if (item.isWinner) {
-        item.isWinner = false;
-      }
-    });
-  }
+  getGridData: getGridData.value,
+  getSelectedRow: getSelectedRow.value,
+  refreshData: refreshData,
+  clearSelection: clearSelection,
 });
 </script>
 

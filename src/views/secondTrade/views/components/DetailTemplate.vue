@@ -1,10 +1,15 @@
 <template>
+  <!-- 页面主容器 -->
   <div class="product-detail-page-container">
+    <!-- 产品详情内容包装器 -->
     <div class="product-detail-wrapper">
-      <!-- 1. Top Section: Image and Purchase Info -->
+      <!-- 1. 顶部区域: 图片画廊和购买信息 -->
       <div class="product-header-section">
+        <!-- 产品图片画廊 -->
         <div class="product-image-gallery">
+          <!-- 缩略图导航容器，当图片数量大于1时显示 -->
           <div class="thumbnail-container" v-if="imageList.length > 1">
+            <!-- 向上滚动缩略图按钮 -->
             <button
               class="thumbnail-nav-btn prev"
               :class="{ disabled: thumbnailStartIndex === 0 }"
@@ -14,6 +19,7 @@
               <UpOutlined/>
             </button>
 
+            <!-- 缩略图列表 -->
             <div class="thumbnail-images">
               <div 
                 v-for="(image, index) in visibleThumbnails" 
@@ -26,6 +32,7 @@
               </div>
             </div>
             
+            <!-- 向下滚动缩略图按钮 -->
             <button 
               class="thumbnail-nav-btn next"
               :class="{ disabled: thumbnailStartIndex + 4 >= imageList.length }"
@@ -36,8 +43,10 @@
             </button>
           </div>
           
+          <!-- 主图片显示区域，点击可放大 -->
           <div class="main-image-wrapper" @click="showImageModal">
             <img :src="mainImage" :alt="title" class="main-image" />
+            <!-- 放大镜图标和提示 -->
             <div class="zoom-icon" @mouseenter="showZoomHint" @mouseleave="hideZoomHint">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="11" cy="11" r="8"></circle>
@@ -50,11 +59,15 @@
           </div>
         </div>
 
+        <!-- 产品购买信息区域 -->
         <div class="product-purchase-info">
+          <!-- 产品标签，根据 tags 数组显示 -->
           <div v-if="tags.length" class="product-tags" :class="{ 'padding-top-40': !isEdit}">
             <a-tag v-for="tag in tags" :key="tag" class="custom-tag">{{ tag }}</a-tag>
           </div>
+          <!-- 产品标题 -->
           <h1 class="product-title">{{ title }}</h1>
+          <!-- 产品基本信息列表 -->
           <div v-if="basicInfo.length" class="product-basic-info">
             <p v-for="info in basicInfo" :key="info.label" class="info-line">
               <span class="info-label">{{ info.label }}：</span>
@@ -62,6 +75,7 @@
             </p>
           </div>
 
+          <!-- 价格信息区域 -->
           <div class="price-section" :class="{ 'padding-bottom-40': !isEdit}">
             <div class="price-header">
               <span class="price-label">{{ priceInfo.label }}</span>
@@ -76,6 +90,7 @@
             </div>
           </div>
 
+          <!-- 购买数量输入，仅在编辑模式下显示 -->
           <div class="quantity-section" v-if="isEdit">
             <span class="quantity-label">购买数量</span>
             <a-input-number
@@ -92,6 +107,7 @@
             <span class="quantity-info">库存：<span class="quantity-value">{{ priceInfo.quantity }}个</span></span>
           </div>
 
+          <!-- 操作按钮，仅在编辑模式下显示 -->
           <div class="action-buttons" v-if="isEdit">
             <a-button
               type="primary"
@@ -108,13 +124,15 @@
         </div>
       </div>
 
-      <!-- 2. Bottom Section: Product Details and Specifications -->
+      <!-- 2. 底部区域: 产品详情和规格 -->
       <div class="product-details-section">
         <div class="details-title-bar">
           <h3 class="details-title-text">{{ pageConfig.productDetailsTitle || '产品详情' }}</h3>
         </div>
         <div class="details-content-wrapper">
+          <!-- 富文本描述，如果存在则显示 -->
           <div v-if="productDetailsHtml" class="rich-text-description">{{ productDetailsHtml }}</div>
+          <!-- 产品规格列表，如果存在则显示 -->
           <div v-if="specifications.length" class="specifications-list">
             <div v-for="spec in specifications" :key="spec.label" class="spec-item">
               <span class="spec-label">{{ spec.label }}：</span>
@@ -125,15 +143,18 @@
       </div>
     </div>
 
+    <!-- 电话和邮箱模态框组件 -->
     <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" title="填写信息购买" :actionText="actionText" :customFields="customFields"></PhoneAndEmailModal>
 
-    <!-- 图片放大弹窗 -->
+    <!-- 图片放大弹窗，使用 Teleport 渲染到 body 元素下 -->
     <Teleport to="body">
       <div v-if="isImageModalVisible" class="image-modal" @click="closeImageModal">
+        <!-- 模态框内容区域 -->
         <div class="modal-content" @click.stop>
           <img :src="mainImage" :alt="title" class="modal-image" />
+          <!-- 关闭模态框按钮 -->
           <button class="close-button" @click="closeImageModal">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
@@ -145,16 +166,28 @@
 </template>
 
 <script setup>
+/**
+ * @file DetailTemplate.vue
+ * @description 二手交易模块的产品详情模板组件。
+ * 该组件用于展示产品的详细信息，包括图片画廊、基本信息、价格、购买操作以及产品规格。
+ * 它通过组合式函数 (composables) 封装了数据处理、图片展示和购买逻辑。
+ */
+
 import { ref, computed, toRefs } from 'vue';
 import { Tag as ATag, InputNumber as AInputNumber, Button as AButton } from 'ant-design-vue';
 import { DownOutlined, UpOutlined } from '@ant-design/icons-vue';
 import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
 
-// 引入组合式函数
+// 引入组合式函数 (Composables)，用于封装和复用业务逻辑
 import { useProductData } from './composables/useProductData';
 import { useImageGallery } from './composables/useImageGallery';
 import { useProductPurchase } from './composables/useProductPurchase';
 
+/**
+ * 定义组件的 props。
+ * @property {Object} product - 产品的详细数据对象。
+ * @property {Object} pageConfig - 页面配置对象，定义了如何从 `product` 映射到UI，以及页面状态等。
+ */
 const props = defineProps({
   product: {
     type: Object,
@@ -168,13 +201,13 @@ const props = defineProps({
   }
 });
 
-// 将 props 转换为响应式引用，以便传递给 composables
+// 将 props 转换为响应式引用，以便传递给 composables，保持响应性
 const { product, pageConfig } = toRefs(props);
 
-// 使用产品数据组合式函数
+// 使用 useProductData 组合式函数，处理产品数据的提取和格式化
 const { title, tags, productDetailsHtml, basicInfo, specifications, priceInfo } = useProductData(product, pageConfig);
 
-// 使用图片画廊组合式函数
+// 使用 useImageGallery 组合式函数，处理图片画廊的逻辑
 const {
   currentImageIndex,
   thumbnailStartIndex,
@@ -191,7 +224,7 @@ const {
   hideZoomHint,
 } = useImageGallery(product);
 
-// 使用产品购买组合式函数
+// 使用 useProductPurchase 组合式函数，处理产品购买相关的逻辑
 const {
   purchaseQuantity,
   isSubmitting,
@@ -203,6 +236,10 @@ const {
   handleFinish,
 } = useProductPurchase(product, pageConfig, priceInfo);
 
+/**
+ * 计算属性，判断当前页面是否处于编辑状态。
+ * @type {ComputedRef<boolean>}
+ */
 const isEdit = computed(() => pageConfig.value.pageState == 'edit');
 
 </script>
