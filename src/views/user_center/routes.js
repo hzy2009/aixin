@@ -164,34 +164,34 @@ const userCenterRoutes = [
       {
         path: 'oemParts',
         component: oemPartsPage,
-        meta: { title: '原厂件库存处理', roles: ['apm-vip', 'apm-vip-inspection'] }
+        meta: { title: '原厂件库存处理', roles: ['apm-register'] }
       },
       {
         path: 'oemParts/detail/:id',
         props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
         component: oemPartsPageDetail,
-        meta: { title: '原厂件库存处理详情', roles: ['apm-vip', 'apm-vip-inspection'] }
+        meta: { title: '原厂件库存处理详情', roles: ['apm-register'] }
       },
       {
         path: 'oemParts/create',
         component: oemPartsPageEdit,
-        meta: { title: '原厂件库存处理', roles: ['apm-vip', 'apm-vip-inspection'] }
+        meta: { title: '原厂件库存处理', roles: ['apm-register'] }
       },
       {
         path: 'usedEqpTrade',
         component: usedEqpTrade,
-        meta: { title: '二手设备交易', roles: ['apm-vip', 'apm-vip-inspection'] }
+        meta: { title: '二手设备交易', roles: ['apm-register'] }
       },
       {
         path: 'usedEqpTrade/detail/:id',
         props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
         component: usedEqpTradeDetail,
-        meta: { title: '二手设备交易详情', roles: ['apm-vip', 'apm-vip-inspection'] }
+        meta: { title: '二手设备交易详情', roles: ['apm-register'] }
       },
       {
         path: 'usedEqpTrade/create',
         component: usedEqpTradeEdit,
-        meta: { title: '二手设备交易', roles: ['apm-vip', 'apm-vip-inspection'] }
+        meta: { title: '二手设备交易', roles: ['apm-register'] }
       }
     ]
   },
@@ -259,24 +259,24 @@ const userCenterRoutes = [
       {
         path: 'oemParts',
         component: joinOemPartsPage,
-        meta: { title: '原厂件库存处理', roles: ['apm-vip', 'apm-vip-inspection'] }
+        meta: { title: '原厂件库存处理', roles: ['apm-vip', 'apm-register', 'apm-vip-inspection'] }
       },
       {
         path: 'oemParts/detail/:id',
         props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
         component: joinOemPartsPageDetail,
-        meta: { title: '原厂件库存处理详情', roles: ['apm-vip', 'apm-vip-inspection'] }
+        meta: { title: '原厂件库存处理详情', roles: ['apm-vip', 'apm-register', 'apm-vip-inspection'] }
       },
       {
         path: 'usedEqpTrade',
         component: joinUsedEqpTrade,
-        meta: { title: '二手设备交易', roles: ['apm-vip', 'apm-vip-inspection'] }
+        meta: { title: '二手设备交易', roles: ['apm-vip', 'apm-vip-inspection', 'apm-register'] }
       },
       {
         path: 'usedEqpTrade/detail/:id',
         props: route => ({ IdProp: route.params.id}), // 通过 props 传递 mode 和 id
         component: joinUsedEqpTradeDetail,
-        meta: { title: '二手设备交易详情', roles: ['apm-vip', 'apm-vip-inspection'] }
+        meta: { title: '二手设备交易详情', roles: ['apm-vip', 'apm-vip-inspection', 'apm-register'] }
       }
     ]
   },
