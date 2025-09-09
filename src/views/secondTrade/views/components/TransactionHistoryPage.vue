@@ -506,7 +506,7 @@ const gridConfigs = {
       { field: 'refUserName', title: '买方', width: 74, columnType: 'negotiation', formatter: ({cellValue}) => maskMiddle(cellValue)}, 
       { field: 'quantity', title: '本次交易数量', width: 100, columnType: 'negotiation' },
       { field: 'productquantity', title: '库存数量', width: 76, formatter: () => props.product.quantity, columnType: 'transaction' }, 
-      { field: 'expireDate', title: '竞拍截止时间', width: 98, columnType: 'transaction' }, // 交易详情和交易历史共用列
+      { field: 'expireDate', title: '竞拍截止时间', width: 150, columnType: 'transaction' }, // 交易详情和交易历史共用列
       { field: 'createTime', title: '竞拍方竞拍时间', width: 150, columnType: 'transaction' }, // 交易详情和交易历史共用列
       { field: 'refUserName', title: '竞拍方', width: 74, formatter: ({cellValue}) => maskMiddle(cellValue)}, 
       { field: 'quantity', title: '竞拍方竞拍数量', width: 110, columnType: 'transaction'}, 
@@ -649,7 +649,7 @@ const gridConfigs = {
         return row.statusCode == 'succeeded' ? '交易达成' : '交易未达成'
       }, columnType: 'negotiation' }, // 交易历史
       // { field: 'productquantity', title: '卖方库存数量', width: 100, formatter: () => props.product.quantity, columnType: 'transaction' }, 
-      { field: 'expireDate', title: '竞拍截止时间', width: 98, columnType: 'transaction' }, // 交易详情和交易历史共用列
+      { field: 'expireDate', title: '竞拍截止时间', width: 150, columnType: 'transaction' }, // 交易详情和交易历史共用列
       { field: 'createTime', title: '参与竞拍时间', width:150, columnType: 'transaction' }, // 交易详情和交易历史共用列
       { field: 'quantity', title: '竞拍数量', width: 74, columnType: 'transaction'}, 
       { field: 'fixedPrice', title: '起拍价（含税单价）', formatter: formatCurrency, width: 140, columnType: 'transaction' }, 
