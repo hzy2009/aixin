@@ -5,12 +5,13 @@
 
 <script setup>
 import { ref, onMounted, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import DetailTemplate from '../components/DetailTemplate.vue';
 import SimilarProductsSection from '../components/SimilarProductsSection.vue';
 import defHttp from '@/utils/http/axios'
 
 const route = useRoute();
+const router = useRouter();
 const props = defineProps({
   IdProp: { type: String, default: null },
 });

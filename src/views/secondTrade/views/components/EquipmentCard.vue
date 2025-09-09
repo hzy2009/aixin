@@ -62,7 +62,7 @@ const imageSrc = ref(props.item.imageUrl || defaultPlaceholder);
 const formattedPrice = computed(() => {
   if (props.item.purchaseMethod === 'PRICE_ON_REQUEST') return '***';
   const price = props.item.priceIncludingTax;
-  if (!price || price === '面议') return '面议';
+  if (!price ) return '-';
   // 添加千分位格式化
   return Number(price).toLocaleString('zh-CN');
 });
