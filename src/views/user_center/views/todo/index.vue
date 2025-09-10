@@ -89,16 +89,16 @@ const tableColumns1 = [
 ]
 const tableColumns2 = [
   {type: 'seq', title: '序号', width: 74, align: 'center'},
-  { title: '爱芯享交易单号', field: 'code', align: 'center', width: 200 },
-  { title: '零部件料号/设备号', field: 'partNumber', align: 'center', width: 140 },
-  { title: '价格类型', field: 'purchaseMethod', align: 'center', width: 80,
+  { title: '爱芯享交易单号', field: 'code', align: 'center' },
+  { title: '零部件料号/设备号', field: 'partNumber', align: 'center' },
+  { title: '价格类型', field: 'purchaseMethod', align: 'center', width: 100,
     formatter: ({cellValue}) => {
       const purchaseMethodMap = selectOptions('purchase_method').reduce((acc, { value: key, label }) => ({ ...acc, [key]: label }), {});
       const text = purchaseMethodMap[cellValue] || '固定价，不可议价';
       return text;
     }
   },
-  { title: '卖方', field: 'postedBy',  width: 54, align: 'center', formatter: postedBy }, 
+  { title: '卖方', field: 'postedBy', align: 'center', formatter: postedBy, width: 80 }, 
   // { title: '售价', field: 'priceIncludingTax', align: 'center', width: 100,
   //   formatter: ({cellValue, row}) => {
   //     if (row.purchaseMethod == 'PRICE_ON_REQUEST') {
@@ -111,7 +111,7 @@ const tableColumns2 = [
   //   }
   //  },
   // { title: '库存数量', field: 'quantity', align: 'center', width: 100 },
-  { field: 'refUserName', title: '买方', width: 54, formatter: postedBy }, 
+  { field: 'refUserName', title: '买方', formatter: postedBy, width: 80 }, 
   // { field: 'price', title: '买方出价', width: 80,  formatter: ({cellValue, row}) => {
   //     if (row.purchaseMethod == 'PRICE_ON_REQUEST') {
   //       return '***'
@@ -121,7 +121,7 @@ const tableColumns2 = [
   // { field: 'confirmedQuantity', title: '本次交易数量', width: 98}, 
   // { field: 'createTime', title: '发起交易时间', width: 150, align: 'center' }, // 交易详情和议价历史共用列
   // { field: 'expireDate', title: '竞拍截止时间', width: 150, align: 'center' }, // 交易详情和议价历史共用列
-  { title: '操作', width: '86px', align: 'center', fixed: 'right', key: 'actions' },
+  { title: '操作', width: 100, align: 'center', fixed: 'right', key: 'actions' },
 ]
 const tableConfig = {
   '原厂件寻源': {

@@ -70,7 +70,8 @@ const fieldList = [
 ]
 const tagList = [
     'productStatus',
-    'stockStatus'
+    'stockStatus',
+    'productSource'
 ]
 const similarConfig = ref({
   url: '/apm/apmDeviceSecondhand/list/front',

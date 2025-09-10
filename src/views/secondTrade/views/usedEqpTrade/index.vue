@@ -47,7 +47,8 @@ const onSortChange = (newSort) => {
 };
 const tagList = [
     'productStatus',
-    'stockStatus'
+    'stockStatus',
+    'productSource'
 ]
 const fieldList = [
     { key: 'deviceType', label: '设备类型' },
