@@ -23,7 +23,7 @@
             v-model:checked="row.isWinner"
             checkedValue="1"
             unCheckedValue="0"
-            :disabled="column.disabled"
+            :disabled="column.params.disabled"
             @change="(checked) => onSwitchChange(checked, row)" 
           />
           <span>是</span>

@@ -444,7 +444,13 @@ export function useTransactionGrid(props, activeTabKey, isDeadlinePassed, isRowE
       if (props.product?.purchaseMethod === 'AUCTION') {
         filteredColumns = filteredColumns.map((col) => {
           if (col.field === 'isWinner') {
-            return { ...col, disabled: !isDeadlinePassed.value }; // 竞拍截止后才能操作
+            return { 
+              ...col, 
+              params: { 
+                ...(col.params || {}), // 保留原有的 params
+                disabled: !isDeadlinePassed.value 
+              } 
+            }; // 竞拍截止后才能操作
           }
           return col;
         });
