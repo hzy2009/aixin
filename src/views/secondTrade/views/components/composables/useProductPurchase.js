@@ -9,6 +9,7 @@
 import { ref, computed } from 'vue';
 import { message } from 'ant-design-vue';
 import { useModalStore } from '@/store/modalStore';
+import { useAuthStore } from '@/store/authStore';
 import defHttp from '@/utils/http/axios';
 
 /**
@@ -22,6 +23,7 @@ import defHttp from '@/utils/http/axios';
  */
 export function useProductPurchase(product, pageConfig, priceInfo) {
   const modalStore = useModalStore();
+  const authStore = useAuthStore();
   const purchaseQuantity = ref(1);
   const isSubmitting = ref(false); // 用于按钮加载状态
   const phoneAndEmailModal = ref(null); // 弹窗组件引用
@@ -43,6 +45,10 @@ export function useProductPurchase(product, pageConfig, priceInfo) {
    * 处理购买操作
    */
   const handlePurchase = async () => {
+    if (!authStore.isLogin) {
+      modalStore.showLogin();
+      return;
+    }
     // 验证商品可购买性
     if (!isPurchasable.value) {
       message.warn('该商品库存不足，无法购买');
