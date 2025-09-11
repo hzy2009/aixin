@@ -30,7 +30,7 @@ const productPageConfig = ref({
 
   basicInfo: [
     { label: '设备厂商', field: 'originalManufacturer' },
-    { label: '设备型号', field: 'compatibleModels' },
+    { label: '设备型号', field: 'productModelName' },
     {
       label: '设备状态',
       field: 'productStatusName',

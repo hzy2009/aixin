@@ -31,7 +31,7 @@ const productPageConfig = ref({
 
   basicInfo: [
     { label: '设备厂商', field: 'originalManufacturer' },
-    { label: '设备型号', field: 'compatibleModels' },
+    { label: '设备型号', field: 'productModelName' },
     {
       label: '设备状态',
       field: 'productStatusName',
@@ -55,7 +55,6 @@ const productPageConfig = ref({
     { label: '物流方式', field: 'shippingTypeName' },
     { label: '交期', field: 'deliveryDuration' },
     { label: '到货时间', field: 'deliveryDate' },
-    { label: '备注', field: 'remark' },
   ]
 });
 const isLoading = ref(false);

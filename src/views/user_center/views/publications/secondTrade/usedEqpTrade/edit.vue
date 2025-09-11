@@ -26,9 +26,13 @@ const formConfigs = [
   },
   {
     label: '设备型号',
-    field: 'productModel',
-    fieldType: 'input',
+    field: 'productModelCode',
+    fieldType: 'select',
+    dictKey: 'product_model',
     span: 24,
+    onChange: ({ value, form, option }) => {
+      form.productModelName = option.label || '';
+    }
   },
   {
     label: '规格',
@@ -117,13 +121,16 @@ const formConfigs = [
     fieldType: 'select',
     dictKey: 'device_trade_type',
     span: 24,
+    onChange: ({ value, form, option }) => {
+      form.tradeTypeName = option.label || '';
+    }
   },
-  {
-    label: '交易方式名称',
-    field: 'tradeTypeName',
-    fieldType: 'input',
-    span: 24,
-  },
+  // {
+  //   label: '交易方式名称',
+  //   field: 'tradeTypeName',
+  //   fieldType: 'input',
+  //   span: 24,
+  // },
   {
     label: '物流方式',
     field: 'shippingTypeName',
@@ -136,6 +143,9 @@ const formConfigs = [
     fieldType: 'select',
     dictKey: 'purchase_method',
     span: 24,
+    onChange: ({ value, form, option }) => {
+      form.expiredDate = null
+    }
   },
   {
     label: '竞价截止日期',

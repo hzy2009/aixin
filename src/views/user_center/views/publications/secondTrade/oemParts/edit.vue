@@ -124,13 +124,16 @@ const formConfigs = [
     fieldType: 'select',
     dictKey: 'device_trade_type',
     span: 24,
+     onChange: ({ value, form, option }) => {
+      form.tradeTypeName = option.label || '';
+    }
   },
-  {
-    label: '交易方式名称',
-    field: 'tradeTypeName',
-    fieldType: 'input',
-    span: 24,
-  },
+  // {
+  //   label: '交易方式名称',
+  //   field: 'tradeTypeName',
+  //   fieldType: 'input',
+  //   span: 24,
+  // },
   {
     label: '物流方式',
     field: 'shippingTypeName',
@@ -143,8 +146,8 @@ const formConfigs = [
     fieldType: 'select',
     dictKey: 'purchase_method',
     span: 24,
-    onChange: ({ formModel, value }) => {
-      formModel.expireDate = ''
+    onChange: ({ value, form, option }) => {
+        form.expiredDate = null
     }
   },
   {
