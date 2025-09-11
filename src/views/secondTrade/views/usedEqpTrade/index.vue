@@ -46,8 +46,8 @@ const onSortChange = (newSort) => {
     refListPage.value.loadTableData(params);
 };
 const tagList = [
-    'productStatus',
-    'stockStatus',
+    'productStatusName',
+    'stockStatusName',
     'productSource'
 ]
 const fieldList = [
@@ -97,7 +97,7 @@ const filterConfigForPage = reactive([
         { label: '快速热处理设备(RTP)', value: '快速热处理设备(RTP)',},
         { label: '量测设备(Metrology)', value: '量测设备(Metrology)',}
     ]},
-    { id: 'stockStatus', label: '库存状态', maxVisibleWithoutMore: 9, selectionType: 'single', options: [
+    { id: 'stockStatusName', label: '库存状态', maxVisibleWithoutMore: 9, selectionType: 'single', options: [
         { label: '全部', value: '',},
         { label: '现货', value: '现货',},
         { label: '非现货', value: '非现货',},

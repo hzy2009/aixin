@@ -235,7 +235,7 @@ export const OEMPARTS_COLUMNS = [
             return option ? option.label : '';
         }
     },
-    { title: '零部件状态', field: 'productStatus', align: 'center', width: 90 },
+    { title: '零部件状态', field: 'productStatusName', align: 'center', width: 90 },
     { title: '发布时间', field: 'createTime', align: 'center', width: 142 },
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 90 },
 ]
@@ -247,7 +247,7 @@ export const STANDARD_COLUMNS = [
     { title: '规格描述', field: 'specification', align: 'center', width: 140 },
     { title: '生产厂商', field: 'manufacturer', align: 'center' },
     { title: '生产日期', field: 'productionDate', align: 'center', width: 120, fieldType: 'date' },
-    { title: '产品状态', field: 'productStatus', align: 'center', width: 160 },
+    { title: '产品状态', field: 'productStatusName', align: 'center', width: 160 },
     { title: '数量', field: 'quantity', align: 'center', width: 160 },
     { title: '需求发布者', field: 'postedBy', align: 'center', width: 120, formatter: ({ cellValue }) => maskMiddle(cellValue) },
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 90 },
@@ -260,7 +260,7 @@ export const NOTSTANDARD_COLUMNS = [
     { title: '规格描述', field: 'specification', align: 'center', width: 140 },
     { title: '生产厂商', field: 'manufacturer', align: 'center' },
     { title: '生产日期', field: 'productionDate', align: 'center', width: 120, fieldType: 'date' },
-    { title: '产品状态', field: 'productStatus', align: 'center', width: 160 },
+    { title: '产品状态', field: 'productStatusName', align: 'center', width: 160 },
     { title: '数量', field: 'quantity', align: 'center', width: 160 },
     { title: '需求发布者', field: 'postedBy', align: 'center', width: 120, formatter: ({ cellValue }) => maskMiddle(cellValue) },
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 90 },
@@ -284,7 +284,7 @@ export const USEDEQPTRADE_COLUMNS = [
     },
     { title: '出厂日期', field: 'productionDate', align: 'center', width: 120, fieldType: 'date' },
     { title: '工艺段', field: 'processSection', align: 'center', width: 120 },
-    { title: '设备状态', field: 'productStatus', align: 'center', width: 120 },
+    { title: '设备状态', field: 'productStatusName', align: 'center', width: 120 },
     { title: '发布时间', field: 'createTime', align: 'center', width: 142 },
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 90 },
 ]

@@ -68,7 +68,7 @@ const formConfigs = [
   },
   {
     label: '产品状态',
-    field: 'productStatus',
+    field: 'productStatusName',
     fieldType: 'input',
     span: 24,
   },
@@ -171,7 +171,7 @@ const formConfigs = [
   },
   {
     label: '库存状态',
-    field: 'stockStatus',
+    field: 'stockStatusName',
     fieldType: 'input',
     span: 24,
   },

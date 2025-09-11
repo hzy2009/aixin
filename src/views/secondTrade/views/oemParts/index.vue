@@ -52,8 +52,8 @@ const fieldList = [
     { key: 'originalManufacturer', label: '品牌/制造商' },
 ]
 const tagList = [
-    'productStatus',
-    'stockStatus',
+    'productStatusName',
+    'stockStatusName',
     'productSource'
 ]
 const handleDetails = (item) => {
@@ -84,7 +84,7 @@ const getALLProductTypes = () => {
 }
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
-    { id: 'productStatus', label: '零部件状态', maxVisibleWithoutMore: 9, dictKey: 'productStatus', options: [
+    { id: 'productStatusName', label: '零部件状态', maxVisibleWithoutMore: 9, dictKey: 'productStatusName', options: [
         { label: '全部', value: '',},
         { label: '全新未拆封', value: '全新未拆封',},
         { label: '拆封未使用', value: '拆封未使用',},
@@ -92,7 +92,7 @@ const filterConfigForPage = reactive([
     ] },
     { id: 'purchaseMethod', label: '购买形式', maxVisibleWithoutMore: 9, dictKey: 'purchase_method'},
     { id: 'productType', label: '产品类别', maxVisibleWithoutMore: 14, dictKey: 'product_type', options: getALLProductTypes() },
-    { id: 'stockStatus', label: '库存状态', maxVisibleWithoutMore: 9, selectionType: 'single', options: [
+    { id: 'stockStatusName', label: '库存状态', maxVisibleWithoutMore: 9, selectionType: 'single', options: [
         { label: '全部', value: '',},
         { label: '现货', value: '现货',},
         { label: '非现货', value: '非现货',},

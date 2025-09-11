@@ -23,7 +23,7 @@ const productPageConfig = ref({
   title: { field: 'productName' },
   mainImage: { field: 'imageUrl' },
   tags: [
-    { field: 'productStatus' }, // 第一个标签来自 data.condition.label
+    { field: 'productStatusName' }, // 第一个标签来自 data.condition.label
     { field: 'productTypeName' },      // 第二个标签来自 data.vendor.name
   ],  
 
@@ -32,7 +32,7 @@ const productPageConfig = ref({
     { label: '设备型号', field: 'compatibleModels' },
     {
       label: '设备状态',
-      field: 'productStatus',
+      field: 'productStatusName',
       highlight: true,
     },
   ],
@@ -69,8 +69,8 @@ const fieldList = [
     { key: 'originalManufacturer', label: '设备厂商' },
 ]
 const tagList = [
-    'productStatus',
-    'stockStatus',
+    'productStatusName',
+    'stockStatusName',
     'productSource'
 ]
 const similarConfig = ref({

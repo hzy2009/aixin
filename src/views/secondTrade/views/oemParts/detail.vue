@@ -23,8 +23,8 @@ const productPageConfig = ref({
   title: { field: 'productName' },
   mainImage: { field: 'imageUrl' },
   tags: [
-    { field: 'productStatus' }, // 第一个标签来自 data.condition.label
-    { field: 'stockStatus' },      // 第二个标签来自 data.vendor.name
+    { field: 'productStatusName' }, // 第一个标签来自 data.condition.label
+    { field: 'stockStatusName' },      // 第二个标签来自 data.vendor.name
     { field: 'productSource'}
   ],  
   basicInfo: [
@@ -68,8 +68,8 @@ const fieldList = [
     { key: 'originalManufacturer', label: '设备厂商' },
 ]
 const tagList = [
-    'productStatus',
-    'stockStatus'
+    'productStatusName',
+    'stockStatusName'
 ]
 const similarConfig = ref({
   url: '/apm/apmDeviceOrigin/list/front',

@@ -24,8 +24,8 @@ const productPageConfig = ref({
   title: { field: 'productName' },
   mainImage: { field: 'imageUrl' },
   tags: [
-    'productStatus',
-    'stockStatus',
+    'productStatusName',
+    'stockStatusName',
     'productSource'
   ],  
 
@@ -34,7 +34,7 @@ const productPageConfig = ref({
     { label: '设备型号', field: 'compatibleModels' },
     {
       label: '设备状态',
-      field: 'productStatus',
+      field: 'productStatusName',
       highlight: true,
     },
   ],
