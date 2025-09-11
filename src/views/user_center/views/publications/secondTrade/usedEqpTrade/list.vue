@@ -44,13 +44,7 @@ const actions = reactive([
 
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
-    { id: 'productType', label: '设备状态', maxVisibleWithoutMore: 9, dictKey: 'productType', options: [
-        { label: '全部', value: '',},
-        { label: '全新整机(原厂状态)', value: '全新整机(原厂状态)',},
-        { label: '二手整机(功能正常)', value: '二手整机(功能正常)',},
-        { label: '二手整机(功能待测) ', value: '二手整机(功能待测) ',},
-        { label: '非整机(拆修使用)', value: '非整机(拆修使用)',},
-    ] },
+    { id: 'productType', label: '设备状态', maxVisibleWithoutMore: 9, dictKey: 'secondhand_product_status'},
     { id: 'purchaseMethod', label: '购买形式', maxVisibleWithoutMore: 9, dictKey: 'purchase_method'},
     { id: 'deviceType', label: '设备类型', maxVisibleWithoutMore: 9, options: [
         { label: '全部', value: ''},
@@ -63,11 +57,7 @@ const filterConfigForPage = reactive([
         { label: '快速热处理设备(RTP)', value: '快速热处理设备(RTP)',},
         { label: '量测设备(Metrology)', value: '量测设备(Metrology)',}
     ]},
-    { id: 'stockStatusName', label: '库存状态', maxVisibleWithoutMore: 9, selectionType: 'single', options: [
-        { label: '全部', value: '',},
-        { label: '现货', value: '现货',},
-        { label: '非现货', value: '非现货',},
-    ] },
+    { id: 'stockStatusName', label: '库存状态', maxVisibleWithoutMore: 9, selectionType: 'single', dictKey: 'product_stock_status' },
 ]);
 
 // 页面数据配置
