@@ -36,7 +36,7 @@
             :headers="uploadHeaders"
             :before-upload="beforeUpload"
             @change="handleUploadChange"
-            @drop="handleDrop"
+            
             class="custom-dragger-final"
           >
             <div class="dragger-content-final">
@@ -103,7 +103,7 @@ import {
 const props = defineProps({
   isVisible: { type: Boolean, required: true },
   title: { type: String, default: '创建国产替代寻源需求' },
-  uploadUrl: { type: String, required: true, default: '/api/upload/demand-file' },
+  uploadUrl: { type: String, default: '/api/upload/demand-file' },
   uploadHeaders: { type: Object, default: () => ({}) },
   templateUrl: { type: String, required: true },
   uploadHint: { type: String, default: '支持.ZIP .RAR格式，最大100MB' },
@@ -148,20 +148,26 @@ const beforeUpload = (file) => {
   const isLtMaxSize = file.size / 1024 / 1024 < props.maxFileSizeMB;
   if (!isLtMaxSize) message.error(`文件大小不能超过 ${props.maxFileSizeMB}MB!`);
   
-  if (isAllowedType && isLtMaxSize) {
-    // Replace existing file in the list with the new one
-    fileList.value = [file];
-  }
+  // The fileList update is now solely handled by handleUploadChange based on AntD's internal state
+  // if (isAllowedType && isLtMaxSize) {
+  //   fileList.value = [file];
+  // }
   return false; // Always return false to prevent automatic upload and manage it manually
 };
 
 const handleUploadChange = (info) => {
-  // Although we prevent auto-upload, this handler is still useful
-  // if you want to handle file removal from the list.
-  fileList.value = [...info.fileList];
+  // 过滤掉不符合类型或大小要求的文件
+  // Ant Design Vue 的 Upload 组件在 beforeUpload 返回 false 时，会将文件状态标记为 'error'
+  fileList.value = info.fileList.filter(file => {
+    // 只有当文件状态不是 'error'，或者文件类型和大小都符合要求时，才保留该文件
+    // 这样可以确保即使 AntD 内部将文件标记为 'error'，如果它确实是无效的，我们也会将其从 fileList 中移除
+    const isAllowedType = props.allowedFileTypes.includes(file.type);
+    const isLtMaxSize = file.size / 1024 / 1024 < props.maxFileSizeMB;
+    return (file.status !== 'error' && isAllowedType && isLtMaxSize) || (file.status === 'done' || file.status === 'uploading');
+  });
 };
 
-const handleDrop = (e) => console.log('Dropped files', e.dataTransfer.files);
+
 
 const handleSubmit = async () => {
   if (!canSubmit.value) {
@@ -275,15 +281,12 @@ watch(() => props.isVisible, (visible) => {
 
 .custom-dragger-final {
   display: block;
-  height: 300px;
-  background-color: #FAFAFA;
-  // border: 1px dashed #D9D9D9;
   border-radius: 2px;
   &:hover { border-color: @primary-color; }
 
   // Use :deep to style AntD internal elements
   :deep(.ant-upload-list) {
-    padding: 0 16px; // Add padding to the list container
+    // padding: 0 16px; // Add padding to the list container
   }
 
   :deep(.ant-upload-drag-icon .anticon) {
