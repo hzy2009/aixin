@@ -91,6 +91,7 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue';
+import defHttp from '@/utils/http/axios';
 import {
   Modal as AModal, UploadDragger as AUploadDragger, Button as AButton, message
 } from 'ant-design-vue';
@@ -112,7 +113,7 @@ const props = defineProps({
     default: () => [
       '下载模板并按照要求填写Excel，数据',
       'Excel最大支持20M，图片不超过 50MB',
-      'Excel首行为标题行，从第三行开始为数据',
+      'Excel首行为标题行，从第二行开始为数据',
       '图片名称使用对应料号'
     ]
   },
@@ -181,19 +182,24 @@ const handleSubmit = async () => {
     // AntD file object is in originFileObj when selected manually
     formData.append('file', fileList.value[0].originFileObj || fileList.value[0]);
     
-    // TODO: Replace with your actual upload API call
     console.log('Submitting file:', fileList.value[0].name);
-    // const response = await apiClient.post(props.uploadUrl, formData, { headers: { 'Content-Type': 'multipart/form-data', ...props.uploadHeaders } });
-
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    const mockResponse = { success: true, message: '提交成功', result: { id: 'file123', name: fileList.value[0].name } };
+    const response = await defHttp.upload({
+      url: props.uploadUrl,
+      data: formData,
+      headers: { ...props.uploadHeaders } // Merge any custom headers
+    });
     
-    if (mockResponse.success) {
+    // Assuming defHttp.upload handles the common success/error messages via interceptors
+    // and returns the 'data' part of the response if successful (code 0 or 200)
+    if (response) { // If response is not null/undefined, it means the upload was successful
       message.success('数据提交成功！');
-      emit('submitSuccess', mockResponse.result);
+      emit('submitSuccess', response); // Pass the actual response data
       emit('close');
     } else {
-        throw new Error(mockResponse.message);
+      // This else block might not be reached if defHttp's interceptors handle errors by throwing
+      // but it's good to have a fallback or specific handling if needed.
+      // For now, we'll assume defHttp's interceptors show error messages.
+      throw new Error('文件上传失败，请稍后再试。');
     }
   } catch (error) {
     message.error('数据提交失败: ' + error.message);
