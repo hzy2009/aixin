@@ -131,6 +131,7 @@ const handleFinish = (data) => {
         phoneAndEmailModal.value.handleClose()
         showUploadModal.value = false;
         refListPage.value?.loadTableData();
+        message.success(res.message);
     } else {
       message.error(res.message);
     }

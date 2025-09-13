@@ -1,13 +1,15 @@
 <template>
   <div>
     <listPage :pageData="pageData" ref="refListPage" />
-    <ExcelUploadModal
-      v-model:visible="isUploadModalVisible"
+    <FileUploadModal
+      :is-visible="showUploadModal"
+      @close="showUploadModal = false"
       title="上传数据"
-      :action="pageData.url.importExcel"
-      :templateUrl="pageData.url.downloadTpl"
-      @success="handleUploadSuccess"
+      :upload-url="uploadUrl"
+      :template-url="pageData.url.downloadTpl"
+      @submit-success="handleSuccess"
     />
+    <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" title="联系管理员创建" actionText="一键敲门"></PhoneAndEmailModal>
   </div>
 </template>
 
@@ -15,14 +17,21 @@
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
-import ExcelUploadModal from '@/components/common/ExcelUploadModal.vue'; // 引入弹窗组件
+import FileUploadModal from '@/components/common/FileUploadModal.vue'; // 引入弹窗组件
+import { message } from 'ant-design-vue';
 import { OEMPARTS_COLUMNS } from '@/utils/const.jsx';
 import { FileTextOutlined } from '@ant-design/icons-vue';
+import { selectOptions } from '@/utils/index';
+import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
+import defHttp from '@/utils/http/axios';
 
+// const uploadUrl = `${import.meta.env.VITE_GLOB_UPLOAD_URL}/apm/sys/file/upload` || '/api';
+const uploadUrl = `/apm/sys/file/upload/deviceOrigin`;
 const router = useRouter();
 const refListPage = ref();
 const isUploadModalVisible = ref(false); // 控制弹窗显示
-
+const showUploadModal = ref(false);
+const phoneAndEmailModal = ref()
 // 上传成功后的回调
 const handleUploadSuccess = () => {
   refListPage.value?.loadTableData();
@@ -59,27 +68,26 @@ const filterConfigForPage = reactive([
     ]},
     { id: 'stockStatusName', label: '库存状态', maxVisibleWithoutMore: 9, selectionType: 'single', dictKey: 'product_stock_status' },
 ]);
-
 // 页面数据配置
 const pageData = ref({
   url: {
     list: '/apm/apmDeviceSecondhand/list/owner',
-    importExcel: '/apm/apmDeviceSecondhand/importExcel',
+    upload: '/apm/apmDeviceSecondhand/importExcel',
     exportXls: '/apm/apmDeviceSecondhand/exportXls',
-    downloadTpl: '/apm/apmDeviceOrigin/create/downloadTpl', // 新增模板下载地址
+    downloadTpl: '/apm/apmDeviceSecondhand/create/downloadTpl/front', // 新增模板下载地址
   },
+  filterConfigForPage,
   tableColumns,
   actions,
-  filterConfigForPage,
   tableOperations: [
     // {
     //   title: '创建需求',
-    //   clickFn: () => router.push('/user/published/usedEqpTrade/create'),
+    //   clickFn: () => router.push('/user/published/oemParts/create'),
     //   type: 'primary'
     // },
     {
       title: '上传数据',
-      clickFn: () => { isUploadModalVisible.value = true; }, // 修改为打开弹窗
+      clickFn: () => { showUploadModal.value = true; }, // 修改为打开弹窗
       type: 'primary'
     },
   ],
@@ -106,5 +114,34 @@ function viewDetails({ id }) {
     return;
   }
   router.push(`/user/published/usedEqpTrade/detail/${id}`);
+}
+
+const currentUploadFileUrl = ref('');
+
+const handleSuccess = (data) => {
+  currentUploadFileUrl.value = data.result[0] || ''
+  phoneAndEmailModal.value.openModal()
+};
+
+const handleFinish = (data) => {
+  debugger
+  let p = {
+    ...data,
+    downloadUrl: currentUploadFileUrl.value
+  }
+  defHttp.post({
+    url: '/apm/apmDeviceSecondhand/create/uploadZip',
+    data: p
+  }).then(res => {
+    if (res.success) {
+        phoneAndEmailModal.value.handleClose()
+        showUploadModal.value = false;
+        refListPage.value?.loadTableData();
+        message.success(res.message);
+    } else {
+      message.error(res.message);
+    }
+  })
+
 }
 </script>
