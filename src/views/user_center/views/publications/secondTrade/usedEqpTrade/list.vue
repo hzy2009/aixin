@@ -66,17 +66,17 @@ const pageData = ref({
     list: '/apm/apmDeviceSecondhand/list/owner',
     importExcel: '/apm/apmDeviceSecondhand/importExcel',
     exportXls: '/apm/apmDeviceSecondhand/exportXls',
-    downloadTpl: '/apm/apmDeviceSecondhand/downloadTpl', // 新增模板下载地址
+    downloadTpl: '/apm/apmDeviceOrigin/create/downloadTpl', // 新增模板下载地址
   },
   tableColumns,
   actions,
   filterConfigForPage,
   tableOperations: [
-    {
-      title: '创建需求',
-      clickFn: () => router.push('/user/published/usedEqpTrade/create'),
-      type: 'primary'
-    },
+    // {
+    //   title: '创建需求',
+    //   clickFn: () => router.push('/user/published/usedEqpTrade/create'),
+    //   type: 'primary'
+    // },
     {
       title: '上传数据',
       clickFn: () => { isUploadModalVisible.value = true; }, // 修改为打开弹窗

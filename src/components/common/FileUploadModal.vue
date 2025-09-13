@@ -30,7 +30,7 @@
           <a-upload-dragger
             v-model:fileList="fileList"
             name="file"
-            :multiple="false"
+            :multiple="props.maxFiles > 1"
             :showUploadList="true"
             :action="uploadUrl"
             :headers="uploadHeaders"
@@ -119,7 +119,8 @@ const props = defineProps({
   },
   footerNote: { type: String, default: '提交数据后，客服人员将在30分钟内审核并与您联系' },
   allowedFileTypes: { type: Array, default: () => ['application/zip', 'application/x-rar-compressed', 'application/vnd.rar', 'application/x-zip-compressed'] },
-  maxFileSizeMB: { type: Number, default: 100 }
+  maxFileSizeMB: { type: Number, default: 100 },
+  maxFiles: { type: Number, default: 1 } // 新增：控制最大上传文件数量
 });
 
 const emit = defineEmits(['close', 'submitSuccess']);
@@ -128,7 +129,15 @@ const isSubmitting = ref(false);
 
 // Submit is only possible when exactly one file is present and not in an error state.
 // We'll consider any status other than 'error' as potentially submittable.
-const canSubmit = computed(() => fileList.value.length === 1 && fileList.value[0].status !== 'error');
+const canSubmit = computed(() => {
+  // 如果 maxFiles 为 1，需要正好一个文件。
+  // 如果 maxFiles > 1，需要至少一个文件且不超过 maxFiles。
+  const isValidCount = props.maxFiles === 1
+    ? fileList.value.length === 1
+    : fileList.value.length > 0 && fileList.value.length <= props.maxFiles;
+  const allFilesValid = fileList.value.every(file => file.status !== 'error');
+  return isValidCount && allFilesValid;
+});
 
 const handleCancel = () => {
   if (isSubmitting.value) return;
@@ -144,61 +153,100 @@ const handleDownloadTemplate = () => {
 };
 
 const beforeUpload = (file) => {
+  // 1. Validation checks
+  // Check file count limit first
+  if (props.maxFiles === 1 && fileList.value.length >= 1) {
+    message.error('只能上传一个文件！');
+    return false;
+  }
+  if (props.maxFiles > 1 && fileList.value.length >= props.maxFiles) {
+    message.error(`最多只能上传 ${props.maxFiles} 个文件！`);
+    return false;
+  }
+
   const isAllowedType = props.allowedFileTypes.includes(file.type);
-  if (!isAllowedType) message.error(`不支持的文件类型! 请上传 ZIP 或 RAR 格式的文件。`);
+  if (!isAllowedType) {
+    message.error(`不支持的文件类型! 请上传 ZIP 或 RAR 格式的文件。`);
+    return false;
+  }
   const isLtMaxSize = file.size / 1024 / 1024 < props.maxFileSizeMB;
-  if (!isLtMaxSize) message.error(`文件大小不能超过 ${props.maxFileSizeMB}MB!`);
+  if (!isLtMaxSize) {
+    message.error(`文件大小不能超过 ${props.maxFileSizeMB}MB!`);
+    return false;
+  }
   
-  // The fileList update is now solely handled by handleUploadChange based on AntD's internal state
-  // if (isAllowedType && isLtMaxSize) {
-  //   fileList.value = [file];
-  // }
-  return false; // Always return false to prevent automatic upload and manage it manually
+  // 2. If all checks pass, manually add the file to fileList.value
+  //    This ensures the file is displayed and available for submission.
+  const newFile = {
+    uid: file.uid, // Unique ID for the file
+    name: file.name,
+    status: 'ready', // Custom status indicating it's ready for manual upload
+    originFileObj: file, // The raw File object
+    size: file.size,
+    type: file.type,
+  };
+
+  // If maxFiles is 1, replace the existing file. Otherwise, add to the list.
+  if (props.maxFiles === 1) {
+    fileList.value = [newFile];
+  } else {
+    fileList.value.push(newFile);
+  }
+
+  // 3. Return false to prevent Ant Design's automatic upload.
+  return false;
 };
 
 const handleUploadChange = (info) => {
-  // 过滤掉不符合类型或大小要求的文件
-  // Ant Design Vue 的 Upload 组件在 beforeUpload 返回 false 时，会将文件状态标记为 'error'
-  fileList.value = info.fileList.filter(file => {
-    // 只有当文件状态不是 'error'，或者文件类型和大小都符合要求时，才保留该文件
-    // 这样可以确保即使 AntD 内部将文件标记为 'error'，如果它确实是无效的，我们也会将其从 fileList 中移除
-    const isAllowedType = props.allowedFileTypes.includes(file.type);
-    const isLtMaxSize = file.size / 1024 / 1024 < props.maxFileSizeMB;
-    return (file.status !== 'error' && isAllowedType && isLtMaxSize) || (file.status === 'done' || file.status === 'uploading');
+  // This function is primarily for handling file removals from the UI.
+  // When a file is removed from the Ant Design Upload list, info.fileList will reflect this.
+  // We need to update our internal fileList.value to match.
+  fileList.value = info.fileList.map(file => {
+    // Ensure we retain the original file object for submission
+    const existingFile = fileList.value.find(f => f.uid === file.uid);
+    return existingFile || file; // Use our existing file object if available, otherwise AntD's
   });
+
+  // Re-apply maxFiles limit in case of removals or other changes
+  if (props.maxFiles === 1) {
+    fileList.value = fileList.value.slice(-1);
+  } else {
+    fileList.value = fileList.value.slice(-props.maxFiles);
+  }
 };
 
 
 
 const handleSubmit = async () => {
   if (!canSubmit.value) {
-    message.warn('请先选择一个有效的文件');
+    message.warn('请先选择有效的文件'); // 消息更通用
     return;
   }
   
   isSubmitting.value = true;
   try {
     const formData = new FormData();
-    // AntD file object is in originFileObj when selected manually
-    formData.append('file', fileList.value[0].originFileObj || fileList.value[0]);
+    // 如果允许上传多个文件，则将所有文件添加到 formData，否则只添加单个文件
+    if (props.maxFiles > 1) {
+      fileList.value.forEach((fileItem, index) => {
+        formData.append(`file${index}`, fileItem.originFileObj || fileItem); // 为多个文件使用不同的字段名
+      });
+    } else {
+      formData.append('file', fileList.value[0].originFileObj || fileList.value[0]);
+    }
     
-    console.log('Submitting file:', fileList.value[0].name);
+    console.log('Submitting files:', fileList.value.map(f => f.name).join(', '));
     const response = await defHttp.upload({
       url: props.uploadUrl,
       data: formData,
-      headers: { ...props.uploadHeaders } // Merge any custom headers
+      headers: { ...props.uploadHeaders }
     });
     
-    // Assuming defHttp.upload handles the common success/error messages via interceptors
-    // and returns the 'data' part of the response if successful (code 0 or 200)
     if (response) { // If response is not null/undefined, it means the upload was successful
-      message.success('数据提交成功！');
+      // message.success('数据提交成功！');
       emit('submitSuccess', response); // Pass the actual response data
-      emit('close');
+      // emit('close');
     } else {
-      // This else block might not be reached if defHttp's interceptors handle errors by throwing
-      // but it's good to have a fallback or specific handling if needed.
-      // For now, we'll assume defHttp's interceptors show error messages.
       throw new Error('文件上传失败，请稍后再试。');
     }
   } catch (error) {
@@ -211,6 +259,9 @@ const handleSubmit = async () => {
 watch(() => props.isVisible, (visible) => {
   if (!visible) fileList.value = [];
 });
+defineExpose({
+  close: () => emit('close'),
+})
 </script>
 
 <style lang="less">
