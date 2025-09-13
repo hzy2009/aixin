@@ -68,7 +68,7 @@ const pageData = ref({
     list: '/apm/apmDeviceOrigin/list/owner',
     upload: '/apm/apmDeviceOrigin/importExcel',
     exportXls: '/apm/apmDeviceOrigin/exportXls',
-    downloadTpl: '/apm/apmDeviceOrigin/create/downloadTpl', // 新增模板下载地址
+    downloadTpl: '/apm/apmDeviceOrigin/create/downloadTpl/front', // 新增模板下载地址
   },
   filterConfigForPage,
   tableColumns,

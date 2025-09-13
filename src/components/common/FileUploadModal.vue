@@ -104,7 +104,7 @@ import {
 const props = defineProps({
   isVisible: { type: Boolean, required: true },
   title: { type: String, default: '创建国产替代寻源需求' },
-  uploadUrl: { type: String, default: '/api/upload/demand-file' },
+  uploadUrl: { type: String, default: '' },
   uploadHeaders: { type: Object, default: () => ({}) },
   templateUrl: { type: String, required: true },
   uploadHint: { type: String, default: '支持.ZIP .RAR格式，最大100MB' },
@@ -146,7 +146,8 @@ const handleCancel = () => {
 
 const handleDownloadTemplate = () => {
   if (props.templateUrl) {
-    window.open(props.templateUrl, '_blank');
+    const url = `${import.meta.env.VITE_GLOB_UPLOAD_URL}${props.templateUrl}`;
+    window.open(url, '_blank');
   } else {
     message.warn('模板文件地址未配置');
   }
