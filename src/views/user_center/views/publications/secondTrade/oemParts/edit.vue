@@ -38,9 +38,13 @@ const formConfigs = [
   },
   {
     label: '零部件型号',
-    field: 'productModel',
-    fieldType: 'input',
+    field: 'productModelCode',
+    fieldType: 'select',
+    dictKey: 'product_model',
     span: 24,
+    onChange: ({ value, form, option }) => {
+      form.productModelName = option.label || '';
+    }
   },
   {
     label: '规格',

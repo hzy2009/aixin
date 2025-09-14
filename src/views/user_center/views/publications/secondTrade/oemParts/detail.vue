@@ -31,7 +31,7 @@ const productPageConfig = ref({
 
   basicInfo: [
     { label: '零部件料号', field: 'partNumber' },
-    { label: '零部件型号', field: 'productModel' },
+    { label: '零部件型号', field: 'productModelName' },
     { label: '品牌/制造商', field: 'originalManufacturer' },
     {
       label: '品类',

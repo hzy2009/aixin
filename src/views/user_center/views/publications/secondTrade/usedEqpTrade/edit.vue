@@ -28,7 +28,7 @@ const formConfigs = [
     label: '设备型号',
     field: 'productModelCode',
     fieldType: 'select',
-    dictKey: 'product_model',
+    dictKey: 'secondhand_product_model',
     span: 24,
     onChange: ({ value, form, option }) => {
       form.productModelName = option.label || '';

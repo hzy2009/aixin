@@ -48,7 +48,7 @@ const onSortChange = (newSort) => {
 
 const fieldList = [
     { key: 'partNumber', label: '零部件料号' },
-    { key: 'productModel', label: '零部件型号' },
+    { key: 'productModelName', label: '零部件型号' },
     { key: 'originalManufacturer', label: '品牌/制造商' },
 ]
 const tagList = [
