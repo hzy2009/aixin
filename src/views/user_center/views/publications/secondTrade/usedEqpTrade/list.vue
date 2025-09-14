@@ -54,7 +54,7 @@ const actions = reactive([
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
     { id: 'productType', label: '设备状态', maxVisibleWithoutMore: 9, dictKey: 'secondhand_product_status'},
-    { id: 'purchaseMethod', label: '购买形式', maxVisibleWithoutMore: 9, dictKey: 'purchase_method'},
+    { id: 'purchaseMethod', label: '价格类型', maxVisibleWithoutMore: 9, dictKey: 'purchase_method'},
     { id: 'deviceType', label: '设备类型', maxVisibleWithoutMore: 9, options: [
         { label: '全部', value: ''},
         { label: '光刻设备(Lithography)', value: '光刻设备(Lithography)',},
