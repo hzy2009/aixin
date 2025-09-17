@@ -272,7 +272,7 @@ export const USEDEQPTRADE_COLUMNS = [
     { title: '设备名称', field: 'productName', align: 'center', width: 100 },
     { title: '设备型号', field: 'compatibleModels', align: 'center', width: 100 },
     { title: '规格描述', field: 'specification', align: 'center', width: 100 },
-    { title: '品牌/制造商', field: 'originalManufacturer', align: 'center' },
+    { title: '品牌/制造商', field: 'originalManufacturer', align: 'center', width: 100 },
     { title: '库存数量', field: 'quantity', align: 'center', width: 80 },
     { title: '售价', field: 'priceIncludingTax', align: 'center', width: 80 },
     {

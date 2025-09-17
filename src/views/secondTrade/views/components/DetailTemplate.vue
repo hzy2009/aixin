@@ -60,9 +60,9 @@
         </div>
 
         <!-- 产品购买信息区域 -->
-        <div class="product-purchase-info">
+        <div class="product-purchase-info" :class="{ 'padding-top-40': !isEdit}">
           <!-- 产品标签，根据 tags 数组显示 -->
-          <div v-if="tags.length" class="product-tags" :class="{ 'padding-top-40': !isEdit}">
+          <div v-if="tags.length" class="product-tags" >
             <a-tag v-for="tag in tags" :key="tag" class="custom-tag">{{ tag }}</a-tag>
           </div>
           <!-- 产品标题 -->
