@@ -41,7 +41,6 @@ const productPageConfig = ref({
   productDetailsHtml: 'description',
   specifications: [
     { label: '规格', field: 'specification' },
-    { label: '适用设备型号', field: 'compatibleModels' },
     { label: '生产日期', field: 'productionDate' },
     { label: '使用时长', field: 'usageDuration' },
     { label: '质保期', field: 'guaranteePeriod' },

@@ -72,7 +72,7 @@ const columns = [
     {
       title: '贸易商',
       width: '70px',
-      field: 'refUserCode',
+      field: 'refUserName',
       fixed: 'left',
     },
     {
