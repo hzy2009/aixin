@@ -1,17 +1,18 @@
 <template>
     <DetailTemplate :product="productData" :page-config="productPageConfig" />
-    <TransactionHistoryPage :product="productData" @buttonClick="handleButtonClick" @goBack="goBack" :transactionType="'JOIN'"/>
+    <TransactionHistoryPage :transactionType="'JOIN'" :product="productData"  @buttonClick="handleButtonClick" @goBack="goBack"/>
 </template>
 
 <script setup>
 import { ref, onMounted, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import DetailTemplate from '@/views/secondTrade/views/components/DetailTemplate.vue';
 import TransactionHistoryPage from '@/views/secondTrade/views/components/TransactionHistoryPage.vue';
 import { message  } from 'ant-design-vue';
 import defHttp from '@/utils/http/axios'
 
 const route = useRoute();
+const router = useRouter();
 const props = defineProps({
   IdProp: { type: String, default: null },
 });
@@ -38,7 +39,6 @@ const productPageConfig = ref({
   ],
 
   productDetailsTitle: '产品详情',
-
   specifications: [
     { label: '规格', field: 'specification' },
     { label: '生产日期', field: 'productionDate' },
@@ -106,7 +106,7 @@ const handleAction = async ({ url, data }) => {
   try {
     const response = await defHttp.post({ 
       url: `${url}/${id}`, 
-      data 
+      data: Array.isArray(data) ? data : [data]
     });
     
     if (response.success) {
@@ -117,12 +117,12 @@ const handleAction = async ({ url, data }) => {
     }
   } catch (error) {
     console.error('操作失败:', error);
-    message.error('');
   } finally {
     isLoading.value = false;
   }
 };
 const confirmBuy = (selectedRow) => {
+selectedRow.quantity = selectedRow.confirmedQuantity || selectedRow.quantity
  handleAction({url: '/apm/apmDeviceSecondhand/buy/deal', data: selectedRow})
 }
 
@@ -130,9 +130,7 @@ const cancelBuy = (selectedRow) => {
  handleAction({url: '/apm/apmDeviceSecondhand/buy/cancel', data: selectedRow})
 }
 
-const goBack = () => {
-  router.push({ path: '/user/join/usedEqpTrade' });
-};
+
 const handleButtonClick = ({ key, row }) => {
   console.log(key, row);
   switch (key) {
@@ -146,6 +144,10 @@ const handleButtonClick = ({ key, row }) => {
       break;
   }
 }
+
+const goBack = () => {
+  router.push({ path: '/user/join/oemParts' });
+};
 
 onMounted(() => {
   fetchReportDetail();
