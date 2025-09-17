@@ -14,8 +14,8 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, reactive, onMounted, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import FileUploadModal from '@/components/common/FileUploadModal.vue'; // 引入弹窗组件
 import { message } from 'ant-design-vue';
@@ -28,7 +28,28 @@ import defHttp from '@/utils/http/axios';
 // const uploadUrl = `${import.meta.env.VITE_GLOB_UPLOAD_URL}/apm/sys/file/upload` || '/api';
 const uploadUrl = `/apm/sys/file/upload/deviceOrigin`;
 const router = useRouter();
+const route = useRoute();
 const refListPage = ref();
+
+const handleActionQuery = (query) => {
+  if (query.action === 'create') {
+    openModal();
+    // 触发后，立即从URL中移除该参数，防止刷新时再次触发
+    const newQuery = { ...query };
+    delete newQuery.action;
+    router.replace({ query: newQuery });
+  }
+};
+
+// 监听路由参数变化，处理页面内跳转的情况
+watch(() => route.query, (newQuery) => {
+  handleActionQuery(newQuery);
+});
+
+// 组件首次挂载时，也执行一次检查
+onMounted(() => {
+  handleActionQuery(route.query);
+});
 const isUploadModalVisible = ref(false); // 控制弹窗显示
 const showUploadModal = ref(false);
 const phoneAndEmailModal = ref()
@@ -81,7 +102,7 @@ const pageData = ref({
     // },
     {
       title: '上传数据',
-      clickFn: () => { showUploadModal.value = true; }, // 修改为打开弹窗
+      clickFn: openModal, // 修改为打开弹窗
       type: 'primary'
     },
   ],
@@ -118,7 +139,6 @@ const handleSuccess = (data) => {
 };
 
 const handleFinish = (data) => {
-  debugger
   let p = {
     ...data,
     downloadUrl: currentUploadFileUrl.value
@@ -136,6 +156,8 @@ const handleFinish = (data) => {
       message.error(res.message);
     }
   })
-
+}
+function openModal () {
+  showUploadModal.value = true
 }
 </script>

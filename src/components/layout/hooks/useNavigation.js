@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '@/store/authStore';
-import { useModalStore } from '@/store/modalStore'; 
+import { useModalStore } from '@/store/modalStore';
 import { message } from 'ant-design-vue';
 import defHttp from '@/utils/http/axios'; // Your Axios instance
 
@@ -25,18 +25,18 @@ export function useNavigation() {
 
   /** @type {import('vue').Ref<NavItem[]>} */
   const navigationItems = ref([
-    { 
-      key: 'home', 
-      label: '首页', 
-      path: '/', 
+    {
+      key: 'home',
+      label: '首页',
+      path: '/',
       matchPaths: ['/'],
       exact: true // 确保只在根路径时才匹配
     },
-    
-    { 
-      key: 'originalSourcing', 
-      label: '原厂件寻源', 
-      path: '/demands/OEMPartsSourcing', 
+
+    {
+      key: 'originalSourcing',
+      label: '原厂件寻源',
+      path: '/demands/OEMPartsSourcing',
       matchPaths: [
         '/demands/OEMPartsSourcing',
         '/user/published/OEMPartsSourcing',
@@ -48,12 +48,12 @@ export function useNavigation() {
         { key: 'publishedDomesticSourcing', label: '我发布的', path: '/user/published/OEMPartsSourcing' },
         { key: 'joinOEMPartsSourcing', label: '我参与的', path: '/user/join/OEMPartsSourcing' },
         { key: 'createOEMPartsSourcing', label: '创建原厂件寻源', path: '/user/published/OEMPartsSourcing/create' },
-      ] 
+      ]
     },
-    { 
-      key: 'secondTrade', 
-      label: '二手交易', 
-      path: '/secondTrade/oemParts', 
+    {
+      key: 'secondTrade',
+      label: '二手交易',
+      path: '/secondTrade/oemParts',
       matchPaths: [
         '/secondTrade/oemParts',
         '/secondTrade/standard',
@@ -68,10 +68,10 @@ export function useNavigation() {
           label: '需求广场',
           path: '/demands/secondTrade',
           subItems: [
-            { key: 'oemPartsProcessing', label: '原厂件库存处理', path: '/secondTrade/oemParts'},
-            { key: 'usedEqpTrade', label: '二手设备处理', path: '/secondTrade/usedEqpTrade'},
-            { key: 'standard', label: '标准件库存处理', fn: () => { handleDevelopingFeature(); }},
-            { key: 'notStandard', label: '非标准件库存处理', fn: () => { handleDevelopingFeature(); }},
+            { key: 'oemPartsProcessing', label: '原厂件库存处理', path: '/secondTrade/oemParts' },
+            { key: 'usedEqpTrade', label: '二手设备处理', path: '/secondTrade/usedEqpTrade' },
+            { key: 'standard', label: '标准件库存处理', fn: () => { handleDevelopingFeature(); } },
+            { key: 'notStandard', label: '非标准件库存处理', fn: () => { handleDevelopingFeature(); } },
           ]
         },
         {
@@ -100,37 +100,45 @@ export function useNavigation() {
           key: 'publishSecondTrade',
           label: '发布二手交易',
           subItems: [
-            { key: 'joinOemParts', label: '原厂件库存处理', path: '/user/published/oemParts/create'},
-            { key: 'joinUsedEqp', label: '二手设备处理', path: '/user/published/usedEqpTrade/create'},
-            { key: 'joinStandard', label: '标准件库存处理', fn: () => { handleDevelopingFeature(); }},
-            { key: 'joinNotStandard', label: '非标准件库存处理', fn: () => { handleDevelopingFeature(); }},
+            { key: 'createOemParts', label: '原厂件库存处理', path: { path: '/user/published/oemParts', query: { action: 'create' } } },
+            { key: 'createUsedEqp', label: '二手设备处理', path: { path: '/user/published/usedEqpTrade', query: { action: 'create' } } },
+            // { key: 'joinOemParts', label: '原厂件库存处理', path: '/user/published/oemParts/create'},
+            // { key: 'joinUsedEqp', label: '二手设备处理', path: '/user/published/usedEqpTrade/create'},
+            { key: 'joinStandard', label: '标准件库存处理', fn: () => { handleDevelopingFeature(); } },
+            { key: 'joinNotStandard', label: '非标准件库存处理', fn: () => { handleDevelopingFeature(); } },
           ]
         },
       ]
     },
-    { 
-      key: 'tongyongcaiji', 
+    {
+      key: 'tongyongcaiji',
       label: '通用件集采',
-      path: '/other/tongyongcaiji', 
+      path: '/other/tongyongcaiji',
       matchPaths: [
         '/other/tongyongcaiji',
       ],
       subItems: [
-        { key: 'aiante', label: '爱安特', path: 'https://www.ant-fa.com', fn:() => {
-          handlePurchaseClick('aian');
-        }},
-        { key: 'jingdongqiyegou', label: '京东工业', path: 'https://b.jd.com', fn: () =>  {
-          handlePurchaseClick('jd');
-        }},
-         { key: 'guoptics', label: '联合光科', path: 'https://www.gu-optics.com/', fn: () =>  {
-          handlePurchaseClick('guoptics');
-        }},
+        {
+          key: 'aiante', label: '爱安特', path: 'https://www.ant-fa.com', fn: () => {
+            handlePurchaseClick('aian');
+          }
+        },
+        {
+          key: 'jingdongqiyegou', label: '京东工业', path: 'https://b.jd.com', fn: () => {
+            handlePurchaseClick('jd');
+          }
+        },
+        {
+          key: 'guoptics', label: '联合光科', path: 'https://www.gu-optics.com/', fn: () => {
+            handlePurchaseClick('guoptics');
+          }
+        },
       ]
     },
-      { 
-      key: 'testingValidation', 
-      label: '检测验证', 
-      path: '/demands/Verification', 
+    {
+      key: 'testingValidation',
+      label: '检测验证',
+      path: '/demands/Verification',
       matchPaths: [
         '/demands/Verification',
         '/user/published/Verification',
@@ -144,10 +152,10 @@ export function useNavigation() {
         { key: 'createVerification', label: '创建检测验证', path: '/user/published/Verification/create' },
       ]
     },
-    { 
-      key: 'alternativeSourcing', 
-      label: '多元化寻源', 
-      path: '/demands/DomesticSourcing', 
+    {
+      key: 'alternativeSourcing',
+      label: '多元化寻源',
+      path: '/demands/DomesticSourcing',
       matchPaths: [
         '/demands/DomesticSourcing',
         '/user/published/DomesticSourcing',
@@ -159,12 +167,12 @@ export function useNavigation() {
         { key: 'publishedDomesticSourcing', label: '我发布的', path: '/user/published/DomesticSourcing' },
         { key: 'joinDomesticSourcing', label: '我参与的', path: '/user/join/DomesticSourcing' },
         { key: 'createDomesticSourcing', label: '创建多元化寻源', path: '/user/published/DomesticSourcing/create' },
-      ] 
+      ]
     },
-    { 
-      key: 'rndCollaboration', 
-      label: '研发攻关', 
-      path: '/demands/PublicRelations', 
+    {
+      key: 'rndCollaboration',
+      label: '研发攻关',
+      path: '/demands/PublicRelations',
       matchPaths: [
         '/demands/PublicRelations',
         '/user/published/PublicRelations',
@@ -176,13 +184,13 @@ export function useNavigation() {
         { key: 'publishedPublicRelations', label: '我发布的', path: '/user/published/PublicRelations' },
         { key: 'joinPublicRelations', label: '我参与的', path: '/user/join/PublicRelations' },
         { key: 'createPublicRelations', label: '创建研发攻关', path: '/user/published/PublicRelations/create' },
-      ] 
+      ]
     },
-  
-    { 
-      key: 'offlineEvents', 
-      label: '线下活动', 
-      path: '/demands/OfflineEvent', 
+
+    {
+      key: 'offlineEvents',
+      label: '线下活动',
+      path: '/demands/OfflineEvent',
       matchPaths: [
         '/demands/OfflineEvent',
         '/user/published/OfflineEvent',
@@ -196,17 +204,17 @@ export function useNavigation() {
         { key: 'createOfflineEvent', label: '创建线下活动', path: '/user/published/OfflineEvent/create' },
       ]
     },
-    { 
-      key: 'industryReport', 
-      label: '行研报告', 
-      path: '/demands/IndustryReport', 
-      matchPaths: ['/demands/IndustryReport'] 
+    {
+      key: 'industryReport',
+      label: '行研报告',
+      path: '/demands/IndustryReport',
+      matchPaths: ['/demands/IndustryReport']
     },
-    { 
-      key: 'industryTalent', 
-      label: '专家人才', 
-      path: '/demands/Talent', 
-      matchPaths: ['/demands/Talent'] 
+    {
+      key: 'industryTalent',
+      label: '专家人才',
+      path: '/demands/Talent',
+      matchPaths: ['/demands/Talent']
     },
     // { 
     //   key: 'techForum', 
@@ -215,12 +223,12 @@ export function useNavigation() {
     //     message.info('业务即将上线，敬请期待');
     //   } 
     // },
-   
-    { 
-      key: 'industryDynamics', 
-      label: '行业热点', 
-      path: '/industry-dynamics', 
-      matchPaths: ['/industry-dynamics'] 
+
+    {
+      key: 'industryDynamics',
+      label: '行业热点',
+      path: '/industry-dynamics',
+      matchPaths: ['/industry-dynamics']
     },
   ]);
 
@@ -236,10 +244,10 @@ export function useNavigation() {
     }
 
     // 根据 navItem.exact 确定匹配函数（精确匹配或前缀匹配）
-    const matchFn = navItem.exact 
+    const matchFn = navItem.exact
       ? (p) => route.path === p
       : (p) => route.path.startsWith(p);
-    
+
     // 检查路径是否匹配
     const pathIsActive = navItem.matchPaths.some(matchFn);
 
@@ -272,14 +280,14 @@ export function useNavigation() {
       }
       url = urlMap[partnerKey]
       defHttp.get({ url }).then((res) => {
-        if(res.success){
+        if (res.success) {
           window.open(res.result, '_blank');
         } else {
           message.error(res.message);
         }
       });
     } else {
-      const modalStore = useModalStore(); 
+      const modalStore = useModalStore();
       modalStore.showLogin();
     }
   }
