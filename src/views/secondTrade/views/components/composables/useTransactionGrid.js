@@ -134,7 +134,7 @@ export function useTransactionGrid(props, activeTabKey, isDeadlinePassed, isRowE
         { field: 'refUserName', title: '议价方', width: 74, columnType: 'transaction', formatter: ({ cellValue }) => maskMiddle(cellValue) },
         { field: 'createTime', title: '议价时间', width: 160, columnType: 'transaction' }, // 交易详情和交易历史共用列
         { field: 'quantity', title: '议价数量', width: 90, columnType: 'transaction' },
-        { field: 'fixedPrice', title: '标价', formatter: formatCurrency, width: 80, columnType: 'transaction' },
+        { field: 'fixedPrice', title: '标价', formatter: formatCurrency, width: 120, columnType: 'transaction' },
         { field: 'price', title: '议价方议价（含税单价）', formatter: formatCurrency, width: 170, columnType: 'transaction' }, // 交易详情和交易历史共用列 (交易历史时显示为'议价金额')
         {
           field: 'priceIncludingTax',
@@ -392,7 +392,7 @@ export function useTransactionGrid(props, activeTabKey, isDeadlinePassed, isRowE
         { field: 'dealQuantity', title: '成交数量', width: 74, columnType: 'negotiation' }, // 交易历史
         { field: 'publicPriceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'joinPriceExcludingTaxTotal' }, width: 130, columnType: 'transaction' }, // 交易历史列
         { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', slots: { default: 'negotiationDealTotalWithoutTax' }, width: 130, columnType: 'negotiation' }, // 成交总价(不含税)
-        { field: 'tax', title: '税率%', formatter: formatTax, width: 70 },  
+        { field: 'tax', title: '税率%', formatter: formatTax, width: 70 },
         { field: 'publicPriceIncludingTaxTotal', title: '成交总价(含税)', slots: { default: 'joinPriceIncludingTaxTotal' }, width: 124, columnType: 'transaction' },
         { field: 'negotiationDealTotalWithTax', title: '成交总价(含税)', slots: { default: 'negotiationDealTotalWithTax' }, width: 124, columnType: 'negotiation' }, // 成交总价(含税)
         { field: 'remark', title: '备注', columnType: 'both', width: 160 }, // 交易历史列
@@ -444,12 +444,12 @@ export function useTransactionGrid(props, activeTabKey, isDeadlinePassed, isRowE
       if (props.product?.purchaseMethod === 'AUCTION') {
         filteredColumns = filteredColumns.map((col) => {
           if (col.field === 'isWinner') {
-            return { 
-              ...col, 
-              params: { 
+            return {
+              ...col,
+              params: {
                 ...(col.params || {}), // 保留原有的 params
-                disabled: !isDeadlinePassed.value 
-              } 
+                disabled: !isDeadlinePassed.value
+              }
             }; // 竞拍截止后才能操作
           }
           return col;
