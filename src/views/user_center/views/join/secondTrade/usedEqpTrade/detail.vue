@@ -72,7 +72,7 @@ async function fetchReportDetail() {
   isLoading.value = true;
   try {
     const response = await defHttp.get({ 
-      url: '/apm/apmDeviceSecondhand/queryById/front', 
+      url: '/apm/apmDeviceSecondhand/queryById', 
       params: { id } 
     });
     

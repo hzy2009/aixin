@@ -72,7 +72,6 @@ async function fetchReportDetail() {
   
   isLoading.value = true;
   try {
-    debugger
     const response = await defHttp.get({ 
       url: '/apm/apmDeviceSecondhand/queryById', 
       params: { id } 

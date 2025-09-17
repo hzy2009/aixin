@@ -270,9 +270,9 @@ export const USEDEQPTRADE_COLUMNS = [
     { type: 'checkbox', width: 40 },
     { title: '序号', type: 'seq', width: 50, align: 'center' },
     { title: '设备名称', field: 'productName', align: 'center', width: 100 },
-    { title: '设备型号', field: 'compatibleModels', align: 'center', width: 100 },
+    { title: '设备型号', field: 'compatibleModels', align: 'center' },
     { title: '设备厂商', field: 'originalManufacturer', align: 'center', width: 100 },
-    { title: '交期', field: 'deliveryDuration', align: 'center', width: 100 },
+    { title: '交期', field: 'deliveryDuration', align: 'center', width: 90 },
     { title: '库存数量', field: 'quantity', align: 'center', width: 80 },
     { title: '售价', field: 'priceIncludingTax', align: 'center', width: 80 },
     {
@@ -283,6 +283,6 @@ export const USEDEQPTRADE_COLUMNS = [
         }
     },
     { title: '设备状态', field: 'productStatusName', align: 'center', width: 120 },
-    { title: '发布时间', field: 'createTime', align: 'center', width: 142 },
+    { title: '发布时间', field: 'createTime', align: 'center', width: 150 },
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 90 },
 ]
