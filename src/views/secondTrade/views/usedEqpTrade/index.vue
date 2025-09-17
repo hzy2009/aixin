@@ -80,17 +80,7 @@ const onChange = (page, pageSize) => {
 const filterConfigForPage = reactive([
     { id: 'productType', label: '设备状态', maxVisibleWithoutMore: 9, dictKey: 'secondhand_product_status'},
     { id: 'purchaseMethod', label: '价格类型', maxVisibleWithoutMore: 9, dictKey: 'purchase_method'},
-    { id: 'deviceType', label: '设备类型', maxVisibleWithoutMore: 6, options: [
-        { label: '全部', value: ''},
-        { label: '光刻设备(Lithography)', value: '光刻设备(Lithography)',},
-        { label: '刻蚀设备(Etch)', value: '刻蚀设备(Etch)',},
-        { label: '化学机械抛光设备(CMP)', value: '化学机械抛光设备(CMP)',},
-        { label: '物理气相沉积设备(PVD)', value: '物理气相沉积设备(PVD)',},
-        { label: '化学气相沉积设备(CVD)', value: '化学气相沉积设备(CVD)',},
-        { label: '离子注入设备(Implant)', value: '离子注入设备(Implant)',},
-        { label: '快速热处理设备(RTP)', value: '快速热处理设备(RTP)',},
-        { label: '量测设备(Metrology)', value: '量测设备(Metrology)',}
-    ]},
+    { id: 'productModelCode', label: '设备类型', maxVisibleWithoutMore: 9, dictKey: 'product_model'},
     { id: 'stockStatusName', label: '库存状态', maxVisibleWithoutMore: 9, selectionType: 'single', dictKey: 'product_stock_status' },
 ]);
 

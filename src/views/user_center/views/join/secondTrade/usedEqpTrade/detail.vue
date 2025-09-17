@@ -23,18 +23,17 @@ const productPageConfig = ref({
   title: { field: 'productName' },
   mainImage: { field: 'imageUrl' },
   tags: [
-    'productStatusName',
-    'stockStatusName',
-    'productSource'
+    { field: 'productStatusName' }, // 第一个标签来自 data.condition.label
+    { field: 'stockStatusName' },      // 第二个标签来自 data.vendor.name
+    { field: 'productSource'}
   ],  
 
   basicInfo: [
     { label: '设备厂商', field: 'originalManufacturer' },
-    { label: '设备型号', field: 'productModelName' },
+    { label: '设备型号', field: 'compatibleModels' },
     {
       label: '设备状态',
       field: 'productStatusName',
-      highlight: true,
     },
   ],
 
@@ -42,19 +41,19 @@ const productPageConfig = ref({
 
   specifications: [
     { label: '规格', field: 'specification' },
-    { label: '适用设备型号', field: 'compatibleModels' },
     { label: '生产日期', field: 'productionDate' },
     { label: '使用时长', field: 'usageDuration' },
     { label: '质保期', field: 'guaranteePeriod' },
     { label: '工艺段', field: 'processSection' },
+    { label: '设备厂商', field: 'originalManufacturer' },
+    { label: '设备型号', field: 'compatibleModels' },
+    { label: '设备类型', field: 'productModelName' },
     { label: '产品使用说明书', field: 'hasUserManual',formatter: (value) => value ? '有' : '无' },
     { label: '税率', field: 'tax', formatter: (value) => value + '%' },
     { label: '付款条件', field: 'paymentTermsName' },
     { label: '物流方式', field: 'shippingTypeName' },
     { label: '交期', field: 'deliveryDuration' },
     { label: '到货时间', field: 'deliveryDate' },
-    // { label: '产品使用说明书', field: 'specs.manualIncluded', formatter: (val) => val === true ? '有' : (val === false ? '无' : val) },
-    // { label: '税率', field: 'specs.taxRate', formatter: (val) => val ? `${val}%` : '-' },
   ]
 });
 const isLoading = ref(false);
