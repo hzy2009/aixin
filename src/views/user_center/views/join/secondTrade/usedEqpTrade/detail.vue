@@ -1,6 +1,6 @@
 <template>
     <DetailTemplate :product="productData" :page-config="productPageConfig" />
-    <TransactionHistoryPage :product="productData" @buttonClick="handleButtonClick" @goBack="goBack"/>
+    <TransactionHistoryPage :product="productData" @buttonClick="handleButtonClick" @goBack="goBack" :transactionType="'JOIN'"/>
 </template>
 
 <script setup>
