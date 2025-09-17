@@ -19,7 +19,7 @@ import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import FileUploadModal from '@/components/common/FileUploadModal.vue'; // 引入弹窗组件
 import { message } from 'ant-design-vue';
-import { OEMPARTS_COLUMNS } from '@/utils/const.jsx';
+import { USEDEQPTRADE_COLUMNS } from '@/utils/const.jsx';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 import { selectOptions } from '@/utils/index';
 import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
@@ -39,7 +39,7 @@ const handleUploadSuccess = () => {
 
 // 表格列配置 - 使用原厂件列定义
 const tableColumns = reactive([
-  ...OEMPARTS_COLUMNS,
+  ...USEDEQPTRADE_COLUMNS,
 ]);
 
 // 操作按钮配置
@@ -55,7 +55,7 @@ const actions = reactive([
 const filterConfigForPage = reactive([
     { id: 'productType', label: '设备状态', maxVisibleWithoutMore: 9, dictKey: 'secondhand_product_status'},
     { id: 'purchaseMethod', label: '价格类型', maxVisibleWithoutMore: 9, dictKey: 'purchase_method'},
-    { id: 'productModelCode', label: '设备类型', maxVisibleWithoutMore: 9, dictKey: 'product_model'},
+    { id: 'productModelCode', label: '设备类型', maxVisibleWithoutMore: 6, dictKey: 'product_model'},
     { id: 'stockStatusName', label: '库存状态', maxVisibleWithoutMore: 9, selectionType: 'single', dictKey: 'product_stock_status' },
 ]);
 // 页面数据配置

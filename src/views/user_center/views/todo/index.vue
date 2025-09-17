@@ -90,7 +90,7 @@ const tableColumns1 = [
 const tableColumns2 = [
   {type: 'seq', title: '序号', width: 74, align: 'center'},
   { title: '爱芯享交易单号', field: 'code', align: 'center' },
-  { title: '零部件料号/设备号', field: 'partNumber', align: 'center' },
+  { title: '零部件料号/设备名称', field: 'partNumber', align: 'center' },
   { title: '价格类型', field: 'purchaseMethod', align: 'center', width: 100,
     formatter: ({cellValue}) => {
       const purchaseMethodMap = selectOptions('purchase_method').reduce((acc, { value: key, label }) => ({ ...acc, [key]: label }), {});
@@ -98,29 +98,8 @@ const tableColumns2 = [
       return text;
     }
   },
-  { title: '卖方', field: 'postedBy', align: 'center', formatter: postedBy, width: 80 }, 
-  // { title: '售价', field: 'priceIncludingTax', align: 'center', width: 100,
-  //   formatter: ({cellValue, row}) => {
-  //     if (row.purchaseMethod == 'PRICE_ON_REQUEST') {
-  //       return '***'
-  //     }
-  //     if (row.purchaseMethod == 'AUCTION') {
-  //       return `${cellValue}起拍`
-  //     }
-  //     return cellValue
-  //   }
-  //  },
-  // { title: '库存数量', field: 'quantity', align: 'center', width: 100 },
-  { field: 'refUserName', title: '买方', formatter: postedBy, width: 80 }, 
-  // { field: 'price', title: '买方出价', width: 80,  formatter: ({cellValue, row}) => {
-  //     if (row.purchaseMethod == 'PRICE_ON_REQUEST') {
-  //       return '***'
-  //     }  
-  //     return cellValue
-  //   }}, 
-  // { field: 'confirmedQuantity', title: '本次交易数量', width: 98}, 
-  // { field: 'createTime', title: '发起交易时间', width: 150, align: 'center' }, // 交易详情和议价历史共用列
-  // { field: 'expireDate', title: '竞拍截止时间', width: 150, align: 'center' }, // 交易详情和议价历史共用列
+  { title: '卖方', field: 'postedBy', align: 'center', formatter: postedBy, width: 100 }, 
+  { field: 'refUserName', title: '买方', align: 'center', formatter: postedBy, width: 100 }, 
   { title: '操作', width: 100, align: 'center', fixed: 'right', key: 'actions' },
 ]
 const tableConfig = {
