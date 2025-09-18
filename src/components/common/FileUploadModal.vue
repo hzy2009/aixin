@@ -111,7 +111,7 @@ const props = defineProps({
   requirements: {
     type: Array,
     default: () => [
-      '下载模板并按照要求填写Excel，数据',
+      '下载模板并按照要求填写Excel数据',
       'Excel最大支持20M，图片不超过 50MB',
       'Excel首行为标题行，从第二行开始为数据',
       '图片名称使用对应料号'

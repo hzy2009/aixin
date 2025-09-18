@@ -96,10 +96,10 @@ export function useProductData(product, pageConfig) {
         field: 'purchaseMethod',
         formatter: (value) => {
           const purchaseMethodMap = selectOptions('purchase_method').reduce((acc, { value: key, label }) => ({ ...acc, [key]: label }), {});
-          const text = purchaseMethodMap[value] || '固定价，不可议价';
+          const text = purchaseMethodMap[value] || '';
           return text;
         },
-        defaultValue: '固定价，不可议价'
+        defaultValue: ''
       }),
       price: extractData({
         field: 'priceIncludingTax',
