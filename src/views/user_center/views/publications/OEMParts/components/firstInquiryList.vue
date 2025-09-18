@@ -59,7 +59,7 @@ const columns = [
     title: '贸易商',
     width: '70px',
     fixed: 'left',
-    field: 'refUserName',
+    field: 'refUserCode',
   },
   {
     title: '含税价格',
