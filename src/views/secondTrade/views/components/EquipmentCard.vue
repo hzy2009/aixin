@@ -68,7 +68,7 @@ const formattedPrice = computed(() => {
 });
 const purchaseMethodtext = computed(() => {
   const purchaseMethodMap = selectOptions('purchase_method').reduce((acc, { value: key, label }) => ({ ...acc, [key]: label }), {});
-  return purchaseMethodMap[props.item.purchaseMethod] || '固定价，不可议价';
+  return purchaseMethodMap[props.item.purchaseMethod] || '-';
 })
 
 const onImageError = () => {

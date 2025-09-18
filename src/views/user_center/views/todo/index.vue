@@ -94,7 +94,7 @@ const tableColumns2 = [
   { title: '价格类型', field: 'purchaseMethod', align: 'center', width: 100,
     formatter: ({cellValue}) => {
       const purchaseMethodMap = selectOptions('purchase_method').reduce((acc, { value: key, label }) => ({ ...acc, [key]: label }), {});
-      const text = purchaseMethodMap[cellValue] || '固定价，不可议价';
+      const text = purchaseMethodMap[cellValue] || '-';
       return text;
     }
   },
