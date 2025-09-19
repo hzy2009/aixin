@@ -77,10 +77,7 @@
           <div class="event-action-center">
 						<a-button @click="handleToList" class="action-button cancel-button">返回</a-button>
 
-            <!-- <a-button type="primary"  size="large" class="main-action-cta-button" @click="handleActionClick">
-              {{ eventDetail.actionButtonText || '一键敲门' }}
-            </a-button>
-            <p class="action-cta-note">一键敲门后，客服人员将在<span class="text">30分钟内</span>与您联系</p> -->
+
           </div>
 
         </div>
@@ -98,17 +95,14 @@
 import { ref, onMounted, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Button as AButton, Spin as ASpin, Empty as AEmpty, message } from 'ant-design-vue';
-import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue'; // Adjust path if needed
-import OfflineEventSidebar from './components/OfflineEventSidebar.vue'; // Adjust path if needed
-import placeholder1 from '@/assets/images/offline/点对点对接会.jpg'; // Ensure this placeholder exists
-import placeholder2 from '@/assets/images/offline/供需对接会.jpg'; // Ensure this placeholder exists
-import placeholder3 from '@/assets/images/offline/技术对接会.jpg'; // Ensure this placeholder exists
+import ContentWithSidebarLayout from '@/components/layout/ContentWithSidebarLayout.vue';
+import OfflineEventSidebar from './components/OfflineEventSidebar.vue';
+import placeholder1 from '@/assets/images/offline/点对点对接会.jpg';
+import placeholder2 from '@/assets/images/offline/供需对接会.jpg';
+import placeholder3 from '@/assets/images/offline/技术对接会.jpg';
 import operationResultPage from '@/components/template/operationResultPage.vue';
-import defHttp from '@/utils/http/axios'
-import { useAuthStore } from '@/store/authStore';
+import defHttp from '@/utils/http/axios';
 import { getFileAccessHttpUrl, formatDate, maskMiddle } from '@/utils/index';
-
-const authStore = useAuthStore();
 
 const route = useRoute();
 const router = useRouter();
@@ -117,66 +111,37 @@ const defaultBannerMap = {
   'activity_type_2': placeholder1,
   'activity_type_1': placeholder2,
   'activity_type_3': placeholder3
-}
+};
 const eventDetail = ref(null);
 const isLoadingEvent = ref(true);
-const relatedEvents = ref([]);
-const isLoadingRelated = ref(false);
 const isRegisterSuccess = ref(false);
 const eventId = computed(() => route.params.id || 'mock-event-1'); // Get ID from route params
 
-// --- Mock API Calls (Replace with actual API calls) ---
 async function fetchEventDetail(id) {
   isLoadingEvent.value = true;
   eventDetail.value = null;
   const res = await defHttp.get({ url: `/apm/apmOfflineActivity/queryById/front`, params: { id } });
   isLoadingEvent.value = false;
   if (res.success) {
-    eventDetail.value = res.result
+    eventDetail.value = res.result;
   } else {
-    message.error(res.message)
+    message.error(res.message);
   }
 }
 
-async function fetchRelatedEvents() {
-  isLoadingRelated.value = true;
-  // ... (fetch logic as before) ...
-  console.log('[MOCK API] Fetching related events...');
-  await new Promise(resolve => setTimeout(resolve, 500));
-  relatedEvents.value = [{ id: 'related-evt-1', title: '线下活动标题线下活动标题...', summary: '活动主要内容：直接利用太阳能实现光催化还原制取氢气，是解决能源危机的有效策略之一...', date: '2025/6/28' }, { id: 'related-evt-2', title: '另一相关活动标题示例', summary: '探讨行业最新动态与未来趋势，汇聚顶尖专家学者，分享前沿研究成果，促进产学研深度合作。', date: '2025/7/15' }, { id: 'related-evt-3', title: '第三个活动标题也很吸引人', summary: '聚焦关键技术突破，展示创新应用案例。本活动旨在为参与者提供一个交流思想、拓展人脉的平台。', date: '2025/8/02' }, { id: 'related-evt-4', title: '更多精彩活动敬请期待', summary: '探索未来科技，把握发展机遇。我们诚邀您参与，共同见证行业的辉煌未来，携手共创美好明天。', date: '2025/9/10' },];
-  isLoadingRelated.value = false;
-}
-// --- End Mock API Calls ---
-
 const formattedParticipants = computed(() => {
   if (eventDetail.value?.registerList) {
-    // Split by semicolon and trim whitespace from each part
     return eventDetail.value.registerList.map(line => line.registerUserWorkNo).join('；');
   }
   return [];
 });
 
-const handleActionClick = async () => {
-  const response = await defHttp.post({ url: `/apm/apmOfflineActivityRegister/newTodo/${eventDetail.value?.id}` });
-  console.log(response);
-  if (response && response.success) {
-    isRegisterSuccess.value = true;
-  } else {
-    message.error(response.message);
-  }
-};
-
-const navigateToRelatedEvent = (relatedItem) => {
-  if (relatedItem.id && relatedItem.id !== eventId.value) {
-    router.push({ name: 'EventDetail', params: { id: relatedItem.id } });
-  }
-};
 const handleToDetail = () => {
   isRegisterSuccess.value = false;
-}
+};
 const handleToList = () => {
   router.push({ path: '/demands/OfflineEvent' });
-}
+};
 const getImgUrl = (url, pageData) => {
   if (url) {
     return getFileAccessHttpUrl(url);
@@ -184,19 +149,16 @@ const getImgUrl = (url, pageData) => {
     let img = defaultBannerMap[pageData.activityTypeCode] || defaultBanner;
     return img;
   }
-}
+};
 onMounted(() => {
   fetchEventDetail(eventId.value);
-  fetchRelatedEvents();
 });
 
 watch(() => route.params.id, (newId, oldId) => {
   if (newId && newId !== oldId) {
     fetchEventDetail(newId);
-    // Optionally refresh related events if they should change based on the current event
-    // fetchRelatedEvents();
   }
-}, { immediate: false }); // immediate is false as onMounted handles initial load
+}, { immediate: false });
 </script>
 
 <style scoped lang="less">
