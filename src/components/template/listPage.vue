@@ -1,3 +1,9 @@
+<!-- 
+  通用列表页面模板组件
+  - 接收一个 `pageData` 对象作为配置，动态渲染整个列表页面。
+  - 包含统计卡片、筛选器、搜索栏、操作按钮和数据表格。
+  - 核心逻辑通过 `useUserDemandList` 组合式函数进行管理。
+-->
 <template>
     <HomeHeroSection :height="160" v-if="showBanner" />
     <div class="page-title-header container" v-if="pageTitle">
@@ -5,76 +11,85 @@
         <h2 class="page-main-heading">{{ pageTitle }}</h2>
     </div>
     <div class="list-page container" :class="{ 'listPageisPadding': listPageisPadding }">
-        <!-- Components above the table remain the same -->
-        <!-- <div class="stats-bar" v-if="userStatCardVisible">
-            <UserStatCardSm :label="item.label" :value="item.count || 0" v-for="item in stats.list"
-                :key="item.label + item.count" @click="handleStatClick(item)">
-                <template #icon><img src="@/assets/images/user_center/icon-pending.png" alt="未响应" /></template>
-            </UserStatCardSm>
-        </div> -->
-        <UserStatCardSm :stats=stats.list @statsChanged="handleStatMimixin" v-if="userStatCardVisible"></UserStatCardSm>
-        <UserFilterAccordion :filter-groups="filterConfigForPage" :initial-filters="initialFilters" v-if="filterConfigForPage && filterConfigForPage.length > 0"
-            @filters-changed="handleFiltersChange" class="filter-accordion-section" ref="userFilterAccordionRef" />
+        <!-- 统计卡片 -->
+        <UserStatCardSm :stats=stats.list @statsChanged="handleStatClickWithPermission" v-if="userStatCardVisible"></UserStatCardSm>
+        
+        <!-- 筛选器 -->
+        <UserFilterAccordion 
+            :filter-groups="filterConfigForPage" 
+            :initial-filters="initialFilters" 
+            v-if="filterConfigForPage && filterConfigForPage.length > 0"
+            @filters-changed="handleFiltersChange" 
+            class="filter-accordion-section" 
+            ref="userFilterAccordionRef" 
+        />
 
+        <!-- 日期范围选择 -->
         <MultiDateRangePickerGroup
-            v-if="dateRangeConfig.length > 0"
+            v-if="dateRangeConfig && dateRangeConfig.length > 0"
             :config="dateRangeConfig"
-            @values-changed="handleDateValuesUpdate"
+            @values-changed="handleDateValuesUpdateWithPermission"
             ref="multiDateRangePickerRef"
         />
 
+        <!-- 搜索栏与操作 -->
         <div class="search-action-bar">
             <div class="search-input-wrapper">
-                <a-input v-model:value="search" placeholder="请输入关键字" allow-clear @pressEnter="handleSearch" @blur="(e) => {
-                    if (e.target.value === '') handleSearch();
-                }">
+                <a-input v-model:value="search" placeholder="请输入关键字" allow-clear @pressEnter="handleSearchWithPermission" @focus="onSearchFocus" @blur="onSearchBlur">
                     <template #prefix>
                         <SearchOutlined />
                     </template>
                 </a-input>
                 <div class='rest' @click="handleReset">
-                    <DeleteOutlined /> 
+                    <DeleteOutlined />
                     <span>清空筛选条件</span>
                 </div>
-                <div class='rest' v-if='isUseFilterDelete' @click="() => {triggerSearch({ deleteFlag: 1 })}">
+                <div class='rest' v-if='isUseFilterDelete' @click="() => triggerSearch({ deleteFlag: 1 })">
                     <span>已删除</span>
                 </div>
             </div>
             <div class="results-count-wrapper" v-if="userSearchTitle">
                 <span>为您找到</span>
-                <span class="results-count"> {{ pagination.total }} </span>
+                <span class="results-count">&nbsp;{{ pagination.total }}&nbsp;</span>
                 <span>个{{ searchTitle }}</span>
             </div>
         </div>
+
+        <!-- 表格上方操作按钮栏 -->
         <div class="table-operations-bar">
             <div class="table-operations-left" v-if="tableOperations && tableOperations.length > 0">
                 <a-button
-                    v-for="(Operations, index) in tableOperations"
+                    v-for="(op, index) in tableOperations"
                     :key="index"
-                    @click="operationsClick(Operations)" 
-                    :type="Operations.type"
-                    :class="{'primary-btn': Operations.type == 'primary', 'delecte-btn': Operations.type == 'delete'}" 
+                    @click="() => handleOperationClick(op)" 
+                    :type="op.type"
+                    :class="{'primary-btn': op.type == 'primary', 'delecte-btn': op.type == 'delete'}" 
                     class="operations-btn">
-                    {{ Operations.title }}
+                    {{ op.title }}
                 </a-button>
             </div>
             <div class="table-operations-right" v-if="tableOperationsRight && tableOperationsRight.length > 0">
                 <a-button
-                    v-for="(Operations, index) in tableOperationsRight"
+                    v-for="(op, index) in tableOperationsRight"
                     :key="index"
-                    @click="operationsClick(Operations)" 
-                    :type="Operations.type"
-                    :class="{'primary-btn': Operations.type == 'primary', 'delecte-btn': Operations.type == 'delete'}" 
+                    @click="() => handleOperationClick(op)" 
+                    :type="op.type"
+                    :class="{'primary-btn': op.type == 'primary', 'delecte-btn': op.type == 'delete'}" 
                     class="operations-btn">
-                    {{ Operations.title }}
+                    {{ op.title }}
                 </a-button>
             </div>
         </div>
+
+        <!-- 自定义操作区域插槽 -->
         <slot v-if="$slots['tableCustomOperations']" name="tableCustomOperations" :url="url" :dataSource="tableData" :loadTableData="loadTableData"></slot>
-        <input type="file" ref="uploadInputRef" @change="handleFileSelect" accept=".xlsx, .xls" style="display: none" />
-        <slot name="content" :dataSource="tableData" :paginationConfig="pagination" :handleTablePaginationChange="handleTablePaginationChange" :loading="isLoading">
+        
+        <!-- 隐藏的文件上传输入框 -->
+        <input type="file" ref="uploadInputRef" @change="onFileSelected" accept=".xlsx, .xls" style="display: none" />
+        
+        <!-- 主内容插槽，默认显示vxe-grid表格 -->
+        <slot name="content" :dataSource="tableData" :paginationConfig="pagination" :handleTablePaginationChange="handlePageChange" :loading="isLoading">
             <div class="results-table-section">
-                <!-- VXE-GRID REPLACEMENT -->
                 <vxe-grid
                     class="user-demands-table"
                     ref="gridRef"
@@ -98,201 +113,176 @@
 </template>
 
 <script setup lang="jsx">
-import { ref, computed } from 'vue';
+import { ref, toRefs } from 'vue';
 import { useRouter } from 'vue-router';
-// Ant Design components can still be used elsewhere on the page
-import { Button as AButton, Input as AInput, Tag as ATag } from 'ant-design-vue';
+import { Button as AButton, Input as AInput, message } from 'ant-design-vue';
 import { SearchOutlined, DeleteOutlined } from '@ant-design/icons-vue';
-// Your components and hooks remain the same
 import HomeHeroSection from '@/views/home/components/HomeHeroSection.vue';
 import UserStatCardSm from '@/components/layout/UserStatCardSm.vue';
 import UserFilterAccordion from '@/components/layout/UserFilterAccordion.vue';
 import MultiDateRangePickerGroup from '@/components/layout/MultiDateRangePickerGroup.vue';
-import { useUserDemandList } from './hooks/useUserDemandList.js';
+import { useUserDemandList } from './hooks/useUserDemandList.jsx';
 import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore';
-import { selectOptions as getDictOptions, formatDate } from '@/utils/index';
-import { message } from 'ant-design-vue';
-
-import detailIcon from '@/assets/images/icon-detail.png';
-import delIcon from '@/assets/images/icon-delete.png';
-
 import { usePermissions } from '@/utils/usePermissions';
-const { withPermission, hasPermission } = usePermissions();
 
-const authStore = useAuthStore();
-const modalStore = useModalStore();
-const router = useRouter();
-
-const userFilterAccordionRef = ref(null);
-const uploadInputRef = ref(null);
-const currentUploadBtn = ref(null);
-
+/**
+ * @props {Object} pageData - 页面配置对象，定义了此列表页的所有行为和显示内容。
+ */
 const props = defineProps({
     pageData: {
         type: Object,
-        default: {},
+        default: () => ({}),
     }
 });
 
-const { 
-    url, filterConfigForPage, actions, otherParams,
-    statusDictKey, userStatCardVisible, showBanner = false, pageTitle,
-    tableOperations = [], tableOperationsRight = [], dateRangeConfig = [], searchTitle, listPageisPadding = true,
-    userSearchTitle = true, requiredRoles = [], isUseFilterDelete, initialPageSize, initialFilters
-} = props.pageData;
+// --- 基础实例 ---
+const authStore = useAuthStore();
+const modalStore = useModalStore();
+const router = useRouter();
+const { withPermission } = usePermissions();
 
-// 保持tableColumns的响应性
-const tableColumns = computed(() => props.pageData.tableColumns || []);
+// --- 模板引用 (Refs for Template Elements) ---
+const userFilterAccordionRef = ref(null); // 筛选器组件实例
+const multiDateRangePickerRef = ref(null); // 日期选择器组件实例
+const uploadInputRef = ref(null); // 文件上传输入框
+const gridRef = ref(null); // vxe-grid表格实例
+const currentUploadBtn = ref(null); // 当前点击的上传按钮配置
 
+// --- 响应式Props处理 ---
+// 使用 toRefs 将 props.pageData 转换为一组响应式引用，确保在父组件更新 prop 时，组件能正确响应。
+const pageDataRefs = toRefs(props.pageData);
+
+// 为在模板或此脚本中直接使用的、且可能未定义的props提供默认值，防止 "not iterable" 或 "of undefined" 错误。
 const {
-    selectOptions, stats, currentFilters, search, isLoading, tableData,searchParams,
-    pagination, handleFiltersChange, triggerSearch, handleTablePaginationChange,
-    getStatusTagColor, handleStatClick, handleExportXls, clearfilters,handleDelete, loadTableData, handleFileUpload
+    filterConfigForPage = ref([]),
+    tableOperations = ref([]),
+    tableOperationsRight = ref([]),
+    dateRangeConfig = ref([]),
+    requiredRoles = ref([]),
+    initialFilters = ref({}),
+    userStatCardVisible = ref(false), // 为 v-if 提供默认值
+    // 其他原始类型（string, boolean）的props在解构时若不存在，其值为undefined，在模板中使用是安全的。
+    showBanner, pageTitle, searchTitle, listPageisPadding,
+    userSearchTitle, isUseFilterDelete,
+} = pageDataRefs;
+
+// --- 核心逻辑组合式函数 ---
+// 调用 `useUserDemandList` hook，传入完整的 pageDataRefs，hook内部会处理它所需要的props的默认值。
+const {
+    stats, search, isLoading, tableData, pagination, searchParams, currentFilters,
+    selectedRowKeys, vxeTableColumns, paginationConfig, loadTableData, handleFiltersChange,
+    handleStatClick, triggerSearch, handleExportXls, clearfilters, handleFileUpload,
+    handlePageChange, handleCheckboxChange, selectOptions
 } = useUserDemandList({
-    otherParams, url, statusDictKey, userStatCardVisible, initialPageSize
+    pageConfig: pageDataRefs,
+    handleActionClick, // 将下文定义的函数传递给hook
 });
 
-filterConfigForPage && filterConfigForPage.forEach(item => {
+// --- 初始化逻辑 ---
+// 动态为筛选器填充字典选项 (现在是安全的，因为 filterConfigForPage 默认是空数组)
+filterConfigForPage.value.forEach(item => {
     if (!item.options && item.dictKey) {
         item.options = selectOptions(item.dictKey);
     }
 });
-const gridRef = ref();
 
-const renderDeleteAction = (row, action, i) => {
-    const isDisabled = row.statusCode !== 'submit';
-    return (
-        <a-popconfirm 
-            disabled={isDisabled} 
-            title="是否确认删除" 
-            ok-text="是" 
-            cancel-text="否" 
-            onConfirm={() => handleDelete(row)}
-        >
-            <span class="action-item">
-                <span><img src={delIcon} alt="删除" class="action-icon" /></span>
-                <AButton 
-                    type="link" 
-                    class={{ 'action-link': true, 'not-allowed': isDisabled }} 
-                    disabled={isDisabled} 
-                    key={i}
-                >
-                    {action.formatText ? action.formatText(row) : action.text}
-                </AButton>
-            </span>
-        </a-popconfirm>
-    );
-};
+// --- 权限包装的事件处理器 ---
+// 使用 `withPermission` 高阶函数包装需要权限的搜索和筛选操作
+const handleSearchWithPermission = withPermission(requiredRoles.value, triggerSearch, '抱歉，您没有权限执行此搜索操作');
+const handleStatClickWithPermission = withPermission(requiredRoles.value, handleStatClick, '抱歉，您没有权限执行此操作');
+const handleDateValuesUpdateWithPermission = withPermission(requiredRoles.value, triggerSearch, '抱歉，您没有权限执行此搜索操作');
 
-const renderDefaultAction = (row, action, i) => {
-    return (
-        <span class="action-item" onClick={() => handleActionClick(row, action)}>
-            <span><img src={detailIcon} alt="详情" class="action-icon" /></span>
-            <AButton type="link" class="action-link" key={i}>
-                {action.formatText ? action.formatText(row) : action.text}
-            </AButton>
-        </span>
-    );
-};
+// --- UI事件处理器 ---
 
-const renderActionCell = ({ row }) => {
-    return actions.map((action, i) => {
-        if (action.type === 'del') {
-            return renderDeleteAction(row, action, i);
-        }
-        return renderDefaultAction(row, action, i);
-    });
-};
+let searchOnFocusValue = ''; // 用于记录搜索框聚焦时的值
 
-// --- VXE-TABLE ADAPTATION ---
+/**
+ * 搜索框获得焦点时，记录当前值。
+ * @param {Event} e - Focus事件对象。
+ */
+function onSearchFocus(e) {
+    searchOnFocusValue = e.target.value;
+}
 
-const multiDateRangePickerRef = ref();
-const selectedRowKeys = ref([]);
-
-// 1. Adapt columns for vxe-table
-const vxeTableColumns = computed(() => {
-    const columns = [];
-    tableColumns.value.forEach(col => {
-        const vxeCol = { ...col };
-
-        if (col.fieldType === 'select' && col.dictKey) {
-            vxeCol.formatter = ({ cellValue }) => getDictOptions(col.dictKey)?.find(option => option.value === cellValue)?.label || '';
-        } else if (col.fieldType === 'date') {
-            vxeCol.formatter = ({ cellValue }) => cellValue ? formatDate(cellValue) : '-';
-        } else if (col.key === 'statusCode') {
-            vxeCol.slots = {
-                default: ({ row }) => (
-                    <ATag color={getStatusTagColor(row.sourcingStatus)} class="status-tag">
-                        {row.statusCode}
-                    </ATag>
-                )
-            };
-        } else if (col.key === 'actions') {
-            vxeCol.slots = { default: renderActionCell };
-        }
-        
-        columns.push(vxeCol);
-    });
-    return columns;
-});
-
-// 2. Configure the pager (CORRECTED)
-const paginationConfig = computed(() => ({
-    enabled: true,
-    currentPage: pagination.current,
-    pageSize: pagination.pageSize,
-    total: pagination.total,
-    layouts: ['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']
-}));
-
-// 3. Create adapter for pagination event
-const handlePageChange = ({ currentPage, pageSize }) => {
-    handleTablePaginationChange({ current: currentPage, pageSize });
-};
-
-// 4. Create handler for checkbox changes
-const handleCheckboxChange = ({ records }) => {
-    selectedRowKeys.value = records.map(record => record.id);
-};
-
-// --- REST OF THE LOGIC (MOSTLY UNCHANGED) ---
-
-const operationsClick = (btn) => {
-    if (authStore?.token) {
-        if (!hasPermission(requiredRoles)) {
-            return message.error('抱歉，您没有权限执行此操作');
-        }
-        if (btn.btnType == 'exportXls') {
-            handleExportXls(btn.fileName, btn.url, {
-                selections: selectedRowKeys.value.join(','),
-                ...otherParams,
-                search: search.value,
-                ...currentFilters.value,
-                ...searchParams.value,
-                referer: btn.referer || null
-            });
-        } else if (btn.btnType == 'delete') {
-            triggerSearch({ deleteFlag: 1 });
-        } else if (btn.btnType === 'upload') {
-            currentUploadBtn.value = btn;
-            uploadInputRef.value?.click();
-        } else {
-            btn.clickFn();
-        }
-    } else {
-        modalStore.showLogin();
+/**
+ * 搜索框失焦时，仅当值从“有”变“无”时触发搜索，以避免不必要的操作。
+ * @param {Event} e - Blur事件对象。
+ */
+function onSearchBlur(e) {
+    const searchOnBlurValue = e.target.value;
+    // 只有当用户清空了输入框（从有内容变为空）后失焦，才触发搜索
+    if (searchOnFocusValue !== '' && searchOnBlurValue === '') {
+        handleSearchWithPermission();
     }
+}
+
+/**
+ * 重置所有筛选条件。
+ */
+function handleReset() {
+    clearfilters(); // 清空hook中的筛选状态
+    userFilterAccordionRef.value?.resetAllFilters(); // 重置筛选器UI
+    multiDateRangePickerRef.value?.resetAllDates(); // 重置日期选择器UI
+}
+
+/**
+ * 处理表格行内操作点击事件（例如“详情”）。
+ * @param {Object} record - 当前行的数据。
+ * @param {Object} action - 当前操作的配置。
+ */
+function handleActionClick(record, action) {
+    if (!authStore.token) return modalStore.showLogin(); // 未登录则弹出登录框
+    action?.clickFn(record); // 执行在页面配置中定义的回调
+}
+
+// --- 表格上方操作按钮 ---
+// 使用策略模式定义不同按钮类型的处理器，比 if/else 更清晰且易于扩展。
+const operationHandlers = {
+    exportXls: (btn) => handleExportXls(btn.fileName, btn.url, {
+        selections: selectedRowKeys.value.join(','),
+        ...pageDataRefs.otherParams.value, // 确保从响应式引用取值
+        search: search.value,
+        ...currentFilters.value,
+        ...searchParams.value,
+        referer: btn.referer || null
+    }),
+    delete: () => triggerSearch({ deleteFlag: 1 }),
+    upload: (btn) => {
+        currentUploadBtn.value = btn;
+        uploadInputRef.value?.click();
+    },
+    default: (btn) => btn.clickFn(),
 };
 
-const handleFileSelect = async (event) => {
+/**
+ * 操作按钮的统一点击入口。
+ * @param {Object} btn - 被点击按钮的配置对象。
+ */
+const handleOperationClick = (btn) => {
+    const handler = operationHandlers[btn.btnType] || operationHandlers.default;
+    const actionToExecute = () => handler(btn);
+    
+    // 统一使用 withPermission 包装器进行权限检查
+    withPermission(
+        requiredRoles.value,
+        actionToExecute,
+        '抱歉，您没有权限执行此操作'
+    )(); // 立即调用返回的包装后函数
+};
+
+// --- 文件上传处理 ---
+/**
+ * 处理隐藏的input[type=file]选择文件的事件。
+ * @param {Event} event - Change事件对象。
+ */
+async function onFileSelected(event) {
     const file = event.target.files[0];
     if (!file) return;
 
     const allowedTypes = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
     if (!allowedTypes.includes(file.type)) {
         message.error('请选择.xls或.xlsx格式的Excel文件。');
-        // Reset the input value to allow selecting the same file again after an error
         if (uploadInputRef.value) uploadInputRef.value.value = '';
         return;
     }
@@ -300,127 +290,62 @@ const handleFileSelect = async (event) => {
     const uploadUrl = currentUploadBtn.value?.url;
     if (!uploadUrl) {
         message.error('上传URL未配置。');
-        // Reset the input value
         if (uploadInputRef.value) uploadInputRef.value.value = '';
         return;
     }
 
     await handleFileUpload(uploadUrl, file);
-
-    // Reset the input so the user can upload the same file again
-    if (uploadInputRef.value) {
-        uploadInputRef.value.value = '';
-    }
-};
-
-const handleDateValuesUpdate = withPermission(
-  // 第一个参数: 权限要求 (数组)
-    requiredRoles,
-
-  // 第二个参数: 有权限时要执行的回调函数
-  // 我们直接将 `triggerSearch` 函数本身作为回调传递进去
-  triggerSearch,
-
-  // 第三个参数: 无权限时的提示信息 (可选，有默认值)
-  '抱歉，您没有权限执行此搜索操作'
-);
-const handleSearch = withPermission(
-  // 第一个参数: 权限要求 (数组)
-  requiredRoles,
-  // 第二个参数: 有权限时要执行的回调函数
-  // 我们直接将 `triggerSearch` 函数本身作为回调传递进去
-  triggerSearch,
-
-  // 第三个参数: 无权限时的提示信息 (可选，有默认值)
-  '抱歉，您没有权限执行此搜索操作'
-);
-
-const handleStatMimixin = withPermission(
-  // 第一个参数: 权限要求 (数组)
-    requiredRoles,
-  // 第二个参数: 有权限时要执行的回调函数
-  // 我们直接将 `triggerSearch` 函数本身作为回调传递进去
-  handleStatClick,
-
-  // 第三个参数: 无权限时的提示信息 (可选，有默认值)
-  '抱歉，您没有权限执行此搜索操作'
-);
-
-const handleActionClick = (record, action) => {
-    if (authStore?.token) {
-        action?.clickFn(record);
-    } else {
-        modalStore.showLogin();
-    }
-};
-
-
-const handleReset = () => {
-    clearfilters();
-    userFilterAccordionRef.value?.resetAllFilters()
-    multiDateRangePickerRef.value?.resetAllDates();
-};
-
-const getCheckboxRecords = () => {
-    return gridRef.value?.getCheckboxRecords();
+    if (uploadInputRef.value) uploadInputRef.value.value = ''; // 清空input，以便再次选择相同文件
 }
 
+// --- 向父组件暴露方法 ---
 defineExpose({
-    handleTablePaginationChange,
-    getCheckboxRecords,
-    loadTableData
+    loadTableData, // 暴露刷新数据的方法
+    getCheckboxRecords: () => gridRef.value?.getCheckboxRecords(), // 暴露获取已勾选行的方法
 });
 </script>
 
 <style scoped lang="less">
-// Your original styles for the page layout
 @import './styles/list.less';
 
-// Vxe-table specific custom styles can go here if needed.
-// The default styles are generally good, but you can override them.
-// For example, to style the pager like you did for Ant Design:
 :deep(.vxe-pager) {
     margin-top: @spacing-lg;
-    
     .vxe-pager--num-btn.is--active {
         background-color: @primary-color;
         border-color: @primary-color;
         color: white;
     }
 }
-
-// Keep a-tag styles if you're still using it inside the table
 :deep(.status-tag) {
-    // Add any specific styles for the tag here
+    /* status tag styles */
 }
 :deep(.action-item){
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
+:deep(.action-icon) {
+    margin-right: 4px;
+    vertical-align: middle;
 }
 :deep(.action-link) {
     font-family: PingFang SC;
     font-weight: 400;
     font-size: 14px;
     line-height: 12px;
-    letter-spacing: 0px;
     color: #656C74;
     padding: 4px 5px;
     &:hover {
         color: #656C74;
-        // color: @primary-color;
     }
-    // Add any specific styles for the action links here
 }
 :deep(.not-allowed) {
     color:  rgba(0, 0, 0, 0.25);
     &:hover {
         color:  rgba(0, 0, 0, 0.25);
-        // color: @primary-color;
     }
-    // Add any specific styles for the action links here
 }
-
-// Override vxe-grid border color to match your theme
 :deep(.user-demands-table.vxe-grid--border-line) {
-    border-color: #f0f0f0; // Or use your LESS variable
+    border-color: #f0f0f0;
 }
 </style>
