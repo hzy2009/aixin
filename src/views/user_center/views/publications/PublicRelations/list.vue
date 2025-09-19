@@ -30,7 +30,7 @@ const filterConfigForPage = reactive([
 const tableColumns = reactive([
     {type: 'checkbox', width: 40},
     ...PUBLIC_RELATIONS_COLUMNS.filter(column => column.key !== 'actions'),
-    { title: '操作', width: '146px', align: 'center', fixed: 'right', key: 'actions' },
+    { title: '操作', width: '154px', align: 'center', fixed: 'right', key: 'actions' },
 ]);
 
 
