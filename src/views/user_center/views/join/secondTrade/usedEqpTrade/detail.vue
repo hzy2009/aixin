@@ -10,6 +10,7 @@ import DetailTemplate from '@/views/secondTrade/views/components/DetailTemplate.
 import TransactionHistoryPage from '@/views/secondTrade/views/components/TransactionHistoryPage.vue';
 import { message  } from 'ant-design-vue';
 import defHttp from '@/utils/http/axios'
+import {USEDEQPTRADEDETAIL} from '@/utils/const.jsx';
 
 const route = useRoute();
 const router = useRouter();
@@ -21,40 +22,7 @@ const productData = ref({});
 const productPageConfig = ref({
   showPostedBy: true,
   pageState: 'detail',
-  title: { field: 'productName' },
-  mainImage: { field: 'imageUrl' },
-  tags: [
-    { field: 'productStatusName' }, // 第一个标签来自 data.condition.label
-    { field: 'stockStatusName' },      // 第二个标签来自 data.vendor.name
-    { field: 'productSource'}
-  ],  
-
-  basicInfo: [
-    { label: '设备厂商', field: 'originalManufacturer' },
-    { label: '设备型号', field: 'compatibleModels' },
-    {
-      label: '设备状态',
-      field: 'productStatusName',
-    },
-  ],
-
-  productDetailsTitle: '产品详情',
-  specifications: [
-    { label: '规格', field: 'specification' },
-    { label: '生产日期', field: 'productionDate' },
-    { label: '使用时长', field: 'usageDuration' },
-    { label: '质保期', field: 'guaranteePeriod' },
-    { label: '工艺段', field: 'processSection' },
-    { label: '设备厂商', field: 'originalManufacturer' },
-    { label: '设备型号', field: 'compatibleModels' },
-    { label: '设备类型', field: 'productModelName' },
-    { label: '产品使用说明书', field: 'hasUserManual',formatter: (value) => value ? '有' : '无' },
-    { label: '税率', field: 'tax', formatter: (value) => value + '%' },
-    { label: '付款条件', field: 'paymentTermsName' },
-    { label: '物流方式', field: 'shippingTypeName' },
-    { label: '交期', field: 'deliveryDuration' },
-    { label: '到货时间', field: 'deliveryDate' },
-  ]
+  ...USEDEQPTRADEDETAIL,
 });
 const isLoading = ref(false);
 const internalDemandId = ref(props.IdProp || route.params.id);

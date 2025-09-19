@@ -286,3 +286,36 @@ export const USEDEQPTRADE_COLUMNS = [
     { title: '发布时间', field: 'createTime', align: 'center', width: 150 },
     { title: '操作', width: '10%', align: 'center', fixed: 'right', key: 'actions', width: 90 },
 ]
+
+export const USEDEQPTRADEDETAIL = {
+    title: { field: 'productName' },
+    mainImage: { field: 'imageUrl' },
+    tags: [
+        { field: 'productStatusName' }, // 第一个标签来自 data.condition.label
+        { field: 'stockStatusName' },      // 第二个标签来自 data.vendor.name
+        { field: 'productSource' },      // 第二个标签来自 data.vendor.name
+    ],
+
+    basicInfo: [
+        { label: '设备厂商', field: 'originalManufacturer' },
+        { label: '设备型号', field: 'compatibleModels' },
+        {
+            label: '设备类型',
+            field: 'productModelName',
+        },
+    ],
+    productDetailsTitle: '产品详情',
+    specifications: [
+        { label: '规格', field: 'specification' },
+        { label: '生产日期', field: 'productionDate' },
+        { label: '使用时长', field: 'usageDuration' },
+        { label: '质保期', field: 'guaranteePeriod' },
+        { label: '工艺段', field: 'processSection' },
+        { label: '产品使用说明书', field: 'hasUserManual', formatter: (value) => value ? '有' : '无' },
+        { label: '税率', field: 'tax', formatter: (value) => value + '%' },
+        { label: '付款条件', field: 'paymentTermsName' },
+        { label: '物流方式', field: 'shippingTypeName' },
+        { label: '交期', field: 'deliveryDuration' },
+        { label: '到货时间', field: 'deliveryDate' },
+    ]
+}

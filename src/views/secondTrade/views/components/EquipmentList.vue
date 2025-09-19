@@ -58,7 +58,7 @@ const handleDetails = (item) => {
   display: grid;
   // 响应式布局：在不同屏幕宽度下显示不同列数
   grid-template-columns: repeat(4, 1fr); // 默认4列
-  gap: 20px; // 卡片之间的间距
+  gap: 16px; // 卡片之间的间距
 
   @media (max-width: 1200px) {
     grid-template-columns: repeat(3, 1fr);
