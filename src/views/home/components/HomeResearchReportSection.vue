@@ -20,6 +20,7 @@
               <h3 class="report-card__title">{{ report.reportName }}</h3>
             </router-link>
             <div class="report-card__description"><div v-html="report.description"></div></div>
+            <!-- 注意: 使用 v-html 存在 XSS 风险。如果 report.description 来源于用户输入或不可信来源，请务必进行内容过滤。 -->
             <p class="report-card__date">{{ report.date }}</p>
           </div>
         </div>

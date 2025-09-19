@@ -25,7 +25,6 @@
 // ... (script from previous attempts)
 import { ref } from 'vue';
 import { Carousel as ACarousel } from 'ant-design-vue';
-import { LeftOutlined, RightOutlined } from '@ant-design/icons-vue';
 
 import carouselImg1 from '@/assets/images/home/carousel1.png';
 import carouselImg2 from '@/assets/images/home/carousel1.png';

@@ -4,8 +4,7 @@
       <a-avatar :size="40" :src="expert.gender == '男'? ManImg : WomanImg" class="expert-avatar">
         <template #icon v-if="!expert.avatarUrl"><UserOutlined /></template>
       </a-avatar>
-      <div> </div>
-      <div class="expert-info">
+      <div> 
         <h4 class="expert-name">{{expert.realname}}</h4>
         <p class="expert-contact">电话: {{ expert.phone }}</p>
       </div>
@@ -46,22 +45,6 @@ const props = defineProps({
 });
 const router = useRouter();
 
-
-// 正常显示第二字，其他字都用*代替
-const formatName = (name) =>{
-  let newName = '';
-  for (let i = 0; i < name.length; i++) {
-    if (i === 1) {
-      newName += name[i];
-    } else {
-      newName += '*';
-    }
-  }
-  if (name.length == 2) {
-    newName += '*';
-  }
-  return newName;
-}
 
 const viewExpertProfile = (id) => {
   // TODO: Navigate to expert's detail page

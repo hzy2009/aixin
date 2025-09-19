@@ -3,8 +3,6 @@
     <HomeHeroSection :height="200"/>
     <HomeStatsSection />
     <HomePlatformMemberSection />
-    <!-- <HomeFeaturedContentSection /> -->
-    <!-- <HomeExpertTalentSection /> -->
     <HomeNewsWrapper />
     <HomeBreakthroughsSection/>
     <PromoCard/>
@@ -17,8 +15,6 @@
 <script setup>
 import HomeHeroSection from '../components/HomeHeroSection.vue';
 import HomeStatsSection from '../components/HomeStatsSection.vue';
-import HomeFeaturedContentSection from '../components/HomeFeaturedContentSection.vue'; // Changed
-import HomeExpertTalentSection from '../components/HomeExpertTalentSection.vue';
 import HomePlatformMemberSection from '../components/HomePlatformMemberSection.vue';
 import HomeResearchReportSection from '../components/HomeResearchReportSection.vue';
 import HomeNewsWrapper from '../components/HomeNewsWrapper.vue';

@@ -6,11 +6,6 @@
         <!-- Left Block -->
         <div class="purchase-block special-hover-effect">
           <img src="@/assets/images/home/PromoCard1.jpg" alt="FA工厂自动化零件一站式采购平台" class="block-background-image"/>
-          <!-- <div class="block-content">
-            <a-button type="primary" class="purchase-button" @click="handlePurchaseClick('aian')">
-              点击采购，享受爱芯享会员折扣
-            </a-button>
-          </div> -->
            <div class="block-hover-overlay" @click="handlePurchaseClick('aian')">
             <span class="hover-action-text">点击采购，享受爱芯享会员折扣</span>
           </div>
@@ -19,22 +14,12 @@
         <!-- Right Block -->
         <div class="purchase-block special-hover-effect">
           <img src="@/assets/images/home/PromoCard2.jpg" alt="打造多元化资产管理服务生态" class="block-background-image"/>
-          <!-- <div class="block-content">
-            <a-button type="primary" class="purchase-button" @click="handlePurchaseClick('jd')">
-              点击采购，享受爱芯享会员折扣
-            </a-button>
-          </div> -->
           <div class="block-hover-overlay" @click="handlePurchaseClick('jd')">
             <span class="hover-action-text">点击采购，享受爱芯享会员折扣</span>
           </div>
         </div>
          <div class="purchase-block special-hover-effect">
           <img src="@/assets/images/home/PromoCard3.jpg" alt="为客户提供质量可靠优质的一站式采购服务" class="block-background-image"/>
-          <!-- <div class="block-content">
-            <a-button type="primary" class="purchase-button" @click="handlePurchaseClick('jd')">
-              点击采购，享受爱芯享会员折扣
-            </a-button>
-          </div> -->
           <div class="block-hover-overlay" @click="handlePurchaseClick('guoptics')">
             <span class="hover-action-text">点击采购，享受爱芯享会员折扣</span>
           </div>

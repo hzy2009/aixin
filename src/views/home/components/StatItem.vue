@@ -40,15 +40,6 @@ const targetMainNumber = computed(() => {
   return parseInt(String(props.number).replace('+', ''), 10);
 });
 
-const hasPlusSymbol = computed(() => {
-  return String(props.number).includes('+');
-});
-
-// Clamp the target number to 99999 for display formatting if needed
-const clampedTargetNumber = computed(() => {
-    return Math.min(targetMainNumber.value, 99999);
-});
-
 
 const animateNumber = (target) => {
   // Ensure previous animation is stopped
@@ -68,13 +59,6 @@ const animateNumber = (target) => {
     const easedProgress = 1 - Math.pow(1 - progress, 3);
 
     let currentVal = Math.floor(easedProgress * target);
-
-    // Clamp the display number if the original target was > 99999 but we animate to clamped target
-    if (targetMainNumber.value > 99999 && target === 99999) {
-        currentVal = Math.floor(easedProgress * 99999);
-    } else {
-        currentVal = Math.floor(easedProgress * target);
-    }
     
     displayNumber.value = currentVal;
 

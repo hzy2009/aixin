@@ -31,8 +31,7 @@
               :expert="expert"
               class="expert-card-in-list"
             />
-             <a-empty v-if="!isLoadingExperts && experts.length === 0 && expertsColumnCount > 1" description="暂无专家人才信息" :image-style="{ height: '60px' }" class="expert-empty-span-cols"/>
-             <a-empty v-if="!isLoadingExperts && experts.length === 0 && expertsColumnCount === 1" description="暂无专家人才信息" :image-style="{ height: '60px' }"/>
+             <a-empty v-if="!isLoadingExperts && experts.length === 0" description="暂无专家人才信息" :image-style="{ height: '60px' }" class="expert-empty-span-cols"/>
           </div>
         </div>
       </div>
@@ -57,9 +56,6 @@ const hotspotsMoreLink = ref('/industry-dynamics'); // Example "More" link
 const experts = ref([]);
 const isLoadingExperts = ref(false);
 const expertsMoreLink = ref('/demands/Talent'); // Example "More" link
-
-// Define how many columns the experts grid should have to adjust empty state spanning
-const expertsColumnCount = ref(2); // Default to 2 columns for experts in this side-by-side layout
 
 async function fetchIndustryHotspots() {
   isLoadingHotspots.value = true;
