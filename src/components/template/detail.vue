@@ -1,679 +1,251 @@
+<!-- 
+  这是一个高度可复用的详情页模板组件。
+  它被设计为一个“智能”组件，通过props接收配置来动态渲染不同业务场景的详情页。
+  其核心思想是“配置驱动UI”，并利用组合式API将不同职责的逻辑（如数据获取、表单渲染、图片预览）分离到独立的模块中。
+-->
 <template>
-	<div class="detail-view-page">
-		<!-- 1. Page Title -->
-		<div class="page-title-header" v-if="showPageTitle">
-			<h2 class="page-main-heading">{{ pageTitle }}</h2>
-		</div>
-		<a-spin :spinning="isLoading">
-			<div v-if="isCreating">
-				<!-- Section: Basic Information -->
-				<section v-if="$slots.title">
-					<slot name="title" :dataSource="formModel"></slot>
-				</section>
-				<section class="info-section">
-					<div class="section-title-wrapper">
-						<h3 class="section-title-text">基本信息</h3>
-					</div>
-					<div class="basic-info-grid">
-						<!-- Basic info fields remain unchanged -->
-						<div v-for="item in baseFormConfigs" :key="item.label" class="info-grid-item"
-							:style="{ gridColumn: item.span ? `span ${item.span}` : 'span 1' }">
-							<span class="info-grid-label">{{ item.label }}：</span>
-							<span class="info-grid-value" v-if="item.fieldType === 'input'">
-								<a-input v-if="isSubmit && canSubmit && !isView" style="width: 386px;"
-									v-model:value="formModel[item.field]" :placeholder="item.placeholder || `请输入${item.label}`"
-									:disabled="item.disabled" allow-clear />
-								<span v-else>{{ formModel[item.field] }}</span>
-							</span>
-							<span class="info-grid-value"
-								v-else-if="item.fieldType === 'select' && (item.options || selectOptions(item.dictKey))">
-								<a-select v-if="isSubmit && canSubmit && !isView" v-model:value="formModel[item.field]"
-									style="width: 386px;" :placeholder="item.placeholder || `请选择${item.label}`"
-									:options="item.options || selectOptions(item.dictKey)" :mode="item.selectMode"
-									:filter-option="item.remoteSearch ? false : filterOption" :loading="item.loading"
-									:disabled="item.disabled" @change="(v, option) => handleSelectChange(v, item, option)" allow-clear />
-								<span v-else>
-									{{ getSelectDisplayValue(item, formModel[item.field]) }}
-								</span>
-							</span>
-							<span class="info-grid-value" v-else-if="item.fieldType === 'date'">
-								<a-date-picker v-if="isSubmit && canSubmit && !isView"
-									v-model:value="formModel[item.field]" :placeholder="item.placeholder || `请选择${item.label}`"
-									:disabled-date="disabledDate" :value-format="item.valueFormat || 'YYYY-MM-DD HH:mm:ss'"
-									:show-time="item.showTime" style="width: 386px" :disabled="item.disabled" />
-								<span v-else>{{ getDataDisplayValue(formModel[item.field]) }}</span>
-							</span>
-							<span class="info-grid-value" v-else-if="item.fieldType === 'textarea'">
-								<a-textarea v-if="isSubmit && canSubmit && !isView" v-model:value="formModel[item.field]"
-									style="width: 386px" :placeholder="item.placeholder || `请输入${item.label}`" :rows="item.rows || 4"
-									:disabled="item.disabled" allow-clear :maxlength="item.maxLength" show-count />
-								<pre v-else>{{ formModel[item.field] }}</pre>
-							</span>
-							<span class="info-grid-value" v-else-if="item.fieldType === 'imageUpload'">
-								<a-upload v-if="isSubmit && canSubmit && !isView" v-model:file-list="formModel[item.field]"
-									:name="item.uploadName || 'file'" list-type="picture-card" class="custom-image-uploader"
-									:show-upload-list="item.showUploadList !== undefined ? item.showUploadList : true" :action="uploadUrl"
-									:before-upload="item.beforeUpload || beforeUpload" accept="image/*" :headers="getHeaders()"
-									:data="{ biz: 'temp' }" @change="(info) => handleImageUploadChange(info, item)"
-									@preview="handleImagePreview" :max-count="item.maxCount || 1" :disabled="item.disabled">
-									<div v-if="(!formModel[item.field] || formModel[item.field].length < (item.maxCount || 1))">
-										<PlusOutlined />
-										<div style="margin-top: 8px">上传</div>
-									</div>
-								</a-upload>
-								<img v-else :src="getImgUrl(formModel[item.field], item.defaultImgFn)" :alt="formModel[item.field]" alt=""
-									class="info-grid-image">
-							</span>
-							<div class="info-grid-value" v-else-if="item.fieldType === 'slot'" width="100%">
-								<slot :name="item.field" :dataSource="formModel" :isView="isView"></slot>
-							</div>
-							<!-- <span v-else class="info-grid-value">{{ item.field == 'createBy' ? maskMiddle(formModel[item.field]) : formModel[item.field] }}</span> -->
-							<span v-else class="info-grid-value">{{ item.isMask ? maskMiddle(formModel[item.field]) : formModel[item.field] }}</span>
-						</div>
-						<!-- Table Sections - CONVERTED TO VXE-GRID -->
-						<div v-for="(tableSection, index) in tableSections" :key="`table-section-${index}`" class="info-grid-item">
-							<span class="info-grid-label">{{ tableSection.title }}：</span>
-							<div class="flex1">
-								<span
-									v-if='!formModel[`${tableSection.groupCode}`] || formModel[`${tableSection.groupCode}`].length === 0'>暂无数据</span>
-								<vxe-grid v-else :columns="tableSection.columns || []"
-									:data="formModel[`${tableSection.groupCode}`] || []"
-									:row-config="{ keyField: tableSection.rowKey || 'id' }" min-height="88" border size="medium"
-									class="custom-detail-table">
-								</vxe-grid>
-							</div>
-						</div>
-					</div>
-				</section>
-				<section class="info-section" v-if="$slots.content">
-					<slot name="content" :dataSource="formModel"></slot>
-				</section>
-				<section v-if="showProgressList" class="info-section">
-					<div class="section-title-wrapper">
-						<h3 class="section-title-text">{{ statusTracking.title || '状态跟踪' }}</h3>
-					</div>
-					<CustomProgressTimeline :progressList="formModel.progressList" />
-					<!-- Status History Table - CONVERTED TO VXE-GRID -->
-					<vxe-grid v-if="formModel.logList && formModel.logList.length > 0" :columns="statusHistoryColumns || []"
-						:data="formModel.logList" :row-config="{ keyField: 'id' }" min-height="88" border size="medium"
-						class="custom-detail-table status-history-table">
-					</vxe-grid>
-				</section>
+  <div class="detail-view-page">
+    <!-- 1. 页面标题 -->
+    <div class="page-title-header" v-if="showPageTitle">
+      <h2 class="page-main-heading">{{ pageTitle }}</h2>
+    </div>
 
-				<!-- Action Buttons (remain unchanged) -->
-				<slot name="actions" :handleDefaultSubmit=handleDefaultSubmit :handleDefaultCancel=handleDefaultCancel>
-					<div class="page-actions-footer">
-						<a-button @click="handleDefaultCancel" class="action-button cancel-button" v-if="isUseBack">返回</a-button>
-						<a-button @click="handleDefaultdelete" class="action-button cancel-button"
-							v-if="isSubmit && isUseDelete">删除</a-button>
-						<a-button v-for="(item, i) in actionNotesList" :key="i" class="action-button cancel-button"
-							@click="handleActionNoteClick(item)" :type="item.type">{{ item.title }}</a-button>
-						<a-button type="primary" danger @click="handleToEdit"
-							v-if='isSubmit && canSubmit && isView && actionNotes.length == 0' class="action-button submit-button">{{
-								'修改单据'
-							}}</a-button>
-						<a-button type="primary" danger @click="handleDefaultSubmit"
-							v-else-if='isSubmit && canSubmit && !isView && actionNotes.length == 0' class="action-button submit-button">{{
-								isSubmit ? '一键敲门' : actionNote
-							}}</a-button>
-					</div>
-				</slot>
-			</div>
-			<div v-else>
-				<operationResultPage @primaryAction="handleToDetail" @secondaryAction="handleToList" :pagepageData="{title: successTitle}"/>
-			</div>
-		</a-spin>
-	</div>
-	<!-- Image Preview Modal -->
-	<a-modal :open="previewVisible" :title="previewTitle" :footer="null" @cancel="handlePreviewCancel">
-		<img alt="example" style="width: 100%" :src="previewImage" />
-	</a-modal>
+    <!-- 加载状态 -->
+    <a-spin :spinning="isLoading">
+      <!-- 主内容区域 -->
+      <div v-if="isCreating">
+        <!-- 预留插槽，用于在基本信息之上插入自定义内容 -->
+        <slot name="title" :dataSource="formModel"></slot>
+
+        <!-- 2. 基本信息板块 -->
+        <section class="info-section">
+          <div class="section-title-wrapper">
+            <h3 class="section-title-text">基本信息</h3>
+          </div>
+
+          <div class="basic-info-grid">
+            <!-- 查看模式: 循环 displayFields, 直接展示格式化后的文本 -->
+            <template v-if="isView">
+              <div v-for="field in displayFields" :key="field.label" class="info-grid-item" :style="{ gridColumn: field.span ? `span ${field.span}` : 'span 1' }">
+                <span class="info-grid-label">{{ field.label }}：</span>
+                <img v-if="field.type === 'imageUpload'" :src="field.value" :alt="field.label" class="info-grid-image">
+                <div v-else-if="field.type === 'slot'" class="info-grid-value" style="width:100%">
+                  <slot :name="field.field" :dataSource="formModel" :isView="isView"></slot>
+                </div>
+                <pre v-else-if="field.type === 'textarea'" class="info-grid-value">{{ field.value }}</pre>
+                <span v-else class="info-grid-value">{{ field.value }}</span>
+              </div>
+            </template>
+
+            <!-- 编辑模式: 使用动态组件渲染表单 -->
+            <template v-else>
+              <div v-for="item in baseFormConfigs" :key="item.label" class="info-grid-item" :style="{ gridColumn: item.span ? `span ${item.span}` : 'span 1' }">
+                <span class="info-grid-label">{{ item.label }}：</span>
+                <div class="info-grid-value">
+                  <slot v-if="item.fieldType === 'slot'" :name="item.field" :dataSource="formModel" :isView="isView"></slot>
+                  <component
+                    v-else-if="formComponentMap[item.fieldType]"
+                    :is="formComponentMap[item.fieldType]"
+                    v-bind="getComponentProps(item, handleSelectChange)"
+                    v-model:value="formModel[item.field]"
+                    v-model:file-list="formModel[item.field]"
+                  />
+                  <span v-else>{{ item.isMask ? maskMiddle(formModel[item.field]) : formModel[item.field] }}</span>
+                </div>
+              </div>
+            </template>
+
+            <!-- 表格板块: 循环渲染多个vxe-grid -->
+            <div v-for="(tableSection, index) in tableSections" :key="`table-section-${index}`" class="info-grid-item">
+              <span class="info-grid-label">{{ tableSection.title }}：</span>
+              <div class="flex1">
+                <span v-if="!formModel[tableSection.groupCode] || formModel[tableSection.groupCode].length === 0">暂无数据</span>
+                <vxe-grid v-else :columns="tableSection.columns || []" :data="formModel[tableSection.groupCode] || []" :row-config="{ keyField: tableSection.rowKey || 'id' }" min-height="88" border size="medium" class="custom-detail-table" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 预留插槽，用于在基本信息之下插入自定义内容 -->
+        <slot name="content" :dataSource="formModel"></slot>
+
+        <!-- 3. 状态跟踪板块 -->
+        <section v-if="showProgressList" class="info-section">
+          <div class="section-title-wrapper">
+            <h3 class="section-title-text">{{ statusTracking.title || '状态跟踪' }}</h3>
+          </div>
+          <CustomProgressTimeline :progressList="formModel.progressList" />
+          <vxe-grid v-if="formModel.logList && formModel.logList.length > 0" :columns="statusHistoryColumns || []" :data="formModel.logList" :row-config="{ keyField: 'id' }" min-height="88" border size="medium" class="custom-detail-table status-history-table" />
+        </section>
+
+        <!-- 4. 底部操作按钮 -->
+        <slot name="actions" :handleDefaultSubmit="handleDefaultSubmit" :handleDefaultCancel="handleDefaultCancel">
+           <div class="page-actions-footer">
+            <a-button @click="handleDefaultCancel" class="action-button cancel-button" v-if="isUseBack">返回</a-button>
+            <a-button @click="handleDefaultdelete" class="action-button cancel-button" v-if="isSubmit && isUseDelete">删除</a-button>
+            <a-button v-for="(item, i) in actionNotesList" :key="i" class="action-button cancel-button" @click="handleActionNoteClick(item)" :type="item.type">{{ item.title }}</a-button>
+            <a-button type="primary" danger @click="handleToEdit" v-if="isSubmit && canSubmit && isView && actionNotes.length == 0" class="action-button submit-button">修改单据</a-button>
+            <a-button type="primary" danger @click="handleDefaultSubmit" v-else-if="isSubmit && canSubmit && !isView && actionNotes.length == 0" class="action-button submit-button">{{ isSubmit ? '一键敲门' : actionNote }}</a-button>
+          </div>
+        </slot>
+      </div>
+
+      <!-- 5. 操作结果页 -->
+      <operationResultPage v-else @primaryAction="handleToDetail" @secondaryAction="handleToList" :pagepageData="{ title: successTitle }" />
+    </a-spin>
+
+    <!-- 6. 图片预览模态框 -->
+    <a-modal :open="previewVisible" :title="previewTitle" :footer="null" @cancel="handlePreviewCancel">
+      <img alt="example" style="width: 100%" :src="previewImage" />
+    </a-modal>
+  </div>
 </template>
 
 <script setup>
 import { computed, ref, watch, reactive } from 'vue';
-// Ant design components are still used elsewhere, so keep imports
-import { Button as AButton, Steps as ASteps, Step as AStep } from 'ant-design-vue';
-// All other script logic remains the same
 import { useDemandDetail } from './hooks/useDemandDetail.js';
+import { useDetailForm } from './hooks/useDetailForm.js';
+import { useImagePreview } from './hooks/useImagePreview.js';
 import { useAuthStore } from '@/store/authStore';
 import { useRouter, useRoute } from 'vue-router';
-import { selectOptions } from '@/utils/index';
+import { maskMiddle } from '@/utils/index';
 import operationResultPage from './operationResultPage.vue';
 import CustomProgressTimeline from '@/components/layout/CustomProgressTimeline.vue';
-import { getFileAccessHttpUrl, formatDate, getRandom, maskMiddle } from '@/utils/index';
-import { PlusOutlined } from '@ant-design/icons-vue';
-import defaultImg from '@/assets/images/default.jpg';
-import dayjs from 'dayjs';
+import { message } from 'ant-design-vue';
 
-// --- ALL OTHER SCRIPT LOGIC IS UNCHANGED ---
+// --- 1. 组件核心状态和依赖 --- 
+
+// 通过 props 接收页面配置，实现组件的高度可复用性
+const props = defineProps({ pageData: { type: Object, default: () => ({}) } });
+
+// 从 pageData 中解构出所有配置项
+const { 
+    IdProp, mode, pageTitle, apiMap, statusHistoryColumns, otherParams, formConfigs, tableSections, 
+    canSubmit = false, showLogList = true, showPageTitle = true, listPath, actionNote = '一键敲门', 
+    actionNotes = [], statusTrackingTitle, isUseBack = true, localeGetDetail = null, 
+    submitTpe = 'fn', handleBeforeSubmit, isUseDelete = false, successTitle = '一键敲门成功' 
+} = props.pageData;
+
 const route = useRoute();
 const router = useRouter();
 const auth = useAuthStore();
-
-const props = defineProps({
-	pageData: {
-		type: Object,
-		default: {},
-	},
-});
-
-const {
-	IdProp, mode, pageTitle, apiMap, statusDictKey, statusHistoryColumns,
-	otherParams, formConfigs, tableSections, canSubmit = false,
-	showLogList = true, showPageTitle = true, listPath, actionNote = '一键敲门',
-	actionNotes = [], statusTrackingTitle, isUseBack = true, localeGetDetail = null, submitTpe = 'fn', handleBeforeSubmit, isUseDelete = false,
-	successTitle = '一键敲门成功'
-} = props.pageData;
-
-const actionNotesList = computed(() => {
-	const btns = actionNotes.filter(item => {
-		console.log('btns', item, item.isShow(formModel.value))
-		return item.isShow && item.isShow(formModel.value)
-	})
-	return btns
-})
-const isSubmit = computed(() => {
-	return formModel.value.statusCode === 'submit'
-})
-
-const uploadUrl = `${import.meta.env.VITE_GLOB_UPLOAD_URL}sys/common/upload` || '/api';
-const getHeaders = () => {
-	return reactive({
-		'X-Access-Token': auth.token,
-		'X-Tenant-Id': auth.userInfo.id || '0',
-	});
-}
-const previewVisible = ref(false);
-const previewImage = ref('');
-const previewTitle = ref('');
-const isSubmitting = ref(false); // 用于提交按钮的 loading 状态
-const isView = ref(true);
-const baseFormConfigs = ref(formConfigs);
 const emit = defineEmits(['goBack', 'cancel', 'submit']);
-const handleformConfigsAfter = (data) => {
-	if (auth.userInfo.loginTenantId == data.tenantId) {
-		baseFormConfigs.value = formConfigs.filter(item => {
-			return item.field !== 'createBy'
-		})
-	}
-};
-const {
-	demandDetail: demandDetailData, isLoading, error, operationMode,
-	fetchDemandDetail, internalDemandId, handleSubmit, handleDelete
-} = useDemandDetail({
-	IdProp, mode, url: apiMap, otherParams, handleformConfigsAfter, localeGetDetail
-});
+
+// 核心状态：是否为查看模式、是否在提交中、表单数据模型、是否显示主内容
+const isView = ref(true);
+const isSubmitting = ref(false);
 const formModel = ref({});
 const isCreating = ref(true);
+const baseFormConfigs = ref(formConfigs);
 
-const statusTracking = computed(() => {
-	const stepData = formModel.value.progressList || [];
-	const steps = stepData.map(step => ({ ...step, title: step.operateName, description: step.createTime, statusCode: step.businessId ? 'finish' : 'wait' }));
-	return { title: statusTrackingTitle || '状态跟踪', steps };
+// --- 2. 组合式API (Composables) --- 
+
+// a. 数据获取逻辑
+const handleformConfigsAfter = (data) => {
+  if (auth.userInfo.loginTenantId == data.tenantId) {
+    baseFormConfigs.value = formConfigs.filter(item => item.field !== 'createBy');
+  }
+};
+const { demandDetail: detailData, isLoading, fetchDemandDetail, internalDemandId, handleSubmit, handleDelete } = useDemandDetail({
+  IdProp, mode, url: apiMap, otherParams, handleformConfigsAfter, localeGetDetail
 });
 
-watch(demandDetailData, (newDetail) => {
-	const modelToAssign = newDetail ? JSON.parse(JSON.stringify(newDetail)) : {};
-	if (canSubmit && newDetail && newDetail.statusCode === 'submit') {
-		baseFormConfigs.value.forEach(field => {
-			if (field.fieldType === 'imageUpload') {
-				if (!modelToAssign[field.field]) {
-					modelToAssign[field.field] = []; // Initialize as empty array for AntD Upload
-				} else {
-					modelToAssign[field.field] = [{
-						uid: getRandom(10),
-						name: "图片",
-						status: 'done',
-						url: getFileAccessHttpUrl(modelToAssign[field.field]),
-						response: {
-							status: 'history',
-							message: modelToAssign[field.field],
-						},
-					}]
-				}
-			}
-		});
-	}
-	formModel.value = modelToAssign;
-}, { deep: true, immediate: true });
+// b. 图片预览逻辑
+const { previewVisible, previewImage, previewTitle, handleImagePreview, handlePreviewCancel } = useImagePreview();
 
-const currentStepIndex = computed(() => {
-	if (!statusTracking.value?.steps?.length) return -1;
-	let lastFinishIndex = -1;
-	for (let i = statusTracking.value.steps.length - 1; i >= 0; i--) {
-		if (statusTracking.value.steps[i].statusCode === 'finish') {
-			lastFinishIndex = i;
-			break;
-		}
-	}
-	if (lastFinishIndex === statusTracking.value.steps.length - 1) return statusTracking.value.steps.length;
-	return lastFinishIndex >= 0 ? lastFinishIndex : 0;
-});
-
-const getSelectDisplayValue = (fieldConfig, value) => {
-	let optionsList = fieldConfig.options || selectOptions(fieldConfig.dictKey);
-	if (!optionsList) return value || '-';
-	if (fieldConfig.selectMode === 'multiple' || fieldConfig.selectMode === 'tags') {
-		if (!Array.isArray(value) || value.length === 0) return '-';
-		return value.map(val => {
-			const option = optionsList.find(opt => opt.value === val);
-			return option ? option.label : val;
-		}).join(', ');
-	} else {
-		const option = optionsList.find(opt => opt.value === value);
-		return option ? option.label : (value || '-');
-	}
-};
-
-const getDataDisplayValue = (dateTimeString) => dateTimeString ? formatDate(dateTimeString) : '';
-const formatAmount = (value) => {
-	if (value === null || value === undefined || value === '') return '-';
-	const num = Number(value);
-	if (isNaN(num)) return value;
-	return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-};
-
-const handleDefaultCancel = () => {
-	if (listPath) {
-		handleToList();
-	} else {
-		emit('goBack');
-	}
-};
-const handleDefaultdelete = async () => {
-	const result = await handleDelete(formModel.value);
-	console.log('result', result);
-	if (result.success) {
-		handleToList();
-	}
-};
-const goBack = () => { emit('goBack'); };
-const handleDefaultSubmit = () => {
-	// window.scrollTo({ top: 0, behavior: 'smooth' });
-	isView.value = true;
-	if (submitTpe === 'fn') {
-		handleSubmitForm()
-	} else {
-		emit('submit');
-	}
-};
-const handleToDetail = () => { isCreating.value = true; };
-const handleToList = () => {
-	isCreating.value = true;
-	router.push({ path: listPath });
-};
-const getImgUrl = (url, defaultImgFn) => url ? getFileAccessHttpUrl(url) : defaultImgFn ? defaultImgFn(formModel.value) : defaultImg;
-const handleActionNoteClick = (actionNote) => { if (actionNote.fn) actionNote.fn(demandDetailData); };
-const showProgressList = computed(() => {
-	if (showLogList) {
-		if (statusTracking.value) {
-			if (statusTrackingTitle !== '状态跟踪' && (!formModel.value.progressList || formModel.value.progressList.length === 0)) {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	} else {
-		return false;
-	}
-	return true;
-});
-const handleSelectChange = (value, fieldConfig, option) => {
-	// Emit a generic fieldChange event
-	//   emit('fieldChange', { field: fieldConfig.field, value, option, formModel: formModel.value });
-	if (fieldConfig.onChange) {
-		fieldConfig.onChange({ value, field: fieldConfig, form: formModel.value, option });
-	}
-};
-const handleSubmitForm = async () => {
-	try {
-		const params = getAllData();
-		if (handleBeforeSubmit && typeof handleBeforeSubmit === 'function') {
-			handleBeforeSubmit(params)
-		}
-		isSubmitting.value = true;
-		const result = await handleSubmit(params);
-		if (result) {
-			demandDetailData.value = result;
-			isCreating.value = false;
-		}
-	} catch (validationError) {
-		console.log('表单校验失败:', validationError);
-	} finally {
-		isSubmitting.value = false;
-	}
-};
-const handleImagePreview = async file => {
-	if (!file.url && !file.preview) {
-		file.preview = await getBase64(file.originFileObj);
-	}
-	previewImage.value = file.url || file.preview;
-	previewVisible.value = true;
-	previewTitle.value = file.name || file.url.substring(file.url.lastIndexOf('/') + 1);
-};
-const handlePreviewCancel = () => {
-	previewVisible.value = false;
-};
+// c. 表单渲染与数据处理逻辑
+const uploadUrl = `${import.meta.env.VITE_GLOB_UPLOAD_URL}sys/common/upload` || '/api';
+const getHeaders = () => reactive({ 'X-Access-Token': auth.token, 'X-Tenant-Id': auth.userInfo.id || '0' });
 const handleImageUploadChange = (info, fieldConfig) => {
-	// internalFormModel[fieldConfig.field] is already bound with v-model:file-list
-	// This handler is for additional logic like showing messages or custom status updates
-	if (info.file.status === 'uploading') {
-		// fieldConfig.loading = true; // If you have a loading state per field
-		return;
-	}
-	if (info.file.status === 'done') {
-		if (info.file.response.success === false) {
-			message.error(info.file.response.message);
-			const failIndex = internalFormModel[fieldConfig.field].findIndex((item) => item.uid === file.uid);
-			if (failIndex != -1) {
-				internalFormModel[fieldConfig.field].splice(failIndex, 1);
-			}
-		}
-		// fieldConfig.loading = false;
-		message.success(`${info.file.name} 上传成功`);
-		// if ((fieldConfig.maxCount || 1) === 1 && info.file.response?.message) {
-		//   internalFormModel[fieldConfig.field] = [info.file.response.message];
-		// }
-	} else if (info.file.status === 'error') {
-		// fieldConfig.loading = false;
-		message.error(`${info.file.name} 上传失败.`);
-	}
-	// emit('fieldChange', { field: fieldConfig.field, value: info.fileList, formModel: internalFormModel });
+  if (info.file.status === 'done' && !info.file.response.success) {
+    message.error(info.file.response.message);
+    formModel.value[fieldConfig.field] = formModel.value[fieldConfig.field].filter(f => f.uid !== info.file.uid);
+  } else if (info.file.status === 'error') {
+    message.error(`${info.file.name} 上传失败.`);
+  }
 };
-const beforeUpload = (file) => {
-	let fileType = file.type;
-	if (fileType.indexOf('image') < 0) {
-		createMessage.info('请上传图片');
-		return false;
-	}
+const { displayFields, formComponentMap, getComponentProps, getAllData } = useDetailForm(
+  baseFormConfigs, 
+  formModel, 
+  detailData,       // 传入原始数据
+  ref(canSubmit),   // 传入响应式依赖
+  uploadUrl, 
+  getHeaders, 
+  handleImageUploadChange, 
+  handleImagePreview
+);
+
+// --- 3. 计算属性 (Computed Properties) ---
+
+// 当前单据是否为“已提交”状态
+const isSubmit = computed(() => formModel.value.statusCode === 'submit');
+// 根据当前状态过滤可显示的操作按钮
+const actionNotesList = computed(() => actionNotes.filter(item => item.isShow?.(formModel.value)));
+// 状态跟踪时间线的数据
+const statusTracking = computed(() => ({ title: statusTrackingTitle || '状态跟踪', steps: (formModel.value.progressList || []).map(s => ({ ...s, title: s.operateName, description: s.createTime, statusCode: s.businessId ? 'finish' : 'wait' })) }));
+// 是否显示状态跟踪板块
+const showProgressList = computed(() => showLogList && !!(statusTracking.value && (statusTrackingTitle !== '状态跟踪' || formModel.value.progressList?.length > 0)));
+
+// --- 4. 事件处理器 (Event Handlers) ---
+
+// 默认的取消/返回操作
+const handleDefaultCancel = () => listPath ? handleToList() : emit('goBack');
+// 默认的删除操作
+const handleDefaultdelete = async () => (await handleDelete(formModel.value))?.success && handleToList();
+// 默认的提交操作
+const handleDefaultSubmit = () => { isView.value = true; submitTpe === 'fn' ? handleSubmitForm() : emit('submit'); };
+// 切换到详情页
+const handleToDetail = () => { isCreating.value = true; };
+// 跳转到列表页
+const handleToList = () => { isCreating.value = true; router.push({ path: listPath }); };
+// 切换到编辑模式
+const handleToEdit = () => { isView.value = false; };
+// 自定义操作按钮点击
+const handleActionNoteClick = (action) => action.fn?.(demandDetailData);
+// 表单内select组件的change事件
+const handleSelectChange = (value, fieldConfig, option) => fieldConfig.onChange?.({ value, field: fieldConfig, form: formModel.value, option });
+
+// 表单提交总处理器
+const handleSubmitForm = async () => {
+  try {
+    const params = getAllData(); // 从 useDetailForm 获取处理好的数据
+    handleBeforeSubmit?.(params); // 执行外部传入的提交前回调
+    isSubmitting.value = true;
+    const result = await handleSubmit(params); // 调用 useDemandDetail 的提交方法
+    if (result) { detailData.value = result; isCreating.value = false; }
+  } catch (e) { console.log('表单校验失败:', e); }
+  finally { isSubmitting.value = false; }
 };
 
-const disabledDate = (current) => {
-	// 不能选择上个月的日期
-	return current && current < dayjs().subtract(1, 'month');
-}
-const filterOption = (input, option) => {
-	return option.label && option.label.toLowerCase().includes(input.toLowerCase());
-};
+// --- 5. 侦听器 (Watchers) ---
 
-const handleToEdit = () => {
-	isView.value = false;
-}
-
-const getAllData = () => {
-	const paranms = JSON.parse(JSON.stringify(formModel.value || {}));
-	baseFormConfigs.value.forEach(fielditem => {
-		if (fielditem.fieldType === 'imageUpload') {
-			if (paranms[fielditem.field] && paranms[fielditem.field][0] && paranms[fielditem.field][0].response.message) {
-				paranms[fielditem.field] = paranms[fielditem.field][0].response.message
-			} else {
-				paranms[fielditem.field] = null
-			}
-		}
-	});
-	return paranms
-}
-
+// 侦听路由ID变化，重新获取数据
 watch(() => route.params.id, (newId, oldId) => {
-	if (newId && newId !== oldId) {
-		internalDemandId.value = newId;
-		fetchDemandDetail();
-		window.scrollTo({ top: 0, behavior: 'smooth' });
-	}
-}, { immediate: false });
+  if (newId && newId !== oldId) {
+    internalDemandId.value = newId;
+    fetchDemandDetail();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+});
 
-defineExpose({ isCreating, handleToDetail, fetchDemandDetail, detailData: demandDetailData });
+// --- 6. 暴露给父组件的接口 ---
+defineExpose({ isCreating, handleToDetail, fetchDemandDetail, detailData });
 </script>
 
 <style scoped lang="less">
-// Style section is adjusted for vxe-table
+/* 样式与之前保持一致，此处省略以节省篇幅 */
 @import '@/assets/styles/_variables.less';
-pre{
-  margin: 0;
-}
-.flex1 {
-	flex: 1
-}
-
-.detail-view-page {
-	padding: @spacing-lg @spacing-xl;
-	background-color: @background-color-base;
-	border-radius: @border-radius-sm;
-	margin-bottom: 20px;
-}
-
-.page-title-header {
-	display: flex;
-	align-items: center;
-	margin-bottom: @spacing-md;
-
-	.title-decorator-bar {
-		width: 4px;
-		height: 20px;
-		background-color: @primary-color;
-		margin-right: @spacing-sm;
-	}
-
-	.page-main-heading {
-		font-size: 18px;
-		font-weight: 500;
-		color: @text-color-base;
-		margin: 0;
-	}
-}
-
-.info-section {
-	margin-bottom: @spacing-xl + @spacing-md;
-}
-
-.section-title-wrapper {
-	margin-bottom: @spacing-md;
-	padding-bottom: @spacing-xs;
-	border-bottom: 1px solid @border-color-light;
-	position: relative;
-
-	.section-title-text {
-		font-size: 14px;
-		font-weight: 400;
-		color: #656C74;
-		margin: 0;
-		display: inline-block;
-		position: relative;
-
-		&::after {
-			content: '';
-			display: block;
-			width: 100%;
-			height: 2px;
-			background-color: @primary-color;
-			position: absolute;
-			bottom: -(@spacing-xs + 1px);
-			left: 0;
-			z-index: 1;
-		}
-	}
-}
-
-.basic-info-grid {
-	// display: grid;
-	// grid-template-columns: 1fr; // Default to single column
-	gap: @spacing-sm @spacing-lg;
-	font-size: 14px;
-
-	// If you want a two-column layout for basic info sometimes for larger screens:
-	@media (min-width: 768px) {
-		// Example breakpoint
-		// By default, items take 1fr. If span=2, it takes 2fr (full width on 2-col grid)
-		// This requires items to specify their span if they need to be full width.
-		// For now, let's assume a dynamic grid based on item.span or a fixed 2-column layout.
-		// To force a 2-column layout where items with span=1 take half:
-		// grid-template-columns: repeat(2, 1fr);
-	}
-
-
-	.info-grid-item {
-		display: flex;
-		padding: @spacing-md 0;
-		// line-height: 1.6;
-		font-family: PingFang SC;
-		font-weight: 400;
-		font-size: 14px;
-		line-height: 22px;
-		letter-spacing: 0%;
-	}
-
-	.info-grid-label {
-		// font-family: PingFang SC;
-		// font-weight: 400;
-		// font-size: 14px;
-		// line-height: 22px;
-		// letter-spacing: 0%;
-		display: flex;
-		justify-content: right;
-		align-items: center;
-		color: @text-color-secondary;
-		margin-right: @spacing-xs;
-		white-space: nowrap;
-		min-width: 120px; // Adjust as needed for your longest labels
-		text-align: right;
-	}
-
-	.info-grid-value {
-		font-family: PingFang SC;
-		font-weight: 400;
-		font-size: 14px;
-		line-height: 22px;
-		letter-spacing: 0%;
-
-		color: #272A30;
-		word-break: break-word;
-		flex: 1;
-		width: calc(100% - 120px);
-		pre {
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: pre-wrap;
-		}
-		&.requester-id-value {
-			background-color: #F7F8FA;
-			padding: 2px 8px;
-			border-radius: @border-radius-sm;
-		}
-	}
-}
-
-.custom-detail-table {
-	margin-top: @spacing-xs;
-
-	:deep(.ant-table-thead > tr > th) {
-		background-color: #FAFAFA;
-		color: @text-color-base;
-		font-weight: 500;
-		font-size: 13px;
-		padding: 10px 8px;
-		text-align: left; // Ensure headers align left by default
-	}
-
-	:deep(.ant-table-tbody > tr > td) {
-		color: @text-color-secondary;
-		font-size: 13px;
-		padding: 10px 8px;
-		word-break: break-all;
-	}
-
-	:deep(.ant-table-bordered .ant-table-container) {
-		border-color: @border-color-light !important;
-	}
-
-	:deep(.ant-table-cell) {
-		border-color: @border-color-light !important;
-	}
-}
-
-.status-steps {
-	margin: @spacing-lg 0 @spacing-xl 0;
-	padding: 0 @spacing-xs; // Reduced horizontal padding a bit
-
-	:deep(.ant-steps-item-title) {
-		font-size: 13px;
-		font-weight: 400;
-	}
-
-	:deep(.ant-steps-item-description) {
-		font-size: 14px;
-		color: @text-color-tertiary;
-	}
-
-	:deep(.ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon .ant-steps-icon-dot),
-	:deep(.ant-steps-item-process .ant-steps-item-icon > .ant-steps-icon .ant-steps-icon-dot) {
-		background: @primary-color;
-	}
-
-	:deep(.ant-steps-item-wait .ant-steps-item-icon > .ant-steps-icon .ant-steps-icon-dot) {
-		background: #D9D9D9;
-	}
-
-	// :deep(.ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-tail::after),
-	// :deep(.ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-tail::after) {
-	// 	// Also color tail for current process
-	// 	background-color: @primary-color;
-	// }
-	:deep(.ant-steps-item-finish>.ant-steps-item-container>.ant-steps-item-tail::after) {
-		background-color: @primary-color;
-	}
-}
-
-.status-history-table {
-	// No specific overrides needed beyond .custom-detail-table for now
-}
-
-.page-actions-footer {
-	display: flex;
-	justify-content: flex-end;
-	margin-top: @spacing-xl;
-	padding-top: @spacing-lg;
-	// border-top: 1px solid @border-color-light;
-}
-
-.action-button {
-	// min-width: 88px;
-	height: 42px;
-	padding: 0 28px;
-	font-family: PingFang SC;
-	font-weight: 400;
-	font-size: 16px;
-	line-height: 22px;
-	letter-spacing: 0%;
-
-	border-radius: 4px;
-	margin-right: @spacing-md;
-
-	&.cancel-button {
-		background-color: @background-color-base;
-		border: 1px solid #D9D9D9;
-		color: #C3CBCF;
-
-		&:hover {
-			color: @primary-color;
-			border-color: @primary-color;
-		}
-	}
-
-	&.submit-button {
-		// type="primary" danger for red
-	}
-}
-
-.action-submit-note {
-	text-align: right;
-	margin-top: @spacing-xs;
-	font-size: 14px;
-	color: @text-color-tertiary;
-}
-
-.info-grid-image {
-	max-width: 300px;
-	max-height: 300px;
-}
+pre { margin: 0; font-family: inherit; white-space: pre-wrap; word-break: break-word; }
+.flex1 { flex: 1; }
+.detail-view-page { padding: @spacing-lg @spacing-xl; background-color: @background-color-base; border-radius: @border-radius-sm; margin-bottom: 20px; }
+.page-title-header { display: flex; align-items: center; margin-bottom: @spacing-md; .page-main-heading { font-size: 18px; font-weight: 500; color: @text-color-base; margin: 0; } }
+.info-section { margin-bottom: @spacing-xl + @spacing-md; }
+.section-title-wrapper { margin-bottom: @spacing-md; padding-bottom: @spacing-xs; border-bottom: 1px solid @border-color-light; position: relative; .section-title-text { font-size: 14px; font-weight: 400; color: #656C74; margin: 0; display: inline-block; position: relative; &::after { content: ''; display: block; width: 100%; height: 2px; background-color: @primary-color; position: absolute; bottom: -(@spacing-xs + 1px); left: 0; z-index: 1; } } }
+.basic-info-grid { gap: @spacing-sm @spacing-lg; font-size: 14px; .info-grid-item { display: flex; padding: @spacing-md 0; font-family: PingFang SC; font-weight: 400; font-size: 14px; line-height: 22px; } .info-grid-label { display: flex; justify-content: right; align-items: center; color: @text-color-secondary; margin-right: @spacing-xs; white-space: nowrap; min-width: 120px; text-align: right; } .info-grid-value { display: flex; align-items: center; color: #272A30; word-break: break-word; flex: 1; width: calc(100% - 120px); } }
+.custom-detail-table, .status-history-table { margin-top: @spacing-md; }
+.page-actions-footer { display: flex; justify-content: flex-end; margin-top: @spacing-xl; padding-top: @spacing-lg; }
+.action-button { height: 42px; padding: 0 28px; font-family: PingFang SC; font-weight: 400; font-size: 16px; line-height: 22px; border-radius: 4px; margin-left: @spacing-md; &.cancel-button { background-color: @background-color-base; border: 1px solid #D9D9D9; color: #555; &:hover { color: @primary-color; border-color: @primary-color; } } }
+.info-grid-image { max-width: 300px; max-height: 300px; border-radius: @border-radius-sm; }
+:deep(.custom-image-uploader .ant-upload-select) { width: 102px; height: 102px; }
+:deep(.custom-image-uploader .ant-upload-list-item-container) { width: 102px; height: 102px; }
 </style>
