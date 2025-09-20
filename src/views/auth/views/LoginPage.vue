@@ -18,8 +18,8 @@
 
           <a-form :model="loginFormState" name="login" class="auth-form" @finish="onLoginFinish"
             @finishFailed="onFormFinishFailed" layout="vertical">
-            <a-form-item name="username" :rules="[{ required: true, message: '请输入您的邮箱或账号!' }]">
-              <a-input v-model:value="loginFormState.username" placeholder="请输入邮箱或账号">
+            <a-form-item name="username" :rules="[{ required: true, message: '请输入您的账号!' }]">
+              <a-input v-model:value="loginFormState.username" placeholder="请输入账号">
                 <template #prefix>
                   <UserOutlined class="site-form-item-icon" />
                 </template>
@@ -33,7 +33,35 @@
                 </template>
               </a-input-password>
             </a-form-item>
-            <a-form-item name="captcha">
+            <a-form-item name="email" :rules="[{ required: true, message: '请输入您的邮箱!' }, { type: 'email', message: '请输入有效的邮箱地址!' }]">
+              <a-input v-model:value="loginFormState.email" placeholder="请输入邮箱">
+                <template #prefix>
+                  <MailOutlined class="site-form-item-icon" />
+                </template>
+                <template #addonAfter>
+                  <a-button @click="handleSendEmailCode" :disabled="isCountingDown" style="width: 112px; padding: 0;">
+                    {{ isCountingDown ? `${countdown}s` : '获取验证码' }}
+                  </a-button>
+                </template>
+              </a-input>
+            </a-form-item>
+
+            <a-form-item name="captcha" :rules="[{ required: true, message: '请输入验证码!' }]">
+              <a-input v-model:value="loginFormState.captcha" placeholder="请输入验证码">
+                <template #prefix>
+                  <UserOutlined class="site-form-item-icon" />
+                </template>
+              </a-input>
+            </a-form-item>
+
+            <!-- <a-form-item name="password" :rules="[{ required: true, message: '请输入您的密码!' }]">
+              <a-input-password v-model:value="loginFormState.password" placeholder="请输入密码">
+                <template #prefix>
+                  <LockOutlined class="site-form-item-icon" />
+                </template>
+              </a-input-password>
+            </a-form-item> -->
+            <!-- <a-form-item name="captcha">
               <a-input v-model:value="loginFormState.captcha" placeholder="请输入验证码">
                 <template #prefix>
                   <UserOutlined class="site-form-item-icon" />
@@ -46,7 +74,7 @@
                 <img v-else style="margin-top: 2px; max-width: initial" src="@/assets/images/checkcode.png"
                   @click="handleChangeCheckCode" />
               </div>
-            </a-form-item>
+            </a-form-item> -->
 
             <a-form-item class="form-options">
               <a-checkbox v-model:checked="loginFormState.remember">自动登录</a-checkbox>
@@ -124,59 +152,85 @@
 </template>
 
 <script setup>
-// Script remains the same as the previous version
-import { reactive, ref, onMounted } from 'vue';
+import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/store/authStore';
 import {
   Form as AForm,
   FormItem as AFormItem,
   Input as AInput,
-  InputPassword as AInputPassword,
   Button as AButton,
   Checkbox as ACheckbox,
   message
 } from 'ant-design-vue';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons-vue';
-import { getCodeInfo } from '@/api/user.js';
 import PhoneAndEmailModal from '@/components/common/PhoneAndEmailModal.vue';
 import defHttp from '@/utils/http/axios';
-import { useModalStore } from '@/store/modalStore'; 
+import { useModalStore } from '@/store/modalStore';
 
-const modalStore = useModalStore()
+const modalStore = useModalStore();
 const router = useRouter();
 const authStore = useAuthStore();
 const currentView = ref('login');
 const loginLoading = ref(false);
-const loginFormState = reactive({ username: '', password: '', remember: true });
+const loginFormState = reactive({ username: '', password: '', email: '', captcha: '', remember: true });
 const forgotPasswordLoading = ref(false);
 const forgotPasswordFormState = reactive({ account: '' });
-const phoneAndEmailModal = ref()
+const phoneAndEmailModal = ref();
+
+const countdown = ref(60);
+const isCountingDown = ref(false);
+let timer = null;
 
 const switchToForgotPassword = () => { currentView.value = 'forgotPassword'; };
 const switchToLogin = () => { currentView.value = 'login'; };
-const randCodeData = reactive({
-  requestCodeSuccess: false,
-  randCodeImage: ''
-});
-const getCaptchaCode = async () => {
+
+const handleSendEmailCode = async () => {
+  if (!loginFormState.username) {
+    message.error('请输入账号!');
+    return;
+  }
+  if (!loginFormState.email) {
+    message.error('请输入邮箱地址!');
+    return;
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(loginFormState.email)) {
+    message.error('请输入有效的邮箱地址!');
+    return;
+  }
+
+  isCountingDown.value = true;
   try {
-    randCodeData.checkKey = new Date().getTime() + Math.random().toString(36).slice(-4); // 1629428467008;
-    getCodeInfo(randCodeData.checkKey).then((res) => {
-      randCodeData.randCodeImage = res.result;
-      randCodeData.requestCodeSuccess = true;
-    });
+    const res = await defHttp.post({ url: '/apm/sys/emailCaptcha', data: { username: loginFormState.username, email: loginFormState.email, captchaMode: 1 } });
+    if (res.success) {
+      message.success('验证码已发送');
+      timer = setInterval(() => {
+        if (countdown.value > 1) {
+          countdown.value--;
+        } else {
+          clearInterval(timer);
+          isCountingDown.value = false;
+          countdown.value = 60;
+        }
+      }, 1000);
+    } else {
+      message.error(res.message);
+      isCountingDown.value = false;
+    }
   } catch (error) {
-    message.error('验证码获取失败，请重试。');
+    message.error('验证码发送失败，请重试。');
+    isCountingDown.value = false;
   }
 };
+
 const onLoginFinish = async values => {
   loginLoading.value = true;
   try {
-    let data = {
+    const data = {
       username: values.username,
       password: values.password,
-      checkKey: randCodeData.checkKey,
+      email: values.email,
       captcha: values.captcha
     };
     // 登录
@@ -193,6 +247,7 @@ const onLoginFinish = async values => {
     loginLoading.value = false;
   }
 };
+
 const onForgotPasswordFinish = async values => {
   forgotPasswordLoading.value = true;
   console.log('Attempting to find account:', values.account);
@@ -206,17 +261,8 @@ const onForgotPasswordFinish = async values => {
   }
 };
 const onFormFinishFailed = errorInfo => { console.log('Form submission failed:', errorInfo); };
-const navigateToRegister = () => { router.push('/register'); };
 const contactSupport = () => { message.info('联系人工客服功能暂未实现。'); };
 
-const handleChangeCheckCode = () => {
-  randCodeData.requestCodeSuccess = false;
-  getCaptchaCode();
-};
-
-onMounted(() => {
-  getCaptchaCode()
-});
 const handleRegister = () => {
   phoneAndEmailModal.value.openModal()
 }
