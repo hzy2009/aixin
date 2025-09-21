@@ -2,7 +2,7 @@ import defHttp from '@/utils/http/axios'
 
 const Api = {
   Login: '/apm/sys/emailLogin',
-  Login: '/sys/login',
+  // Login: '/sys/login',
   phoneLogin: '/sys/phoneLogin',
   Logout: '/sys/logout',
   GetUserInfo: '/sys/user/getUserInfo',
