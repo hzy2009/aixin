@@ -44,7 +44,7 @@ const authStore = useAuthStore();
 
 const handlePurchaseClick = (partnerKey) => {
   if (authStore.isLogin) {
-    if (!['apm-vip', 'apm-vip-inspection', 'apm-register', 'apm-super-vip', 'apm-super-vip-free'].includes(authStore.role)) {
+    if (!['apm-vip', 'apm-vip-inspection', 'apm-register', 'apm-super-vip', 'apm-super-vip-free'].includes(authStore.userRole.roleCode)) {
       return message.error('您没有权限进行此操作');
     }
     let url = ''
