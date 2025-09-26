@@ -33,7 +33,7 @@ const isLoading = ref(false);
 const internalDemandId = ref(props.IdProp);
 const fieldList = [
     { key: 'deviceType', label: '设备类型' },
-    { key: 'compatibleModels', label: '设备型号' },
+    { key: 'productModelName', label: '设备型号' },
     { key: 'originalManufacturer', label: '设备厂商' },
 ]
 const tagList = [

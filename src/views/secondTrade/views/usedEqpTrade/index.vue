@@ -52,7 +52,7 @@ const tagList = [
 ]
 const fieldList = [
     { key: 'productModelName', label: '设备类型' },
-    { key: 'compatibleModels', label: '设备型号' },
+    { key: 'productModelName', label: '设备型号' },
     { key: 'originalManufacturer', label: '设备厂商' },
 ]
 const handleDetails = (item) => {

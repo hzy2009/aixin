@@ -42,7 +42,7 @@ const formConfigs = [
   },
   {
     label: '适用设备型号',
-    field: 'compatibleModels',
+    field: 'productModelName',
     fieldType: 'input',
     span: 24,
   },

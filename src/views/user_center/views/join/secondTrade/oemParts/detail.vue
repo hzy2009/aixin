@@ -31,7 +31,7 @@ const productPageConfig = ref({
 
   basicInfo: [
     { label: '零部件料号', field: 'partNumber' },
-    { label: '零部件型号', field: 'productModelName' },
+    { label: '零部件型号', field: 'compatibleModels' },
     { label: '品牌/制造商', field: 'originalManufacturer' },
     {
       label: '品类',
@@ -44,7 +44,7 @@ const productPageConfig = ref({
   productDetailsHtml: 'description',
   specifications: [
     { label: '规格', field: 'specification' },
-    { label: '适用设备型号', field: 'compatibleModels' },
+    { label: '适用设备型号', field: 'productModelName' },
     { label: '生产日期', field: 'productionDate' },
     { label: '使用时长', field: 'usageDuration' },
     { label: '质保期', field: 'guaranteePeriod' },

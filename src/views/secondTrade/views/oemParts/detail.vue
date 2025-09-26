@@ -42,7 +42,7 @@ const productPageConfig = ref({
   productDetailsHtml: 'description',
   specifications: [
     { label: '规格', field: 'specification' },
-    { label: '适用设备型号', field: 'compatibleModels' },
+    { label: '适用设备型号', field: 'productModelName' },
     { label: '生产日期', field: 'productionDate' },
     { label: '使用时长', field: 'usageDuration' },
     { label: '质保期', field: 'guaranteePeriod' },
@@ -64,7 +64,7 @@ const productPageConfig = ref({
 });
 const fieldList = [
     { key: 'deviceType', label: '设备类型' },
-    { key: 'compatibleModels', label: '设备型号' },
+    { key: 'productModelName', label: '设备型号' },
     { key: 'originalManufacturer', label: '设备厂商' },
 ]
 const tagList = [

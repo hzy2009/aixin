@@ -37,7 +37,7 @@ const formConfigs = [
     span: 24,
   },
   {
-    label: '零部件型号',
+    label: '适用设备型号',
     field: 'productModelCode',
     fieldType: 'select',
     dictKey: 'product_model',
@@ -53,7 +53,7 @@ const formConfigs = [
     span: 24,
   },
   {
-    label: '适用设备型号',
+    label: '零部件型号',
     field: 'compatibleModels',
     fieldType: 'input',
     span: 24,
