@@ -14,7 +14,7 @@
           <div class="user-name">{{ '爱芯享集成电路信息共享平台' }}</div>
           <div class="user-membership-info" v-if="userRole?.role == '普通会员'">
             <span class="membership-level">{{ userRole?.role || '普通会员' }}</span>
-            <a-button type="link" class="upgrade-link" v-if="userRole?.role == '普通会员'" @click="upgradeMembership">升级会员</a-button>
+            <a-button type="link" class="upgrade-link" v-if="userRole?.role == '普通会员'" @click="upgradeMembership">升级</a-button>
           </div>
           <div class="user-membership-info" v-else>
             <img src="@/assets/images/auth/VIP会员.png" alt="">
