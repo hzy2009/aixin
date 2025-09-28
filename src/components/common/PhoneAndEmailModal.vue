@@ -8,6 +8,7 @@
 		:title="props.title"
 		width="400px"
 		wrap-class-name="draggable-modal-wrapper"
+		:destroy-on-close="true"
 		@cancel="handleClose"
 	>
 	   	<div class="prompt-content">
