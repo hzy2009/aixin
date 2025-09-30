@@ -235,7 +235,8 @@ const calculateTotalPrice = (row, priceCode, quantityCode, isIncludingTax) => {
     if (isIncludingTax) {
       total = total.div(1 + props.product.tax / 100);
     }
-    return `¥${total.toFixed(2)}`;
+    const totalNumber = total.toNumber();
+    return `¥${totalNumber.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   } catch (error) {
     console.error('计算总价时发生错误:', error, row);
     return '-';

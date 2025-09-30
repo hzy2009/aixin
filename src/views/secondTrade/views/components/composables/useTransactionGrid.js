@@ -103,7 +103,7 @@ export function useTransactionGrid(props, activeTabKey, isDeadlinePassed, isRowE
         },
         { title: '操作', fiexd: 'right', slots: { default: 'buttons' }, width: 160, columnType: 'transaction' },
         { field: 'approveTime', title: '成交时间', width: 160, columnType: 'negotiation' }, // 交易历史
-        { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation' },  // 交易历史
+        { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation', formatter: formatCurrency },  // 交易历史
         { field: 'dealQuantity', title: '成交数量', width: 98, columnType: 'negotiation' }, // 交易历史
         { field: 'publicPriceExcludingTaxTotal', title: '成交总价(不含税)', width: 130, slots: { default: 'publicPriceExcludingTaxTotal' }, columnType: 'transaction' },
         { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', slots: { default: 'negotiationDealTotalWithoutTax' }, width: 130, columnType: 'negotiation' }, // 成交总价(不含税)
@@ -152,7 +152,7 @@ export function useTransactionGrid(props, activeTabKey, isDeadlinePassed, isRowE
         },
         { title: '操作', slots: { default: 'buttons' }, width: 300, columnType: 'transaction' },
         { field: 'approveTime', title: '成交时间', width: 160, columnType: 'negotiation' }, // 交易历史
-        { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation' },  // 交易历史
+        { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation', formatter: formatCurrency },  // 交易历史
         { field: 'dealQuantity', title: '成交数量', width: 98, columnType: 'negotiation' }, // 交易历史
         { field: 'publicPriceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'publicPriceExcludingTaxTotal' }, width: 130, columnType: 'transaction' }, // 交易历史列
         { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', slots: { default: 'negotiationDealTotalWithoutTax' }, width: 130, columnType: 'negotiation' }, // 成交总价(不含税)
@@ -201,7 +201,7 @@ export function useTransactionGrid(props, activeTabKey, isDeadlinePassed, isRowE
         },
         { title: '操作', fiexd: 'right', slots: { default: 'buttons' }, width: 160, columnType: 'transaction' },
         { field: 'approveTime', title: '成交时间', width: 160, columnType: 'negotiation' }, // 交易历史
-        { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation' },  // 交易历史
+        { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation', formatter: formatCurrency },  // 交易历史
         { field: 'dealQuantity', title: '成交数量', width: 98, columnType: 'negotiation' }, // 交易历史
         { field: 'publicPriceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'publicPriceExcludingTaxTotal' }, width: 130, columnType: 'transaction' }, // 交易历史列
         { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', slots: { default: 'negotiationDealTotalWithoutTax' }, width: 130, columnType: 'negotiation' }, // 成交总价(不含税)
@@ -246,7 +246,7 @@ export function useTransactionGrid(props, activeTabKey, isDeadlinePassed, isRowE
           columnType: 'transaction'
         },
         { field: 'approveTime', title: '成交时间', width: 160, columnType: 'negotiation' }, // 交易历史
-        { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation' },  // 交易历史
+        { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation', formatter: formatCurrency },  // 交易历史
         { field: 'dealQuantity', title: '成交数量', width: 98, columnType: 'negotiation' }, // 交易历史
         { field: 'publicPriceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'auctionPriceExcludingTaxTotal' }, width: 130, columnType: 'transaction' }, // 交易历史列
         { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', slots: { default: 'negotiationDealTotalWithoutTax' }, width: 130, columnType: 'negotiation' }, // 成交总价(不含税)
@@ -284,7 +284,7 @@ export function useTransactionGrid(props, activeTabKey, isDeadlinePassed, isRowE
         { field: 'confirmedQuantity', title: '卖方可出售数量', width: 120, columnType: 'transaction' },
         { title: '操作', fiexd: 'right', slots: { default: 'buttons' }, width: 160, columnType: 'transaction' },
         { field: 'approveTime', title: '成交时间', width: 160, columnType: 'negotiation' }, // 交易历史
-        { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation' },  // 交易历史
+        { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation', formatter: formatCurrency },  // 交易历史
         { field: 'dealQuantity', title: '成交数量', width: 98, columnType: 'negotiation' }, // 交易历史
         { field: 'publicPriceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'joinPriceExcludingTaxTotal' }, width: 130, columnType: 'transaction' }, // 交易历史列
         { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', slots: { default: 'negotiationDealTotalWithoutTax' }, width: 130, columnType: 'negotiation' }, // 成交总价(不含税)
@@ -320,7 +320,7 @@ export function useTransactionGrid(props, activeTabKey, isDeadlinePassed, isRowE
         { field: 'priceIncludingTax', title: '卖方还价（含税单价）', formatter: formatCurrency, width: 150, columnType: 'transaction' },
         { title: '操作', slots: { default: 'buttons' }, width: 210, columnType: 'transaction' },
         { field: 'approveTime', title: '成交时间', width: 160, columnType: 'negotiation' }, // 交易历史
-        { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation' },  // 交易历史
+        { field: 'priceDeal', title: '成交单价(含税)', width: 130, columnType: 'negotiation', formatter: formatCurrency },  // 交易历史
         { field: 'dealQuantity', title: '成交数量', width: 98, columnType: 'negotiation' }, // 交易历史
         { field: 'publicPriceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'joinPriceExcludingTaxTotal' }, width: 130, columnType: 'transaction' }, // 交易历史列
         { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', slots: { default: 'negotiationDealTotalWithoutTax' }, width: 130, columnType: 'negotiation' }, // 成交总价(不含税)
@@ -388,7 +388,7 @@ export function useTransactionGrid(props, activeTabKey, isDeadlinePassed, isRowE
         { field: 'price', title: '竞拍价（含税单价）', formatter: formatCurrency, width: 140, columnType: 'transaction' },
         { title: '操作', fiexd: 'right', slots: { default: 'buttons' }, width: 160, columnType: 'transaction' },
         { field: 'approveTime', title: '成交时间', width: 160, columnType: 'negotiation' }, // 交易历史
-        { field: 'priceDeal', title: '成交单价(含税)', width: 110, columnType: 'negotiation' },  // 交易历史
+        { field: 'priceDeal', title: '成交单价(含税)', width: 110, columnType: 'negotiation', formatter: formatCurrency },  // 交易历史
         { field: 'dealQuantity', title: '成交数量', width: 74, columnType: 'negotiation' }, // 交易历史
         { field: 'publicPriceExcludingTaxTotal', title: '成交总价(不含税)', slots: { default: 'joinPriceExcludingTaxTotal' }, width: 130, columnType: 'transaction' }, // 交易历史列
         { field: 'negotiationDealTotalWithoutTax', title: '成交总价(不含税)', slots: { default: 'negotiationDealTotalWithoutTax' }, width: 130, columnType: 'negotiation' }, // 成交总价(不含税)
