@@ -32,25 +32,32 @@
 
           <a-form-item
             name="password"
-            :rules="[{ required: true, message: '请输入密码!' }]"
+            :rules="[{ required: true, message: '请输入您的密码!' }]"
           >
             <a-input-password v-model:value="formState.password" placeholder="请输入密码" size="large" class="custom-input">
               <template #prefix><LockOutlined style="color: #BFBFBF;" /></template>
             </a-input-password>
           </a-form-item>
-          <a-form-item name="captcha">
-            <a-input v-model:value="formState.captcha" placeholder="请输入验证码"  size="large" class="custom-input">
-              <template #prefix>
-                <UserOutlined class="site-form-item-icon" />
-              </template>
-            </a-input>
-            <div class="captcha-code">
-              <img v-if="randCodeData.requestCodeSuccess" style="margin-top: 2px; max-width: initial"
-                :src="randCodeData.randCodeImage" @click="handleChangeCheckCode" />
-              <img v-else style="margin-top: 2px; max-width: initial" src="@/assets/images/checkcode.png"
-                @click="handleChangeCheckCode" />
-            </div>
-          </a-form-item>
+          <a-form-item name="email" :rules="[{ required: true, message: '请输入您的邮箱!' }, { type: 'email', message: '请输入有效的邮箱地址!' }]">
+              <a-input v-model:value="formState.email" placeholder="请输入邮箱">
+                <template #prefix>
+                  <MailOutlined class="site-form-item-icon" />
+                </template>
+                <template #addonAfter>
+                  <a-button @click="handleSendEmailCode" :disabled="isCountingDown" style="width: 112px; padding: 0;">
+                    {{ isCountingDown ? `${countdown}s` : '获取验证码' }}
+                  </a-button>
+                </template>
+              </a-input>
+            </a-form-item>
+
+            <a-form-item name="captcha" :rules="[{ required: true, message: '请输入验证码!' }]">
+              <a-input v-model:value="formState.captcha" placeholder="请输入验证码">
+                <template #prefix>
+                  <UserOutlined class="site-form-item-icon" />
+                </template>
+              </a-input>
+            </a-form-item>
 
           <a-form-item class="extra-actions-row">
             <a-checkbox v-model:checked="formState.rememberMe" class="remember-me-checkbox">
@@ -97,15 +104,15 @@
 </template>
 
 <script setup>
-import { reactive, ref, onMounted  } from 'vue';
+import { reactive, ref } from 'vue';
 import {
   Modal as AModal, Form as AForm, FormItem as AFormItem, Input as AInput,
   InputPassword as AInputPassword, Checkbox as ACheckbox, Button as AButton, message
 } from 'ant-design-vue';
-import { UserOutlined, LockOutlined, CloseOutlined } from '@ant-design/icons-vue';
+import { UserOutlined, LockOutlined, CloseOutlined, MailOutlined } from '@ant-design/icons-vue';
 import { useAuthStore } from '@/store/authStore'; // Assuming you have this
 import { useRouter } from 'vue-router'; // If needed for navigation
-import { getCodeInfo } from '@/api/user.js';
+import defHttp from '@/utils/http/axios';
 
 const props = defineProps({
   isVisible: {
@@ -125,8 +132,53 @@ const switchToLogin = () => { currentView.value = 'login'; };
 const formState = reactive({
   username: '',
   password: '',
+  email: '',
+  captcha: '',
   rememberMe: true,
 });
+
+const countdown = ref(60);
+const isCountingDown = ref(false);
+let timer = null;
+
+const handleSendEmailCode = async () => {
+  if (!formState.username) {
+    message.error('请输入账号!');
+    return;
+  }
+  if (!formState.email) {
+    message.error('请输入邮箱地址!');
+    return;
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(formState.email)) {
+    message.error('请输入有效的邮箱地址!');
+    return;
+  }
+
+  isCountingDown.value = true;
+  try {
+    const res = await defHttp.post({ url: '/apm/sys/emailCaptcha', data: { username: formState.username, email: formState.email, captchaMode: 1 } });
+    if (res.success) {
+      message.success('验证码已发送');
+      timer = setInterval(() => {
+        if (countdown.value > 1) {
+          countdown.value--;
+        } else {
+          clearInterval(timer);
+          isCountingDown.value = false;
+          countdown.value = 60;
+        }
+      }, 1000);
+    } else {
+      message.error(res.message);
+      isCountingDown.value = false;
+    }
+  } catch (error) {
+    message.error('验证码发送失败，请重试。');
+    isCountingDown.value = false;
+  }
+};
 
 const handleLogin = async values => {
   isLoading.value = true;
@@ -134,7 +186,7 @@ const handleLogin = async values => {
     let data = {
       username: values.username,
       password: values.password,
-      checkKey: randCodeData.checkKey,
+      email: values.email,
       captcha: values.captcha
     };
     // 登录
@@ -146,7 +198,6 @@ const handleLogin = async values => {
     emit('close'); // Close modal on success
   } catch (error) {
     // console.error('Login failed:', error);
-    if(error == '验证码错误') handleChangeCheckCode();
     // message.error(error.message || '登录失败，请检查您的凭据。');
   } finally {
     isLoading.value = false;
@@ -166,31 +217,6 @@ const handleRegister = () => {
   emit('navigateToRegister');
   emit('close'); // Close this modal before navigating
 };
-
-const randCodeData = reactive({
-  requestCodeSuccess: false,
-  randCodeImage: ''
-});
-const getCaptchaCode = async () => {
-  try {
-    randCodeData.checkKey = new Date().getTime() + Math.random().toString(36).slice(-4); // 1629428467008;
-    getCodeInfo(randCodeData.checkKey).then((res) => {
-      randCodeData.randCodeImage = res.result;
-      randCodeData.requestCodeSuccess = true;
-    });
-  } catch (error) {
-    message.error('验证码获取失败，请重试。');
-  }
-};
-const handleChangeCheckCode = () => {
-  randCodeData.requestCodeSuccess = false;
-  getCaptchaCode();
-};
-
-onMounted(() => {
-  getCaptchaCode()
-});
-
 </script>
 
 <style lang="less"> // Using lang="less" (not scoped) for .login-prompt-modal-wrapper
