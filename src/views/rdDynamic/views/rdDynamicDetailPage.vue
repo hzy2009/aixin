@@ -3,7 +3,7 @@
     <HomeHeroSection :height="160"/>
     <div class="page-title-header container" >
         <span class="title-decorator-bar"></span>
-        <h2 class="page-main-heading">定制化开发动态</h2>
+        <h2 class="page-main-heading">定制开发动态</h2>
     </div>
     <ContentWithSidebarLayout>
       <template #main>

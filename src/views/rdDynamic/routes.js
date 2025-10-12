@@ -4,7 +4,7 @@ const rdDynamicRoutes = [
     path: '/rd-dynamics', // Main page for the list
     name: 'rdDynamic',
     component: () => import('@/views/rdDynamic/views/rdDynamicPage.vue'),
-    meta: { title: '定制化开发动态 - 爱芯享信息服务平台', requiresAuth: false }
+    meta: { title: '定制开发动态 - 爱芯享信息服务平台', requiresAuth: false }
   },
   {
     path: '/rd-dynamics/:id',
