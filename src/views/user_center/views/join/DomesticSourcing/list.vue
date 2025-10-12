@@ -22,7 +22,7 @@ const tableColumns = reactive([{type: 'checkbox', width: 34},...DOMESTIC_SOURCIN
 
 
 const addButton = reactive({
-  text: '创建多元化寻源',
+  text: '创建本土采购',
   clickFn: createNewSourcing
 })
 
@@ -65,7 +65,7 @@ const pageData = ref({
       title: '下载',
       type: 'primary',
       btnType: 'exportXls',
-      fileName: '多元化寻源',
+      fileName: '本土采购',
       url: 'apm/apmSourcing/exportXls',
       otherParams: {
         sourcingType: '国产替代寻源'

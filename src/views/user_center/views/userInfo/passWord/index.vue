@@ -65,7 +65,7 @@ const formConfigs = [
 	{ label: '确定新密码', field: 'confirmpassword', fieldType: 'password', span: 24, rules: [{ required: true, validator: validatePass2, trigger: 'change' }] },
 ]
 
-const pageTitle = '爱芯享集成电路信息共享平台'
+const pageTitle = '爱芯享信息服务平台'
 
 const pageData = reactive({
 	IdProp: props.IdProp,

@@ -19,7 +19,7 @@ const getALLProductTypes = () => {
 }
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
-    // { id: 'rdCode', label: '研发攻关类型', maxVisibleWithoutMore: 7, dictKey: 'rd_type' },
+    // { id: 'rdCode', label: '定制开发类型', maxVisibleWithoutMore: 7, dictKey: 'rd_type' },
     { id: 'productType', label: '产品类别', maxVisibleWithoutMore: 14, dictKey: 'product_type', options: getALLProductTypes() },
     // { id: 'matchPeriodName', label: '匹配周期', maxVisibleWithoutMore: 7, dictKey: 'rd_breakthrough_period' },
 ]);
@@ -54,12 +54,12 @@ const pageData = ref({
     tableColumns,
     actions,
     showBanner: true,
-    pageTitle: '研发攻关',
+    pageTitle: '定制开发',
     statusDictKey: 'rd_breakthrough_status',
     userStatCardVisible: true,
     tableOperations: [
         {
-        title: '创建研发攻关',
+        title: '创建定制开发',
         clickFn: createNewSourcing,
         type: 'primary'
         }
@@ -74,7 +74,7 @@ const pageData = ref({
             label: '期望完成日期',
         }
     ],
-    searchTitle: '研发攻关'
+    searchTitle: '定制开发'
 })
 
 

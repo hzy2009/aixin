@@ -6,7 +6,7 @@
     :code="props.code"
     variant="oem"
     apiUrl="/apm/apmSourcingOriginSubstitute/material/list/front"
-    sourcingType="原厂件寻源"
+    sourcingType="跨境采购"
     routePrefix="/demands/OEMPartsDetailPage"
     emptyDescription="暂无相关报告"
   />

@@ -11,7 +11,7 @@
         </div>
         <div class="uc-banner__info">
           <!-- <h2 class="user-name">{{ userInfo?.realname || '会员用户' }}</h2> -->
-          <div class="user-name">{{ '爱芯享集成电路信息共享平台' }}</div>
+          <div class="user-name">{{ '爱芯享信息服务平台' }}</div>
           <div class="user-membership-info" v-if="userRole?.role == '普通会员'">
             <span class="membership-level">{{ userRole?.role || '普通会员' }}</span>
             <a-button type="link" class="upgrade-link" v-if="userRole?.role == '普通会员'" @click="upgradeMembership">升级</a-button>

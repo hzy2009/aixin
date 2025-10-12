@@ -30,7 +30,7 @@ const refListPage = ref();
 const isSecondTrade = ref(false);
 const todoTitle = computed(() => {
   const titleMap = {
-    '原厂件寻源': '原厂件寻源',
+    '跨境采购': '跨境采购',
     '线下活动': '线下活动',
     '原厂件库存处理': '原厂件库存处理',
     '二手设备处理': '二手设备处理',
@@ -41,7 +41,7 @@ const todoTitle = computed(() => {
 const filterConfigForPage = reactive([
   { id: 'businessName', label: '业务类型', maxVisibleWithoutMore: 9, dictKey: 'business_type', selectionType: 'single', options: 
     [
-      { label: '原厂件寻源', value: '原厂件寻源',
+      { label: '跨境采购', value: '跨境采购',
         onClick: (group, option, helpers) => {
             isSecondTrade.value = false
             changeBusinessName(option.value);
@@ -103,7 +103,7 @@ const tableColumns2 = [
   { title: '操作', width: 100, align: 'center', fixed: 'right', key: 'actions' },
 ]
 const tableConfig = {
-  '原厂件寻源': {
+  '跨境采购': {
     url: 'apm/apmTodo/join/newTodo/list',
     tableColumns: tableColumns1
   },
@@ -120,7 +120,7 @@ const tableConfig = {
     tableColumns: tableColumns2
   },
 }
-const currentBusiness = ref('原厂件寻源')
+const currentBusiness = ref('跨境采购')
 
 const actions = reactive([
   {
@@ -128,7 +128,7 @@ const actions = reactive([
     icon: FileTextOutlined,
     clickFn: viewDetails,
     formatText: (record) => {
-      if (record.businessName === '原厂件寻源') {
+      if (record.businessName === '跨境采购') {
         return '报价';
       } else if ( record.businessName === '线下活动') {
         return '报名';
@@ -146,7 +146,7 @@ const pageData = reactive({
   },
   filterConfigForPage,
   initialFilters: {
-    businessName_MultiString: '原厂件寻源',
+    businessName_MultiString: '跨境采购',
   },
   tableColumns: tableColumns1,
   searchTitle: '待办事项',
@@ -177,7 +177,7 @@ const pageData = reactive({
 
 function viewDetails({businessName, id, postedBy, businessId }) {
     // const map = {
-    //     '原厂件寻源': '/user/join/OEMPartsSourcing/detail',
+    //     '跨境采购': '/user/join/OEMPartsSourcing/detail',
     //     '线下活动': '/user/join/OfflineEvent/detail',
     //     '原厂件库存处理': '/user/join/OEMPartsSourcing/detail',
     //     '二手设备处理': '/user/join/OEMPartsSourcing/detail',
@@ -185,7 +185,7 @@ function viewDetails({businessName, id, postedBy, businessId }) {
     // const path = map[businessName];
     let path = ''
     switch (currentBusiness.value) {
-        case '原厂件寻源':
+        case '跨境采购':
             path = `/user/join/OEMPartsSourcing/detail/${id}`
             break;
         case '线下活动':

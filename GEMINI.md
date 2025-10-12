@@ -11,7 +11,7 @@
 
 ## 项目架构 (Project Architecture)
 
-这是一个Vue 3 + Vite应用程序，用于集成电路信息共享平台（爱芯享集成电路信息共享平台）。应用程序采用模块化架构，基于功能的路由设计。
+这是一个Vue 3 + Vite应用程序，用于集成电路信息共享平台（爱芯享信息服务平台）。应用程序采用模块化架构，基于功能的路由设计。
 
 ### 技术栈 (Tech Stack)
 - **前端框架**: Vue 3 with Composition API 和 `<script setup>` 语法
@@ -28,7 +28,7 @@
   - `auth/` - 身份验证 (登录/忘记密码)
   - `demand_square/` - 需求广场，包含子分类
   - `user_center/` - 用户仪表板和个人资料管理
-  - `secondTrade/` - 二手交易功能
+  - `secondTrade/` - 共济共享功能
   - `industryDynamics/` & `rdDynamic/` - 行业动态和研发更新
 - `src/components/` - 可重用组件:
   - `layout/` - 布局组件 (头部、侧边栏等)

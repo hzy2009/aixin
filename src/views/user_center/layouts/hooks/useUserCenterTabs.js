@@ -15,9 +15,9 @@ const defaultTabsConfig = {
     label: '我发布的',
     defaultSubTabKey: 'AlternativeSourcing', // 第一个子页签作为默认
     subTabs: [
-      { key: 'AlternativeSourcing', label: '多元化寻源', path: '/user/published/DomesticSourcing' },
-      { key: 'OriginalSourcing', label: '原厂件寻源', path: '/user/published/OEMPartsSourcing' },
-      { key: 'RndCollaboration', label: '研发攻关', path: '/user/published/PublicRelations' },
+      { key: 'AlternativeSourcing', label: '本土采购', path: '/user/published/DomesticSourcing' },
+      { key: 'OriginalSourcing', label: '跨境采购', path: '/user/published/OEMPartsSourcing' },
+      { key: 'RndCollaboration', label: '定制开发', path: '/user/published/PublicRelations' },
       { key: 'TestingValidation', label: '检测验证', path: '/user/published/Verification' },
       { key: 'OfflineEvents', label: '线下活动', path: '/user/published/OfflineEvent' },
       { key: 'oemParts', label: '原厂件库存处理', path: '/user/published/oemParts' },
@@ -30,9 +30,9 @@ const defaultTabsConfig = {
     label: '我参与的',
     defaultSubTabKey: 'AlternativeSourcing',
     subTabs: [
-      { key: 'AlternativeSourcing', label: '多元化寻源', path: '/user/join/DomesticSourcing' },
-      { key: 'OriginalSourcing', label: '原厂件寻源', path: '/user/join/OEMPartsSourcing' },
-      { key: 'RndCollaboration', label: '研发攻关', path: '/user/join/PublicRelations' },
+      { key: 'AlternativeSourcing', label: '本土采购', path: '/user/join/DomesticSourcing' },
+      { key: 'OriginalSourcing', label: '跨境采购', path: '/user/join/OEMPartsSourcing' },
+      { key: 'RndCollaboration', label: '定制开发', path: '/user/join/PublicRelations' },
       { key: 'TestingValidation', label: '检测验证', path: '/user/join/Verification' },
       { key: 'OfflineEvents', label: '线下活动', path: '/user/join/OfflineEvent' },
       { key: 'oemParts', label: '原厂件库存处理', path: '/user/join/oemParts' },
@@ -79,14 +79,14 @@ export function useUserCenterTabs(tabsConfig = defaultTabsConfig) {
       activeMainTabKey.value = mainKey;
       const defaultSubKey = tabsConfig[mainKey]?.defaultSubTabKey;
       const firstSubTab = tabsConfig[mainKey]?.subTabs?.[0];
-      
+
       // 导航到该主页签下的第一个子页签或默认子页签
       // const targetSubTabKey = defaultSubKey || (firstSubTab ? firstSubTab.key : null);
       const targetSubTabKey = activeSubTabKey.value || defaultSubKey;
       if (targetSubTabKey) {
         selectSubTab(targetSubTabKey, mainKey); // 明确传递 mainKey
       } else if (firstSubTab && firstSubTab.path) {
-         // 如果没有 defaultSubTabKey，但有第一个子页签，则导航到它
+        // 如果没有 defaultSubTabKey，但有第一个子页签，则导航到它
         router.push(firstSubTab.path);
       }
       // 如果主页签本身对应一个路由，可以在这里导航
@@ -111,7 +111,7 @@ export function useUserCenterTabs(tabsConfig = defaultTabsConfig) {
       }
     }
   };
-  
+
   // 根据当前路由路径同步激活的页签
   const syncTabsWithRoute = (currentPath) => {
     for (const mainKey in tabsConfig) {
@@ -137,11 +137,11 @@ export function useUserCenterTabs(tabsConfig = defaultTabsConfig) {
     // 则激活主页签，并尝试激活其默认子页签
     const pathSegments = currentPath.split('/').filter(Boolean);
     if (pathSegments.length >= 2) { // e.g., ['user', 'published']
-        const potentialMainKey = pathSegments[1];
-        if (tabsConfig[potentialMainKey] && tabsConfig[potentialMainKey].subTabs) {
-            activeMainTabKey.value = potentialMainKey;
-            activeSubTabKey.value = tabsConfig[potentialMainKey].defaultSubTabKey || tabsConfig[potentialMainKey]?.subTabs?.[0]?.key || '';
-        }
+      const potentialMainKey = pathSegments[1];
+      if (tabsConfig[potentialMainKey] && tabsConfig[potentialMainKey].subTabs) {
+        activeMainTabKey.value = potentialMainKey;
+        activeSubTabKey.value = tabsConfig[potentialMainKey].defaultSubTabKey || tabsConfig[potentialMainKey]?.subTabs?.[0]?.key || '';
+      }
     }
 
   };

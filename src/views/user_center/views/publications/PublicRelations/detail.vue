@@ -39,9 +39,9 @@ const props = defineProps({
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
-  { label: '爱芯享研发攻关单号', field: 'code', span: 24},
+  { label: '爱芯享定制开发单号', field: 'code', span: 24},
   // {
-  //   label: '研发攻关类型', field: 'rdCode', dictKey: 'rd_type', span: 24, fieldType: 'select',
+  //   label: '定制开发类型', field: 'rdCode', dictKey: 'rd_type', span: 24, fieldType: 'select',
   // },
   {
     label: '产品类别', field: 'productType', fieldType: 'slot', span: 24,
@@ -57,9 +57,9 @@ const formConfigs = [
 ]
 
 
-// const demandTypeDisplayName = '研发攻关';
+// const demandTypeDisplayName = '定制开发';
 
-const pageTitle = '研发攻关详情'
+const pageTitle = '定制开发详情'
 
 const pageData = reactive({
   IdProp: props.IdProp,
@@ -79,11 +79,11 @@ const pageData = reactive({
   listPath: '/user/published/PublicRelations',
   tableSections: [
     {
-      title: '研发攻关承接方',
+      title: '定制开发承接方',
       groupCode: 'tenantRefList',
       columns: [
           { title: '序号', type: 'seq', width: 48, align: 'center' },
-          { title: '研发攻关承接方', field: 'refUserName', align: 'center' },
+          { title: '定制开发承接方', field: 'refUserName', align: 'center' },
       ]
     },
     {

@@ -3,7 +3,7 @@
     <!-- Top Welcome Bar - Full Width -->
     <div class="top-welcome-bar" v-if="showTopWelcomeBar">
       <div class="top-welcome-bar__content container">
-        <span class="welcome-text">欢迎来到爱芯享集成电路信息共享平台！</span>
+        <span class="welcome-text">欢迎来到爱芯享信息服务平台！</span>
         <div class="user-actions-group">
           <template v-if="auth.isLogin">
              <span :count="unreadMessagesCount" :overflow-count="99" class="action-item notification-badge" @click="navigateToMessages">

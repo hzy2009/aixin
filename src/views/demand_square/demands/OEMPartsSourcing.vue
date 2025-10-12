@@ -52,18 +52,18 @@ const pageData = ref({
         overview: 'apm/apmSourcingOriginSubstitute/overview/front'
     },
     otherParams: {
-        sourcingType: '原厂件寻源'
+        sourcingType: '跨境采购'
     },
     filterConfigForPage,
     tableColumns,
     actions,
     showBanner: true,
     userStatCardVisible: true,
-    pageTitle: '原厂件寻源',
+    pageTitle: '跨境采购',
     statusDictKey: 'origin_sourcing_material_status',
     tableOperations: [
         {
-        title: '创建原厂件寻源',
+        title: '创建跨境采购',
         clickFn: createNewSourcing,
         type: 'primary'
         }
@@ -78,7 +78,7 @@ const pageData = ref({
             label: '期望完成日期',
         }
     ],
-    searchTitle: '原厂件寻源',
+    searchTitle: '跨境采购',
     requiredRoles: ['apm-vip', 'apm-vip-inspection', 'apm-register'],
 })
 

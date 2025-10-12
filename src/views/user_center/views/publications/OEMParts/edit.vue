@@ -37,7 +37,7 @@ const statusHistoryColumns = [
 ]
 
 
-const pageTitle = '原厂件寻源'
+const pageTitle = '跨境采购'
 
 const pageData = reactive({
   IdProp: props.IdProp,
@@ -49,7 +49,7 @@ const pageData = reactive({
     delete: 'apm/apmSourcingOriginSubstitute/delete',
   },
   otherParams: {
-    sourcingType: '原厂件寻源',
+    sourcingType: '跨境采购',
     createTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
   },
   formConfigs,

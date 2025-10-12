@@ -1,7 +1,7 @@
 <template>
   <div class="page-section-title-bar container">
     <span class="decorator"></span>
-    <h2 class="title-text">多元化寻源</h2>
+    <h2 class="title-text">本土采购</h2>
   </div>
   <ContentWithSidebarLayout>
     <template #main>
@@ -53,9 +53,9 @@ const formConfigs = [
 //   { title: '备注', field: 'remark', key: 'remark' },
 // ]
 
-// const demandTypeDisplayName = '多元化寻源需求';
+// const demandTypeDisplayName = '本土采购需求';
 
-const pageTitle = '多元化寻源详情'
+const pageTitle = '本土采购详情'
 const queryAfter = (data) => {
   data.reqPartsUnfinish = data.reqPartsTotal - data.reqPartsFinish;
   return data;

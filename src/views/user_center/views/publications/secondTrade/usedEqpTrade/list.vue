@@ -9,7 +9,7 @@
       :template-url="pageData.url.downloadTpl"
       @submit-success="handleSuccess"
     />
-    <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" title="联系管理员创建" actionText="一键敲门"></PhoneAndEmailModal>
+    <PhoneAndEmailModal ref="phoneAndEmailModal" @finish="handleFinish" title="" actionText="一键敲门"></PhoneAndEmailModal>
   </div>
 </template>
 

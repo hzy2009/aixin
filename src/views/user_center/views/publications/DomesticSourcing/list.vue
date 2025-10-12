@@ -62,12 +62,12 @@ const pageData = ref({
   tableColumns,
   addButton,
   actions,
-  searchTitle: '多元化寻源',
+  searchTitle: '本土采购',
   statusDictKey: 'material_code',
   userStatCardVisible: true,
   tableOperations: [
     {
-      title: '创建多元化寻源',
+      title: '创建本土采购',
       clickFn: createNewSourcing,
       type: 'primary'
     },
@@ -75,7 +75,7 @@ const pageData = ref({
       title: '下载',
       type: 'primary',
       btnType: 'exportXls',
-      fileName: '多元化寻源',
+      fileName: '本土采购',
       url: 'apm/apmSourcing/exportXls',
       otherParams: {
         sourcingType: '国产替代寻源'

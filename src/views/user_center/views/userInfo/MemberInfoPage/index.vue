@@ -52,9 +52,9 @@ const formConfigs = [
 const formatName = (code) => {
   return ['apm-super-vip-free', 'apm-super-vip'].includes(code) ? 'VIP会员' : '普通会员'
 }
-// const demandTypeDisplayName = '研发攻关';
+// const demandTypeDisplayName = '定制开发';
 
-const pageTitle = '爱芯享集成电路信息共享平台'
+const pageTitle = '爱芯享信息服务平台'
 
 const localeGetDetail = () => {
   return defHttp.get({ url: '/apm/apmTodo/vipUpgrade/userInfo' }); //apm/apmTodo/vipUpgrade/userInfo

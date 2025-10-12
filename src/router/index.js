@@ -32,8 +32,8 @@ const routes = [
       ...rdDynamicRoutes,
       ...secondTradeRoutes,
       {
-        path: 'other/tongyongcaiji', 
-        component: tongyongcaiji, 
+        path: 'other/tongyongcaiji',
+        component: tongyongcaiji,
         meta: { title: '通用件集采', breadcrumb: ['通用件集采'] }
       },
       // ... other feature routes that use DefaultLayout
@@ -69,12 +69,12 @@ router.beforeEach((to, from, next) => {
   const isLogin = authStore.isLogin;
 
   // 设置页面标题
-  document.title = to.meta.title || '爱芯享集成电路信息共享平台';
+  document.title = to.meta.title || '爱芯享信息服务平台';
   // 检查目标路由是否需要认证
   if (to.meta.requiresAuth) {
     if (isLogin) {
       // 用户已登录，检查角色权限
-      const {roleCode} = authStore.userRole;
+      const { roleCode } = authStore.userRole;
       const requiredRoles = [
         ...to?.meta?.roles || [],
         'apm-super-vip-free',
@@ -106,7 +106,7 @@ router.beforeEach((to, from, next) => {
       // loadingStore.finishRouteLoading();
     }
   } else {
-     // 如果用户已登录，且尝试访问“仅访客”页面（如登录页），则重定向到首页
+    // 如果用户已登录，且尝试访问“仅访客”页面（如登录页），则重定向到首页
     // if (to.meta.guestOnly && isLogin) {
     //     next({ name: 'Home' }); // 假设首页 name 是 'Home'
     // } else {

@@ -1,7 +1,7 @@
 
 /**
  * @file useTransactionGrid.js
- * @description 封装二手交易模块中交易历史页面的VxeGrid配置逻辑。
+ * @description 封装共济共享模块中交易历史页面的VxeGrid配置逻辑。
  * 它将所有复杂的列定义、按钮配置和基于状态的过滤逻辑集中管理，
  * 使得主组件(`TransactionHistoryPage.vue`)更加简洁和易于维护。
  */

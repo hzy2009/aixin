@@ -1,7 +1,7 @@
 <template>
   <div class="page-section-title-bar container">
     <span class="decorator"></span>
-    <h2 class="title-text">研发攻关</h2>
+    <h2 class="title-text">定制开发</h2>
   </div>
   <ContentWithSidebarLayout>
     <template #main>
@@ -39,9 +39,9 @@ const detailRef = ref(null);
 const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
-  { label: '爱芯享研发攻关单号', field: 'code', span: 24 },
+  { label: '爱芯享定制开发单号', field: 'code', span: 24 },
   // {
-  //   label: '研发攻关类型', field: 'rdType', dictKey: 'rd_type', span: 24,
+  //   label: '定制开发类型', field: 'rdType', dictKey: 'rd_type', span: 24,
   // },
   {
     label: '产品类别', field: 'productType', fieldType: 'slot', span: 24,
@@ -51,10 +51,10 @@ const formConfigs = [
   { label: '内部管理单号', field: 'internalCode', fieldType: 'input', span: 24, },
   // { label: '需求有效期', field: 'expireDate', span: 24 },
   { label: '需求提出方', field: 'createBy', span: 24, isMask: true },
-  { label: '研发攻关方状态', field: 'statusName', span: 24, },
+  { label: '定制开发方状态', field: 'statusName', span: 24, },
 ]
 
-const pageTitle = '研发攻关详情'
+const pageTitle = '定制开发详情'
 
 const pageData = reactive({
   IdProp: internalDemandId.value,
@@ -72,11 +72,11 @@ const pageData = reactive({
   pageTitle,
   tableSections: [
     {
-      title: '研发攻关承接方',
+      title: '定制开发承接方',
       groupCode: 'tenantRefList',
       columns: [
           { title: '序号', type: 'seq', width: 48, align: 'center' },
-          { title: '研发攻关承接方', field: 'refUserName', align: 'center' },
+          { title: '定制开发承接方', field: 'refUserName', align: 'center' },
       ]
     },
     {

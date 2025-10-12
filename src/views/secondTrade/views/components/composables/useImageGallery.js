@@ -1,6 +1,6 @@
 /**
  * @file useImageGallery.js
- * @description 封装二手交易模块中产品详情页的图片画廊逻辑。
+ * @description 封装共济共享模块中产品详情页的图片画廊逻辑。
  * 该 composable 负责管理图片列表、当前显示图片、缩略图导航、图片放大模态框的显示与隐藏，
  * 以及相关的交互状态。
  */

@@ -168,7 +168,7 @@
 <script setup>
 /**
  * @file DetailTemplate.vue
- * @description 二手交易模块的产品详情模板组件。
+ * @description 共济共享模块的产品详情模板组件。
  * 该组件用于展示产品的详细信息，包括图片画廊、基本信息、价格、购买操作以及产品规格。
  * 它通过组合式函数 (composables) 封装了数据处理、图片展示和购买逻辑。
  */

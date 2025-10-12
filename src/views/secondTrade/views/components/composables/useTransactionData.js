@@ -1,6 +1,6 @@
 /**
  * @file useTransactionData.js
- * @description 封装二手交易模块中交易历史页面的数据管理逻辑。
+ * @description 封装共济共享模块中交易历史页面的数据管理逻辑。
  * 该 composable 负责管理表格数据 (gridData) 的状态、处理数据更新，并提供给父组件访问数据的方法。
  */
 
@@ -33,11 +33,11 @@ export function useTransactionData(props, activeTabKey) {
       gridData.value = [];
       return;
     }
-    
+
     try {
       const fieldName = getDataFieldName();
       const dataArray = productData[fieldName] || [];
-      
+
       // 深拷贝数据以避免直接修改props
       gridData.value = JSON.parse(JSON.stringify(dataArray));
     } catch (error) {
@@ -59,7 +59,7 @@ export function useTransactionData(props, activeTabKey) {
   const getSelectedRow = computed(() => gridData.value.find(item => item.isWinner) || null);
 
   const refreshData = () => updateGridData(props.product);
-  
+
   const clearSelection = () => {
     gridData.value.forEach(item => {
       if (item.isWinner) {

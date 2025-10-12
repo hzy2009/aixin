@@ -35,7 +35,7 @@ const formConfigs = [
 ]
 // const demandTypeDisplayName = '国产替代寻源需求';
 
-const pageTitle = '原厂件寻源详情'
+const pageTitle = '跨境采购详情'
 const queryAfter = (data) => {
   data.reqPartsUnfinish = data.reqPartsTotal - data.reqPartsFinish;
   return data;
@@ -48,7 +48,7 @@ const pageData = reactive({
     detail: 'apm/apmSourcingOriginSubstitute/queryById/join',
   },
   otherParams: {
-    sourcingType: '原厂件寻源',
+    sourcingType: '跨境采购',
   },
   formConfigs,
   statusHistoryColumns: STATUS_HISTORY_COLUMNS,
