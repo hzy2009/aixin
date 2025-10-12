@@ -1,7 +1,7 @@
 <template>
   <div class="page-section-title-bar container">
     <span class="decorator"></span>
-    <h2 class="title-text">原厂件寻源</h2>
+    <h2 class="title-text">跨境采购</h2>
   </div>
   <ContentWithSidebarLayout>
     <template #main>
@@ -53,7 +53,7 @@ const formConfigs = [
 
 // const demandTypeDisplayName = '国产替代寻源需求';
 
-const pageTitle = '原厂件寻源详情'
+const pageTitle = '跨境采购详情'
 const queryAfter = (data) => {
   data.reqPartsUnfinish = data.reqPartsTotal - data.reqPartsFinish;
   return data;
@@ -70,7 +70,7 @@ const pageData = reactive({
     delete: 'apm/apmSourcingOriginSubstitute/delete',
   },
   otherParams: {
-    sourcingType: '原厂件寻源详情',
+    sourcingType: '跨境采购详情',
   },
   formConfigs,
   // statusHistoryColumns,

@@ -35,7 +35,7 @@ export function useNavigation() {
 
     {
       key: 'originalSourcing',
-      label: '原厂件寻源',
+      label: '跨境采购',
       path: '/demands/OEMPartsSourcing',
       matchPaths: [
         '/demands/OEMPartsSourcing',
@@ -47,12 +47,12 @@ export function useNavigation() {
         { key: 'demand_squareOEMPartsSourcing', label: '需求广场', path: '/demands/OEMPartsSourcing' },
         { key: 'publishedDomesticSourcing', label: '我发布的', path: '/user/published/OEMPartsSourcing' },
         { key: 'joinOEMPartsSourcing', label: '我参与的', path: '/user/join/OEMPartsSourcing' },
-        { key: 'createOEMPartsSourcing', label: '创建原厂件寻源', path: '/user/published/OEMPartsSourcing/create' },
+        { key: 'createOEMPartsSourcing', label: '创建跨境采购', path: '/user/published/OEMPartsSourcing/create' },
       ]
     },
     {
       key: 'secondTrade',
-      label: '二手交易',
+      label: '共济共享',
       path: '/secondTrade/oemParts',
       matchPaths: [
         '/secondTrade/oemParts',
@@ -98,7 +98,7 @@ export function useNavigation() {
         },
         {
           key: 'publishSecondTrade',
-          label: '发布二手交易',
+          label: '发布共济共享',
           subItems: [
             { key: 'createOemParts', label: '原厂件库存处理', path: { path: '/user/published/oemParts', query: { action: 'create' } } },
             { key: 'createUsedEqp', label: '二手设备处理', path: { path: '/user/published/usedEqpTrade', query: { action: 'create' } } },
@@ -154,7 +154,7 @@ export function useNavigation() {
     },
     {
       key: 'alternativeSourcing',
-      label: '多元化寻源',
+      label: '本土采购',
       path: '/demands/DomesticSourcing',
       matchPaths: [
         '/demands/DomesticSourcing',
@@ -166,12 +166,12 @@ export function useNavigation() {
         { key: 'demand_squareDomesticSourcing', label: '需求广场', path: '/demands/DomesticSourcing' },
         { key: 'publishedDomesticSourcing', label: '我发布的', path: '/user/published/DomesticSourcing' },
         { key: 'joinDomesticSourcing', label: '我参与的', path: '/user/join/DomesticSourcing' },
-        { key: 'createDomesticSourcing', label: '创建多元化寻源', path: '/user/published/DomesticSourcing/create' },
+        { key: 'createDomesticSourcing', label: '创建本土采购', path: '/user/published/DomesticSourcing/create' },
       ]
     },
     {
       key: 'rndCollaboration',
-      label: '研发攻关',
+      label: '定制开发',
       path: '/demands/PublicRelations',
       matchPaths: [
         '/demands/PublicRelations',
@@ -183,7 +183,7 @@ export function useNavigation() {
         { key: 'demand_squarePublicRelations', label: '需求广场', path: '/demands/PublicRelations' },
         { key: 'publishedPublicRelations', label: '我发布的', path: '/user/published/PublicRelations' },
         { key: 'joinPublicRelations', label: '我参与的', path: '/user/join/PublicRelations' },
-        { key: 'createPublicRelations', label: '创建研发攻关', path: '/user/published/PublicRelations/create' },
+        { key: 'createPublicRelations', label: '创建定制开发', path: '/user/published/PublicRelations/create' },
       ]
     },
 

@@ -58,12 +58,12 @@ const pageData = ref({
         overview: 'apm/apmSourcingOriginSubstitute/overview?referer=owner'
     },
     otherParams: {
-        sourcingType: '原厂件寻源'
+        sourcingType: '跨境采购'
     },
     filterConfigForPage,
     tableColumns,
     actions,
-    searchTitle: '原厂件寻源',
+    searchTitle: '跨境采购',
     statusDictKey: 'origin_sourcing_material_status',
     userStatCardVisible: true,
     tableOperations: [
@@ -76,7 +76,7 @@ const pageData = ref({
             title: '下载',
             type: 'primary',
             btnType: 'exportXls',
-            fileName: '原厂件寻源',
+            fileName: '跨境采购',
             url: 'apm/apmSourcingOriginSubstitute/exportXls',
             referer: 'owner'
         },

@@ -36,9 +36,9 @@ const statusHistoryColumns = [
   { title: '备注', field: 'remark', key: 'remark' },
 ]
 
-// const demandTypeDisplayName = '多元化寻源需求';
+// const demandTypeDisplayName = '本土采购需求';
 
-const pageTitle = '创建多元化寻源需求'
+const pageTitle = '创建本土采购需求'
 
 const pageData = reactive({
   IdProp: props.IdProp,

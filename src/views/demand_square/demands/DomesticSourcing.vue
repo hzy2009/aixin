@@ -59,11 +59,11 @@ const pageData = ref({
   actions,
   showBanner: true,
   userStatCardVisible: true,
-  pageTitle: '多元化寻源',
+  pageTitle: '本土采购',
   statusDictKey: 'material_code',
   tableOperations: [
     {
-      title: '创建多元化寻源',
+      title: '创建本土采购',
       clickFn: createNewSourcing,
       type: 'primary'
     }
@@ -79,7 +79,7 @@ const pageData = ref({
       label: '期望完成日期',
     }
   ],
-  searchTitle: '多元化寻源',
+  searchTitle: '本土采购',
 })
 
 

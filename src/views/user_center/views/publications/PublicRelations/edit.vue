@@ -26,7 +26,7 @@ const router = useRouter();
 const formConfigs = [
   { label: '需求提出方', field: 'createBy', fieldType: 'input', span: 24, disabled: true, },
   // {
-  //   label: '研发攻关类型', field: 'rdCode', fieldType: 'select', detailField: 'rdType', dictKey: 'rd_type', span: 24,
+  //   label: '定制开发类型', field: 'rdCode', fieldType: 'select', detailField: 'rdType', dictKey: 'rd_type', span: 24,
   //   onChange: ({ value, form, option }) => {
   //     form.rdType = option.label || '';
   //   }
@@ -57,9 +57,9 @@ const statusHistoryColumns = [
 ,
 ]
 
-// const demandTypeDisplayName = '研发攻关';
+// const demandTypeDisplayName = '定制开发';
 
-const pageTitle = '创建研发攻关需求'
+const pageTitle = '创建定制开发需求'
 
 const pageData = reactive({
   IdProp: props.IdProp,

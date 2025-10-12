@@ -32,9 +32,9 @@ const formConfigs = [
 ]
 
 
-// const demandTypeDisplayName = '多元化寻源需求';
+// const demandTypeDisplayName = '本土采购需求';
 
-const pageTitle = '多元化寻源详情'
+const pageTitle = '本土采购详情'
 const queryAfter = (data) => {
   data.reqPartsUnfinish = data.reqPartsTotal - data.reqPartsFinish;
   return data;

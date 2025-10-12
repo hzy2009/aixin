@@ -1,6 +1,6 @@
 /**
  * @file useTransactionEditing.js
- * @description 封装二手交易模块中交易历史页面的编辑和验证逻辑。
+ * @description 封装共济共享模块中交易历史页面的编辑和验证逻辑。
  * 该 composable 提供了数量和价格的输入处理、最大数量计算以及选中行数据的验证功能。
  */
 
@@ -22,7 +22,7 @@ export function useTransactionEditing(props, isRowEditable) {
    */
   const getMaxQuantity = (row) => {
     if (!row) return 0;
-    
+
     if (props.transactionType === 'PUBLICATION') {
       // 出售场景：最大数量为可出售数量
       return Number(row.quantity || 0);
@@ -43,22 +43,22 @@ export function useTransactionEditing(props, isRowEditable) {
       if (!isRowEditable(row)) return; // 确保行可编辑
 
       const maxQuantity = getMaxQuantity(row);
-      
+
       // 验证数量范围
       if (value > maxQuantity) {
         message.warn(`数量不能超过${maxQuantity}`);
         row[field] = maxQuantity;
         return;
       }
-      
+
       if (value !== '' && value < 1) {
         message.warn('数量必须大于0');
         row[field] = 1;
         return;
       }
-      
+
       row[field] = value;
-      
+
     } catch (error) {
       console.error('处理数量变化时发生错误:', error);
       message.error('数量更新失败');
@@ -80,7 +80,7 @@ export function useTransactionEditing(props, isRowEditable) {
         row[field] = 0.01;
         return;
       }
-      
+
       row[field] = value;
     } catch (error) {
       console.error('处理价格变化时发生错误:', error);
@@ -98,7 +98,7 @@ export function useTransactionEditing(props, isRowEditable) {
       message.warn('请选择买方');
       return false;
     }
-    
+
     for (let i = 0; i < selectedRows.length; i++) {
       const row = selectedRows[i];
       // 验证出售数量
@@ -106,7 +106,7 @@ export function useTransactionEditing(props, isRowEditable) {
         message.warn('请输入有效的卖出数量');
         return false;
       }
-      
+
       // 验证数量不能超过可用数量
       if (row.confirmedQuantity > row.quantity) {
         message.warn(`卖出数量不能超过可用数量（${row.quantity}）`);

@@ -56,9 +56,9 @@
               </div>
             </template>
             <template v-else-if="variant === 'public'">
-              <!-- 公共关系/研发攻关侧边栏样式 -->
+              <!-- 公共关系/定制开发侧边栏样式 -->
               <h2 class="report-item-title">{{ item.code }}</h2>
-              <p class="report-item-meta fontSizeitem">研发攻关类型：{{ item.rdType }}</p>
+              <p class="report-item-meta fontSizeitem">定制开发类型：{{ item.rdType }}</p>
               <div class="report-item-footer report-item-summary fontSizeitem">
                 <span>期望完成日期：{{ item.expireDate ? formatDate(item.expireDate) : '' }}</span>
                 <ArrowRightOutlined class="arrow-icon" />

@@ -22,7 +22,7 @@ const getALLProductTypes = () => {
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
     { id: 'productType', label: '产品类别', maxVisibleWithoutMore: 14, dictKey: 'product_type', options: getALLProductTypes() },
-    // { id: 'rdCode', label: '研发攻关类型', maxVisibleWithoutMore: 7, dictKey: 'rd_type' },
+    // { id: 'rdCode', label: '定制开发类型', maxVisibleWithoutMore: 7, dictKey: 'rd_type' },
     // { id: 'matchPeriodName', label: '匹配周期', maxVisibleWithoutMore: 7, dictKey: 'rd_breakthrough_period' },
 ]);
 
@@ -33,7 +33,7 @@ const tableColumns = reactive([
 
 
 const addButton = reactive({
-    text: '创建研发攻关',
+    text: '创建定制开发',
     clickFn: createNewSourcing
 })
 
@@ -72,7 +72,7 @@ const pageData = ref({
             title: '下载',
             type: 'primary',
             btnType: 'exportXls',
-            fileName: '研发攻关',
+            fileName: '定制开发',
             url: 'apm/apmRdBreakthrough/exportXls',
             referer: 'join'
         },

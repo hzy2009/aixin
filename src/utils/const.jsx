@@ -6,13 +6,13 @@ const pathMap = {
     'A': {
         url: '/apm/apmSourcing/material/list/front',
         path: '/demands/DomesticDetailPage',
-        title: '多元化寻源',
+        title: '本土采购',
 
     },
     'B': {
         url: '/apm/apmSourcingOriginSubstitute/material/list/front',
         path: '/demands/OEMPartsDetailPage',
-        title: '原厂件寻源',
+        title: '跨境采购',
     },
     'C': {
         url: '/apm/apmInspection/list/front',
@@ -22,7 +22,7 @@ const pathMap = {
     'D': {
         url: '/apm/apmRdBreakthrough/list/front',
         path: '/demands/PublicRelationsDetailPage',
-        title: '研发攻关',
+        title: '定制开发',
     },
     'E': {
         url: '/apm/apmResearchReport/list/front',
@@ -172,8 +172,8 @@ export const OFFLINE_EVENT_COLUMNS = [
 
 export const PUBLIC_RELATIONS_COLUMNS = [
     { title: '序号', type: 'seq', fixed: 'left', width: 50, align: 'center' },
-    { title: '爱芯享研发攻关单号', field: 'code', align: 'center', width: 146 },
-    // { title: '研发攻关类型', field: 'rdType', align: 'center', width: 120 },
+    { title: '爱芯享定制开发单号', field: 'code', align: 'center', width: 146 },
+    // { title: '定制开发类型', field: 'rdType', align: 'center', width: 120 },
     { title: '产品类别1', field: 'productMainTypeName', align: 'center', width: 76 },
     { title: '产品类别2', field: 'productTypeName', align: 'center', width: 76, },
     { title: '需求创建日期', field: 'createTime', align: 'center', fieldType: 'date', width: 94 },

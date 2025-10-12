@@ -37,7 +37,7 @@ const pageData = ref({
         overview: 'apm/apmSourcingOriginSubstitute/overview?referer=join'
     },
     otherParams: {
-        sourcingType: '原厂件寻源'
+        sourcingType: '跨境采购'
     },
     filterConfigForPage,
     tableColumns,
@@ -60,7 +60,7 @@ const pageData = ref({
             title: '下载',
             type: 'primary',
             btnType: 'exportXls',
-            fileName: '原厂件寻源',
+            fileName: '跨境采购',
             url: 'apm/apmSourcingOriginSubstitute/exportXls',
             referer: 'join'
         },
