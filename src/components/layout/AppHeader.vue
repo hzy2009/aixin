@@ -31,7 +31,7 @@
         <div class="logo-section">
           <div class="logo-link">
             <img src="@/assets/images/logo.png" alt="LOGO" class="logo-image" />
-            <span class="logo-text">集成电路信息共享平台</span>
+            <span class="logo-text">爱芯享信息服务平台</span>
           </div>
         </div>
         <!-- Spacer or actions for UserCenter view if needed, but top bar mostly handles it -->
