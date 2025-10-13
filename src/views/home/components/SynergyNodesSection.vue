@@ -34,7 +34,8 @@ const linkColumns = ref([
       // { id: 'gov3', name: '中华人民共和国国家发展和改革委员会', url: '#' },
       // { id: 'gov4', name: '中华人民共和国国家统计局', url: '#' },
       // { id: 'gov5', name: '中华人民共和国海关总署', url: '#' },
-      { id: 'assoc1', name: '上海市集成电路行业协会', url: 'https://www.sica.org.cn/#/overview' },
+      { id: 'gov1', name: '上海市集成电路行业协会', url: 'https://www.sica.org.cn/#/overview' },
+      { id: 'gov2', name: '风米网', url: 'https://www.fengm.cn' },
     ]
   },
   {
