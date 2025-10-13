@@ -3,8 +3,8 @@
     <div class="hero-banner-content container"> 
       <div class="text-overlay-block">
         <p class="hero-title" >
-          打通产业链上下游，为会员提供寻源、攻关、贸易、
-          验证、行研、人才等一站式解决方案
+          打通产业链上下游，为会员提供采购、共济共享、通用件集采、
+          检测验证、定制开发、线下活动、行研报告、专家人才等一站式解决方案
         </p>
         <div class="hero-divider" ></div>
         <p class="hero-description" >
