@@ -37,7 +37,7 @@ const pageData = ref({
         overview: 'apm/apmSourcingOriginSubstitute/overview?referer=join'
     },
     otherParams: {
-        sourcingType: '跨境采购'
+        sourcingType: '原厂件寻源'
     },
     filterConfigForPage,
     tableColumns,

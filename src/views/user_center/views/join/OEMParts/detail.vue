@@ -48,7 +48,7 @@ const pageData = reactive({
     detail: 'apm/apmSourcingOriginSubstitute/queryById/join',
   },
   otherParams: {
-    sourcingType: '跨境采购',
+    sourcingType: '原厂件寻源',
   },
   formConfigs,
   statusHistoryColumns: STATUS_HISTORY_COLUMNS,
