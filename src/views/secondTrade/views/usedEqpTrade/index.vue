@@ -1,14 +1,14 @@
 <template>
     <div>
         <listPage :pageData="pageData" ref="refListPage">
-            <template #content="{ dataSource, paginationConfig, loading }">
+            <template #content="{ dataSource, paginationConfig, loading, handleTablePaginationChange }">
                 <div class="results-grid content-section">
                     <SortFilters :filters="sortOptions" v-model:value="currentSort" @change="onSortChange" />
                     <EquipmentList :dataSource="dataSource" @handleDetails="handleDetails" :fieldList="fieldList" :loading="loading" :tagList="tagList"/>
                 </div>
                 <div class="pagination-wrapper">
                     <a-pagination size="small" v-model:current="paginationConfig.current" v-bind="{...paginationConfig, showSizeChanger: false}"
-                        show-quick-jumper :total="paginationConfig.total" @change="onChange" />
+                        show-quick-jumper :total="paginationConfig.total" @change="(currentPage, pageSize) => { handleTablePaginationChange({ currentPage, pageSize }) }" />
                 </div>
             </template>
         </listPage>
@@ -62,19 +62,6 @@ const handleDetails = (item) => {
     })
 };
 const initialPageSize = 12
-const onChange = (page, pageSize) => {
-    const res = refListPage.value.handleTablePaginationChange({
-        current: page,
-        pageSize: initialPageSize
-    });
-    res.then(() => {
-        nextTick(() => {
-            window.scrollTo({
-                top: document.body.scrollHeight,
-            });
-        })
-    })
-}
 
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
