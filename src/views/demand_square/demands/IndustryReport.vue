@@ -1,11 +1,12 @@
 <template>
   <div class="industry-report-page">
     <listPage :pageData="pageData" ref="refListPage">
-      <template #content="{ dataSource, paginationConfig }">
+      <template #content="{ dataSource, paginationConfig, handleTablePaginationChange }">
         <IndustryReportItem v-for="item in dataSource" :key="item.id" :report="item" />
           <div class="pagination-wrapper">
             <a-pagination size="small" v-model:current="paginationConfig.current" v-bind="{...paginationConfig, showSizeChanger: false}"
-            show-quick-jumper :total="paginationConfig.total" @change="onChange" />
+            :showTotal="(total) => `共 ${total} 条记录`"
+            show-quick-jumper :total="paginationConfig.total" @change="(currentPage, pageSize) => { handleTablePaginationChange({ currentPage, pageSize }) }" />
           </div>
       </template>
     </listPage>
@@ -39,16 +40,6 @@ const pageData = ref({
   listPageisPadding: false,
   requiredRoles: ['all']
 })
-const onChange = (page, pageSize) => {
-  // window.scrollTo({
-  //   top: 400,
-  //   behavior: 'smooth'
-  // });
-  refListPage.value.handleTablePaginationChange({
-    current: page,
-    pageSize
-  });
-}
 function viewDetails({ id }) {
   router.push(`/demands/IndustryReportDetailPage/${id}`);
 };

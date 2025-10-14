@@ -6,7 +6,11 @@
                     <TalentProfileCard v-for="item in dataSource" :key="item.id" :talent="item" @handleDetail="viewDetails"/>
                 </div>
                 <div class="pagination-wrapper">
-                    <a-pagination size="small" v-model:current="paginationConfig.current" v-bind="paginationConfig" show-quick-jumper @change="(p) => handleChagePage(p, handleTablePaginationChange, paginationConfig)" />
+                    <!-- <a-pagination size="small" v-model:current="paginationConfig.current" v-bind="paginationConfig" show-quick-jumper @change="(p) => handleChagePage(p, handleTablePaginationChange, paginationConfig)" /> -->
+                         <a-pagination size="small" v-bind="{...paginationConfig, showSizeChanger: false }"
+                            show-quick-jumper @change="(currentPage, pageSize) => { handleTablePaginationChange({ currentPage, pageSize }) }" 
+                            :showTotal="(total) => `共 ${total} 条记录`"
+                        />
                 </div>
             </template>
         </listPage>
