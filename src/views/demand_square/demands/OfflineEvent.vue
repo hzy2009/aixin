@@ -6,9 +6,9 @@
           <OfflineEventCard v-for="event in dataSource" :key="event.id" :event="event"
             @handleDetails="handleDetails(event)" />
         </div>
-        <div class="pagination-wrapper">
+        <div class="pagination-wrapper" ref="paginationRef">
           <a-pagination size="small" v-bind="{...paginationConfig, showSizeChanger: false }"
-            show-quick-jumper @change="(currentPage, pageSize) => { handleTablePaginationChange({ currentPage, pageSize }) }" 
+            show-quick-jumper @change="(currentPage, pageSize) => onPageChange(currentPage, pageSize, handleTablePaginationChange)" 
             :showTotal="(total) => `共 ${total} 条记录`"
           />
         </div>
@@ -82,6 +82,28 @@ function handleDetails({ id }) {
 };
 function create() {
   router.push(`/user/published/OfflineEvent/create`);
+};
+
+const paginationRef = ref(null);
+
+const onPageChange = async (currentPage, pageSize, handleTablePaginationChange) => {
+  if (!paginationRef.value) {
+    await handleTablePaginationChange({ currentPage, pageSize });
+    return;
+  }
+
+  const oldTop = paginationRef.value.getBoundingClientRect().top;
+
+  await handleTablePaginationChange({ currentPage, pageSize });
+
+  await nextTick();
+
+  const newTop = paginationRef.value.getBoundingClientRect().top;
+  const scrollOffset = newTop - oldTop;
+
+  if (scrollOffset !== 0) {
+    window.scrollBy(0, scrollOffset);
+  }
 };
 </script>
 
