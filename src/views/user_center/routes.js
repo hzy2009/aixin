@@ -104,7 +104,7 @@ const userCenterRoutes = [
       {
         path: 'OEMPartsSourcing/create',
         component: OEMPartsEditPage,
-        meta: { title: '创建跨境采购需求', breadcrumb: ['创建跨境采购需求'], roles: ['apm-vip-inspection, apm-vip'] }
+        meta: { title: '创建跨境采购需求', breadcrumb: ['创建跨境采购需求'], roles: ['apm-vip-inspection','apm-vip'] }
       },
       {
         path: 'OEMPartsSourcing/detail/:id',
