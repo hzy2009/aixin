@@ -2,9 +2,9 @@
   <div class="home-page">
     <HomeHeroSection :height="200"/>
     <HomeStatsSection />
-    <HomePlatformMemberSection />
+    <HomePlatformMemberSection v-if="isLogin"/>
     <HomeNewsWrapper />
-    <HomeBreakthroughsSection/>
+    <HomeBreakthroughsSection v-if="isLogin"/>
     <PromoCard/>
     <HomeFeaturedListsSection/>
     <HomeResearchReportSection />
@@ -22,6 +22,10 @@ import HomeBreakthroughsSection from '../components/HomeBreakthroughsSection.vue
 import PromoCard from '../components/PromoCard.vue';
 import HomeFeaturedListsSection from '../components/HomeFeaturedListsSection.vue';
 import SynergyNodesSection from '../components/SynergyNodesSection.vue';
+import { useAuthStore } from '@/store/authStore';
+import { computed } from 'vue';
+const authStore = useAuthStore();
+const isLogin = computed(() => authStore.isLogin);
 </script>
 
 <style scoped lang="less">
