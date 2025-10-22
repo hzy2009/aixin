@@ -60,6 +60,10 @@ const authStore = useAuthStore();
 let timer = null;
 
 const handleSendCode = async () => {
+  if (!authStore.username) {
+    message.error('用户账号未找到，请先登录。');
+    return;
+  }
   if (!formState.email) {
     message.error('请输入邮箱地址!');
     return;
@@ -72,7 +76,7 @@ const handleSendCode = async () => {
 
   isCountingDown.value = true;
   try {
-    const res = await defHttp.post({ url: '/apm/sys/emailCaptcha', data: { email: formState.email, captchaMode: 1 } });
+    const res = await defHttp.post({ url: '/apm/sys/emailCaptcha', data: { username: authStore.username, email: formState.email, captchaMode: 1 } });
     if (res.success) {
       message.success('验证码已发送');
       timer = setInterval(() => {
