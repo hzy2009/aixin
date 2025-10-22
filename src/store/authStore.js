@@ -8,7 +8,8 @@ export const useAuthStore = defineStore('auth', {
     token: null,
     sysAllDictItems: [],
     userRole: {},
-    isLoginModalVisible: false
+    isLoginModalVisible: false,
+    isSecondarilyVerified: false,
   }),
   getters: {
     isAuthenticated: (state) => !!state.token && !!state.userInfo,
@@ -61,6 +62,9 @@ export const useAuthStore = defineStore('auth', {
     setSysAllDictItems(info) {
       this.sysAllDictItems = info ? info : []; // for null or undefined value
       // setAuthCache(TOKEN_KEY, info);
+    },
+    setSecondaryVerificationStatus(status) {
+      this.isSecondarilyVerified = status;
     }
     // You'll add async actions for API calls here
     // async fetchUser() { ... }
@@ -68,6 +72,6 @@ export const useAuthStore = defineStore('auth', {
   persist: { // Configuration for pinia-plugin-persistedstate
     key: 'auth', // Key for localStorage
     storage: localStorage, // or sessionStorage
-    paths: ['userInfo', 'token', 'userRole', 'sysAllDictItems'], // Which state properties to persist
+    paths: ['userInfo', 'token', 'userRole', 'sysAllDictItems', 'isSecondarilyVerified'], // Which state properties to persist
   },
 });

@@ -2,17 +2,19 @@
   <div class="home-page">
     <HomeHeroSection :height="200"/>
     <HomeStatsSection />
-    <HomePlatformMemberSection v-if="isLogin"/>
+    <HomePlatformMemberSection v-if="isLogin" @request-verification="isVerificationModalVisible = true" />
     <HomeNewsWrapper />
-    <HomeBreakthroughsSection v-if="isLogin"/>
+    <HomeBreakthroughsSection v-if="isLogin" @request-verification="isVerificationModalVisible = true" />
     <PromoCard/>
     <HomeFeaturedListsSection/>
     <HomeResearchReportSection />
     <SynergyNodesSection/>
   </div>
+  <SecondaryVerificationModal v-model:open="isVerificationModalVisible" />
 </template>
 
 <script setup>
+import { ref, computed } from 'vue';
 import HomeHeroSection from '../components/HomeHeroSection.vue';
 import HomeStatsSection from '../components/HomeStatsSection.vue';
 import HomePlatformMemberSection from '../components/HomePlatformMemberSection.vue';
@@ -22,10 +24,12 @@ import HomeBreakthroughsSection from '../components/HomeBreakthroughsSection.vue
 import PromoCard from '../components/PromoCard.vue';
 import HomeFeaturedListsSection from '../components/HomeFeaturedListsSection.vue';
 import SynergyNodesSection from '../components/SynergyNodesSection.vue';
+import SecondaryVerificationModal from '../components/SecondaryVerificationModal.vue';
 import { useAuthStore } from '@/store/authStore';
-import { computed } from 'vue';
+
 const authStore = useAuthStore();
 const isLogin = computed(() => authStore.isLogin);
+const isVerificationModalVisible = ref(false);
 </script>
 
 <style scoped lang="less">
