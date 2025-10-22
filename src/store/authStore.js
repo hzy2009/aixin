@@ -36,6 +36,7 @@ export const useAuthStore = defineStore('auth', {
       this.setUserInfo(null);
       this.setSysAllDictItems([]);
       this.setUserRole({});
+      this.isSecondarilyVerified = false;
       // Optionally, clear other stores or redirect
     },
     clearUser() {
