@@ -47,6 +47,7 @@ const handleTo = (item) => {
   z-index: 1;
   position: relative;
   margin-top: -30px;
+  margin-bottom: 10px;
   // padding: @spacing-xl 0;
   // background-color: @background-color-base;
 
