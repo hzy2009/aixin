@@ -14,7 +14,8 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import HomeHeroSection from '../components/HomeHeroSection.vue';
 import HomeStatsSection from '../components/HomeStatsSection.vue';
 import HomePlatformMemberSection from '../components/HomePlatformMemberSection.vue';
@@ -30,6 +31,17 @@ import { useAuthStore } from '@/store/authStore';
 const authStore = useAuthStore();
 const isLogin = computed(() => authStore.isLogin);
 const isVerificationModalVisible = ref(false);
+
+const route = useRoute();
+const router = useRouter();
+
+watch(() => route.query.showSecondaryVerification, (newValue) => {
+  if (newValue === 'true') {
+    isVerificationModalVisible.value = true;
+    // Clear the query parameter after showing the modal
+    router.replace({ query: { ...route.query, showSecondaryVerification: undefined } });
+  }
+}, { immediate: true });
 </script>
 
 <style scoped lang="less">

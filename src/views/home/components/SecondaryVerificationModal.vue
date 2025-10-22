@@ -11,12 +11,6 @@
   >
     <div class="modal-content">
       <a-form :model="formState" @finish="handleFinish">
-        <a-form-item name="account" :rules="[{ required: true, message: '请输入账号' }]">
-          <a-input v-model:value="formState.account" placeholder="请输入账号" size="large" />
-        </a-form-item>
-        <a-form-item name="password" :rules="[{ required: true, message: '请输入密码' }]">
-          <a-input-password v-model:value="formState.password" placeholder="请输入密码" size="large" />
-        </a-form-item>
         <a-form-item name="email" :rules="[{ required: true, message: '请输入邮箱' }, { type: 'email', message: '请输入有效的邮箱地址' }]">
           <a-input v-model:value="formState.email" placeholder="请输入邮箱" size="large">
             <template #addonAfter>
@@ -41,7 +35,7 @@
 
 <script setup>
 import { ref, reactive } from 'vue';
-import { Modal as AModal, Form as AForm, FormItem as AFormItem, Input as AInput, InputPassword as AInputPassword, Button as AButton, message } from 'ant-design-vue';
+import { Modal as AModal, Form as AForm, FormItem as AFormItem, Input as AInput, Button as AButton, message } from 'ant-design-vue';
 import { useAuthStore } from '@/store/authStore';
 import defHttp from '@/utils/http/axios';
 
@@ -55,8 +49,6 @@ const props = defineProps({
 const emit = defineEmits(['update:open']);
 
 const formState = reactive({
-  account: '',
-  password: '',
   email: '',
   code: '',
 });
@@ -68,10 +60,6 @@ const authStore = useAuthStore();
 let timer = null;
 
 const handleSendCode = async () => {
-  if (!formState.account) {
-    message.error('请输入账号!');
-    return;
-  }
   if (!formState.email) {
     message.error('请输入邮箱地址!');
     return;
@@ -84,7 +72,7 @@ const handleSendCode = async () => {
 
   isCountingDown.value = true;
   try {
-    const res = await defHttp.post({ url: '/apm/sys/emailCaptcha', data: { username: formState.account, email: formState.email, captchaMode: 1 } });
+    const res = await defHttp.post({ url: '/apm/sys/emailCaptcha', data: { email: formState.email, captchaMode: 1 } });
     if (res.success) {
       message.success('验证码已发送');
       timer = setInterval(() => {
@@ -138,3 +126,4 @@ const handleCancel = () => {
   padding: 24px;
 }
 </style>
+

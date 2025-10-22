@@ -19,7 +19,7 @@ const userCenterRoutes = [
       {
         path: 'platformMember', 
         component: platformMember, 
-        meta: { title: '平台会员', breadcrumb: ['平台会员'] }
+        meta: { title: '平台会员', breadcrumb: ['平台会员'], requiresSecondaryVerification: true }
       },
       //  {
       //   path: 'tongyongcaiji', 
