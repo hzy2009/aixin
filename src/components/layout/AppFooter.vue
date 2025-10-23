@@ -2,8 +2,8 @@
   <footer class="app-footer-revised">
     <div class="footer-content-revised container">
       <p class="copyright-line">
-        <!-- ©{{ new Date().getFullYear() }} 爱芯享信息服务平台 AipuMax Information Sharing Platform Co.LTD.版权所有ALL RIGHT RESERVED | 沪ICP备2025131551号-0 -->
-        ©2025 爱芯享信息服务平台 | <span class="icp-number" @click="navigateToIcp">沪ICP备2025131551号-0</span> | <span class="icp-number" @click="navigateToxx">沪公网安备31011502403495号</span>
+        <!-- ©{{ new Date().getFullYear() }} 爱芯享电子信息服务平台 AipuMax Information Sharing Platform Co.LTD.版权所有ALL RIGHT RESERVED | 沪ICP备2025131551号-0 -->
+        ©2025 爱芯享电子信息服务平台 | <span class="icp-number" @click="navigateToIcp">沪ICP备2025131551号-0</span> | <span class="icp-number" @click="navigateToxx">沪公网安备31011502403495号</span>
       </p>
       <div class="footer-links-line">
         <a href="#" @click.prevent="scrollToContact" class="footer-link">联系我们</a>
