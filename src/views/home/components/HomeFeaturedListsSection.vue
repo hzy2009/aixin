@@ -61,7 +61,7 @@ async function fetchIndustryHotspots() {
   isLoadingHotspots.value = true;
   try {
     // TODO: Replace with actual API call: apiClient.get('/api/home/hotspots?limit=6')
-    const res = await defHttp.get({ url: `/apm/apmNews/list/front`, params: { page: 1, pageSize: 5 } });
+    const res = await defHttp.get({ url: `/apm/apmNews/list/front`, params: { page: 1, pageSize: 6 } });
     let items = [];
     if (res.success) {
       items = res.result.records

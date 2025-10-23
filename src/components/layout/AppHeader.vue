@@ -3,7 +3,7 @@
     <!-- Top Welcome Bar - Full Width -->
     <div class="top-welcome-bar" v-if="showTopWelcomeBar">
       <div class="top-welcome-bar__content container">
-        <span class="welcome-text">欢迎来到爱芯享信息服务平台！</span>
+        <span class="welcome-text">欢迎来到爱芯享电子信息服务平台！</span>
         <div class="user-actions-group">
           <template v-if="auth.isLogin">
              <span :count="unreadMessagesCount" :overflow-count="99" class="action-item notification-badge" @click="navigateToMessages">
@@ -31,7 +31,7 @@
         <div class="logo-section">
           <div class="logo-link">
             <img src="@/assets/images/logo.png" alt="LOGO" class="logo-image" />
-            <span class="logo-text">爱芯享信息服务平台</span>
+            <span class="logo-text">电子信息服务平台</span>
           </div>
         </div>
         <!-- Spacer or actions for UserCenter view if needed, but top bar mostly handles it -->

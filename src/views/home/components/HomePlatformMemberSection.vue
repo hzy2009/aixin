@@ -1,7 +1,7 @@
 <template>
   <section class="home-platform-member-section section-padding">
     <div class="container">
-      <SectionHeader title-ch="会员名录" title-en="MEMBERSHIP" more-link="/other/platformMember" />
+      <SectionHeader title-ch="会员名录" title-en="MEMBERSHIP" more-link="/other/platformMember" @request-verification="requestVerification" />
       <div v-if="isLoading && members.length === 0" class="loading-placeholder">
         <a-spin />
       </div>
@@ -9,7 +9,10 @@
         <a-empty description="暂无会员信息" :image-style="{ height: '60px' }" />
       </div>
       <!-- Two-row Marquee-style Logo Wall -->  
-      <div v-else class="marquee-wrapper-container">
+      <div v-else class="marquee-wrapper-container" style="position: relative;">
+        <div v-if="!isVerified" class="content-mask" @click="requestVerification">
+          <div class="mask-text">详情查看请点击二次核验。</div>
+        </div>
         <div
           class="marquee-wrapper"
           @mouseenter="isPaused = true"
@@ -107,6 +110,7 @@ import SectionHeader from '@/components/common/SectionHeader.vue';
 import defaultFallbackLogo from '@/assets/images/home/dosilicon-logo.png';
 import defHttp from '@/utils/http/axios';
 import { getFileAccessHttpUrl } from '@/utils/index';
+import { useAuthStore } from '@/store/authStore';
 
 const props = defineProps({
   // Total number of items required to start the scrolling animation
@@ -115,6 +119,15 @@ const props = defineProps({
   // This now represents seconds per COLUMN.
   secondsPerColumn: { type: Number, default: 2.5 },
 });
+
+const emit = defineEmits(['request-verification']);
+
+const authStore = useAuthStore();
+const isVerified = computed(() => authStore.isSecondarilyVerified);
+
+const requestVerification = () => {
+  emit('request-verification');
+};
 
 const members = ref([]);
 const isLoading = ref(false);
@@ -262,6 +275,30 @@ onMounted(() => {
   max-height: 100%;
   object-fit: contain;
 }
+.content-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  z-index: 10;
+}
+
+.mask-text {
+  font-size: 16px;
+  font-weight: bold;
+  color: #BC1A2C; /* Using primary color from the project */
+  padding: 10px 20px;
+  border: 1px solid #BC1A2C;
+  border-radius: 4px;
+}
+
 .marquee-wrapper-container{
   padding: 0 15px;
   background-color: #fff;

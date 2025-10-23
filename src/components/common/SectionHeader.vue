@@ -5,10 +5,10 @@
       <h2 class="section-header__title-ch">{{ titleCh }}</h2>
       <span v-if="titleEn" class="section-header__title-en">{{ titleEn.toUpperCase() }}</span>
     </div>
-    <router-link v-if="moreLink" :to="moreLink" class="section-header__more-link">
+    <a v-if="moreLink" @click="handleMoreClick" class="section-header__more-link">
       更多 
       <!-- <RightOutlined /> -->
-    </router-link>
+    </a>
     <!-- <div v-if="moreLink" class="section-header__more-link" @click="handleToMore">
       更多 
     </div> -->
@@ -17,12 +17,10 @@
 
 <script setup>
 import { RightOutlined } from '@ant-design/icons-vue';
-// import { useAuthStore } from '@/store/authStore';
-// import { useModalStore } from '@/store/modalStore'; 
-// const authStore = useAuthStore();
-// authStore.getDictItems();
+import { useAuthStore } from '@/store/authStore';
+import { useRouter } from 'vue-router';
 
-defineProps({
+const props = defineProps({
   titleCh: {
     type: String,
     required: true,
@@ -36,6 +34,19 @@ defineProps({
     default: null,
   },
 });
+
+const emit = defineEmits(['request-verification']);
+
+const authStore = useAuthStore();
+const router = useRouter();
+
+const handleMoreClick = () => {
+  if (!authStore.isSecondarilyVerified) {
+    emit('request-verification');
+  } else {
+    router.push(props.moreLink);
+  }
+};
 
 const handleToMore =  () => {
   

@@ -12,7 +12,7 @@
 
 ## 项目架构 (Project Architecture)
 
-这是一个Vue 3 + Vite应用程序，用于爱芯享信息服务平台（爱芯享信息服务平台）。应用程序采用模块化架构，基于功能的路由设计。
+这是一个Vue 3 + Vite应用程序，用于爱芯享电子信息服务平台（爱芯享电子信息服务平台）。应用程序采用模块化架构，基于功能的路由设计。
 
 ### 技术栈 (Tech Stack)
 - **前端框架**: Vue 3 with Composition API 和 `<script setup>` 语法

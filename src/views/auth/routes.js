@@ -3,13 +3,13 @@ const authRoutes = [
     path: '/login',
     name: 'Login',
     component: () => import('@/views/auth/views/LoginPage.vue'),
-    meta: { title: '会员登录 - 爱芯享信息服务平台', guestOnly: true } // guestOnly for redirecting if already logged in
+    meta: { title: '会员登录 - 爱芯享电子信息服务平台', guestOnly: true } // guestOnly for redirecting if already logged in
   },
   {
     path: '/forgot-password', // For the "忘记密码" link
     name: 'ForgotPassword',
     component: () => import('@/views/auth/views/ForgotPasswordPage.vue'), // Create this later
-    meta: { title: '找回密码 - 爱芯享信息服务平台', guestOnly: true }
+    meta: { title: '找回密码 - 爱芯享电子信息服务平台', guestOnly: true }
   }
   // You'll add /register and /forgot-password here later
 ];

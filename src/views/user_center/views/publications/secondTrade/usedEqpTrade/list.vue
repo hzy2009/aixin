@@ -71,7 +71,7 @@ const actions = reactive([
 
 // --- Filter Configuration (remains in component as it's UI specific) ---
 const filterConfigForPage = reactive([
-    { id: 'productType', label: '设备状态', maxVisibleWithoutMore: 9, dictKey: 'secondhand_product_status'},
+    { id: 'productStatusCode', label: '设备状态', maxVisibleWithoutMore: 9, dictKey: 'secondhand_product_status'},
     { id: 'purchaseMethod', label: '价格类型', maxVisibleWithoutMore: 9, dictKey: 'purchase_method'},
     { id: 'productModelCode', label: '设备类型', maxVisibleWithoutMore: 6, dictKey: 'product_model'},
     { id: 'stockStatusName', label: '库存状态', maxVisibleWithoutMore: 9, selectionType: 'single', dictKey: 'product_stock_status' },

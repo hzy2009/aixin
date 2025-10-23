@@ -8,7 +8,9 @@ export const useAuthStore = defineStore('auth', {
     token: null,
     sysAllDictItems: [],
     userRole: {},
-    isLoginModalVisible: false
+    isLoginModalVisible: false,
+    isSecondarilyVerified: false,
+    username: null, // Add username to state
   }),
   getters: {
     isAuthenticated: (state) => !!state.token && !!state.userInfo,
@@ -21,6 +23,7 @@ export const useAuthStore = defineStore('auth', {
       this.setToken(token);
       this.setUserInfo(userInfo);
       this.setSysAllDictItems(sysAllDictItems);
+      this.setUsername(userInfo.username); // Set username from userInfo
       return data;
     },
     async getUserRole() {
@@ -35,6 +38,8 @@ export const useAuthStore = defineStore('auth', {
       this.setUserInfo(null);
       this.setSysAllDictItems([]);
       this.setUserRole({});
+      this.isSecondarilyVerified = false;
+      this.username = null; // Clear username on logout
       // Optionally, clear other stores or redirect
     },
     clearUser() {
@@ -42,6 +47,7 @@ export const useAuthStore = defineStore('auth', {
       this.setUserInfo(null);
       this.setSysAllDictItems([]);
       this.setUserRole({});
+      this.username = null; // Clear username on clearUser
     },
     async getDictItems() {
       const res =  await getAllDictApi()
@@ -61,6 +67,12 @@ export const useAuthStore = defineStore('auth', {
     setSysAllDictItems(info) {
       this.sysAllDictItems = info ? info : []; // for null or undefined value
       // setAuthCache(TOKEN_KEY, info);
+    },
+    setUsername(name) {
+      this.username = name || null;
+    },
+    setSecondaryVerificationStatus(status) {
+      this.isSecondarilyVerified = status;
     }
     // You'll add async actions for API calls here
     // async fetchUser() { ... }
@@ -68,6 +80,6 @@ export const useAuthStore = defineStore('auth', {
   persist: { // Configuration for pinia-plugin-persistedstate
     key: 'auth', // Key for localStorage
     storage: localStorage, // or sessionStorage
-    paths: ['userInfo', 'token', 'userRole', 'sysAllDictItems'], // Which state properties to persist
+    paths: ['userInfo', 'token', 'userRole', 'sysAllDictItems', 'isSecondarilyVerified', 'username'], // Which state properties to persist
   },
 });

@@ -132,6 +132,7 @@ class AxiosHttpClient {
 
   handleUnauthorized() {
     const authStore = useAuthStore();
+    authStore.setSecondaryVerificationStatus(false);
     // Prevent multiple modals if multiple 401s arrive quickly
     if (Modal._hasPromise) return; // Simple flag, AntD Modal doesn't expose this, might need custom state
     Modal._hasPromise = true; // Set flag
