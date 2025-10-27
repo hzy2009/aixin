@@ -5,7 +5,7 @@
       <!-- Logo and Site Name - Positioned relative to the form box -->
       <div class="branding-header">
         <img src="@/assets/images/logoWithe.png" alt="LOGO" class="logo-image" />
-        <span class="site-name">爱芯享爱芯享信息服务平台</span>
+        <span class="site-name">爱芯享电子信息服务平台</span>
       </div>
 
       <div class="login-form-box">

@@ -1,19 +1,20 @@
 <template>
   <div class="industry-report-page">
     <listPage :pageData="pageData" ref="refListPage">
-      <template #content="{ dataSource, paginationConfig }">
+      <template #content="{ dataSource, paginationConfig, handleTablePaginationChange }">
         <IndustryReportItem v-for="item in dataSource" :key="item.id" :report="item" />
-          <div class="pagination-wrapper">
+          <div class="pagination-wrapper" ref="paginationRef">
             <a-pagination size="small" v-model:current="paginationConfig.current" v-bind="{...paginationConfig, showSizeChanger: false}"
-            show-quick-jumper :total="paginationConfig.total" @change="onChange" />
+            :showTotal="(total) => `共 ${total} 条记录`"
+            show-quick-jumper :total="paginationConfig.total" @change="(currentPage, pageSize) => onPageChange(currentPage, pageSize, handleTablePaginationChange)" />
           </div>
       </template>
     </listPage>
   </div>
 </template>
 
-<script setup lang="jsx">// jsx for custom pagination render if kept
-import { ref, reactive } from 'vue'; // onMounted removed as hook handles it
+<script setup lang="jsx">
+import { ref, reactive, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import listPage from '@/components/template/listPage.vue';
 import IndustryReportItem from './components/IndustryReportItem.vue';
@@ -39,21 +40,27 @@ const pageData = ref({
   listPageisPadding: false,
   requiredRoles: ['all']
 })
-const onChange = (page, pageSize) => {
-  // window.scrollTo({
-  //   top: 400,
-  //   behavior: 'smooth'
-  // });
-  refListPage.value.handleTablePaginationChange({
-    current: page,
-    pageSize
-  });
-}
-function viewDetails({ id }) {
-  router.push(`/demands/IndustryReportDetailPage/${id}`);
-};
-function createNewSourcing() {
-  router.push(`/user/published/DomesticSourcing/create`);
+
+const paginationRef = ref(null);
+
+const onPageChange = async (currentPage, pageSize, handleTablePaginationChange) => {
+  if (!paginationRef.value) {
+    await handleTablePaginationChange({ currentPage, pageSize });
+    return;
+  }
+
+  const oldTop = paginationRef.value.getBoundingClientRect().top;
+
+  await handleTablePaginationChange({ currentPage, pageSize });
+
+  await nextTick();
+
+  const newTop = paginationRef.value.getBoundingClientRect().top;
+  const scrollOffset = newTop - oldTop;
+
+  if (scrollOffset !== 0) {
+    window.scrollBy(0, scrollOffset);
+  }
 };
 </script>
 <style scoped lang="less">

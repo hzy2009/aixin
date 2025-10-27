@@ -171,7 +171,7 @@ const {
 // 调用 `useUserDemandList` hook，传入完整的 pageDataRefs，hook内部会处理它所需要的props的默认值。
 const {
     stats, search, isLoading, tableData, pagination, searchParams, currentFilters,
-    selectedRowKeys, vxeTableColumns, paginationConfig, loadTableData, handleFiltersChange,
+    selectedRowKeys, vxeTableColumns, paginationConfig, loadTableData, handleFiltersChange, handleDateChange,
     handleStatClick, triggerSearch, handleExportXls, clearfilters, handleFileUpload,
     handlePageChange, handleCheckboxChange, selectOptions
 } = useUserDemandList({
@@ -191,7 +191,7 @@ filterConfigForPage.value.forEach(item => {
 // 使用 `withPermission` 高阶函数包装需要权限的搜索和筛选操作
 const handleSearchWithPermission = withPermission(requiredRoles.value, triggerSearch, '抱歉，您没有权限执行此搜索操作');
 const handleStatClickWithPermission = withPermission(requiredRoles.value, handleStatClick, '抱歉，您没有权限执行此操作');
-const handleDateValuesUpdateWithPermission = withPermission(requiredRoles.value, triggerSearch, '抱歉，您没有权限执行此搜索操作');
+const handleDateValuesUpdateWithPermission = withPermission(requiredRoles.value, handleDateChange, '抱歉，您没有权限执行此搜索操作');
 
 // --- UI事件处理器 ---
 

@@ -48,6 +48,7 @@ export function useUserDemandList({
     const authStore = useAuthStore();
     const stats = ref({ list: [], total: 0 }); // 统计卡片数据
     const currentFilters = ref({}); // 当前激活的筛选条件
+    const dateFilters = ref({}); // 日期筛选条件
     const search = ref(''); // 搜索关键字
     const isLoading = ref(false); // 表格加载状态
     const tableData = ref([]); // 表格数据源
@@ -90,6 +91,7 @@ export function useUserDemandList({
                 pageNo: pagination.current,
                 pageSize: pagination.pageSize,
                 ...currentFilters.value,
+                ...dateFilters.value,
                 search: search.value,
                 ...otherParams.value, // .value is needed for refs from toRefs
                 ...extraParams
@@ -181,10 +183,10 @@ export function useUserDemandList({
      * @param {Number} page.currentPage - 当前页码。
      * @param {Number} page.pageSize - 每页数量。
      */
-    const handlePageChange = ({ currentPage, pageSize }) => {
+    const handlePageChange = async ({ currentPage, pageSize }) => {
         pagination.current = currentPage;
         pagination.pageSize = pageSize;
-        loadTableData();
+        await loadTableData();
     };
 
     /**
@@ -234,6 +236,15 @@ export function useUserDemandList({
             currentFilters.value['skillAreaCode'] = `,${currentFilters.value.skillAreaCode_MultiString},`;
             delete currentFilters.value.skillAreaCode_MultiString;
         }
+        loadTableData({ resetPage: true });
+    };
+
+    /**
+     * @description 处理日期范围选择器`values-changed`事件。
+     * @param {Object} newDateFilters - 最新的日期筛选条件对象。
+     */
+    const handleDateChange = (newDateFilters) => {
+        dateFilters.value = newDateFilters;
         loadTableData({ resetPage: true });
     };
 
@@ -290,6 +301,7 @@ export function useUserDemandList({
      */
     const clearfilters = () => {
         currentFilters.value = {};
+        dateFilters.value = {};
         search.value = '';
         loadTableData({ resetPage: true });
     };
@@ -340,6 +352,7 @@ export function useUserDemandList({
         // 方法
         loadTableData,
         handleFiltersChange,
+        handleDateChange,
         handleStatClick,
         triggerSearch,
         selectOptions,

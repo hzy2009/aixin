@@ -49,7 +49,7 @@ const pageData = reactive({
     delete: 'apm/apmSourcingOriginSubstitute/delete',
   },
   otherParams: {
-    sourcingType: '跨境采购',
+    sourcingType: '原厂件寻源',
   },
   formConfigs,
   statusHistoryColumns: STATUS_HISTORY_COLUMNS,

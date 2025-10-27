@@ -3,7 +3,7 @@
     <div class="form-container">
       <div class="form-header">
         <img src="@/assets/images/logo.png" alt="LOGO" class="logo-image" />
-        <span class="site-name">爱芯享信息服务平台</span>
+        <span class="site-name">爱芯享电子信息服务平台</span>
       </div>
       <h2 class="form-title">找回密码</h2>
       <p class="instructions">
@@ -33,7 +33,7 @@
       </div>
     </div>
      <footer class="page-footer">
-      <p>爱芯享信息服务平台</p>
+      <p>爱芯享电子信息服务平台</p>
       <p>©{{ new Date().getFullYear() }} AipuMax Information Sharing Platform Co.LTD. 版权所有 ALL RIGHT RESERVED | 粤ICP备00000000号-0</p>
     </footer>
   </div>

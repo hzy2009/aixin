@@ -6,7 +6,7 @@
       </div>
 
       <div class="guide-content">
-        <div class="intro-text">申请加入爱芯享信息服务平台，请联系：</div>
+        <div class="intro-text">申请加入爱芯享电子信息服务平台，请联系：</div>
         <!-- <div class="intro-text">陈靖玮</div> -->
         <div class="intro-text">热线电话： 4000118892</div>
         <div class="intro-text">E-MAIL： info-service@icshare.com</div>

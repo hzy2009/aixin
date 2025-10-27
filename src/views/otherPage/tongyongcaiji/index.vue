@@ -27,7 +27,7 @@
         </div>
         <div class="member-logo-item-wrapper special-hover-effect" >
             <img src="@/assets/images/home/PromoCard2.png" alt="通用件集采" class="member-logo-image" />
-            <div class="block-hover-overlay" @click="handlePurchaseClick('jd_overlay')">
+            <div class="block-hover-overlay" @click="handlePurchaseClick('jd')">
             <span class="hover-action-text">点击采购，享受爱芯享会员折扣</span>
           </div>
         </div>

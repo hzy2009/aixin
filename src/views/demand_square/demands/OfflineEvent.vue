@@ -1,14 +1,16 @@
 <template>
   <div>
     <listPage :pageData="pageData" ref="refListPage">
-      <template #content="{ dataSource, paginationConfig }">
+      <template #content="{ dataSource, paginationConfig, handleTablePaginationChange }">
         <div class="results-grid">
           <OfflineEventCard v-for="event in dataSource" :key="event.id" :event="event"
             @handleDetails="handleDetails(event)" />
         </div>
-        <div class="pagination-wrapper">
-          <a-pagination size="small" v-model:current="paginationConfig.current" v-bind="{...paginationConfig, showSizeChanger: false}"
-            show-quick-jumper :total="paginationConfig.total" @change="onChange" />
+        <div class="pagination-wrapper" ref="paginationRef">
+          <a-pagination size="small" v-bind="{...paginationConfig, showSizeChanger: false }"
+            show-quick-jumper @change="(currentPage, pageSize) => onPageChange(currentPage, pageSize, handleTablePaginationChange)" 
+            :showTotal="(total) => `共 ${total} 条记录`"
+          />
         </div>
       </template>
     </listPage>
@@ -81,19 +83,28 @@ function handleDetails({ id }) {
 function create() {
   router.push(`/user/published/OfflineEvent/create`);
 };
-const onChange = (page, pageSize) => {
-  const res = refListPage.value.handleTablePaginationChange({
-    current: page,
-    pageSize
-  });
-  res.then(() => {
-    nextTick(() => {
-      window.scrollTo({
-        top: document.body.scrollHeight,
-      });
-    })
-  })
-}
+
+const paginationRef = ref(null);
+
+const onPageChange = async (currentPage, pageSize, handleTablePaginationChange) => {
+  if (!paginationRef.value) {
+    await handleTablePaginationChange({ currentPage, pageSize });
+    return;
+  }
+
+  const oldTop = paginationRef.value.getBoundingClientRect().top;
+
+  await handleTablePaginationChange({ currentPage, pageSize });
+
+  await nextTick();
+
+  const newTop = paginationRef.value.getBoundingClientRect().top;
+  const scrollOffset = newTop - oldTop;
+
+  if (scrollOffset !== 0) {
+    window.scrollBy(0, scrollOffset);
+  }
+};
 </script>
 
 <style scoped lang="less">
@@ -122,6 +133,7 @@ const onChange = (page, pageSize) => {
 }
 
 .pagination-wrapper {
+  margin-top: @spacing-sm;
   // 定位到右边
   text-align: right;
   margin-bottom: @spacing-lg;

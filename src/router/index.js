@@ -69,7 +69,7 @@ router.beforeEach((to, from, next) => {
   const isLogin = authStore.isLogin;
 
   // 设置页面标题
-  document.title = to.meta.title || '爱芯享信息服务平台';
+  document.title = to.meta.title || '爱芯享电子信息服务平台';
   // 检查目标路由是否需要认证
   if (to.meta.requiresAuth) {
     if (isLogin) {
@@ -85,34 +85,44 @@ router.beforeEach((to, from, next) => {
         // 页面需要特定角色
         const hasPermission = requiredRoles.includes(roleCode);
         if (hasPermission) {
+          // 检查是否需要二次核验
+          if (to.meta.requiresSecondaryVerification && !authStore.isSecondarilyVerified) {
+            message.warn('请先完成二次核验');
+            next({ path: '/', query: { showSecondaryVerification: 'true' } });
+            progressBar.finish();
+            return;
+          }
           next(); // 角色匹配，放行
         } else {
           message.error('您没有权限访问此页面');
+          next(from); // 返回到上一页
         }
       } else {
         // 页面只需登录，不限角色
+        // 检查是否需要二次核验
+        if (to.meta.requiresSecondaryVerification && !authStore.isSecondarilyVerified) {
+          message.warn('请先完成二次核验');
+          next({ path: '/', query: { showSecondaryVerification: 'true' } });
+          progressBar.finish();
+          return;
+        }
         next();
       }
     } else {
       // 用户未登录，重定向到登录页
-      // next({
-      //   name: 'Login', // 确保你的登录页路由 name 是 'Login'
-      //   query: { redirect: to.fullPath }, // 登录后可以重定向回来
-      // });
       const modalStore = useModalStore();
       modalStore.showLogin();
       progressBar.finish();
-      // const loadingStore = useLoadingStore();
-      // loadingStore.finishRouteLoading();
     }
   } else {
-    // 如果用户已登录，且尝试访问“仅访客”页面（如登录页），则重定向到首页
-    // if (to.meta.guestOnly && isLogin) {
-    //     next({ name: 'Home' }); // 假设首页 name 是 'Home'
-    // } else {
-    //     // 页面无需认证，直接放行
-    //     next();
-    // }
+    // 页面无需认证，直接放行
+    // 检查是否需要二次核验 (即使无需认证的页面，也可能需要二次核验)
+    if (to.meta.requiresSecondaryVerification && !authStore.isSecondarilyVerified) {
+      message.warn('请先完成二次核验');
+      next({ path: '/', query: { showSecondaryVerification: 'true' } });
+      progressBar.finish();
+      return;
+    }
     next();
   }
 });
