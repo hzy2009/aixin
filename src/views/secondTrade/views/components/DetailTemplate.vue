@@ -81,7 +81,7 @@
               <span class="price-label">{{ priceInfo.label }}</span>
             </div>
             <div class="price-value-wrapper">
-              <span class="price-amount">{{props.product.purchaseMethod == 'PRICE_ON_REQUEST' ? '***' : priceInfo.price }}</span>
+              <span class="price-amount">{{props.product.purchaseMethod == 'PRICE_ON_REQUEST' && pageConfig.hidePrice ? '***' : priceInfo.price }}</span>
               <span class="price-unit">元
                 <span v-if="props.product.purchaseMethod == 'AUCTION'">起拍</span>
                 <span class="expiredDateText" v-if="!['AUCTION', 'PRICE_ON_REQUEST'].includes(props.product.purchaseMethod)">(含税单价)</span>
