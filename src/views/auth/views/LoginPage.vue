@@ -39,7 +39,7 @@
                   <MailOutlined class="site-form-item-icon" />
                 </template>
                 <template #addonAfter>
-                  <a-button @click="handleSendEmailCode" :disabled="isCountingDown" style="width: 112px; padding: 0;">
+                  <a-button @click="handleSendEmailCode" :disabled="isCountingDown" style="width: 112px; padding: 0;" type="link" class="get-captcha-button">
                     {{ isCountingDown ? `${countdown}s` : '获取验证码' }}
                   </a-button>
                 </template>
@@ -592,4 +592,9 @@ const handleFinish = async (data) => {
     }
   }
 }
+ .get-captcha-button {
+    &:hover {
+      color: @primary-color;
+    }
+  }
 </style>
