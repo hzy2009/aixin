@@ -27,7 +27,8 @@ const productPageConfig = ref({
   },
   viewDetailAction: (productId) => {
     router.push(`/user/join/usedEqpTrade/detail/${productId}`);
-  }
+  },
+  hidePrice: true
 });
 const isLoading = ref(false);
 const internalDemandId = ref(props.IdProp);

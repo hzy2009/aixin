@@ -81,7 +81,7 @@ const userCenterRoutes = [
       {
         path: 'DomesticSourcing', // 相对路径
         component: DomesticSourcing, // 这个页面现在是子路由
-        meta: { title: '我发布的 - 本土采购' }
+        meta: { title: '我发布的 - 本土采购', roles: ['apm-vip', 'apm-vip-inspection'] }
       },
       {
         path: 'DomesticSourcing/detail/:id',
@@ -92,7 +92,7 @@ const userCenterRoutes = [
       {
         path: 'DomesticSourcing/create',
         component: DomesticEditPage,
-        meta: { title: '创建本土采购需求', breadcrumb: ['创建本土采购需求'] }
+        meta: { title: '创建本土采购需求', breadcrumb: ['创建本土采购需求'], roles: ['apm-vip', 'apm-vip-inspection'] }
       },
 
 
@@ -104,7 +104,7 @@ const userCenterRoutes = [
       {
         path: 'OEMPartsSourcing/create',
         component: OEMPartsEditPage,
-        meta: { title: '创建跨境采购需求', breadcrumb: ['创建跨境采购需求'], roles: ['apm-vip-inspection','apm-vip'] }
+        meta: { title: '创建跨境采购需求', breadcrumb: ['创建跨境采购需求'], roles: ['apm-vip-inspection', 'apm-vip'] }
       },
       {
         path: 'OEMPartsSourcing/detail/:id',
@@ -204,13 +204,13 @@ const userCenterRoutes = [
       {
         path: 'DomesticSourcing', // 相对路径
         component: joinDomesticSourcing, // 这个页面现在是子路由
-        meta: { title: '我参与的 - 本土采购', roles: ['apm-vip'] }
+        meta: { title: '我参与的 - 本土采购', roles: ['apm-vip', 'apm-vip-inspection'] }
       },
       {
         path: 'DomesticSourcing/detail/:id',
         component: joinDomesticSourcingDetailPage,
         props: route => ({ IdProp: route.params.id }), // 通过 props 传递 mode 和 id
-        meta: { title: '本土采购详情', breadcrumb: ['本土采购'], roles: ['apm-vip'] }
+        meta: { title: '本土采购详情', breadcrumb: ['本土采购'], roles: ['apm-vip', 'apm-vip-inspection'] }
       },
       {
         path: 'OEMPartsSourcing',

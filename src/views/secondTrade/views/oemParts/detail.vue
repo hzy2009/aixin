@@ -60,7 +60,8 @@ const productPageConfig = ref({
   },
   viewDetailAction: (productId) => {
     router.push(`/user/join/oemParts/detail/${productId}`);
-  }
+  },
+  hidePrice: true
 });
 const fieldList = [
     { key: 'deviceType', label: '设备类型' },

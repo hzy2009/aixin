@@ -80,6 +80,7 @@ const pageData = ref({
     }
   ],
   searchTitle: '本土采购',
+  requiredRoles: ['apm-vip', 'apm-vip-inspection'],
 })
 
 
