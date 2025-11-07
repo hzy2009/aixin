@@ -101,16 +101,16 @@
           </div>
           <div style="margin-top: 40px;">
             <p class="form-instructions">
-              管理员
+              邮箱
             </p>
             <p class="form-instructions-value">
-              张三
+              info-service@icshare.com
             </p>
             <p class="form-instructions">
               联系电话
             </p>
             <p class="form-instructions-value">
-              180 000 0000
+               400 011 8892
             </p>
           </div>
           <a-button html-type="submit" @click="switchToLogin" class="back-button">
