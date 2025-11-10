@@ -45,7 +45,7 @@ export function getCodeInfo(currdatetime) {
 
 // Login API
 export function loginApi(data) {
-  return defHttp.post({ url: Api.Login, data }); // Or data: params if body
+  return defHttp.post({ url: Api.Login, data: { ...data ,captchaMode: 1} }); // Or data: params if body
 }
 
 // Logout API

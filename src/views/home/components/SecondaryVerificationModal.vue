@@ -101,13 +101,17 @@ const handleSendCode = async () => {
 const handleFinish = async (values) => {
   confirmLoading.value = true;
   try {
-    // Placeholder API call
-    console.log('Submitting verification:', values);
-    // const res = await defHttp.post({ url: '/api/verify-secondary', data: values });
-    
-    message.success('核验成功');
-    authStore.setSecondaryVerificationStatus(true);
-    emit('update:open', false);
+    const res = await defHttp.post({ url: '/apm/sys/emailLogin', data: {
+      username: authStore.username, email: formState.email, captcha: values.code, captchaMode: 0
+    } });
+    if (res.success) {
+       message.success(res.message);
+      authStore.setSecondaryVerificationStatus(true);
+      emit('update:open', false);
+    } else {
+      message.error(res.message);
+    }
+   
 
   } catch (error) {
     message.error('核验失败');
