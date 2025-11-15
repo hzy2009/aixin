@@ -29,13 +29,13 @@ const router = useRouter();
 
 const validatePass = async (_rule, value) => {
 	const p = editPage.value.getAllData();
-	const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+	const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
 	if (!value) {
 		return Promise.reject('请输入新密码');
 	}
 	if (!passwordRegex.test(value)) {
-		return Promise.reject('密码必须至少8位，且包含数字、字母和符号');
+		return Promise.reject('密码必须包含大小写字母、数字和符号，且长度至少为8位');
 	} else {
 		// If the new password is valid, trigger validation for the confirm password field
 		if (p.confirmpassword) {
@@ -58,9 +58,9 @@ const validatePass2 = async (_rule, value) => {
 
 // // --- 表单配置 ---
 const formConfigs = [
-	{ label: '原密码', field: 'oldpassword', span: 24, fieldType: 'password', rules: [{ required: true }], tips: '密码由8位以上的英文字母、数字和符号组成，英文字母需含大小写' },
+	{ label: '原密码', field: 'oldpassword', span: 24, fieldType: 'password', rules: [{ required: true }], tips: '密码必须包含大小写字母、数字和符号，且长度至少为8位' },
 	{
-		label: '新密码', field: 'password', fieldType: 'password', span: 24, rules: [{ required: true, validator: validatePass, trigger: 'change' }], tips: '密码由8位以上的英文字母、数字和符号组成，英文字母需含大小写'
+		label: '新密码', field: 'password', fieldType: 'password', span: 24, rules: [{ required: true, validator: validatePass, trigger: 'change' }], tips: '密码必须包含大小写字母、数字和符号，且长度至少为8位'
 	},
 	{ label: '确定新密码', field: 'confirmpassword', fieldType: 'password', span: 24, rules: [{ required: true, validator: validatePass2, trigger: 'change' }] },
 ]

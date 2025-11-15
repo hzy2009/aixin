@@ -60,9 +60,9 @@
             </a-form-item>
 
           <a-form-item class="extra-actions-row">
-            <a-checkbox v-model:checked="formState.rememberMe" class="remember-me-checkbox">
+            <!-- <a-checkbox v-model:checked="formState.rememberMe" class="remember-me-checkbox">
               自动登录
-            </a-checkbox>
+            </a-checkbox> -->
             <a href="#" @click.prevent="switchToForgotPassword" class="forgot-password-link">忘记密码?</a>
           </a-form-item>
 

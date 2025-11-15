@@ -68,7 +68,7 @@ const filterConfigForPage = reactive([
     { id: 'productStatusCode', label: '设备状态', maxVisibleWithoutMore: 9, dictKey: 'secondhand_product_status'},
     { id: 'purchaseMethod', label: '价格类型', maxVisibleWithoutMore: 9, dictKey: 'purchase_method'},
     { id: 'productModelCode', label: '设备类型', maxVisibleWithoutMore: 6, dictKey: 'product_model'},
-    { id: 'stockStatusName', label: '库存状态', maxVisibleWithoutMore: 9, selectionType: 'single', dictKey: 'product_stock_status' },
+    { id: 'stockStatusCode', label: '库存状态', maxVisibleWithoutMore: 9, selectionType: 'single', dictKey: 'product_stock_status' },
 ]);
 
 const pageData = ref({

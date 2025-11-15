@@ -77,7 +77,7 @@
             </a-form-item> -->
 
             <a-form-item class="form-options">
-              <a-checkbox v-model:checked="loginFormState.remember">自动登录</a-checkbox>
+              <!-- <a-checkbox v-model:checked="loginFormState.remember">自动登录</a-checkbox> -->
               <a @click="switchToForgotPassword" class="interactive-link">忘记密码?</a>
             </a-form-item>
 
