@@ -39,6 +39,11 @@ class AxiosHttpClient {
 
     this.axiosInstance.interceptors.response.use(
       (response) => {
+        // 如果配置了不转换响应，则直接返回原始响应
+        if (response.config.isTransformResponse === false) {
+          return response;
+        }
+
         // IMPORTANT: Customize this based on your backend's response format.
         // Example: If your API returns { code: 0, data: ..., message: '...' }
         const res = response.data;
@@ -65,7 +70,10 @@ class AxiosHttpClient {
             default:
               errorMessage = `请求错误 (${status}): ${data?.message || error.message}`;
           }
-          AntMessage.error(errorMessage);
+          // 只有当不是401错误时才显示AntMessage
+          if (status !== 401) {
+            AntMessage.error(errorMessage);
+          }
         } else if (error.request) {
           errorMessage = '网络请求超时或服务器未响应';
           AntMessage.error(errorMessage);
@@ -78,9 +86,9 @@ class AxiosHttpClient {
       }
     );
   }
-   /**
-   * 文件上传
-   */
+  /**
+  * 文件上传
+  */
   uploadFile(config, params, callback) {
     const formData = new window.FormData();
     const customFilename = params.name || 'file';
@@ -106,7 +114,7 @@ class AxiosHttpClient {
     }
 
     return this.axiosInstance
-      .request<T>({
+      .request < T > ({
         ...config,
         method: 'POST',
         data: formData,
@@ -115,19 +123,19 @@ class AxiosHttpClient {
           ignoreCancelToken: true,
         },
       })
-      .then((res) => {
-        if (callback?.success && isFunction(callback?.success)) {
-          callback?.success(res?.data);
-        } else if (callback?.isReturnResponse) {
-          return Promise.resolve(res?.data);
-        } else {
-          if (res.data.success == true && res.data.code == 200) {
-            AntMessage.success(res.data.message);
+        .then((res) => {
+          if (callback?.success && isFunction(callback?.success)) {
+            callback?.success(res?.data);
+          } else if (callback?.isReturnResponse) {
+            return Promise.resolve(res?.data);
           } else {
-            AntMessage.error(res.data.message);
+            if (res.data.success == true && res.data.code == 200) {
+              AntMessage.success(res.data.message);
+            } else {
+              AntMessage.error(res.data.message);
+            }
           }
-        }
-      });
+        });
   }
 
   handleUnauthorized() {
@@ -161,10 +169,10 @@ class AxiosHttpClient {
         }
       });
     } else {
-       router.push({
-          path: '/login',
-          query: { redirect: router.currentRoute.value.fullPath }
-       }).finally(() => { Modal._hasPromise = false; });
+      router.push({
+        path: '/login',
+        query: { redirect: router.currentRoute.value.fullPath }
+      }).finally(() => { Modal._hasPromise = false; });
     }
   }
 
@@ -186,46 +194,51 @@ class AxiosHttpClient {
   /**
    * @description GET request
    * @param {object} config - Axios request config, must include 'url'. 'params' can be included.
+   * @param {boolean} [isTransformResponse=true] - 是否转换响应数据。如果为false，则返回原始响应。
    * @returns {Promise}
    */
-  get(config) {
-    return this.request({ method: 'GET', ...config });
+  get(config, isTransformResponse = true) {
+    return this.request({ method: 'GET', ...config, isTransformResponse });
   }
 
   /**
    * @description POST request
    * @param {object} config - Axios request config, must include 'url'. 'data' (for body) can be included.
+   * @param {boolean} [isTransformResponse=true] - 是否转换响应数据。如果为false，则返回原始响应。
    * @returns {Promise}
    */
-  post(config) {
-    return this.request({ method: 'POST', ...config });
+  post(config, isTransformResponse = true) {
+    return this.request({ method: 'POST', ...config, isTransformResponse });
   }
 
   /**
    * @description PUT request
    * @param {object} config - Axios request config, must include 'url'. 'data' (for body) can be included.
+   * @param {boolean} [isTransformResponse=true] - 是否转换响应数据。如果为false，则返回原始响应。
    * @returns {Promise}
    */
-  put(config) {
-    return this.request({ method: 'PUT', ...config });
+  put(config, isTransformResponse = true) {
+    return this.request({ method: 'PUT', ...config, isTransformResponse });
   }
 
   /**
    * @description DELETE request
    * @param {object} config - Axios request config, must include 'url'. 'params' or 'data' can be included.
+   * @param {boolean} [isTransformResponse=true] - 是否转换响应数据。如果为false，则返回原始响应。
    * @returns {Promise}
    */
-  delete(config) {
-    return this.request({ method: 'DELETE', ...config });
+  delete(config, isTransformResponse = true) {
+    return this.request({ method: 'DELETE', ...config, isTransformResponse });
   }
 
   /**
    * @description PATCH request
    * @param {object} config - Axios request config, must include 'url'. 'data' (for body) can be included.
+   * @param {boolean} [isTransformResponse=true] - 是否转换响应数据。如果为false，则返回原始响应。
    * @returns {Promise}
    */
-  patch(config) {
-    return this.request({ method: 'PATCH', ...config });
+  patch(config, isTransformResponse = true) {
+    return this.request({ method: 'PATCH', ...config, isTransformResponse });
   }
 
   /**
