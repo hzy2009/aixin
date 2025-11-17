@@ -51,7 +51,10 @@ import { message } from 'ant-design-vue';
 import defHttp from '@/utils/http/axios'
 const authStore = useAuthStore();
 authStore.getDictItems();
-
+if(authStore.isLogin){
+  debugger
+  authStore.getUserRole()
+}
 const phoneAndEmailModal = ref()
 
 const modalStore = useModalStore();
