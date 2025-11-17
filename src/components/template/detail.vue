@@ -201,7 +201,7 @@ const handleToList = () => { isCreating.value = true; router.push({ path: listPa
 // 切换到编辑模式
 const handleToEdit = () => { isView.value = false; };
 // 自定义操作按钮点击
-const handleActionNoteClick = (action) => action.fn?.(demandDetailData);
+const handleActionNoteClick = (action) => action.fn?.(detailData.value);
 // 表单内select组件的change事件
 const handleSelectChange = (value, fieldConfig, option) => fieldConfig.onChange?.({ value, field: fieldConfig, form: formModel.value, option });
 

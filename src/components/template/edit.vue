@@ -192,9 +192,16 @@ const validate = async() => {
   return await dynamicFormRef.value?.validate();
 }
 
+const clearForm = () => {
+  if (dynamicFormRef.value) {
+    dynamicFormRef.value.resetFields();
+  }
+}
+
 defineExpose({
     getAllData,
     validate,
+    clearForm,
     formRef: dynamicFormRef,
     // 如果父组件需要手动触发保存，也可以暴露
     // save,

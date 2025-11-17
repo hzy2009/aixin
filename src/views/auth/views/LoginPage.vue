@@ -88,7 +88,7 @@
             </a-form-item>
 
             <div class="register-prompt">
-              没有账号? <a href="#" @click.prevent="handleRegister" class="register-link">注册一键敲门</a>
+              没有账号? <a href="#" @click.prevent="handleRegister" class="register-link">立即注册</a>
             </div>
           </a-form>
         </div>
