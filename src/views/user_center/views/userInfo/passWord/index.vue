@@ -85,6 +85,7 @@ const handleSubmitForm = async () => {
 	const res = await defHttp.put({ url: `sys/user/updatePassword`, data })
 	if (res.success) {
 		message.success(res.message)
+		editPage.value.clearForm()
 	} else {
 		message.error(res.message)
 	}
