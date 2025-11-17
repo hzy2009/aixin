@@ -5,6 +5,7 @@
         :data="dataSource"
         :columns="columns"
         border
+        resizable
         :row-config="{ keyField: 'id' }"
         :expand-config="{ expandRowKeys: expandedRowKeys, trigger: 'default' }"
         @toggle-row-expand="handleToggleExpand"
@@ -90,11 +91,11 @@ const columns = [
     {
       title: '内部管理单号',
       field: 'materialCode',
-      width: 150,
     },
 	{
       title: '操作',
       field: 'action',
+      width: 130,
 	  slots: {
         default: ({ row }) => {
             const {isSecondInquiryEnable, firstInquiryList, secondInquiryList} = row

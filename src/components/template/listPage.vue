@@ -241,7 +241,7 @@ function handleActionClick(record, action) {
 const operationHandlers = {
     exportXls: (btn) => handleExportXls(btn.fileName, btn.url, {
         selections: selectedRowKeys.value.join(','),
-        ...pageDataRefs.otherParams.value, // 确保从响应式引用取值
+        ...(pageDataRefs.otherParams ? pageDataRefs.otherParams.value : {}), // 确保从响应式引用取值
         search: search.value,
         ...currentFilters.value,
         ...searchParams.value,

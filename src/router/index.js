@@ -116,10 +116,9 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     // 页面无需认证，直接放行
-    // 检查是否需要二次核验 (即使无需认证的页面，也可能需要二次核验)
     if (to.meta.requiresSecondaryVerification && !authStore.isSecondarilyVerified) {
-      message.warn('请先完成二次核验');
-      next({ path: '/', query: { showSecondaryVerification: 'true' } });
+      const modalStore = useModalStore();
+      modalStore.showLogin();
       progressBar.finish();
       return;
     }

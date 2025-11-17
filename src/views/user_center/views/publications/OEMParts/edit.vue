@@ -23,8 +23,8 @@ const router = useRouter();
 // // --- 表单配置 ---
 const formConfigs = [
   { label: '需求提出方', field: 'createBy', fieldType: 'input', span: 24, disabled: true, },
-  { label: '需求创建日期', field: 'createTime', fieldType: 'date', span: 24},
-  { label: '期望完成日期', field: 'expireDate', fieldType: 'date', span: 24 },
+  { label: '需求创建日期', field: 'createTime', fieldType: 'date', span: 24, required: true },
+  { label: '期望完成日期', field: 'expireDate', fieldType: 'date', span: 24, required: true },
   { label: '电话', field: 'phone', fieldType: 'phone', span: 24, tips: '仅供内部联络使用，不对外展示' },
   { label: '邮箱', field: 'email', fieldType: 'email', span: 24, tips: '仅供内部联络使用，不对外展示' },
 ]
