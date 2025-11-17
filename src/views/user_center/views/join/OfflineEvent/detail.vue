@@ -26,6 +26,7 @@ const formConfigs = [
   { label: '活动内容', field: 'activityName', span: 24,  },
   { label: '活动结果', field: 'description', span: 24 },
   { label: '活动名称', field: 'activityName', span: 24 },
+  { label: '需求创建日期', field: 'createTime', span: 24 },
   { label: '活动开始日期', field: 'activityDate', span: 24 },
   { label: '活动结束日期', field: 'activityEndDate', span: 24 },
   { label: '内部管理单号', field: 'internalCode', fieldType: 'input', span: 24, },
